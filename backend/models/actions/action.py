@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Dict, Optional
-from ..base import BaseDBModel
+from models.base import BaseDBModel
 
 class Action(BaseDBModel):
     """Action history model"""
