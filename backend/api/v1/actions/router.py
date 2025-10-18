@@ -6,10 +6,10 @@ import random
 from .schemas import (
     HackAction, HelpAction, StealAction, DonateAction, TradeAction, ActionResponse
 )
-from ....core.database import get_database
-from ....api.v1.auth.router import get_current_user_dep
-from ....models.player.player import Player
-from ....models.actions.action import Action
+from core.database import get_database
+from api.v1.auth.router import get_current_user_dep
+from models.player.player import Player
+from models.actions.action import Action
 
 router = APIRouter(prefix="/actions", tags=["actions"])
 
