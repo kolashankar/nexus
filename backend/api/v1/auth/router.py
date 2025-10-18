@@ -5,9 +5,9 @@ from typing import Optional
 from datetime import datetime
 
 from .schemas import LoginRequest, RegisterRequest, TokenResponse
-from ....core.database import get_database
-from ....core.security import verify_password, get_password_hash, create_access_token, decode_access_token
-from ....models.player.player import Player, PlayerCreate, PlayerResponse
+from core.database import get_database
+from core.security import verify_password, get_password_hash, create_access_token, decode_access_token
+from models.player.player import Player, PlayerCreate, PlayerResponse
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 security = HTTPBearer()
