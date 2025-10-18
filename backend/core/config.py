@@ -18,10 +18,10 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     
     # CORS
-    CORS_ORIGINS: List[str] = os.environ.get('CORS_ORIGINS', '*').split(',')
+    CORS_ORIGINS: str = "*"
     
     # AI
-    EMERGENT_LLM_KEY: str = os.environ.get('EMERGENT_LLM_KEY', '')
+    EMERGENT_LLM_KEY: str = ""
     
     # Game Constants
     MAX_TRAITS: int = 80
