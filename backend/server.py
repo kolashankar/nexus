@@ -43,6 +43,7 @@ api_router.include_router(actions_router)
 # Include the router in the main app
 app.include_router(api_router)
 
+# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
@@ -58,6 +59,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+@app.on_event("startup")
+async def startup_event():
+    logger.info("🚀 Karma Nexus 2.0 starting up...")
+    logger.info("📊 Connecting to database...")
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    await Database.close()
+    logger.info("Database connection closed")
