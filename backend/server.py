@@ -44,6 +44,16 @@ api_router.include_router(actions_router)
 # Include the router in the main app
 app.include_router(api_router)
 
+# WebSocket endpoint for real-time multiplayer
+@app.websocket("/ws")
+async def websocket_route(
+    websocket: WebSocket,
+    player_id: str = Query(...),
+    username: str = Query(...)
+):
+    """WebSocket endpoint for real-time game updates."""
+    await websocket_endpoint(websocket, player_id, username)
+
 # CORS Middleware
 app.add_middleware(
     CORSMiddleware,
