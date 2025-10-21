@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, WebSocket, Query
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 import os
@@ -8,6 +8,7 @@ from pathlib import Path
 # Import routers
 from api.v1.auth.router import router as auth_router
 from api.v1.actions.router import router as actions_router
+from api.websocket.handlers import websocket_endpoint
 from core.database import Database
 
 ROOT_DIR = Path(__file__).parent
