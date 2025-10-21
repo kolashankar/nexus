@@ -1,6 +1,6 @@
 # 🌌 KARMA NEXUS 2.0 - NEXT GENERATION AI-DRIVEN MULTIPLAYER GAME
 
-## 🎮 Revolutionary Game Concept
+### 🎮 Revolutionary Game Concept
 
 **Karma Nexus** is a groundbreaking, AI-powered massively multiplayer karma-based RPG where every action shapes your destiny. Set in a futuristic world where payment chips are embedded in human hands, players navigate a complex society managed by multiple AI entities, where consequences ripple through an interconnected web of traits, relationships, and cosmic karma.
 
