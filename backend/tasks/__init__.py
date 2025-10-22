@@ -1,9 +1,8 @@
-"""Background Tasks"""
+"""Background tasks package."""
 
-from .world_events_task import start_world_events_task
-from .world_state_sync_task import start_world_state_sync_task
+from .seasonal_tasks import SeasonalTasksManager, run_seasonal_tasks_loop
 
 __all__ = [
-    "start_world_events_task",
-    "start_world_state_sync_task"
+    'SeasonalTasksManager',
+    'run_seasonal_tasks_loop'
 ]

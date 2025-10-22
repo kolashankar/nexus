@@ -1,7 +1,6 @@
-"""World State Models"""
+"""World models package."""
 
-from .world_state import WorldStateModel
-from .karma_event import KarmaEventModel
-from .territory import TerritoryModel
+# World models are primarily stored as documents in MongoDB
+# No specific Pydantic models needed for world state
 
-__all__ = ["WorldStateModel", "KarmaEventModel", "TerritoryModel"]
+__all__ = []
