@@ -3,10 +3,10 @@ import { Card } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import socialService from '../../services/social/socialService';
-import { useAuth } from '../../hooks/useAuth';
+import { usePlayer } from '../../hooks/usePlayer';
 
 const SocialHub: React.FC = () => {
-  const { user } = useAuth();
+  const { player: user } = usePlayer();
   const [onlinePlayers, setOnlinePlayers] = useState<any[]>([]);
   const [alliance, setAlliance] = useState<any>(null);
   const [marriage, setMarriage] = useState<any>(null);
