@@ -3,10 +3,10 @@ import { Card } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import guildsService from '../../services/guilds/guildsService';
 import { Territory } from '../../types/guilds';
-import { useAuth } from '../../hooks/useAuth';
+import { usePlayer } from '../../hooks/usePlayer';
 
 const Territories: React.FC = () => {
-  const { user } = useAuth();
+  const { player: user } = usePlayer();
   const [territories, setTerritories] = useState<Territory[]>([]);
   const [loading, setLoading] = useState(true);
 
