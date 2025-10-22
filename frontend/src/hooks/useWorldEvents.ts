@@ -1,66 +1,113 @@
-import { useState, useEffect, useCallback } from 'react';
-import { worldService } from '@/services/api/worldService';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 interface WorldEvent {
   event_id: string;
   event_type: string;
   name: string;
   description: string;
-  severity: string;
-  [key: string]: any;
+  started_at: string;
+  ends_at: string;
+  effects: Record<string, any>;
+  participants: number;
+  is_active: boolean;
+}
+
+interface WorldState {
+  collective_karma: number;
+  karma_trend: 'rising' | 'falling' | 'stable';
+  active_event: WorldEvent | null;
+  online_players: number;
+  total_players: number;
+  current_season: number;
+  season_start: string;
+  season_end: string;
 }
 
 interface UseWorldEventsReturn {
-  activeEvent: WorldEvent | null;
-  recentEvents: WorldEvent[];
+  worldState: WorldState | null;
+  activeEvents: WorldEvent[];
   loading: boolean;
   error: string | null;
-  refetch: () => Promise<void>;
+  refreshWorldState: () => Promise<void>;
+  refreshActiveEvents: () => Promise<void>;
 }
 
-/**
- * Custom hook for managing world events
- */
 export const useWorldEvents = (): UseWorldEventsReturn => {
-  const [activeEvent, setActiveEvent] = useState<WorldEvent | null>(null);
-  const [recentEvents, setRecentEvents] = useState<WorldEvent[]>([]);
+  const [worldState, setWorldState] = useState<WorldState | null>(null);
+  const [activeEvents, setActiveEvents] = useState<WorldEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchEvents = useCallback(async () => {
+  const fetchWorldState = async () => {
     try {
-      setLoading(true);
-      setError(null);
-
-      const [active, recent] = await Promise.all([
-        worldService.getActiveEvent(),
-        worldService.getRecentEvents(10)
-      ]);
-
-      setActiveEvent(active);
-      setRecentEvents(recent.events);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API_URL}/api/world/state`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setWorldState(response.data);
     } catch (err: any) {
-      setError(err.message || 'Failed to fetch world events');
-      console.error('Error fetching world events:', err);
-    } finally {
-      setLoading(false);
+      console.error('Error fetching world state:', err);
+      setError(err.message);
     }
-  }, []);
+  };
+
+  const fetchActiveEvents = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${API_URL}/api/world/events`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setActiveEvents(response.data);
+    } catch (err: any) {
+      console.error('Error fetching active events:', err);
+      setError(err.message);
+    }
+  };
+
+  const refreshWorldState = async () => {
+    setLoading(true);
+    await fetchWorldState();
+    setLoading(false);
+  };
+
+  const refreshActiveEvents = async () => {
+    await fetchActiveEvents();
+  };
 
   useEffect(() => {
-    fetchEvents();
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([
+        fetchWorldState(),
+        fetchActiveEvents()
+      ]);
+      setLoading(false);
+    };
 
-    // Poll for updates every 30 seconds
-    const interval = setInterval(fetchEvents, 30000);
+    loadData();
+
+    // Refresh every 30 seconds
+    const interval = setInterval(() => {
+      fetchWorldState();
+      fetchActiveEvents();
+    }, 30000);
 
     return () => clearInterval(interval);
-  }, [fetchEvents]);
+  }, []);
 
   return {
-    activeEvent,
-    recentEvents,
+    worldState,
+    activeEvents,
     loading,
     error,
-    refetch: fetchEvents
+    refreshWorldState,
+    refreshActiveEvents
   };
 };
