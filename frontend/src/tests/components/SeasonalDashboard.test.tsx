@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { SeasonalDashboard } from '../../pages/Seasonal/SeasonalDashboard';
+import SeasonalDashboard from '../../pages/Seasonal/SeasonalDashboard';
 
 // Mock API
 jest.mock('../../services/api/client');
