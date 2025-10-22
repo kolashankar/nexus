@@ -5,6 +5,7 @@ from datetime import datetime
 from backend.core.database import db
 from backend.models.player.player import Player
 from bson import ObjectId
+from fastapi import HTTPException
 
 class PlayerProfileService:
     """Service for managing player profiles."""
