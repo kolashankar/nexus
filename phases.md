@@ -373,7 +373,7 @@ Assets:   ░░░░░░░░░░  0% (0/40+ assets)
 
 ### Overall Project Progress
 ```
-███████████████████░  75% Complete (462/850 total files)
+████████████████████  79% Complete (493/850 total files)
 ```
 
 ---
