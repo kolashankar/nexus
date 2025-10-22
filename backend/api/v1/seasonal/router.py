@@ -6,6 +6,7 @@ from backend.api.deps import get_current_player
 from backend.models.player.player import Player
 from backend.services.seasonal.battle_pass import BattlePassService
 from backend.services.seasonal.seasons import SeasonService
+from backend.core.database import db
 from .schemas import (
     BattlePassResponse,
     PlayerBattlePassProgressResponse,
