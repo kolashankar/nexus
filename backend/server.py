@@ -87,8 +87,30 @@ logger = logging.getLogger(__name__)
 async def startup_event():
     logger.info("🚀 Karma Nexus 2.0 starting up...")
     logger.info("📊 Connecting to database...")
+    
+    # Connect to Redis
+    logger.info("🔴 Connecting to Redis...")
+    await redis_manager.connect()
+    
+    # Setup AI background tasks
+    logger.info("🤖 Setting up AI background tasks...")
+    from tasks.ai_scheduler import setup_ai_tasks
+    setup_ai_tasks()
+    
+    logger.info("✅ Karma Nexus 2.0 is ready!")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
+    logger.info("🛑 Karma Nexus 2.0 shutting down...")
+    
+    # Close Redis connection
+    await redis_manager.disconnect()
+    
+    # Shutdown AI scheduler
+    from tasks.ai_scheduler import ai_scheduler
+    ai_scheduler.shutdown()
+    
+    # Close database
     await Database.close()
     logger.info("Database connection closed")
+    logger.info("👋 Karma Nexus 2.0 shutdown complete")
