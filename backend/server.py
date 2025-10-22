@@ -24,6 +24,12 @@ from api.v1.player.legacy.router import router as legacy_router
 from api.v1.guilds import router as guilds_router
 from api.v1.social import router as social_router
 
+# Phase 6: Combat & PvP routers
+from api.v1.combat.router import router as combat_router
+from api.v1.combat.duel.router import router as duel_router
+from api.v1.combat.arena.router import router as arena_router
+from api.v1.tournaments.router import router as tournaments_router
+
 from api.websocket.handlers import websocket_endpoint
 from core.database import Database
 from core.redis import redis_manager
