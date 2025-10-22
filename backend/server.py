@@ -31,6 +31,15 @@ from api.v1.combat.arena.router import router as arena_router
 from api.v1.combat.abilities.router import router as combat_abilities_router
 from api.v1.tournaments.router import router as tournaments_router
 
+# Phase 7: Economy & Robots routers
+from api.v1.market.router import router as market_router
+from api.v1.market.stocks.router import router as stocks_router
+from api.v1.market.items.router import router as items_router
+from api.v1.market.real_estate.router import router as real_estate_router
+from api.v1.robots.router import router as robots_router
+from api.v1.robots.marketplace.router import router as robot_marketplace_router
+from api.v1.robots.training.router import router as robot_training_router
+
 from api.websocket.handlers import websocket_endpoint
 from core.database import Database
 from core.redis import redis_manager
@@ -54,7 +63,18 @@ async def root():
     return {
         "message": "Welcome to Karma Nexus 2.0",
         "version": "1.0.0",
-        "status": "operational"
+        "status": "operational",
+        "phases_complete": [1, 2, 3, 4, 5, 6, 7],
+        "features": {
+            "combat_system": True,
+            "robot_system": True,
+            "economy_system": True,
+            "stock_market": True,
+            "guilds": True,
+            "pvp_modes": ["duel", "arena"],
+            "currencies": 6,
+            "robot_types": 15
+        }
     }
 
 @api_router.get("/health")
@@ -90,6 +110,15 @@ api_router.include_router(arena_router, prefix="/combat", tags=["combat-arena"])
 api_router.include_router(combat_abilities_router, prefix="/combat", tags=["combat-abilities"])
 api_router.include_router(tournaments_router, prefix="", tags=["tournaments"])
 
+# Phase 7: Economy & Robots routers
+api_router.include_router(market_router, prefix="", tags=["market"])
+api_router.include_router(stocks_router, prefix="/market", tags=["market-stocks"])
+api_router.include_router(items_router, prefix="/market", tags=["market-items"])
+api_router.include_router(real_estate_router, prefix="/market", tags=["market-real-estate"])
+api_router.include_router(robots_router, prefix="", tags=["robots"])
+api_router.include_router(robot_marketplace_router, prefix="/robots", tags=["robots-marketplace"])
+api_router.include_router(robot_training_router, prefix="/robots", tags=["robots-training"])
+
 # Include the router in the main app
 app.include_router(api_router)
 
@@ -100,61 +129,39 @@ async def websocket_route(
     player_id: str = Query(...),
     username: str = Query(...)
 ):
-    """WebSocket endpoint for real-time game updates."""
     await websocket_endpoint(websocket, player_id, username)
 
-# CORS Middleware
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
-
+# Startup event
 @app.on_event("startup")
 async def startup_event():
-    logger.info("🚀 Karma Nexus 2.0 starting up...")
-    logger.info("📊 Connecting to database...")
+    # Initialize database
+    db = Database()
+    await db.connect_db()
     
-    # Connect to Redis
-    logger.info("🔴 Connecting to Redis...")
-    await redis_manager.connect()
+    # Initialize Redis (if needed)
+    try:
+        await redis_manager.connect()
+    except Exception as e:
+        logging.warning(f"Redis connection failed: {e}")
     
-    # Initialize territories (Phase 5)
-    logger.info("🏛️ Initializing territories...")
-    from core.database import Database
-    from services.guilds.territories import TerritoryService
-    db = await Database.get_database()
-    territory_service = TerritoryService(db)
-    await territory_service.initialize_territories()
-    
-    # Setup AI background tasks
-    logger.info("🤖 Setting up AI background tasks...")
-    from tasks.ai_scheduler import setup_ai_tasks
-    setup_ai_tasks()
-    
-    logger.info("✅ Karma Nexus 2.0 is ready!")
+    logging.info("✅ Karma Nexus 2.0 started successfully!")
+    logging.info("🎮 Phases 1-7 Complete: Combat, Robots, Economy ready!")
 
+# Shutdown event
 @app.on_event("shutdown")
-async def shutdown_db_client():
-    logger.info("🛑 Karma Nexus 2.0 shutting down...")
-    
-    # Close Redis connection
-    await redis_manager.disconnect()
-    
-    # Shutdown AI scheduler
-    from tasks.ai_scheduler import ai_scheduler
-    ai_scheduler.shutdown()
-    
-    # Close database
-    await Database.close()
-    logger.info("Database connection closed")
-    logger.info("👋 Karma Nexus 2.0 shutdown complete")
+async def shutdown_event():
+    await redis_manager.close()
+    logging.info("🛑 Karma Nexus 2.0 shutdown complete")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8001)
