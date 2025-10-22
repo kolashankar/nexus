@@ -1,12 +1,35 @@
 import * as React from 'react';
 
-export interface DialogProps {}
-export interface DialogTriggerProps {}
-export interface DialogContentProps {}
-export interface DialogHeaderProps {}
-export interface DialogFooterProps {}
-export interface DialogTitleProps {}
-export interface DialogDescriptionProps {}
+export interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export interface DialogTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children?: React.ReactNode;
+  asChild?: boolean;
+}
+
+export interface DialogContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
+
+export interface DialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
+
+export interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
+
+export interface DialogTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  children?: React.ReactNode;
+}
+
+export interface DialogDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
+  children?: React.ReactNode;
+}
 
 export const Dialog: React.FC<DialogProps>;
 export const DialogTrigger: React.FC<DialogTriggerProps>;
