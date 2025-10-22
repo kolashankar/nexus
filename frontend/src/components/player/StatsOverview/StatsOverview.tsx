@@ -52,7 +52,7 @@ interface PlayerStats {
 }
 
 export const StatsOverview: React.FC = () => {
-  const { player, loading } = usePlayer();
+  const { player, isLoading: loading } = usePlayer();
   const [stats, setStats] = useState<PlayerStats | null>(null);
   const [activeTab, setActiveTab] = useState('combat');
 
