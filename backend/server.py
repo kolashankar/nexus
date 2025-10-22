@@ -87,6 +87,7 @@ api_router.include_router(social_router, prefix="", tags=["social"])
 api_router.include_router(combat_router, prefix="", tags=["combat"])
 api_router.include_router(duel_router, prefix="/combat", tags=["combat-duel"])
 api_router.include_router(arena_router, prefix="/combat", tags=["combat-arena"])
+api_router.include_router(combat_abilities_router, prefix="/combat", tags=["combat-abilities"])
 api_router.include_router(tournaments_router, prefix="", tags=["tournaments"])
 
 # Include the router in the main app
