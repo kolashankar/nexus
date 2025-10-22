@@ -10,7 +10,7 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ showActions = true }) => {
-  const { player, loading } = usePlayer();
+  const { player, isLoading: loading } = usePlayer();
 
   if (loading || !player) {
     return (
