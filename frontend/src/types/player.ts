@@ -130,6 +130,11 @@ export interface Player {
   last_action: string;
   guild_id?: string;
   guild_rank?: string;
+  visibility?: {
+    profile: 'public' | 'private' | 'friends';
+    stats: 'public' | 'private' | 'friends';
+    inventory: 'public' | 'private' | 'friends';
+  };
 }
 
 export interface PlayerStats {
