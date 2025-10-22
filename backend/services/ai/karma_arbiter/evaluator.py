@@ -6,7 +6,7 @@ from typing import Dict, Any
 
 from .prompts import ACTION_EVALUATION_TEMPLATE
 from .schemas import EvaluationRequest, EvaluationResponse
-from .config import KARMA_SCALES, ACTION_SEVERITY, MODEL_CONFIG
+from .config import MODEL_CONFIG
 from ..client import ai_client
 from ..cache_manager import cache_manager
 from ..cost_tracker import cost_tracker
