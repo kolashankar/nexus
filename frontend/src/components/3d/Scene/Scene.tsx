@@ -2,7 +2,7 @@
  * 3D Scene component
  */
 import React, { useEffect } from 'react';
-import use3DScene from '../../../hooks/use3DScene';
+import { use3DScene } from '../../../hooks/use3DScene';
 import * as THREE from 'three';
 
 interface SceneProps {
