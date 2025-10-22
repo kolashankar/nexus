@@ -1,14 +1,11 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from typing import Optional, List
-from datetime import datetime
 
 from .schemas import PlayerUpdateRequest, PlayerProfileResponse, PlayerStatsResponse
 from core.database import get_database
 from api.v1.auth.router import get_current_user_dep
 from models.player.player import Player, PlayerResponse
 from services.player.profile import PlayerProfileService
-from services.player.progression import ProgressionService
 
 router = APIRouter(prefix="/player", tags=["player"])
 

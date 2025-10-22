@@ -1,6 +1,5 @@
 """Quest Templates for common quest patterns"""
 
-from typing import Dict, List, Any
 
 # Quest templates for quick generation
 QUEST_TEMPLATES = {

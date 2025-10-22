@@ -2,7 +2,7 @@
 
 import logging
 from typing import Dict, Any, Optional
-from datetime import datetime, timedelta
+from datetime import datetime
 from collections import defaultdict
 
 logger = logging.getLogger(__name__)

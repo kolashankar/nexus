@@ -6,9 +6,7 @@ from backend.core.security import get_current_user
 from backend.models.player.player import Player
 from backend.services.player.progression import ProgressionService
 from backend.utils.progression_calculator import (
-    calculate_xp_for_level,
-    calculate_level_from_xp,
-    calculate_trait_growth
+    calculate_level_from_xp
 )
 
 router = APIRouter(prefix="/progression", tags=["progression"])

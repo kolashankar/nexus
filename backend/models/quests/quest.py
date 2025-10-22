@@ -1,6 +1,6 @@
 """Quest Model"""
 
-from typing import Dict, Optional, List, Any
+from typing import Dict, Optional, List
 from datetime import datetime
 from pydantic import BaseModel, Field
 

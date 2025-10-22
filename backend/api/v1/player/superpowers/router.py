@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from typing import Dict, List
+from typing import Dict
 from backend.models.player.superpowers import PlayerSuperpowers
 from backend.services.player.superpowers import SuperpowerService, SUPERPOWER_DEFINITIONS
 from backend.api.deps import get_current_player

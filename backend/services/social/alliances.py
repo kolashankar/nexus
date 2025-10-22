@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Optional, List
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from backend.models.social.relationship import Alliance

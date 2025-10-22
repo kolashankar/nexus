@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from typing import Optional
 from datetime import datetime
 
 from .schemas import LoginRequest, RegisterRequest, TokenResponse

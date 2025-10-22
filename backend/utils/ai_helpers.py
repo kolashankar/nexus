@@ -2,7 +2,7 @@
 
 import hashlib
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 
 def generate_cache_key(service: str, params: Dict[str, Any]) -> str:

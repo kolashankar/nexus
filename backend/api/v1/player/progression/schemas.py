@@ -1,7 +1,7 @@
 """Progression API Schemas."""
 
 from pydantic import BaseModel, Field
-from typing import Dict, List, Any, Optional
+from typing import Dict
 
 class XPGainRequest(BaseModel):
     amount: int = Field(..., gt=0, description="Amount of XP to gain")

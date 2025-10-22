@@ -1,6 +1,5 @@
 """Karma Arbiter Configuration"""
 
-from typing import Dict, Any
 
 # Karma scales for different action severities
 KARMA_SCALES = {

@@ -1,6 +1,5 @@
-from pydantic import BaseModel, Field
-from typing import List, Dict, Optional
-from datetime import datetime
+from pydantic import BaseModel
+from typing import List, Dict
 
 class PrestigeResponse(BaseModel):
     current_prestige_level: int

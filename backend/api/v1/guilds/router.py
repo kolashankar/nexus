@@ -4,7 +4,7 @@ from backend.core.database import get_database
 from backend.services.guilds.management import GuildManagementService
 from backend.api.v1.auth.utils import get_current_user
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List
 
 router = APIRouter()
 

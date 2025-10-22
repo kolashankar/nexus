@@ -1,8 +1,8 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import List
 
-from .schemas import KarmaScoreResponse, KarmaHistoryResponse, KarmaEventResponse
+from .schemas import KarmaScoreResponse, KarmaHistoryResponse
 from core.database import get_database
 from api.v1.auth.router import get_current_user_dep
 from models.player.player import Player

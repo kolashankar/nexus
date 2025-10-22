@@ -1,8 +1,6 @@
 """Cache Warmer - Preloads common data into cache"""
 
 import logging
-import asyncio
-from typing import List, Dict, Any
 
 logger = logging.getLogger(__name__)
 

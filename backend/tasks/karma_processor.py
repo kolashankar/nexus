@@ -1,7 +1,6 @@
 """Background Karma Processing Task"""
 
 import logging
-import asyncio
 from typing import List, Dict, Any
 from datetime import datetime
 

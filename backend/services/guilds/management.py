@@ -1,9 +1,6 @@
-from datetime import datetime
 from typing import Optional, List
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from backend.models.guilds.guild import Guild, GuildMember, GuildRank
-from backend.models.player.player import Player
-import uuid
 
 
 class GuildManagementService:

@@ -2,7 +2,7 @@
 
 import json
 import logging
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any
 
 from .prompts import QUEST_GENERATION_TEMPLATE, CAMPAIGN_GENERATION_TEMPLATE
 from .schemas import (

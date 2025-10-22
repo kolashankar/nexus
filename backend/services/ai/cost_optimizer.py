@@ -1,7 +1,7 @@
 """AI Cost Optimization Utilities"""
 
 import logging
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)

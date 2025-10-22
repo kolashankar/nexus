@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 from backend.models.achievements import (
     PlayerAchievements, AchievementCategory, AchievementRarity
 )

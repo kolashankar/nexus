@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from typing import Dict, Optional
+from typing import Dict
 
 from .schemas import TraitAllocateRequest, TraitsResponse, TraitDetailsResponse
 from core.database import get_database

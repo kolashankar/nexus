@@ -1,8 +1,8 @@
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 from backend.models.player.superpowers import (
-    PlayerSuperpowers, SuperpowerDefinition, PowerTier, UnlockedSuperpower
+    PlayerSuperpowers, SuperpowerDefinition, PowerTier
 )
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)

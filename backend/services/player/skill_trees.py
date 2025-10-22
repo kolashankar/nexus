@@ -1,6 +1,6 @@
-from typing import Dict, List, Optional
+from typing import Dict
 from backend.models.player.skill_trees import (
-    PlayerSkillTrees, SkillTree, SkillNode, SkillBranch
+    PlayerSkillTrees, SkillTree, SkillNode
 )
 import logging
 

@@ -2,11 +2,10 @@
 
 import json
 import logging
-from typing import Dict, Any, Optional, List
-from datetime import datetime
+from typing import Dict, Any
 
 from .prompts import ACTION_EVALUATION_TEMPLATE
-from .schemas import EvaluationRequest, EvaluationResponse, PlayerProfile
+from .schemas import EvaluationRequest, EvaluationResponse
 from .config import KARMA_SCALES, ACTION_SEVERITY, MODEL_CONFIG
 from ..client import ai_client
 from ..cache_manager import cache_manager
@@ -176,7 +175,7 @@ class ActionEvaluator:
             karma_change=karma_change,
             trait_changes=trait_changes,
             event_triggered=None,
-            message=f"Action processed using default rules (AI unavailable)",
+            message="Action processed using default rules (AI unavailable)",
             reasoning="Fallback rule-based evaluation",
             severity=severity,
             cached=False

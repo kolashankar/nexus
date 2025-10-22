@@ -1,6 +1,5 @@
 """Oracle Configuration"""
 
-from typing import Dict, List
 
 # Quest types and their characteristics
 QUEST_TYPES = {

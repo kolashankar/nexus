@@ -1,5 +1,5 @@
 """Game calculations and formulas"""
-from typing import Dict, Any
+from typing import Dict
 import math
 
 def calculate_level_from_xp(xp: int) -> int:

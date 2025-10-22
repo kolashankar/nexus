@@ -1,6 +1,5 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from datetime import datetime
 import random
 
 from .schemas import (

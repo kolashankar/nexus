@@ -1,6 +1,5 @@
 from typing import Dict, Tuple
 from backend.models.player.prestige import PlayerPrestige, PrestigeReward
-from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)

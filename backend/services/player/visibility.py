@@ -1,5 +1,5 @@
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from typing import Dict, List, Optional
+from typing import Dict
 from fastapi import HTTPException
 
 class VisibilityService:

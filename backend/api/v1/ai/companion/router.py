@@ -1,7 +1,7 @@
 """AI Companion API Routes"""
 
 from fastapi import APIRouter, Depends, HTTPException
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 import logging
 
 from .schemas import CompanionMessageAPI, CompanionResponseAPI, AdviceRequestAPI

@@ -1,7 +1,7 @@
 """Karma Arbiter API Schemas"""
 
 from typing import Dict, Optional, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class EvaluationRequestAPI(BaseModel):

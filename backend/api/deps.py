@@ -1,7 +1,6 @@
 """API dependencies"""
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from typing import Optional
 import jwt
 from ..core.config import settings
 from ..core.database import get_database

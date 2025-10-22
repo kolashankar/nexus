@@ -1,6 +1,5 @@
 """Cache Configuration"""
 
-from typing import Dict, Any
 
 # Cache TTL configurations (in seconds)
 CACHE_TTL = {

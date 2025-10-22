@@ -1,5 +1,5 @@
 """Action effects and consequences"""
-from typing import Dict, Any
+from typing import Dict
 import random
 
 class ActionEffects:

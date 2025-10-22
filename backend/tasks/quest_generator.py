@@ -1,9 +1,7 @@
 """Background Quest Generation Task"""
 
 import logging
-import asyncio
 from datetime import datetime, timedelta
-from typing import List, Dict, Any
 
 logger = logging.getLogger(__name__)
 
@@ -22,8 +20,6 @@ class QuestGeneratorTask:
         
         try:
             # Import here to avoid circular imports
-            from ..core.database import db
-            from ..services.ai.oracle.oracle import oracle
             
             # Get all active players (logged in within last 7 days)
             cutoff_date = datetime.utcnow() - timedelta(days=7)
@@ -32,7 +28,7 @@ class QuestGeneratorTask:
             # players = await db.players.find({"last_login": {"$gte": cutoff_date}}).to_list(length=100)
             
             # For now, just log
-            logger.info(f"Would generate daily quests for active players")
+            logger.info("Would generate daily quests for active players")
             
             self.last_daily_generation = datetime.utcnow()
             return 0

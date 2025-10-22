@@ -1,8 +1,7 @@
 """Cache Strategies for AI Services"""
 
 import logging
-from typing import Dict, Any, Optional
-from datetime import timedelta
+from typing import Dict, Any
 
 logger = logging.getLogger(__name__)
 

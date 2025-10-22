@@ -1,6 +1,6 @@
 """Karma Event Model"""
 
-from typing import Dict, Optional, Any
+from typing import Dict, Optional
 from datetime import datetime
 from pydantic import BaseModel, Field
 

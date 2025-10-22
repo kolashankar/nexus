@@ -1,6 +1,4 @@
-from fastapi import WebSocket, WebSocketDisconnect, Depends
-from typing import Dict, Any
-import json
+from fastapi import WebSocket, WebSocketDisconnect
 import logging
 from .manager import manager
 from .events.player import handle_player_event

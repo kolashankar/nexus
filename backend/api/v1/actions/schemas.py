@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from typing import Optional
 
 class HackAction(BaseModel):
     target_id: str = Field(..., description="Player ID to hack")

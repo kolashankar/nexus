@@ -1,6 +1,5 @@
 """Player traits model and definitions."""
 
-from typing import Dict
 from pydantic import BaseModel, Field
 
 class TraitsModel(BaseModel):
