@@ -3,16 +3,19 @@
  */
 
 export const ROUTES = {
-  HOME: '/',
-  LOGIN: '/login',
-  REGISTER: '/register',
-  DASHBOARD: '/dashboard',
-  PROFILE: '/profile',
-  GAME: '/game',
-  COMBAT: '/combat',
-  GUILDS: '/guilds',
-  MARKETPLACE: '/marketplace',
-  QUESTS: '/quests',
-  LEADERBOARDS: '/leaderboards',
-  SETTINGS: '/settings',
+  HOME,
+  LOGIN,
+  REGISTER,
+  DASHBOARD,
+  PROFILE,
+  GAME,
+  COMBAT,
+  GUILDS,
+  MARKETPLACE,
+  QUESTS,
+  LEADERBOARDS,
+  SETTINGS,
 };
+
+
+

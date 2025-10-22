@@ -1,11 +1,91 @@
+/**
+ * Footer component
+ */
 import React from 'react';
-import './Footer.css';
+import { Link } from 'react-router-dom';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
-    <footer className="footer bg-gray-900 border-t border-cyan-500/30 py-4 px-6 text-center text-gray-400 text-sm">
-      <p>&copy; 2025 Karma Nexus 2.0. All rights reserved.</p>
-    </footer>
+    
+      
+        
+          {/* About */}
+          
+            Karma Nexus 2.0
+            
+              A revolutionary AI-powered multiplayer game where every action shapes your destiny.
+            
+          
+
+          {/* Quick Links */}
+          
+            Quick Links
+            
+              
+                
+                  Home
+                
+              
+              
+                
+                  About
+                
+              
+              
+                
+                  Features
+                
+              
+            
+          
+
+          {/* Support */}
+          
+            Support
+            
+              
+                
+                  Help Center
+                
+              
+              
+                
+                  FAQ
+                
+              
+              
+                
+                  Contact Us
+                
+              
+            
+          
+
+          {/* Legal */}
+          
+            Legal
+            
+              
+                
+                  Terms of Service
+                
+              
+              
+                
+                  Privacy Policy
+                
+              
+            
+          
+        
+
+        
+          
+            © 2024 Karma Nexus. All rights reserved.
+          
+        
+      
+    
   );
 };
 

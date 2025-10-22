@@ -4,24 +4,23 @@
 
 export const GAME_CONFIG = {
   // Player defaults
-  DEFAULT_LEVEL: 1,
-  DEFAULT_XP: 0,
-  DEFAULT_KARMA: 0,
-  DEFAULT_CREDITS: 1000,
+  DEFAULT_LEVEL,
+  DEFAULT_XP,
+  DEFAULT_KARMA,
+  DEFAULT_CREDITS,
   
   // Trait defaults
-  DEFAULT_TRAIT_VALUE: 50,
-  MIN_TRAIT_VALUE: 0,
-  MAX_TRAIT_VALUE: 100,
+  DEFAULT_TRAIT_VALUE,
+  MIN_TRAIT_VALUE,
+  MAX_TRAIT_VALUE,
   
   // Combat
-  BASE_HP: 100,
-  BASE_ATTACK: 10,
-  BASE_DEFENSE: 10,
+  BASE_HP,
+  BASE_ATTACK,
+  BASE_DEFENSE,
   
   // Economy
-  CURRENCIES: [
-    'credits',
+  CURRENCIES,
     'karma_tokens',
     'dark_matter',
     'prestige_points',
@@ -30,25 +29,25 @@ export const GAME_CONFIG = {
   ],
   
   // Leveling
-  XP_PER_LEVEL: 100,
-  MAX_LEVEL: 100,
+  XP_PER_LEVEL,
+  MAX_LEVEL,
   
   // Karma thresholds
-  GOOD_KARMA_THRESHOLD: 500,
-  BAD_KARMA_THRESHOLD: -500,
+  GOOD_KARMA_THRESHOLD,
+  BAD_KARMA_THRESHOLD,
   
   // Economic class thresholds
-  RICH_THRESHOLD: 100000,
-  MIDDLE_THRESHOLD: 10000,
+  RICH_THRESHOLD,
+  MIDDLE_THRESHOLD,
   
   // 3D Settings
-  ENABLE_3D: true,
-  ENABLE_SHADOWS: true,
-  ENABLE_PARTICLES: true,
+  ENABLE_3D,
+  ENABLE_SHADOWS,
+  ENABLE_PARTICLES,
   
   // WebSocket
-  WS_RECONNECT_ATTEMPTS: 5,
-  WS_RECONNECT_DELAY: 3000,
+  WS_RECONNECT_ATTEMPTS,
+  WS_RECONNECT_DELAY,
 };
 
 export default GAME_CONFIG;
