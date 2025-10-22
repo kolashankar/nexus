@@ -13,6 +13,14 @@ from api.v1.karma import karma_router
 from api.v1.ai.karma_arbiter.router import router as karma_arbiter_router
 from api.v1.ai.oracle.router import router as oracle_router
 from api.v1.ai.companion.router import router as companion_router
+
+# Phase 4: Progression routers
+from api.v1.player.skill_trees.router import router as skill_trees_router
+from api.v1.player.superpowers.router import router as superpowers_router
+from api.v1.achievements.router import router as achievements_router
+from api.v1.player.prestige.router import router as prestige_router
+from api.v1.player.legacy.router import router as legacy_router
+
 from api.websocket.handlers import websocket_endpoint
 from core.database import Database
 from core.redis import redis_manager
