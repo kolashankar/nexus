@@ -30,3 +30,4 @@ python-socketio>=5.11.0
 redis>=5.0.1
 apscheduler>=3.10.4
 emergentintegrations>=0.1.0
+pydantic-settings
