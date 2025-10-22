@@ -8,6 +8,9 @@ from pathlib import Path
 # Import routers
 from api.v1.auth.router import router as auth_router
 from api.v1.actions.router import router as actions_router
+from api.v1.player.router import router as player_router
+from api.v1.player.traits.router import router as traits_router
+from api.v1.karma.router import router as karma_router
 from api.websocket.handlers import websocket_endpoint
 from core.database import Database
 
