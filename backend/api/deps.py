@@ -1,54 +1,43 @@
-"""Dependency injection utilities."""
-
-from typing import Optional
+"""API dependencies"""
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from backend.api.v1.auth.utils import decode_access_token
-from backend.services.player.profile import PlayerProfileService
+from typing import Optional
+import jwt
+from ..core.config import settings
+from ..core.database import get_database
 
 security = HTTPBearer()
 
-async def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security)
-) -> dict:
-    """Get current authenticated user."""
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Get current authenticated user"""
     token = credentials.credentials
-    payload = decode_access_token(token)
     
-    if payload is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    user_id: str = payload.get("sub")
-    if user_id is None:
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+        user_id = payload.get("sub")
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication credentials"
+            )
+    except jwt.PyJWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication credentials"
         )
     
-    # Get player from database
-    player_service = PlayerProfileService()
-    player = await player_service.get_player_by_id(user_id)
-    
-    if player is None:
+    db = get_database()
+    user = await db.players.find_one({"_id": user_id})
+    if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Player not found"
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found"
         )
     
-    return player
+    return user
 
-async def get_optional_current_user(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
-) -> Optional[dict]:
-    """Get current user if authenticated, otherwise None."""
-    if credentials is None:
-        return None
-    
-    try:
-        return await get_current_user(credentials)
-    except HTTPException:
-        return None
+async def get_current_active_user(current_user: dict = Depends(get_current_user)):
+    """Get current active user"""
+    if current_user.get("disabled"):
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
