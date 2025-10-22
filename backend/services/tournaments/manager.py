@@ -219,7 +219,7 @@ class TournamentManager:
         random.shuffle(players)  # Shuffle for fairness
         
         # Round to next power of 2
-        bracket_size = 2 ** math.ceil(math.log2(len(players)))
+        2 ** math.ceil(math.log2(len(players)))
         
         matches = []
         match_position = 0

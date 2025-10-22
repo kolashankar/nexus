@@ -87,12 +87,10 @@ class EventTrigger:
         """Check if karma has crossed a significant threshold"""
         # Find which threshold was crossed
         threshold_crossed = None
-        threshold_name = "neutral"
         
         for name, threshold in sorted(cls.KARMA_THRESHOLDS.items(), key=lambda x: abs(x[1]), reverse=True):
             if collective_karma >= threshold:
                 threshold_crossed = threshold
-                threshold_name = name
                 break
         
         # Significant if karma is at extreme ends

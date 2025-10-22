@@ -51,7 +51,7 @@ async def participate_in_world_quest(
     db = Depends(get_database),
 ):
     """Participate in a world quest"""
-    service = WorldQuestService(db)
+    WorldQuestService(db)
     manager = QuestManager(db)
     
     # Accept the quest

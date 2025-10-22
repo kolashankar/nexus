@@ -68,7 +68,7 @@ class MatchmakingService:
             candidates = [
                 e for e in self.queue
                 if e["player_id"] != player_id
-                and e["ranked"] == True
+                and e["ranked"]
                 and abs(e["combat_rating"] - player_rating) <= rating_range
             ]
         else:
@@ -76,7 +76,7 @@ class MatchmakingService:
             candidates = [
                 e for e in self.queue
                 if e["player_id"] != player_id
-                and e["ranked"] == False
+                and not e["ranked"]
             ]
         
         if not candidates:

@@ -80,7 +80,7 @@ class GlobalKarmaTracker:
 
     async def update_collective_karma(self, karma_change: float):
         """Update collective karma when a player performs an action."""
-        result = await self.db.world_state.update_one(
+        await self.db.world_state.update_one(
             {},
             {
                 "$inc": {

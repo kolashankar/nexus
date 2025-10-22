@@ -34,7 +34,7 @@ class WeeklyQuestService:
     
     async def _generate_new_weekly_quests(self, player_id: str) -> None:
         """Generate new weekly quests."""
-        player = await Player.find_one({"_id": player_id})
+        await Player.find_one({"_id": player_id})
         
         # Generate 5 weekly quests (harder than daily)
         weekly_templates = [

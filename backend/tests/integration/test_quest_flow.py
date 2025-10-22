@@ -140,7 +140,7 @@ class TestQuestCompletion:
             )
             
             assert response.status_code == 200
-            data = response.json()
+            response.json()
             
             # Check rewards were given
             player_after = await clean_db.players.find_one({"username": "test_user"})

@@ -50,7 +50,7 @@ class TestHelpActionFlow:
         await clean_db.players.insert_one(target_player)
         
         async with AsyncClient(app=app, base_url="http://test") as client:
-            response = await client.post(
+            await client.post(
                 "/api/actions/help",
                 headers=auth_headers,
                 json={

@@ -70,7 +70,7 @@ class TestSuperpowerTiers:
     
     def test_tier_1_powers_easier_to_unlock(self):
         """Test that tier 1 powers have lower requirements."""
-        service = SuperpowerService()
+        SuperpowerService()
         
         tier1_reqs = SUPERPOWER_REQUIREMENTS["mind_reading"]
         tier3_reqs = SUPERPOWER_REQUIREMENTS["time_slow"]

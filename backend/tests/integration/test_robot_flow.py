@@ -60,7 +60,7 @@ class TestRobotPurchase:
         
         async with AsyncClient(app=app, base_url="http://test") as client:
             # Purchase robot
-            response = await client.post(
+            await client.post(
                 "/api/robots/purchase",
                 headers=auth_headers,
                 json={"robot_type": "harvester"}

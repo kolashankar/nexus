@@ -40,7 +40,7 @@ class CampaignService:
         """Get campaigns available to player"""
         # Check player's karma and level
         player_karma = player.get("karma_points", 0)
-        player_level = player.get("level", 1)
+        player.get("level", 1)
         
         # Determine suitable campaign types
         suitable_types = []

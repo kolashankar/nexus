@@ -48,7 +48,7 @@ class TestPlayerProgression:
             
             # Check if leveled up
             profile = await client.get("/api/player/profile", headers=headers)
-            profile_data = profile.json()
+            profile.json()
             
             # Check for available superpowers
             powers_response = await client.get("/api/player/superpowers", headers=headers)
