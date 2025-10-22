@@ -52,6 +52,7 @@ export const useKarma = () => {
     loading,
     error,
     karmaHistory,
+    karmaScore,
     loadKarmaHistory,
     getKarmaScore
   };
