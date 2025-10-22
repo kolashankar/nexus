@@ -40,11 +40,10 @@ async def health_check():
     return {"status": "healthy"}
 
 # Include all routers
-api_router.include_router(auth_router)
-api_router.include_router(actions_router)
-api_router.include_router(player_router)
-api_router.include_router(traits_router, prefix="/player")
-api_router.include_router(karma_router)
+api_router.include_router(auth_router, prefix="/auth", tags=["authentication"])
+api_router.include_router(actions_router, prefix="/actions", tags=["actions"])
+api_router.include_router(player_router, prefix="/player", tags=["player"])
+api_router.include_router(karma_router, prefix="/karma", tags=["karma"])
 
 # Include the router in the main app
 app.include_router(api_router)
