@@ -95,7 +95,7 @@ export const cache = new Cache();
  * Local storage cache with expiration
  */
 export class LocalStorageCache {
-  private prefix: string;
+  protected prefix: string;
 
   constructor(prefix: string = 'app_cache_') {
     this.prefix = prefix;
