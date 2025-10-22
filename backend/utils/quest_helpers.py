@@ -1,116 +1,132 @@
-from typing import Dict, List
+"""Quest helper utilities"""
+
+from typing import Dict, Any, List
 from datetime import datetime, timedelta
+import uuid
 
 
-def calculate_quest_difficulty_score(objectives: List[Dict]) -> int:
-    """Calculate difficulty score based on objectives."""
-    score = 0
-    for obj in objectives:
-        # More required = harder
-        score += obj.get("required", 0)
-        
-        # Certain types are harder
-        if obj.get("type") in ["hack", "combat"]:
-            score += 20
-        elif obj.get("type") in ["collect", "trade"]:
-            score += 10
+def generate_quest_id() -> str:
+    """Generate unique quest ID"""
+    return str(uuid.uuid4())
+
+
+def generate_objective_id() -> str:
+    """Generate unique objective ID"""
+    return str(uuid.uuid4())
+
+
+def calculate_quest_difficulty(
+    objectives: List[Dict[str, Any]],
+    rewards: Dict[str, Any],
+) -> str:
+    """Calculate quest difficulty based on objectives and rewards"""
+    # Simple heuristic
+    total_required = sum(
+        obj.get("required", 1)
+        for obj in objectives
+    )
     
-    return score
-
-
-def determine_quest_difficulty(score: int) -> str:
-    """Determine difficulty level from score."""
-    if score < 30:
+    if total_required <= 5:
         return "easy"
-    elif score < 60:
+    elif total_required <= 15:
         return "medium"
-    elif score < 100:
+    elif total_required <= 30:
         return "hard"
     else:
-        return "legendary"
+        return "very_hard"
 
 
-def calculate_quest_rewards(
-    difficulty: str,
-    objectives_count: int,
-    quest_type: str
-) -> Dict:
-    """Calculate appropriate rewards for a quest."""
-    base_multipliers = {
-        "easy": 1.0,
-        "medium": 2.0,
-        "hard": 4.0,
-        "legendary": 8.0
+def calculate_quest_xp(difficulty: str, player_level: int) -> int:
+    """Calculate XP reward for quest"""
+    base_xp = {
+        "easy": 50,
+        "medium": 150,
+        "hard": 400,
+        "very_hard": 1000,
     }
     
-    type_multipliers = {
-        "daily": 1.0,
-        "weekly": 3.0,
-        "personal": 2.0,
-        "guild": 4.0,
-        "world": 5.0,
-        "hidden": 6.0,
-        "campaign": 3.0
-    }
+    xp = base_xp.get(difficulty, 150)
     
-    base_credits = 1000
-    base_xp = 100
-    base_karma = 10
-    
-    difficulty_mult = base_multipliers.get(difficulty, 1.0)
-    type_mult = type_multipliers.get(quest_type, 1.0)
-    objective_mult = max(1.0, objectives_count / 3)
-    
-    total_mult = difficulty_mult * type_mult * objective_mult
-    
-    return {
-        "credits": int(base_credits * total_mult),
-        "xp": int(base_xp * total_mult),
-        "karma": int(base_karma * difficulty_mult),
-        "items": [],
-        "trait_boosts": {}
-    }
+    # Scale with player level
+    multiplier = 1 + (player_level * 0.1)
+    return int(xp * multiplier)
 
 
-def generate_quest_expiry(
-    quest_type: str
-) -> datetime:
-    """Generate appropriate expiry time for quest type."""
+def calculate_quest_credits(difficulty: str, player_level: int) -> int:
+    """Calculate credit reward for quest"""
+    base_credits = {
+        "easy": 100,
+        "medium": 300,
+        "hard": 600,
+        "very_hard": 1500,
+    }
+    
+    credits = base_credits.get(difficulty, 300)
+    
+    # Scale with player level
+    multiplier = 1 + (player_level * 0.1)
+    return int(credits * multiplier)
+
+
+def format_quest_time(seconds: int) -> str:
+    """Format quest completion time"""
+    if seconds < 60:
+        return f"{seconds}s"
+    elif seconds < 3600:
+        minutes = seconds // 60
+        return f"{minutes}m"
+    else:
+        hours = seconds // 3600
+        minutes = (seconds % 3600) // 60
+        return f"{hours}h {minutes}m"
+
+
+def get_quest_expiry(quest_type: str) -> datetime:
+    """Get expiry time for quest type"""
     now = datetime.utcnow()
     
     if quest_type == "daily":
         # Expires at end of day
-        tomorrow = now.date() + timedelta(days=1)
-        return datetime.combine(tomorrow, datetime.min.time())
+        tomorrow = (now + timedelta(days=1)).replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        return tomorrow
     elif quest_type == "weekly":
-        # Expires at end of week
-        days_until_monday = (7 - now.weekday()) % 7
-        if days_until_monday == 0:
-            days_until_monday = 7
-        next_monday = now.date() + timedelta(days=days_until_monday)
-        return datetime.combine(next_monday, datetime.min.time())
-    elif quest_type == "world":
-        # Expires in 48 hours
-        return now + timedelta(hours=48)
-    elif quest_type == "hidden":
+        # Expires at end of week (Sunday)
+        days_until_sunday = (6 - now.weekday()) % 7
+        if days_until_sunday == 0:
+            days_until_sunday = 7
+        end_of_week = (now + timedelta(days=days_until_sunday)).replace(
+            hour=23, minute=59, second=59
+        )
+        return end_of_week
+    elif quest_type == "personal":
         # Expires in 7 days
         return now + timedelta(days=7)
+    elif quest_type == "world":
+        # Expires in 3 days
+        return now + timedelta(days=3)
     else:
-        # No expiry
-        return None
+        # Default 7 days
+        return now + timedelta(days=7)
 
 
-def check_objective_completion(
-    objective: Dict,
-    action_type: str,
-    target: str,
-    amount: int = 1
-) -> bool:
-    """Check if an action progresses an objective."""
-    if objective.get("type") != action_type:
-        return False
+def is_quest_completable(quest: Dict[str, Any]) -> bool:
+    """Check if all quest objectives are completed"""
+    objectives = quest.get("objectives", [])
+    return all(obj.get("completed", False) for obj in objectives)
+
+
+def get_quest_progress_percentage(quest: Dict[str, Any]) -> float:
+    """Get overall quest progress as percentage"""
+    objectives = quest.get("objectives", [])
+    if not objectives:
+        return 0.0
     
-    if objective.get("target") != "any" and objective.get("target") != target:
-        return False
+    total_progress = 0
+    for obj in objectives:
+        current = obj.get("current", 0)
+        required = obj.get("required", 1)
+        total_progress += (current / required)
     
-    return True
+    return (total_progress / len(objectives)) * 100
