@@ -43,6 +43,9 @@ async def health_check():
 # Include all routers
 api_router.include_router(auth_router)
 api_router.include_router(actions_router)
+api_router.include_router(player_router)
+api_router.include_router(traits_router, prefix="/player")
+api_router.include_router(karma_router)
 
 # Include the router in the main app
 app.include_router(api_router)
