@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/ta
 import { QuickActions } from '../../components/player/QuickActions/QuickActions';
 import { ActionCooldowns } from '../../components/actions/ActionCooldowns/ActionCooldowns';
 import { ActionHistory } from '../../components/actions/ActionHistory/ActionHistory';
-import { ActionsDashboard } from '../../components/actions/ActionsDashboard/ActionsDashboard';
+import ActionsDashboard from '../../components/actions/ActionsDashboard/ActionsDashboard';
 import { Activity, Clock, History, Zap } from 'lucide-react';
 import './ActionsPage.css';
 
