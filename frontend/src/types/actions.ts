@@ -31,3 +31,18 @@ export interface ActionHistory {
   timestamp: string;
   result: ActionResult;
 }
+
+export interface ActionResponse {
+  success: boolean;
+  message: string;
+  data?: any;
+  error?: string;
+}
+
+export interface AvailableActions {
+  hack: boolean;
+  help: boolean;
+  steal: boolean;
+  donate: boolean;
+  trade: boolean;
+}
