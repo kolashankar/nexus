@@ -20,10 +20,10 @@ const shortcuts: KeyboardShortcut[] = [
 
 
 
-export const KeyboardShortcutsModal: React.FC = ({
+export const KeyboardShortcutsModal = ({ 
   isOpen,
   onClose,
-}) => {
+ }) => {
   if (!isOpen) return null;
 
   const groupedShortcuts = shortcuts.reduce((acc, shortcut) => {

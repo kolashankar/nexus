@@ -1,4 +1,4 @@
-import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx, Fragment, jsxs as _jsxs } from "react/jsx-runtime";
 export const SkipLink = () => {
     const handleSkip = (event) => {
         event.preventDefault();

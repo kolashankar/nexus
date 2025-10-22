@@ -84,12 +84,12 @@ export const QuestNotifications: React.FC = () => {
   const getNotificationIcon = (type) => {
     switch (type) {
       case 'quest_completed':
-        return ;
+        return null;
       case 'quest_failed':
-        return ;
+        return null;
       case 'quest_available':
       case 'objective_progress':
-        return ;
+        return null;
       default;
     }
   };

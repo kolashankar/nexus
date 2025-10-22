@@ -4,7 +4,7 @@ import { Lock, Unlock, Star } from 'lucide-react';
 
 
 
-const SkillNode: React.FC = ({ node, onUnlock, canUnlock }) => {
+const SkillNode = ({  node, onUnlock, canUnlock  }) => {
   const isUnlocked = node.unlocked;
   const isMilestone = node.node_id % 5 === 0;
 

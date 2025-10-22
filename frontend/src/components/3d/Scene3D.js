@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useRef, useEffect } from 'react';
 import { use3DScene } from '../../hooks/use3DScene';
 /**

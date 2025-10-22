@@ -12,7 +12,7 @@ import { worldService } from '@/services/api/worldService';
 
 
 
-export const KarmaDisplay: React.FC = ({ worldState }) => {
+export const KarmaDisplay = ({  worldState  }) => {
   const [karmaStats, setKarmaStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -34,9 +34,9 @@ export const KarmaDisplay: React.FC = ({ worldState }) => {
   const getTrendIcon = (trend) => {
     switch (trend) {
       case 'rising':
-        return ;
+        return null;
       case 'falling':
-        return ;
+        return null;
       default;
     }
   };

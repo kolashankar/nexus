@@ -14,14 +14,14 @@ import { Sparkles, Trophy, Star, AlertTriangle } from 'lucide-react';
 
 
 
-export const PrestigePanel: React.FC = ({
+export const PrestigePanel = ({ 
   currentPrestige,
   playerLevel,
   karmaPoints,
   achievementsUnlocked,
   prestigeConfig,
   onPrestige
-}) => {
+ }) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const requirements = prestigeConfig.requirements;

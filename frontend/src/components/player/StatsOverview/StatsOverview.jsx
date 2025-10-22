@@ -229,7 +229,7 @@ export const StatsOverview: React.FC = () => {
 // StatItem sub-component
 
 
-const StatItem: React.FC = ({
+const StatItem = ({ 
   icon,
   label,
   value,
@@ -237,7 +237,7 @@ const StatItem: React.FC = ({
   suffix = '',
   showProgress = false,
   color = '#3b82f6'
-}) => {
+ }) => {
   const displayValue = max ? `${value}/${max}` : `${value}${suffix}`;
   const percentage = max ? (value / max) * 100 : 0;
 

@@ -1,4 +1,4 @@
-import { jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
+import { jsx, Fragment as _Fragment } from "react/jsx-runtime";
 import React, { Suspense } from 'react';
 import { Spinner } from './Spinner';
 export const LazyLoadWrapper = ({ children, fallback, minLoadTime = 0, }) => {

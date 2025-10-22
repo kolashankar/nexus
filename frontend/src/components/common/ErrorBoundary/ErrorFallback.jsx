@@ -4,10 +4,10 @@ import { Button } from '../../ui/button';
 
 
 
-export const ErrorFallback: React.FC = ({
+export const ErrorFallback = ({ 
   error,
   resetErrorBoundary,
-}) => {
+ }) => {
   const goHome = () => {
     window.location.href = '/';
   };

@@ -7,12 +7,12 @@ import './TournamentCard.css';
 
 
 
-const TournamentCard: React.FC = ({
+const TournamentCard = ({ 
   tournament,
   onRegister,
   onView,
   isRegistered = false
-}) => {
+ }) => {
   const getStatusBadge = () => {
     switch (tournament.status) {
       case 'registration':

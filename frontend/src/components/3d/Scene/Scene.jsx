@@ -7,7 +7,7 @@ import * from 'three';
 
 
 
-const Scene: React.FC = ({ className = '' }) => {
+const Scene = ({  className = ''  }) => {
   const { containerRef, scene, camera, isReady } = use3DScene({
     antialias,
     alpha,

@@ -101,8 +101,7 @@ const Achievements: React.FC = () => {
         
           {/* Search and Filters */}
           
-             setSearchTerm(e.target.value)}
-            />
+             setSearchTerm(e.target.value)} />
 
             
                setSelectedCategory(null)}

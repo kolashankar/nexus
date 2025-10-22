@@ -14,11 +14,11 @@ import { Clock, Users, Sparkles, Target } from 'lucide-react';
 
 
 
-export const EventDetails: React.FC = ({
+export const EventDetails = ({ 
   event,
   onClose,
   onParticipate
-}) => {
+ }) => {
   const formatDateTime = (date) => {
     return new Date(date).toLocaleString('en-US', {
       dateStyle,

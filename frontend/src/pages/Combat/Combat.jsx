@@ -143,8 +143,7 @@ const Combat: React.FC = () => {
               
             ) : (
               tournaments.map(tournament => (
-                 navigate(`/tournaments/${id}`)}
-                />
+                 navigate(`/tournaments/${id}`)} />
               ))
             )}
           

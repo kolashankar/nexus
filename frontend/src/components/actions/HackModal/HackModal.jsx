@@ -7,7 +7,7 @@ import { actionsService } from '../../../services/actions/actionsService';
 
 
 
-export const HackModal: React.FC = ({ open, onClose, onSuccess }) => {
+export const HackModal = ({  open, onClose, onSuccess  }) => {
   const [targetId, setTargetId] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -46,8 +46,7 @@ export const HackModal: React.FC = ({ open, onClose, onSuccess }) => {
           
         
         
-           setTargetId(e.target.value)}
-          />
+           setTargetId(e.target.value)} />
           
             
               {loading ? 'Hacking...' : 'Execute Hack'}

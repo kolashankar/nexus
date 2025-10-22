@@ -7,7 +7,7 @@ import { actionsService } from '../../../services/actions/actionsService';
 
 
 
-export const StealModal: React.FC = ({ open, onClose, onSuccess }) => {
+export const StealModal = ({  open, onClose, onSuccess  }) => {
   const [targetId, setTargetId] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -44,8 +44,7 @@ export const StealModal: React.FC = ({ open, onClose, onSuccess }) => {
           
         
         
-           setTargetId(e.target.value)}
-          />
+           setTargetId(e.target.value)} />
           
             
               {loading ? 'Stealing...' : 'Attempt Steal'}

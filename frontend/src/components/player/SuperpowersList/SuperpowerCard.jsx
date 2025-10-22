@@ -7,12 +7,12 @@ import { Zap, Clock } from 'lucide-react';
 
 
 
-const SuperpowerCard: React.FC = ({
+const SuperpowerCard = ({ 
   power,
   isEquipped,
   onEquip,
   onUse,
-}) => {
+ }) => {
   const isOnCooldown = power.cooldown_until
     ? new Date(power.cooldown_until) > new Date()
     : false;

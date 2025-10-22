@@ -8,11 +8,11 @@ import './EventNotification.css';
 
 
 
-export const EventNotification: React.FC = ({
+export const EventNotification = ({ 
   event,
   onClose,
   onViewDetails
-}) => {
+ }) => {
   const [show, setShow] = useState(true);
 
   useEffect(() => {

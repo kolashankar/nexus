@@ -6,12 +6,12 @@ import { Clock, Globe, Users } from 'lucide-react';
 
 
 
-export const EventCard: React.FC = ({
+export const EventCard = ({ 
   event,
   onViewDetails,
   getSeverityColor,
   getImpactIcon
-}) => {
+ }) => {
   const formatDate = (date) => {
     return new Date(date).toLocaleString();
   };

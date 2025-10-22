@@ -12,7 +12,7 @@ import { useBattlePass } from '../../../hooks/useBattlePass';
 
 
 
-const BattlePassTrack: React.FC = ({
+const BattlePassTrack = ({ 
   tiers,
   currentTier,
   currentXp,
@@ -21,7 +21,7 @@ const BattlePassTrack: React.FC = ({
   claimedPremium,
   onClaimRewards,
   onPurchasePremium
-}) => {
+ }) => {
   const [selectedTier, setSelectedTier] = useState(null);
 
   const getRarityColor = (rarity)=> {

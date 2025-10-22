@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { jsx, jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { Link } from 'react-router-dom';
 import { Button } from '../../ui/button';
 import useStore from '../../../store';

@@ -35,13 +35,13 @@ export const KarmaFeed: React.FC = () => {
   }, [karmaHistory]);
 
   const getKarmaIcon = (karmaChange, eventType?: string) => {
-    if (eventType === 'divine_blessing') return ;
-    if (eventType === 'punishment') return ;
-    if (karmaChange > 50) return ;
-    if (karmaChange > 0) return ;
+    if (eventType === 'divine_blessing') return null;
+    if (eventType === 'punishment') return null;
+    if (karmaChange > 50) return null;
+    if (karmaChange > 0) return null;
     if (karmaChange ;
     if (karmaChange ;
-    return ;
+    return null;
   };
 
   const getKarmaBadge = (karmaChange) => {

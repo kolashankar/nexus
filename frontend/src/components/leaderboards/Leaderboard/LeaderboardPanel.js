@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { jsx, jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';

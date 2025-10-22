@@ -8,7 +8,7 @@ import { use3DModel } from '../../hooks/use3DModel';
  * 3D Model component
  * Loads and displays a 3D model in the scene
  */
-export const Model3D: React.FC = ({
+export const Model3D = ({ 
   modelUrl,
   position = [0, 0, 0],
   rotation = [0, 0, 0],
@@ -18,7 +18,7 @@ export const Model3D: React.FC = ({
   sceneManager,
   autoPlay = true,
   initialAnimation
-}) => {
+ }) => {
   const { asset, loading, error, animationController } = use3DModel(modelUrl);
 
   // Add model to scene when loaded

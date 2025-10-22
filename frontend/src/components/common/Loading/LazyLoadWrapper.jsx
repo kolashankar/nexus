@@ -3,11 +3,11 @@ import { Spinner } from './Spinner';
 
 
 
-export const LazyLoadWrapper: React.FC = ({
+export const LazyLoadWrapper = ({ 
   children,
   fallback,
   minLoadTime = 0,
-}) => {
+ }) => {
   const [isReady, setIsReady] = React.useState(minLoadTime === 0);
 
   React.useEffect(() => {

@@ -7,7 +7,7 @@ import './ActionBar.css';
 
 
 
-const ActionBar: React.FC = ({ participant, opponent, onAction, onFlee }) => {
+const ActionBar = ({  participant, opponent, onAction, onFlee  }) => {
   const [showAbilities, setShowAbilities] = useState(false);
 
   const handleAttack = () => {
@@ -76,8 +76,7 @@ const ActionBar: React.FC = ({ participant, opponent, onAction, onFlee }) => {
 
       {showAbilities && (
          setShowAbilities(false)}
-          availableAP={participant.action_points}
-        />
+          availableAP={participant.action_points} />
       )}
     
   );

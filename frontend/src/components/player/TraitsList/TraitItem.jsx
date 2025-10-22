@@ -3,7 +3,7 @@ import TraitBar from './TraitBar';
 
 
 
-const TraitItem: React.FC = ({ name, value, category }) => {
+const TraitItem = ({  name, value, category  }) => {
   // Format trait name for display
   const formatName = (str) => {
     return str

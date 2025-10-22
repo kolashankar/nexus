@@ -92,9 +92,9 @@ export const WorldEvents: React.FC = () => {
 
   const getImpactIcon = (impact) => {
     switch (impact) {
-      case 'world_changing': return ;
-      case 'high': return ;
-      case 'medium': return ;
+      case 'world_changing': return null;
+      case 'high': return null;
+      case 'medium': return null;
       default;
     }
   };
@@ -256,8 +256,7 @@ export const WorldEvents: React.FC = () => {
                 {recentEvents.map((event) => (
                    setSelectedEvent(event)}
                     getSeverityColor={getSeverityColor}
-                    getImpactIcon={getImpactIcon}
-                  />
+                    getImpactIcon={getImpactIcon} />
                 ))}
               
             
@@ -278,8 +277,7 @@ export const WorldEvents: React.FC = () => {
       {/* Event Details Modal */}
       {selectedEvent && (
          setSelectedEvent(null)}
-          onParticipate={handleParticipate}
-        />
+          onParticipate={handleParticipate} />
       )}
     
   );

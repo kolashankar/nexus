@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
 /**
  * Dashboard page component
  */

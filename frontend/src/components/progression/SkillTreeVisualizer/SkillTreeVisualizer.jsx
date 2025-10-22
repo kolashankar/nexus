@@ -10,12 +10,12 @@ import { Lock, Check, Star, Zap } from 'lucide-react';
 
 
 
-export const SkillTreeVisualizer: React.FC = ({
+export const SkillTreeVisualizer = ({ 
   traitName,
   nodes,
   currentLevel,
   onNodeUnlock
-}) => {
+ }) => {
   const [selectedBranch, setSelectedBranch] = useState(null);
   const [hoveredNode, setHoveredNode] = useState(null);
 
@@ -28,9 +28,9 @@ export const SkillTreeVisualizer: React.FC = ({
   };
 
   const getNodeIcon = (node) => {
-    if (node.unlocked) return ;
-    if (canUnlockNode(node)) return ;
-    return ;
+    if (node.unlocked) return null;
+    if (canUnlockNode(node)) return null;
+    return null;
   };
 
   const getNodeColor = (node) => {

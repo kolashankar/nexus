@@ -3,7 +3,7 @@ import { Progress } from '@/components/ui/progress';
 
 
 
-const StatsDisplay: React.FC = ({ player }) => {
+const StatsDisplay = ({  player  }) => {
   // Calculate XP progress
   const calculateXPProgress = () => {
     const xpForCurrentLevel = 100 * (player.level ** 2);

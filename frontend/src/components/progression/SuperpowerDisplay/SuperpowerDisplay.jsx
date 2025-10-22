@@ -10,11 +10,11 @@ import { Zap, Lock, Clock, Star, Info } from 'lucide-react';
 
 
 
-export const SuperpowerDisplay: React.FC = ({
+export const SuperpowerDisplay = ({ 
   superpowers,
   onActivate,
   onViewDetails
-}) => {
+ }) => {
   const [selectedTier, setSelectedTier] = useState(1);
 
   const getTierColor = (tier) => {

@@ -96,8 +96,7 @@ const SuperpowersList: React.FC = () => {
                 
                   {superpowers.unlocked_powers.map((power) => (
                      handleEquipPower(power.power_id)}
-                      onUse={() => handleUsePower(power.power_id)}
-                    />
+                      onUse={() => handleUsePower(power.power_id)} />
                   ))}
                 
               ) : (

@@ -6,7 +6,7 @@ import './TournamentBracket.css';
 
 
 
-const TournamentBracket: React.FC = ({ bracket, currentRound }) => {
+const TournamentBracket = ({  bracket, currentRound  }) => {
   const renderMatch = (match) => {
     return (
       

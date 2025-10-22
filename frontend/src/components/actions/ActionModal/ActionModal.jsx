@@ -3,7 +3,7 @@ import { Dialog, DialogContent } from '../../ui/dialog';
 
 
 
-export const ActionModal: React.FC = ({ open, onClose, children }) => {
+export const ActionModal = ({  open, onClose, children  }) => {
   return (
     
       

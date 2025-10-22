@@ -4,12 +4,12 @@ import { Badge } from '../../ui/badge';
 
 
 
-export const ActionResult: React.FC = ({
+export const ActionResult = ({ 
   success,
   message,
   karmaChange,
   creditsChange
-}) => {
+ }) => {
   return (
     
       

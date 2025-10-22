@@ -9,12 +9,12 @@ const defaultStages = [
   'Almost ready...',
 ];
 
-export const ProgressiveLoading: React.FC = ({
+export const ProgressiveLoading = ({ 
   stages = defaultStages,
   currentStage = 0,
   progress = 0,
   message,
-}) => {
+ }) => {
   const [displayProgress, setDisplayProgress] = useState(0);
 
   useEffect(() => {

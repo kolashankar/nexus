@@ -74,10 +74,10 @@ export const RealEstateMarket: React.FC = () => {
   const getPropertyIcon = (type) => {
     switch (type) {
       case 'apartment':
-        return ;
+        return null;
       case 'house':
       case 'mansion':
-        return ;
+        return null;
       default;
     }
   };

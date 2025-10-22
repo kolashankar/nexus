@@ -7,7 +7,7 @@ import { actionsService } from '../../../services/actions/actionsService';
 
 
 
-export const HelpModal: React.FC = ({ open, onClose, onSuccess }) => {
+export const HelpModal = ({  open, onClose, onSuccess  }) => {
   const [targetId, setTargetId] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -44,8 +44,7 @@ export const HelpModal: React.FC = ({ open, onClose, onSuccess }) => {
           
         
         
-           setTargetId(e.target.value)}
-          />
+           setTargetId(e.target.value)} />
           
             
               {loading ? 'Helping...' : 'Help Player'}

@@ -37,8 +37,7 @@ function App() {
                 <ProtectedRoute>
                   <Dashboard />
                 </ProtectedRoute>
-              }
-            />
+              } />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>

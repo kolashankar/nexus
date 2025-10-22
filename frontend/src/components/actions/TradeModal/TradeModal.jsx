@@ -7,7 +7,7 @@ import { actionsService } from '../../../services/actions/actionsService';
 
 
 
-export const TradeModal: React.FC = ({ open, onClose, onSuccess }) => {
+export const TradeModal = ({  open, onClose, onSuccess  }) => {
   const [targetId, setTargetId] = useState('');
   const [offerAmount, setOfferAmount] = useState('');
   const [requestAmount, setRequestAmount] = useState('');
@@ -50,12 +50,9 @@ export const TradeModal: React.FC = ({ open, onClose, onSuccess }) => {
           
         
         
-           setTargetId(e.target.value)}
-          />
-           setOfferAmount(e.target.value)}
-          />
-           setRequestAmount(e.target.value)}
-          />
+           setTargetId(e.target.value)} />
+           setOfferAmount(e.target.value)} />
+           setRequestAmount(e.target.value)} />
           
             
               {loading ? 'Proposing...' : 'Propose Trade'}

@@ -10,10 +10,10 @@ import { Trophy, Lock, Search, Star } from 'lucide-react';
 
 
 
-export const AchievementGrid: React.FC = ({
+export const AchievementGrid = ({ 
   achievements,
   onAchievementClick
-}) => {
+ }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 

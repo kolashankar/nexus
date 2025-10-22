@@ -14,7 +14,7 @@ const rarityColors = {
   legendary,
 };
 
-const AchievementCard: React.FC = ({ achievement, unlocked, progress }) => {
+const AchievementCard = ({  achievement, unlocked, progress  }) => {
   return (
     
       

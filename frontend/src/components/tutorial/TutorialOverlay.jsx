@@ -12,7 +12,7 @@ import { Progress } from '../ui/progress';
 
 
 
-const TutorialOverlay: React.FC = ({ onClose }) => {
+const TutorialOverlay = ({  onClose  }) => {
   const [progress, setProgress] = useState(null);
   const [currentStep, setCurrentStep] = useState(null);
   const [loading, setLoading] = useState(true);

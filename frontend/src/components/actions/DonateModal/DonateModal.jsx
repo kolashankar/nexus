@@ -7,7 +7,7 @@ import { actionsService } from '../../../services/actions/actionsService';
 
 
 
-export const DonateModal: React.FC = ({ open, onClose, onSuccess }) => {
+export const DonateModal = ({  open, onClose, onSuccess  }) => {
   const [targetId, setTargetId] = useState('');
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,10 +29,8 @@ export const DonateModal: React.FC = ({ open, onClose, onSuccess }) => {
           
         
         
-           setTargetId(e.target.value)}
-          />
-           setAmount(e.target.value)}
-          />
+           setTargetId(e.target.value)} />
+           setAmount(e.target.value)} />
           
             
               {loading ? 'Donating...' : 'Donate'}

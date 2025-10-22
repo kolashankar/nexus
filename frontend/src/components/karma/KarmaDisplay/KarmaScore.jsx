@@ -5,7 +5,7 @@ import { Progress } from '@/components/ui/progress';
 
 
 
-const KarmaScore: React.FC = ({ karmaData }) => {
+const KarmaScore = ({  karmaData  }) => {
   if (!karmaData) return null;
 
   const getMoralClassColor = (moralClass) => {

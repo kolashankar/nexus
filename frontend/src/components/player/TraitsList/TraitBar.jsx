@@ -3,7 +3,7 @@ import { Progress } from '@/components/ui/progress';
 
 
 
-const TraitBar: React.FC = ({ value, category }) => {
+const TraitBar = ({  value, category  }) => {
   // Get color class based on category
   const getBarColor = () => {
     switch (category) {

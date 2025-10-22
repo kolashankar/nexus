@@ -3,13 +3,13 @@ import { Button } from '../../ui/button';
 
 
 
-export const ActionButton: React.FC = ({
+export const ActionButton = ({ 
   icon,
   label,
   description,
   onClick,
   variant = 'default'
-}) => {
+ }) => {
   return (
     
       {icon}

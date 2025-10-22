@@ -7,7 +7,7 @@ import { usePlayer } from '@/hooks/usePlayer';
 
 
 
-const ProfileCard: React.FC = ({ showActions = true }) => {
+const ProfileCard = ({  showActions = true  }) => {
   const { player, isLoading: loading } = usePlayer();
 
   if (loading || !player) {

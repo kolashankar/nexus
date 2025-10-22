@@ -166,8 +166,7 @@ export const PrivacySettings: React.FC = () => {
                 Cash Amount
                 Show your credits and currencies
               
-               handleToggle('cash')}
-              />
+               handleToggle('cash')} />
             
 
             
@@ -175,8 +174,7 @@ export const PrivacySettings: React.FC = () => {
                 Economic Class
                 Show if you're rich, middle, or poor
               
-               handleToggle('economic_class')}
-              />
+               handleToggle('economic_class')} />
             
 
             
@@ -184,8 +182,7 @@ export const PrivacySettings: React.FC = () => {
                 Moral Class
                 Show if you're good, average, or bad
               
-               handleToggle('moral_class')}
-              />
+               handleToggle('moral_class')} />
             
 
             
@@ -193,8 +190,7 @@ export const PrivacySettings: React.FC = () => {
                 Karma Score
                 Show your current karma points
               
-               handleToggle('karma_score')}
-              />
+               handleToggle('karma_score')} />
             
 
             
@@ -202,8 +198,7 @@ export const PrivacySettings: React.FC = () => {
                 Superpowers
                 Show your unlocked superpowers
               
-               handleToggle('superpowers')}
-              />
+               handleToggle('superpowers')} />
             
 
             
@@ -211,8 +206,7 @@ export const PrivacySettings: React.FC = () => {
                 Guild Membership
                 Show which guild you belong to
               
-               handleToggle('guild')}
-              />
+               handleToggle('guild')} />
             
 
             
@@ -220,8 +214,7 @@ export const PrivacySettings: React.FC = () => {
                 Location
                 Show your current location
               
-               handleToggle('location')}
-              />
+               handleToggle('location')} />
             
           
         )}

@@ -17,12 +17,12 @@ const ABILITY_DATA: Record = {
   'power_strike': { name, cost, description,
 };
 
-const AbilityMenu: React.FC = ({ 
+const AbilityMenu = ({  
   abilities, 
   onSelect, 
   onClose, 
   availableAP 
-}) => {
+ }) => {
   return (
     
       

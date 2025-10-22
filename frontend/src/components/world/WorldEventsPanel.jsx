@@ -17,9 +17,9 @@ const WorldEventsPanel: React.FC = () => {
   const getKarmaTrendIcon = (trend) => {
     switch (trend) {
       case 'rising':
-        return ;
+        return null;
       case 'falling':
-        return ;
+        return null;
       default;
     }
   };

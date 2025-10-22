@@ -19,7 +19,7 @@ import { CheckCircle, Circle, Trophy, Star, Coins } from 'lucide-react';
 
 
 
-export const QuestDetails: React.FC = ({ quest, onAccept, onAbandon }) => {
+export const QuestDetails = ({  quest, onAccept, onAbandon  }) => {
   const getDifficultyColor = (difficulty) => {
     switch (difficulty.toLowerCase()) {
       case 'easy':

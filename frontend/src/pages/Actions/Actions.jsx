@@ -21,15 +21,12 @@ export const Actions: React.FC = () => {
         
         
           
-             setActiveModal('hack')}
-            />
-             setActiveModal('help')}
-            />
+             setActiveModal('hack')} />
+             setActiveModal('help')} />
              setActiveModal('steal')}
               variant="destructive"
             />
-             setActiveModal('donate')}
-            />
+             setActiveModal('donate')} />
              setActiveModal('trade')}
               variant="outline"
             />
@@ -39,16 +36,11 @@ export const Actions: React.FC = () => {
 
       
 
-       setActiveModal(null)}
-      />
-       setActiveModal(null)}
-      />
-       setActiveModal(null)}
-      />
-       setActiveModal(null)}
-      />
-       setActiveModal(null)}
-      />
+       setActiveModal(null)} />
+       setActiveModal(null)} />
+       setActiveModal(null)} />
+       setActiveModal(null)} />
+       setActiveModal(null)} />
     
   );
 };

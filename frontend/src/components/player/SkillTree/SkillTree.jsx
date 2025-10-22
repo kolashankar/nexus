@@ -9,7 +9,7 @@ import { toast } from '../../ui/sonner';
 
 
 
-const SkillTree: React.FC = ({ traitName }) => {
+const SkillTree = ({  traitName  }) => {
   const [skillTrees, setSkillTrees] = useState(null);
   const [selectedTrait, setSelectedTrait] = useState(traitName || '');
   const [selectedTree, setSelectedTree] = useState(null);
@@ -126,8 +126,7 @@ const SkillTree: React.FC = ({ traitName }) => {
                   
                     {selectedTree.nodes.map((node) => (
                        handleUnlockNode(node.node_id)}
-                        canUnlock={skillTrees?.available_points! > 0}
-                      />
+                        canUnlock={skillTrees?.available_points! > 0} />
                     ))}
                   
 

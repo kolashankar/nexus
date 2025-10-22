@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Progress } from '@/components/ui/progress';
 const TraitBar = ({ value, category }) => {
     // Get color class based on category

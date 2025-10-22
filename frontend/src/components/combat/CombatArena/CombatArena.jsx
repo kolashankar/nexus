@@ -11,7 +11,7 @@ import './CombatArena.css';
 
 
 
-const CombatArena: React.FC = ({ battleId, playerId }) => {
+const CombatArena = ({  battleId, playerId  }) => {
   const [battle, setBattle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
