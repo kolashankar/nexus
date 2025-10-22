@@ -233,13 +233,13 @@ export const RealEstateMarket: React.FC = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {myProperties.map(property => (
-                <Card key={property.property_id} className="p-4">
+                <Card key={property.property_id || property.id} className="p-4">
                   <div className="space-y-3">
                     <h3 className="font-bold">{property.name}</h3>
                     <div className="text-sm space-y-1">
                       <div className="flex justify-between">
                         <span>Purchase Price:</span>
-                        <span>{formatPrice(property.purchase_price)}</span>
+                        <span>{formatPrice(property.purchase_price || property.price)}</span>
                       </div>
                       <div className="flex justify-between text-green-600">
                         <span>Daily Income:</span>
