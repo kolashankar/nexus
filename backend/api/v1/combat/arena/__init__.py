@@ -1,1 +1,5 @@
-"""Arena combat mode with ranked matchmaking"""
+"""Arena combat mode endpoints."""
+
+from .router import router
+
+__all__ = ["router"]

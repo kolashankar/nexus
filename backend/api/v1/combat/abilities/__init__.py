@@ -1,4 +1,4 @@
-"""Duel combat mode endpoints."""
+"""Combat abilities endpoints."""
 
 from .router import router
 
