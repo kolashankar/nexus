@@ -7,8 +7,8 @@ import achievementsService from '../../../services/achievements/achievementsServ
 import type {
   PlayerAchievements,
   AchievementDefinition,
-  AchievementCategory,
 } from '../../../types/achievements';
+import { AchievementCategory } from '../../../types/achievements';
 import AchievementCard from './AchievementCard';
 import { Progress } from '../../ui/progress';
 
