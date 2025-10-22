@@ -2,7 +2,7 @@
 
 import logging
 from typing import Dict, Any, Optional, List
-from datetime import datetime
+from datetime import datetime, timedelta
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
 from ...models.world.territory import TerritoryModel, TerritoryStatus, TerritoryEvent
