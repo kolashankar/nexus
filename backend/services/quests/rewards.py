@@ -1,91 +1,216 @@
-from typing import Dict
-from ...models.player.player import Player
-from ...models.economy.transaction import Transaction
+"""Quest reward distribution service."""
+
 from datetime import datetime
+from typing import Dict, List
+from motor.motor_asyncio import AsyncIOMotorClient
+import logging
 
+logger = logging.getLogger(__name__)
 
-class QuestRewardService:
-    """Service for distributing quest rewards."""
+class RewardDistributor:
+    """Handles quest reward distribution."""
     
-    async def distribute_rewards(
-        self,
-        player_id: str,
-        rewards: Dict
-    ) -> Dict:
+    def __init__(self, db: AsyncIOMotorClient):
+        self.db = db
+        self.players = db.players
+        self.items = db.items
+        self.achievements = db.achievements
+    
+    async def distribute_rewards(self, player_id: str, rewards: Dict) -> Dict:
         """Distribute quest rewards to player."""
-        player = await Player.find_one({"_id": player_id})
-        if not player:
-            return {"success": False, "error": "Player not found"}
-        
-        # Credits
-        credits = rewards.get("credits", 0)
-        player_credits = player.get("currencies", {}).get("credits", 0)
-        new_credits = player_credits + credits
-        
-        # XP
-        xp = rewards.get("xp", 0)
-        player_xp = player.get("xp", 0)
-        new_xp = player_xp + xp
-        
-        # Check level up
-        old_level = player.get("level", 1)
-        new_level = self._calculate_level(new_xp)
-        leveled_up = new_level > old_level
-        
-        # Karma
-        karma = rewards.get("karma", 0)
-        player_karma = player.get("karma_points", 0)
-        new_karma = player_karma + karma
-        
-        # Trait boosts
-        trait_boosts = rewards.get("trait_boosts", {})
-        player_traits = player.get("traits", {})
-        for trait, boost in trait_boosts.items():
-            current = player_traits.get(trait, 50)
-            player_traits[trait] = min(100, current + boost)
-        
-        # Items
-        items = rewards.get("items", [])
-        player_inventory = player.get("items", [])
-        for item_id in items:
-            player_inventory.append({
-                "item_id": item_id,
-                "quantity": 1,
-                "acquired_at": datetime.utcnow()
-            })
-        
-        # Update player
-        await Player.update_one(
-            {"_id": player_id},
-            {
-                "$set": {
-                    "currencies.credits": new_credits,
-                    "xp": new_xp,
-                    "level": new_level,
-                    "karma_points": new_karma,
-                    "traits": player_traits,
-                    "items": player_inventory
-                }
+        try:
+            distributed = {
+                "credits": 0,
+                "xp": 0,
+                "karma": 0,
+                "items": [],
+                "trait_boosts": {},
+                "special_rewards": []
             }
-        )
+            
+            # Get player
+            player = await self.players.find_one({"_id": player_id})
+            if not player:
+                raise ValueError("Player not found")
+            
+            updates = {}
+            
+            # Credits
+            if "credits" in rewards:
+                credits = rewards["credits"]
+                updates["currencies.credits"] = player["currencies"]["credits"] + credits
+                distributed["credits"] = credits
+            
+            # XP
+            if "xp" in rewards:
+                xp = rewards["xp"]
+                current_xp = player.get("xp", 0)
+                new_xp = current_xp + xp
+                
+                updates["xp"] = new_xp
+                distributed["xp"] = xp
+                
+                # Check for level up
+                new_level = await self._check_level_up(player, new_xp)
+                if new_level > player.get("level", 1):
+                    updates["level"] = new_level
+                    distributed["level_up"] = new_level
+            
+            # Karma
+            if "karma" in rewards:
+                karma = rewards["karma"]
+                updates["karma_points"] = player.get("karma_points", 0) + karma
+                distributed["karma"] = karma
+            
+            # Items
+            if "items" in rewards:
+                for item_id in rewards["items"]:
+                    await self._add_item(player_id, item_id)
+                    distributed["items"].append(item_id)
+            
+            # Trait boosts
+            if "trait_boosts" in rewards:
+                for trait, boost in rewards["trait_boosts"].items():
+                    current = player["traits"].get(trait, 0)
+                    new_value = min(100, current + boost)
+                    updates[f"traits.{trait}"] = new_value
+                    distributed["trait_boosts"][trait] = boost
+            
+            # Special rewards
+            if "special" in rewards:
+                special = await self._handle_special_reward(player_id, rewards["special"])
+                distributed["special_rewards"].append(special)
+            
+            # Apply updates
+            if updates:
+                await self.players.update_one(
+                    {"_id": player_id},
+                    {"$set": updates}
+                )
+            
+            # Log reward distribution
+            await self._log_reward_distribution(player_id, distributed)
+            
+            return distributed
         
-        # Log transaction
-        await Transaction.insert_one({
-            "player_id": player_id,
-            "type": "quest_reward",
-            "details": rewards,
-            "timestamp": datetime.utcnow()
-        })
-        
-        return {
-            "success": True,
-            "rewards_given": rewards,
-            "leveled_up": leveled_up,
-            "new_level": new_level if leveled_up else None
-        }
+        except Exception as e:
+            logger.error(f"Error distributing rewards: {e}")
+            raise
     
-    def _calculate_level(self, xp: int) -> int:
-        """Calculate player level from XP."""
-        # Simple formula: level = sqrt(xp / 100)
-        import math
-        return min(100, int(math.sqrt(xp / 100)) + 1)
+    async def _check_level_up(self, player: Dict, new_xp: int) -> int:
+        """Check if player leveled up."""
+        current_level = player.get("level", 1)
+        
+        # XP required for each level (exponential)
+        def xp_for_level(level):
+            return int(100 * (1.5 ** (level - 1)))
+        
+        # Calculate new level
+        level = current_level
+        while new_xp >= xp_for_level(level + 1) and level < 100:
+            level += 1
+        
+        return level
+    
+    async def _add_item(self, player_id: str, item_id: str) -> None:
+        """Add item to player inventory."""
+        try:
+            # Check if item exists in inventory
+            player = await self.players.find_one({"_id": player_id})
+            inventory = player.get("inventory", [])
+            
+            # Find existing item
+            existing = None
+            for item in inventory:
+                if item["item_id"] == item_id:
+                    existing = item
+                    break
+            
+            if existing:
+                # Increment quantity
+                await self.players.update_one(
+                    {
+                        "_id": player_id,
+                        "inventory.item_id": item_id
+                    },
+                    {
+                        "$inc": {"inventory.$.quantity": 1}
+                    }
+                )
+            else:
+                # Add new item
+                await self.players.update_one(
+                    {"_id": player_id},
+                    {
+                        "$push": {
+                            "inventory": {
+                                "item_id": item_id,
+                                "quantity": 1,
+                                "acquired_at": datetime.utcnow()
+                            }
+                        }
+                    }
+                )
+        
+        except Exception as e:
+            logger.error(f"Error adding item: {e}")
+            raise
+    
+    async def _handle_special_reward(self, player_id: str, special: str) -> Dict:
+        """Handle special rewards (superpowers, titles, etc.)."""
+        try:
+            if special.startswith("unlock_superpower:"):
+                power_name = special.split(":")[1]
+                
+                # Add superpower to player
+                await self.players.update_one(
+                    {"_id": player_id},
+                    {
+                        "$push": {
+                            "superpowers": {
+                                "name": power_name,
+                                "unlocked_at": datetime.utcnow(),
+                                "usage_count": 0
+                            }
+                        }
+                    }
+                )
+                
+                return {
+                    "type": "superpower",
+                    "name": power_name
+                }
+            
+            elif special.startswith("title:"):
+                title = special.split(":")[1]
+                
+                # Add title
+                await self.players.update_one(
+                    {"_id": player_id},
+                    {
+                        "$addToSet": {"titles": title}
+                    }
+                )
+                
+                return {
+                    "type": "title",
+                    "name": title
+                }
+            
+            return {"type": "unknown", "value": special}
+        
+        except Exception as e:
+            logger.error(f"Error handling special reward: {e}")
+            return {"type": "error", "message": str(e)}
+    
+    async def _log_reward_distribution(self, player_id: str, rewards: Dict) -> None:
+        """Log reward distribution for tracking."""
+        try:
+            await self.db.reward_logs.insert_one({
+                "player_id": player_id,
+                "rewards": rewards,
+                "distributed_at": datetime.utcnow(),
+                "source": "quest"
+            })
+        except Exception as e:
+            logger.error(f"Error logging rewards: {e}")

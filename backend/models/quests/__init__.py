@@ -1,15 +1,15 @@
-"""Quest models package"""
+"""Quest models package."""
 
-from .quest import Quest, QuestObjective, QuestReward
-from .objective import Objective, ObjectiveType
-from .campaign import Campaign, CampaignChapter
+from .quest import Quest, QuestObjective, QuestRewards, QuestRequirements
+from .campaign import Campaign, CampaignChapter, CampaignChoice, CampaignProgress
 
 __all__ = [
     "Quest",
     "QuestObjective",
-    "QuestReward",
-    "Objective",
-    "ObjectiveType",
+    "QuestRewards",
+    "QuestRequirements",
     "Campaign",
     "CampaignChapter",
+    "CampaignChoice",
+    "CampaignProgress"
 ]

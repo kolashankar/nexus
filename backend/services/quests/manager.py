@@ -1,275 +1,215 @@
-"""Quest manager service"""
+"""Quest management service - handles quest lifecycle and operations."""
 
 from datetime import datetime, timedelta
-from typing import Optional, List, Dict, Any
-import uuid
+from typing import Dict, List, Optional
+from motor.motor_asyncio import AsyncIOMotorClient
+from bson import ObjectId
+import logging
 
-from ...models.quests.quest import Quest, QuestType, QuestStatus
-from .progression import QuestProgressionService
-from .rewards import QuestRewardService
-
+logger = logging.getLogger(__name__)
 
 class QuestManager:
-    """Manages quest operations"""
+    """Manages quest lifecycle and operations."""
     
-    def __init__(self, db):
+    def __init__(self, db: AsyncIOMotorClient):
         self.db = db
         self.quests = db.quests
         self.players = db.players
-        self.progression = QuestProgressionService(db)
-        self.rewards = QuestRewardService(db)
+        self.quest_progress = db.quest_progress
     
-    async def get_quest(self, quest_id: str) -> Optional[Dict[str, Any]]:
-        """Get quest by ID"""
-        quest = await self.quests.find_one({"_id": quest_id})
-        return quest
+    async def get_available_quests(self, player_id: str, quest_type: Optional[str] = None) -> List[Dict]:
+        """Get available quests for a player."""
+        try:
+            # Get player data
+            player = await self.players.find_one({"_id": player_id})
+            if not player:
+                return []
+            
+            # Build query
+            query = {
+                "status": "available",
+                "$or": [
+                    {"player_id": player_id},
+                    {"player_id": None}  # World quests
+                ]
+            }
+            
+            if quest_type:
+                query["quest_type"] = quest_type
+            
+            # Check requirements
+            quests = []
+            async for quest in self.quests.find(query):
+                if await self._check_requirements(player, quest):
+                    quests.append(quest)
+            
+            return quests
+        
+        except Exception as e:
+            logger.error(f"Error getting available quests: {e}")
+            return []
     
-    async def get_player_quests(
-        self,
-        player_id: str,
-        quest_type: Optional[QuestType] = None,
-        status: Optional[QuestStatus] = None,
-        limit: int = 100,
-    ) -> List[Dict[str, Any]]:
-        """Get quests for a player"""
-        query = {"player_id": player_id}
-        
-        if quest_type:
-            query["quest_type"] = quest_type.value if isinstance(quest_type, QuestType) else quest_type
-        
-        if status:
-            query["status"] = status.value if isinstance(status, QuestStatus) else status
-        
-        cursor = self.quests.find(query).sort("generated_at", -1).limit(limit)
-        quests = await cursor.to_list(length=limit)
-        return quests
-    
-    async def get_available_quests(
-        self,
-        player_id: str,
-        quest_type: Optional[QuestType] = None,
-        player_level: int = 1,
-        player_karma: int = 0,
-        player_traits: Dict[str, int] = None,
-        player_items: List[str] = None,
-    ) -> List[Dict[str, Any]]:
-        """Get available quests for player"""
-        query = {
-            "$or": [
-                {"player_id": player_id},
-                {"quest_type": {"$in": ["world", "guild"]}},
-            ],
-            "status": "available",
-        }
-        
-        if quest_type:
-            query["quest_type"] = quest_type.value if isinstance(quest_type, QuestType) else quest_type
-        
-        # Check if expired
-        query["$or"].append({
-            "expires_at": {"$gt": datetime.utcnow()}
-        })
-        query["$or"].append({
-            "expires_at": None
-        })
-        
-        cursor = self.quests.find(query)
-        quests = await cursor.to_list(length=100)
-        
-        # Filter by requirements
-        player_traits = player_traits or {}
-        player_items = player_items or []
-        
-        available_quests = []
-        for quest_data in quests:
-            quest = Quest(**quest_data)
-            if quest.is_available(player_level, player_karma, player_traits, player_items):
-                available_quests.append(quest_data)
-        
-        return available_quests
-    
-    async def accept_quest(
-        self,
-        quest_id: str,
-        player_id: str,
-    ) -> Dict[str, Any]:
-        """Accept a quest"""
-        # Get quest
-        quest = await self.get_quest(quest_id)
-        if not quest:
-            raise ValueError("Quest not found")
-        
-        # Check status
-        if quest["status"] != "available":
-            raise ValueError(f"Quest is not available (status: {quest['status']})")
-        
-        # Check if already accepted
-        existing = await self.quests.find_one({
-            "_id": quest_id,
-            "player_id": player_id,
-            "status": "active",
-        })
-        if existing:
-            raise ValueError("Quest already accepted")
-        
-        # Check max active quests
-        active_quests = await self.get_player_quests(
-            player_id=player_id,
-            status=QuestStatus.ACTIVE,
-        )
-        if len(active_quests) >= 20:  # Max 20 active quests
-            raise ValueError("Too many active quests. Complete some first.")
-        
-        # Accept quest
-        update = {
-            "$set": {
+    async def accept_quest(self, player_id: str, quest_id: str) -> Dict:
+        """Accept a quest."""
+        try:
+            # Get quest
+            quest = await self.quests.find_one({"_id": ObjectId(quest_id)})
+            if not quest:
+                raise ValueError("Quest not found")
+            
+            # Check if already accepted
+            existing = await self.quest_progress.find_one({
+                "player_id": player_id,
+                "quest_id": ObjectId(quest_id),
+                "status": "active"
+            })
+            if existing:
+                raise ValueError("Quest already accepted")
+            
+            # Create progress record
+            progress = {
+                "player_id": player_id,
+                "quest_id": ObjectId(quest_id),
                 "status": "active",
-                "started_at": datetime.utcnow(),
-                "updated_at": datetime.utcnow(),
+                "accepted_at": datetime.utcnow(),
+                "objectives_progress": [
+                    {
+                        "objective_id": i,
+                        "current": 0,
+                        "required": obj.get("required", 1),
+                        "completed": False
+                    }
+                    for i, obj in enumerate(quest.get("objectives", []))
+                ]
             }
-        }
+            
+            result = await self.quest_progress.insert_one(progress)
+            progress["_id"] = result.inserted_id
+            
+            # Update quest status
+            await self.quests.update_one(
+                {"_id": ObjectId(quest_id)},
+                {"$set": {"status": "active"}}
+            )
+            
+            return progress
         
-        await self.quests.update_one({"_id": quest_id}, update)
-        
-        # Return updated quest
-        return await self.get_quest(quest_id)
+        except Exception as e:
+            logger.error(f"Error accepting quest: {e}")
+            raise
     
-    async def abandon_quest(
-        self,
-        quest_id: str,
-        player_id: str,
-    ) -> bool:
-        """Abandon a quest"""
-        # Get quest
-        quest = await self.get_quest(quest_id)
-        if not quest:
-            raise ValueError("Quest not found")
+    async def update_quest_progress(self, player_id: str, quest_id: str, objective_id: int, progress: int) -> Dict:
+        """Update quest objective progress."""
+        try:
+            # Get progress record
+            quest_progress = await self.quest_progress.find_one({
+                "player_id": player_id,
+                "quest_id": ObjectId(quest_id),
+                "status": "active"
+            })
+            
+            if not quest_progress:
+                raise ValueError("Quest progress not found")
+            
+            # Update objective
+            objectives = quest_progress["objectives_progress"]
+            if objective_id >= len(objectives):
+                raise ValueError("Invalid objective ID")
+            
+            objectives[objective_id]["current"] = min(
+                progress,
+                objectives[objective_id]["required"]
+            )
+            objectives[objective_id]["completed"] = (
+                objectives[objective_id]["current"] >= objectives[objective_id]["required"]
+            )
+            
+            # Update progress
+            await self.quest_progress.update_one(
+                {"_id": quest_progress["_id"]},
+                {"$set": {"objectives_progress": objectives}}
+            )
+            
+            # Check if all objectives completed
+            if all(obj["completed"] for obj in objectives):
+                await self._complete_quest(player_id, quest_id)
+            
+            return await self.quest_progress.find_one({"_id": quest_progress["_id"]})
         
-        # Check ownership
-        if quest.get("player_id") != player_id:
-            raise ValueError("Not your quest")
-        
-        # Check status
-        if quest["status"] != "active":
-            raise ValueError("Quest is not active")
-        
-        # Abandon
-        await self.quests.update_one(
-            {"_id": quest_id},
-            {
-                "$set": {
-                    "status": "failed",
-                    "updated_at": datetime.utcnow(),
+        except Exception as e:
+            logger.error(f"Error updating quest progress: {e}")
+            raise
+    
+    async def abandon_quest(self, player_id: str, quest_id: str) -> bool:
+        """Abandon a quest."""
+        try:
+            result = await self.quest_progress.update_one(
+                {
+                    "player_id": player_id,
+                    "quest_id": ObjectId(quest_id),
+                    "status": "active"
+                },
+                {
+                    "$set": {
+                        "status": "abandoned",
+                        "abandoned_at": datetime.utcnow()
+                    }
                 }
-            }
-        )
+            )
+            
+            return result.modified_count > 0
+        
+        except Exception as e:
+            logger.error(f"Error abandoning quest: {e}")
+            return False
+    
+    async def _check_requirements(self, player: Dict, quest: Dict) -> bool:
+        """Check if player meets quest requirements."""
+        requirements = quest.get("requirements", {})
+        
+        # Level requirement
+        if "min_level" in requirements:
+            if player.get("level", 1) < requirements["min_level"]:
+                return False
+        
+        # Karma requirement
+        if "min_karma" in requirements:
+            if player.get("karma_points", 0) < requirements["min_karma"]:
+                return False
+        
+        # Trait requirements
+        if "required_traits" in requirements:
+            player_traits = player.get("traits", {})
+            for trait, min_value in requirements["required_traits"].items():
+                if player_traits.get(trait, 0) < min_value:
+                    return False
         
         return True
     
-    async def update_objective_progress(
-        self,
-        quest_id: str,
-        objective_id: str,
-        progress: int,
-        player_id: str,
-    ) -> Dict[str, Any]:
-        """Update quest objective progress"""
-        return await self.progression.update_objective(
-            quest_id=quest_id,
-            objective_id=objective_id,
-            progress=progress,
-            player_id=player_id,
-        )
-    
-    async def complete_quest(
-        self,
-        quest_id: str,
-        player_id: str,
-    ) -> Dict[str, Any]:
-        """Complete a quest and give rewards"""
-        # Get quest
-        quest = await self.get_quest(quest_id)
-        if not quest:
-            raise ValueError("Quest not found")
-        
-        # Check ownership
-        if quest.get("player_id") != player_id:
-            raise ValueError("Not your quest")
-        
-        # Check status
-        if quest["status"] != "active":
-            raise ValueError("Quest is not active")
-        
-        # Check if all objectives completed
-        all_completed = all(obj["completed"] for obj in quest["objectives"])
-        if not all_completed:
-            raise ValueError("Not all objectives completed")
-        
-        # Calculate completion time
-        started_at = quest.get("started_at")
-        completion_time = None
-        if started_at:
-            if isinstance(started_at, str):
-                started_at = datetime.fromisoformat(started_at.replace("Z", "+00:00"))
-            completion_time = int((datetime.utcnow() - started_at).total_seconds())
-        
-        # Mark as completed
-        await self.quests.update_one(
-            {"_id": quest_id},
-            {
-                "$set": {
-                    "status": "completed",
-                    "completed_at": datetime.utcnow(),
-                    "completion_time": completion_time,
-                    "updated_at": datetime.utcnow(),
+    async def _complete_quest(self, player_id: str, quest_id: str) -> None:
+        """Complete a quest and distribute rewards."""
+        try:
+            # Update progress status
+            await self.quest_progress.update_one(
+                {
+                    "player_id": player_id,
+                    "quest_id": ObjectId(quest_id)
+                },
+                {
+                    "$set": {
+                        "status": "completed",
+                        "completed_at": datetime.utcnow()
+                    }
                 }
-            }
-        )
+            )
+            
+            # Get quest for rewards
+            quest = await self.quests.find_one({"_id": ObjectId(quest_id)})
+            if quest and "rewards" in quest:
+                from .rewards import RewardDistributor
+                distributor = RewardDistributor(self.db)
+                await distributor.distribute_rewards(player_id, quest["rewards"])
         
-        # Give rewards
-        rewards = await self.rewards.give_quest_rewards(
-            player_id=player_id,
-            rewards=quest["rewards"],
-            quest_id=quest_id,
-        )
-        
-        return {
-            "success": True,
-            "message": "Quest completed!",
-            "rewards": rewards,
-            "completion_time": completion_time,
-        }
-    
-    async def create_quest(self, quest_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Create a new quest"""
-        # Generate ID if not provided
-        if "_id" not in quest_data:
-            quest_data["_id"] = str(uuid.uuid4())
-        
-        # Set timestamps
-        if "generated_at" not in quest_data:
-            quest_data["generated_at"] = datetime.utcnow()
-        if "created_at" not in quest_data:
-            quest_data["created_at"] = datetime.utcnow()
-        quest_data["updated_at"] = datetime.utcnow()
-        
-        # Insert
-        await self.quests.insert_one(quest_data)
-        
-        return quest_data
-    
-    async def cleanup_expired_quests(self) -> int:
-        """Mark expired quests as expired"""
-        result = await self.quests.update_many(
-            {
-                "status": {"$in": ["available", "active"]},
-                "expires_at": {"$lt": datetime.utcnow()},
-            },
-            {
-                "$set": {
-                    "status": "expired",
-                    "updated_at": datetime.utcnow(),
-                }
-            }
-        )
-        return result.modified_count
+        except Exception as e:
+            logger.error(f"Error completing quest: {e}")
+            raise
