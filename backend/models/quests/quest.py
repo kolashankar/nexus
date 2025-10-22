@@ -1,63 +1,96 @@
-"""Quest Model"""
-
-from typing import Dict, Optional, List
-from datetime import datetime
 from pydantic import BaseModel, Field
+from typing import List, Dict, Optional
+from datetime import datetime
 
 
-class QuestObjective(BaseModel):
-    """Quest objective"""
+class Objective(BaseModel):
+    """Quest objective."""
     description: str
-    type: str
+    type: str  # kill, collect, talk, hack, trade, visit
     target: str
-    required: int
     current: int = 0
+    required: int
     completed: bool = False
 
 
+class QuestRequirements(BaseModel):
+    """Quest requirements."""
+    min_level: int = 0
+    min_karma: Optional[int] = None
+    required_traits: Dict[str, int] = {}
+    required_items: List[str] = []
+
+
 class QuestRewards(BaseModel):
-    """Quest rewards"""
+    """Quest rewards."""
     credits: int = 0
     xp: int = 0
     karma: int = 0
-    items: List[str] = Field(default_factory=list)
-    trait_boosts: Dict[str, float] = Field(default_factory=dict)
+    items: List[str] = []
+    trait_boosts: Dict[str, int] = {}
     special: Optional[str] = None
 
 
 class Quest(BaseModel):
-    """Quest model"""
+    """Quest model."""
+    id: str = Field(..., description="Unique quest ID")
+    player_id: Optional[str] = Field(default=None, description="Player ID (None for world quests)")
+    guild_id: Optional[str] = Field(default=None, description="Guild ID (for guild quests)")
     
-    quest_id: str = Field(default_factory=lambda: str(datetime.utcnow().timestamp()))
-    player_id: str
-    quest_type: str = "personal"  # personal, daily, weekly, campaign, guild, world, hidden
-    title: str
-    description: str
-    lore: str
-    objectives: List[QuestObjective]
-    rewards: QuestRewards
-    status: str = "available"  # available, active, completed, failed, expired
-    difficulty: str = "medium"
-    estimated_time_minutes: int = 30
+    quest_type: str = Field(
+        ...,
+        description="Quest type (personal, daily, weekly, guild, world, hidden, campaign)"
+    )
     
-    # Timestamps
+    title: str = Field(..., description="Quest title")
+    description: str = Field(..., description="Quest description")
+    lore: str = Field(default="", description="Background story")
+    
+    difficulty: str = Field(default="medium", description="Difficulty level")
+    
+    objectives: List[Objective] = Field(default_factory=list, description="Quest objectives")
+    rewards: QuestRewards = Field(default_factory=QuestRewards, description="Quest rewards")
+    requirements: QuestRequirements = Field(
+        default_factory=QuestRequirements,
+        description="Quest requirements"
+    )
+    
+    status: str = Field(default="available", description="Quest status")
+    
+    generated_by: str = Field(default="system", description="Generator (oracle, system)")
     generated_at: datetime = Field(default_factory=datetime.utcnow)
-    started_at: Optional[datetime] = None
+    
+    accepted_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
     expires_at: Optional[datetime] = None
     
-    # Generation metadata
-    generated_by: str = "oracle"
-    seed: Optional[str] = None
+    story_data: Optional[Dict] = Field(default=None, description="Campaign story data")
     
     class Config:
         json_schema_extra = {
             "example": {
-                "quest_id": "quest_123",
-                "player_id": "player_456",
+                "id": "quest_123",
+                "player_id": "player_1",
                 "quest_type": "personal",
-                "title": "The Path of Empathy",
-                "description": "Help 5 players in need",
-                "status": "active"
+                "title": "The Lost Data",
+                "description": "Recover stolen data from hackers",
+                "lore": "A mysterious group has stolen valuable data...",
+                "difficulty": "medium",
+                "objectives": [
+                    {
+                        "description": "Hack into 3 systems",
+                        "type": "hack",
+                        "target": "systems",
+                        "current": 0,
+                        "required": 3,
+                        "completed": False
+                    }
+                ],
+                "rewards": {
+                    "credits": 5000,
+                    "xp": 500,
+                    "karma": 25
+                },
+                "status": "available"
             }
         }
