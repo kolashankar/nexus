@@ -3,7 +3,7 @@
 from typing import Dict, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .tutorial import TutorialStep
+    pass
 
 
 def get_tutorial_step(step_id: str):
