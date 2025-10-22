@@ -11,12 +11,14 @@ interface Property {
   name: string;
   description: string;
   property_type: string;
-  size: int;
+  size: number;
   location: any;
   territory_id: number;
   price: number;
   passive_income: number;
   status: string;
+  property_id?: string;
+  purchase_price?: number;
 }
 
 export const RealEstateMarket: React.FC = () => {
