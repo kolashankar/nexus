@@ -49,6 +49,11 @@ api_router.include_router(actions_router, prefix="/actions", tags=["actions"])
 api_router.include_router(player_router, prefix="/player", tags=["player"])
 api_router.include_router(karma_router, prefix="/karma", tags=["karma"])
 
+# AI routers
+api_router.include_router(karma_arbiter_router, prefix="/v1/ai", tags=["AI"])
+api_router.include_router(oracle_router, prefix="/v1/ai", tags=["AI"])
+api_router.include_router(companion_router, prefix="/v1/ai", tags=["AI"])
+
 # Include the router in the main app
 app.include_router(api_router)
 
