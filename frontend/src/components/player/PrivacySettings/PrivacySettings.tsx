@@ -65,7 +65,7 @@ const PRIVACY_TIERS = [
 ];
 
 export const PrivacySettings: React.FC = () => {
-  const { player, updatePlayer, loading } = usePlayer();
+  const { player, updatePlayer, isLoading: loading } = usePlayer();
   const [settings, setSettings] = useState<VisibilitySettings>({
     privacy_tier: 'public',
     cash: true,
