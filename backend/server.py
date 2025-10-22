@@ -115,6 +115,14 @@ async def startup_event():
     logger.info("🔴 Connecting to Redis...")
     await redis_manager.connect()
     
+    # Initialize territories (Phase 5)
+    logger.info("🏛️ Initializing territories...")
+    from core.database import Database
+    from services.guilds.territories import TerritoryService
+    db = await Database.get_database()
+    territory_service = TerritoryService(db)
+    await territory_service.initialize_territories()
+    
     # Setup AI background tasks
     logger.info("🤖 Setting up AI background tasks...")
     from tasks.ai_scheduler import setup_ai_tasks
