@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../../ui/card';
 import { Badge } from '../../ui/badge';
+import { Button } from '../../ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 import superpowersService from '../../../services/superpowers/superpowersService';
 import type { PlayerSuperpowers, AvailablePower } from '../../../types/superpowers';
