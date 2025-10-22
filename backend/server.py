@@ -73,6 +73,10 @@ api_router.include_router(karma_arbiter_router, prefix="/v1/ai", tags=["AI"])
 api_router.include_router(oracle_router, prefix="/v1/ai", tags=["AI"])
 api_router.include_router(companion_router, prefix="/v1/ai", tags=["AI"])
 
+# Phase 5: Social & Guilds routers
+api_router.include_router(guilds_router, prefix="", tags=["guilds"])
+api_router.include_router(social_router, prefix="", tags=["social"])
+
 # Include the router in the main app
 app.include_router(api_router)
 
