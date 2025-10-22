@@ -1,4 +1,4 @@
-"""Tournament system endpoints."""
+"""Market system endpoints."""
 
 from .router import router
 
