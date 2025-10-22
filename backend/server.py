@@ -82,6 +82,12 @@ api_router.include_router(companion_router, prefix="/v1/ai", tags=["AI"])
 api_router.include_router(guilds_router, prefix="", tags=["guilds"])
 api_router.include_router(social_router, prefix="", tags=["social"])
 
+# Phase 6: Combat & PvP routers
+api_router.include_router(combat_router, prefix="", tags=["combat"])
+api_router.include_router(duel_router, prefix="/combat", tags=["combat-duel"])
+api_router.include_router(arena_router, prefix="/combat", tags=["combat-arena"])
+api_router.include_router(tournaments_router, prefix="", tags=["tournaments"])
+
 # Include the router in the main app
 app.include_router(api_router)
 
