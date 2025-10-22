@@ -82,8 +82,9 @@ export const QuickActions: React.FC = () => {
     const cooldownStatus = await checkCooldown(actionId);
     
     if (cooldownStatus.on_cooldown) {
+      const remainingMinutes = cooldownStatus.remaining_seconds ? (cooldownStatus.remaining_seconds / 60).toFixed(1) : '0';
       toast.warning('Action on cooldown', {
-        description: `Wait ${cooldownStatus.remaining_minutes?.toFixed(1)} minutes`
+        description: `Wait ${remainingMinutes} minutes`
       });
       return;
     }
