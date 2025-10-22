@@ -5,7 +5,7 @@ const WS_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 describe('WebSocket Integration Tests', () => {
   let socket: any;
-  let authToken: string = 'test_token_here';
+  const authToken: string = 'test_token_here';
 
   beforeAll((done) => {
     socket = io(WS_URL, {
