@@ -1,6 +1,6 @@
 import React from 'react';
-import { KarmaDisplay } from '../../components/karma/KarmaDisplay/KarmaDisplay';
-import { KarmaHistory } from '../../components/karma/KarmaDisplay/KarmaHistory';
+import KarmaDisplay from '../../components/karma/KarmaDisplay/KarmaDisplay';
+import KarmaHistory from '../../components/karma/KarmaDisplay/KarmaHistory';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { useKarma } from '../../hooks/useKarma';
 
