@@ -8,15 +8,26 @@ import type { PlayerSkillTrees, SkillTree as SkillTreeType } from '../../../type
 import SkillNode from './SkillNode';
 import { toast } from '../../ui/sonner';
 
-const SkillTree: React.FC = () => {
+interface SkillTreeProps {
+  traitName?: string;
+}
+
+const SkillTree: React.FC<SkillTreeProps> = ({ traitName }) => {
   const [skillTrees, setSkillTrees] = useState<PlayerSkillTrees | null>(null);
-  const [selectedTrait, setSelectedTrait] = useState<string>('');
+  const [selectedTrait, setSelectedTrait] = useState<string>(traitName || '');
   const [selectedTree, setSelectedTree] = useState<SkillTreeType | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchSkillTrees();
   }, []);
+
+  useEffect(() => {
+    if (traitName) {
+      setSelectedTrait(traitName);
+      handleSelectTrait(traitName);
+    }
+  }, [traitName]);
 
   const fetchSkillTrees = async () => {
     try {
