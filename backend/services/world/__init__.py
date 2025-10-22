@@ -1,11 +1,13 @@
-"""World services package"""
+"""World Management Services"""
 
-from .world_state_service import WorldStateService
-from .event_service import WorldEventService
-from .architect import ArchitectService
+from .state_manager import WorldStateManager
+from .event_manager import EventManager
+from .territory_manager import TerritoryManager
+from .collective_karma import CollectiveKarmaTracker
 
 __all__ = [
-    "WorldStateService",
-    "WorldEventService",
-    "ArchitectService",
+    "WorldStateManager",
+    "EventManager",
+    "TerritoryManager",
+    "CollectiveKarmaTracker"
 ]

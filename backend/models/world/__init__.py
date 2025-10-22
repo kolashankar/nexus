@@ -1,14 +1,7 @@
-"""World models package"""
+"""World State Models"""
 
-from .world_state import WorldState, GlobalKarma
-from .world_event import WorldEvent, EventType, EventSeverity
-from .territory import Territory
+from .world_state import WorldStateModel
+from .karma_event import KarmaEventModel
+from .territory import TerritoryModel
 
-__all__ = [
-    "WorldState",
-    "GlobalKarma",
-    "WorldEvent",
-    "EventType",
-    "EventSeverity",
-    "Territory",
-]
+__all__ = ["WorldStateModel", "KarmaEventModel", "TerritoryModel"]
