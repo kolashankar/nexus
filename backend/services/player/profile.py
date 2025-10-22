@@ -83,3 +83,69 @@ class PlayerProfileService:
         except Exception as e:
             print(f"Error setting online status: {e}")
             return False
+    
+    async def get_full_profile(self, player_id: str) -> Dict:
+        """Get player's complete profile."""
+        player_dict = await self.collection.find_one({"_id": ObjectId(player_id)})
+        if not player_dict:
+            raise HTTPException(status_code=404, detail="Player not found")
+        
+        # Convert ObjectId to string
+        player_dict["_id"] = str(player_dict["_id"])
+        
+        return {
+            "id": player_dict["_id"],
+            "username": player_dict["username"],
+            "email": player_dict["email"],
+            "level": player_dict["level"],
+            "xp": player_dict["xp"],
+            "prestige_level": player_dict["prestige_level"],
+            "economic_class": player_dict["economic_class"],
+            "moral_class": player_dict["moral_class"],
+            "currencies": player_dict["currencies"],
+            "karma_points": player_dict["karma_points"],
+            "traits": player_dict["traits"],
+            "meta_traits": player_dict["meta_traits"],
+            "visibility": player_dict["visibility"],
+            "stats": player_dict["stats"],
+            "online": player_dict["online"],
+            "last_login": player_dict.get("last_login")
+        }
+    
+    async def update_profile(self, player_id: str, update_data: any) -> Dict:
+        """Update player profile."""
+        update_dict = {}
+        
+        if hasattr(update_data, 'economic_class') and update_data.economic_class:
+            update_dict["economic_class"] = update_data.economic_class
+        if hasattr(update_data, 'moral_class') and update_data.moral_class:
+            update_dict["moral_class"] = update_data.moral_class
+        
+        if not update_dict:
+            raise HTTPException(status_code=400, detail="No valid updates provided")
+        
+        await self.collection.update_one(
+            {"_id": ObjectId(player_id)},
+            {"$set": update_dict}
+        )
+        
+        return await self.get_full_profile(player_id)
+    
+    async def get_player_stats(self, player_id: str) -> Dict:
+        """Get player statistics."""
+        player_dict = await self.collection.find_one({"_id": ObjectId(player_id)})
+        if not player_dict:
+            raise HTTPException(status_code=404, detail="Player not found")
+        
+        # Convert ObjectId to string
+        player_dict["_id"] = str(player_dict["_id"])
+        
+        return {
+            "id": player_dict["_id"],
+            "username": player_dict["username"],
+            "level": player_dict["level"],
+            "xp": player_dict["xp"],
+            "stats": player_dict["stats"],
+            "total_karma": player_dict["karma_points"],
+            "rank": None  # Will be calculated later
+        }
