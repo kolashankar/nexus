@@ -276,7 +276,6 @@ class CombatAbilitiesService:
         cooldown_until = ability_cooldowns[ability_id]
         
         if isinstance(cooldown_until, str):
-            from datetime import datetime
             cooldown_until = datetime.fromisoformat(cooldown_until)
         
         return datetime.utcnow() > cooldown_until
