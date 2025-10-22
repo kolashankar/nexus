@@ -21,6 +21,10 @@ from api.v1.achievements.router import router as achievements_router
 from api.v1.player.prestige.router import router as prestige_router
 from api.v1.player.legacy.router import router as legacy_router
 
+# Phase 5: Social & Guilds routers
+from api.v1.guilds import router as guilds_router
+from api.v1.social import router as social_router
+
 from api.websocket.handlers import websocket_endpoint
 from core.database import Database
 from core.redis import redis_manager
