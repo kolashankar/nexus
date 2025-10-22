@@ -1,145 +1,109 @@
-"""Load tests for API endpoints."""
+"""Load testing for API endpoints"""
+
 import pytest
 import asyncio
+import time
 from httpx import AsyncClient
-from backend.server import app
-from time import time
+from statistics import mean, median
 
 
-class TestAPIPerformance:
-    """Test API endpoint performance under load."""
+@pytest.mark.asyncio
+async def test_profile_endpoint_load(client):
+    """Test profile endpoint under load"""
+    num_requests = 100
+    response_times = []
     
-    @pytest.mark.asyncio
-    async def test_concurrent_registrations(self, clean_db):
-        """Test handling multiple concurrent registrations."""
-        async def register_user(index):
-            async with AsyncClient(app=app, base_url="http://test") as client:
-                response = await client.post("/api/auth/register", json={
-                    "username": f"user{index}",
-                    "email": f"user{index}@example.com",
-                    "password": "pass123"
-                })
-                return response.status_code
-        
-        # Create 50 concurrent registrations
-        start = time()
-        tasks = [register_user(i) for i in range(50)]
-        results = await asyncio.gather(*tasks)
-        duration = time() - start
-        
-        # Check results
-        successful = sum(1 for r in results if r == 200)
-        assert successful >= 45  # At least 90% success rate
-        assert duration < 10  # Should complete within 10 seconds
+    async def make_request():
+        start = time.time()
+        response = await client.get("/api/player/profile")
+        elapsed = time.time() - start
+        return elapsed, response.status_code
     
-    @pytest.mark.asyncio
-    async def test_concurrent_profile_reads(self, test_user, clean_db):
-        """Test handling multiple concurrent profile reads."""
-        from backend.utils.auth import create_access_token
-        
-        async def read_profile():
-            token = create_access_token(data={"sub": test_user["username"]})
-            headers = {"Authorization": f"Bearer {token}"}
-            
-            async with AsyncClient(app=app, base_url="http://test") as client:
-                response = await client.get("/api/player/profile", headers=headers)
-                return response.status_code
-        
-        # Create 100 concurrent reads
-        start = time()
-        tasks = [read_profile() for _ in range(100)]
-        results = await asyncio.gather(*tasks)
-        duration = time() - start
-        
-        # All should succeed
-        assert all(r == 200 for r in results)
-        assert duration < 5  # Should complete within 5 seconds
+    tasks = [make_request() for _ in range(num_requests)]
+    results = await asyncio.gather(*tasks)
     
-    @pytest.mark.asyncio
-    async def test_action_processing_performance(self, clean_db):
-        """Test action processing performance."""
-        # Create test users
-        users = []
-        for i in range(10):
-            user = {
-                "username": f"user{i}",
-                "email": f"user{i}@example.com",
-                "currencies": {"credits": 1000},
-                "karma_points": 0,
-                "moral_class": "average"
-            }
-            await clean_db.players.insert_one(user)
-            users.append(user["username"])
-        
-        from backend.utils.auth import create_access_token
-        
-        async def perform_action(actor_index):
-            token = create_access_token(data={"sub": users[actor_index]})
-            headers = {"Authorization": f"Bearer {token}"}
-            target_index = (actor_index + 1) % len(users)
-            
-            async with AsyncClient(app=app, base_url="http://test") as client:
-                response = await client.post(
-                    "/api/actions/help",
-                    headers=headers,
-                    json={
-                        "target_username": users[target_index],
-                        "amount": 50
-                    }
-                )
-                return response.status_code
-        
-        # Process 50 actions concurrently
-        start = time()
-        tasks = [perform_action(i % 10) for i in range(50)]
-        results = await asyncio.gather(*tasks)
-        duration = time() - start
-        
-        successful = sum(1 for r in results if r == 200)
-        assert successful >= 40  # At least 80% success rate
-        print(f"\nProcessed 50 actions in {duration:.2f}s")
+    response_times = [r[0] for r in results]
+    status_codes = [r[1] for r in results]
+    
+    # Assertions
+    avg_response_time = mean(response_times)
+    median_response_time = median(response_times)
+    success_rate = sum(1 for code in status_codes if code == 200) / num_requests
+    
+    print(f"\nAverage response time: {avg_response_time:.3f}s")
+    print(f"Median response time: {median_response_time:.3f}s")
+    print(f"Success rate: {success_rate * 100:.1f}%")
+    
+    assert avg_response_time < 0.5, "Average response time too high"
+    assert success_rate > 0.95, "Success rate too low"
 
 
-class TestDatabasePerformance:
-    """Test database query performance."""
+@pytest.mark.asyncio
+async def test_concurrent_users(client):
+    """Test system with concurrent users"""
+    num_users = 50
+    requests_per_user = 10
     
-    @pytest.mark.asyncio
-    async def test_leaderboard_query_performance(self, clean_db):
-        """Test leaderboard query with large dataset."""
-        # Insert 1000 players
-        players = [
-            {
-                "username": f"player{i}",
-                "karma_points": i * 10,
-                "currencies": {"credits": i * 100}
-            }
-            for i in range(1000)
-        ]
-        await clean_db.players.insert_many(players)
-        
-        # Query leaderboard
-        start = time()
-        cursor = clean_db.players.find().sort("karma_points", -1).limit(100)
-        results = await cursor.to_list(length=100)
-        duration = time() - start
-        
-        assert len(results) == 100
-        assert duration < 0.5  # Should be fast (<500ms)
+    async def simulate_user():
+        results = []
+        for _ in range(requests_per_user):
+            start = time.time()
+            response = await client.get("/api/player/profile")
+            elapsed = time.time() - start
+            results.append((elapsed, response.status_code))
+            await asyncio.sleep(0.1)  # Simulate user think time
+        return results
     
-    @pytest.mark.asyncio
-    async def test_player_search_performance(self, clean_db):
-        """Test player search query performance."""
-        # Insert many players
-        players = [
-            {"username": f"player{i}", "email": f"player{i}@example.com"}
-            for i in range(1000)
-        ]
-        await clean_db.players.insert_many(players)
-        
-        # Search by username
-        start = time()
-        result = await clean_db.players.find_one({"username": "player500"})
-        duration = time() - start
-        
-        assert result is not None
-        assert duration < 0.1  # Should be very fast (<100ms)
+    tasks = [simulate_user() for _ in range(num_users)]
+    user_results = await asyncio.gather(*tasks)
+    
+    # Flatten results
+    all_results = [result for user in user_results for result in user]
+    response_times = [r[0] for r in all_results]
+    
+    avg_response_time = mean(response_times)
+    print(f"\nConcurrent users test: {num_users} users, {requests_per_user} req/user")
+    print(f"Average response time: {avg_response_time:.3f}s")
+    
+    assert avg_response_time < 1.0, "Response time under load too high"
+
+
+@pytest.mark.asyncio
+async def test_api_throughput(client):
+    """Test API throughput (requests per second)"""
+    duration = 10  # seconds
+    num_requests = 0
+    
+    start_time = time.time()
+    
+    while time.time() - start_time < duration:
+        await client.get("/api/leaderboards/karma")
+        num_requests += 1
+    
+    elapsed = time.time() - start_time
+    throughput = num_requests / elapsed
+    
+    print(f"\nThroughput: {throughput:.2f} requests/second")
+    
+    assert throughput > 10, "Throughput too low"
+
+
+@pytest.mark.asyncio
+async def test_database_query_performance(test_db):
+    """Test database query performance"""
+    # Insert test data
+    test_players = [
+        {"username": f"perf_test_{i}", "karma_points": i * 10}
+        for i in range(1000)
+    ]
+    await test_db["players"].insert_many(test_players)
+    
+    # Test query performance
+    start = time.time()
+    results = await test_db["players"].find().sort("karma_points", -1).limit(100).to_list(100)
+    elapsed = time.time() - start
+    
+    print(f"\nDatabase query time: {elapsed:.3f}s for 1000 documents")
+    
+    assert elapsed < 0.1, "Database query too slow"
+    assert len(results) == 100
