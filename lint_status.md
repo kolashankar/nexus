@@ -57,20 +57,23 @@
 
 ### Summary
 - **Total Files**: ~300 files
-- **Files with Issues**: 8 files
-- **Total Issues**: 23 issues
-- **Critical Issues**: 0
-- **Warnings**: 23
-- **Auto-fixable**: 18 issues
+- **Files with Issues**: ~100 files (mostly warnings)
+- **Total Issues**: 424 issues
+- **Critical Errors**: 22 errors (primarily in test files)
+- **Warnings**: 402 warnings (non-blocking)
+- **Auto-fixable**: 1 issue fixed
 
 ### Issue Breakdown
 
-| Category | Count | Auto-Fix |
-|----------|-------|----------|
-| **Missing Dependencies (react-hooks/exhaustive-deps)** | 12 | ❌ No |
-| **Unused Variables** | 6 | ✅ Yes |
-| **Console Statements** | 3 | ❌ No |
-| **Any Type Usage** | 2 | ❌ No |
+| Category | Count | Status | Blocking? |
+|----------|-------|--------|-----------|
+| **Test File Errors (msw, jest missing)** | ~120 | ⚠️ Test infra | ❌ No (dev only) |
+| **Any Type Usage** | ~180 | ⚠️ Warning | ❌ No |
+| **Unused Variables** | ~50 | ⚠️ Warning | ❌ No |
+| **Missing Dependencies (react-hooks)** | ~30 | ⚠️ Warning | ❌ No |
+| **Console Statements** | ~15 | ⚠️ Warning | ❌ No (dev mode) |
+| **Unescaped Entities** | ~10 | ⚠️ Warning | ❌ No |
+| **TypeScript Declaration Issues** | ~19 | ⚠️ Warning | ❌ No |
 
 ### Files with Issues
 
