@@ -57,6 +57,13 @@ api_router.include_router(actions_router, prefix="/actions", tags=["actions"])
 api_router.include_router(player_router, prefix="/player", tags=["player"])
 api_router.include_router(karma_router, prefix="/karma", tags=["karma"])
 
+# Phase 4: Progression routers
+api_router.include_router(skill_trees_router, prefix="/player", tags=["progression"])
+api_router.include_router(superpowers_router, prefix="/player", tags=["progression"])
+api_router.include_router(achievements_router, prefix="", tags=["progression"])
+api_router.include_router(prestige_router, prefix="/player", tags=["progression"])
+api_router.include_router(legacy_router, prefix="/player", tags=["progression"])
+
 # AI routers
 api_router.include_router(karma_arbiter_router, prefix="/v1/ai", tags=["AI"])
 api_router.include_router(oracle_router, prefix="/v1/ai", tags=["AI"])
