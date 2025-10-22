@@ -2,8 +2,10 @@
  * Analytics and tracking utilities
  */
 
+
+
 class Analytics {
-  constructor() {
+  private enabled) {
     this.enabled = process.env.NODE_ENV === 'production';
     this.events = [];
   }
@@ -11,170 +13,189 @@ class Analytics {
   /**
    * Track a page view
    */
-  trackPageView(path, title) {
+  trackPageView(path, title?: string){
     if (!this.enabled) {
-      console.log('[Analytics] Page view:', path, title);
+      console.log('[Analytics] Page view, path, title);
       return;
     }
 
     // Google Analytics
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('config', 'GA_MEASUREMENT_ID', {
-        page_path: path,
-        page_title: title
-      });
+    if (typeof window !== 'undefined' && (window).gtag) {
+      (window).gtag('config', 'GA_MEASUREMENT_ID', {
+        page_path,
+        page_title);
     }
   }
 
   /**
    * Track a custom event
    */
-  trackEvent(event) {
+  trackEvent(event){
     if (!this.enabled) {
-      console.log('[Analytics] Event:', event);
+      console.log('[Analytics] Event, event);
       return;
     }
 
     this.events.push(event);
 
     // Google Analytics
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', event.action, {
-        event_category: event.category,
-        event_label: event.label,
-        value: event.value
-      });
+    if (typeof window !== 'undefined' && (window).gtag) {
+      (window).gtag('event', event.action, {
+        event_category,
+        event_label,
+        value);
     }
   }
 
   /**
    * Track user actions
    */
-  trackUserAction(action, category = 'User', label, value) {
+  trackUserAction(
+    action,
+    category: string = 'User',
+    label?: string,
+    value?: number
+  ){
     this.trackEvent({ category, action, label, value });
   }
 
   /**
    * Track quest events
    */
-  trackQuestEvent(action, questId, questType) {
+  trackQuestEvent(
+    action,
+    questId,
+    questType?: string
+  ){
     this.trackEvent({
-      category: 'Quest',
+      category,
       action,
-      label: questType || questId
-    });
+      label);
   }
 
   /**
    * Track combat events
    */
-  trackCombatEvent(action, opponentId) {
+  trackCombatEvent(
+    action,
+    opponentId?: string
+  ){
     this.trackEvent({
-      category: 'Combat',
+      category,
       action,
-      label: opponentId
-    });
+      label);
   }
 
   /**
    * Track guild events
    */
-  trackGuildEvent(action, guildId) {
+  trackGuildEvent(
+    action,
+    guildId?: string
+  ){
     this.trackEvent({
-      category: 'Guild',
+      category,
       action,
-      label: guildId
-    });
+      label);
   }
 
   /**
    * Track marketplace transactions
    */
-  trackTransaction(action, itemType, amount) {
+  trackTransaction(
+    action,
+    itemType,
+    amount){
     this.trackEvent({
-      category: 'Marketplace',
+      category,
       action,
-      label: itemType,
-      value: amount
-    });
+      label,
+      value);
   }
 
   /**
    * Track errors
    */
-  trackError(error, category = 'Error', fatal = false) {
+  trackError(
+    error,
+    category: string = 'Error',
+    fatal: boolean = false
+  ){
     this.trackEvent({
       category,
-      action: fatal ? 'Fatal Error' : 'Error',
-      label: error.message
-    });
+      action,
+      label);
 
     // Send to error tracking service
-    if (typeof window !== 'undefined' && window.Sentry) {
-      window.Sentry.captureException(error);
+    if (typeof window !== 'undefined' && (window).Sentry) {
+      (window).Sentry.captureException(error);
     }
   }
 
   /**
    * Track performance metrics
    */
-  trackPerformance(metric, value) {
+  trackPerformance(metric, value){
     if (!this.enabled) {
       console.log(`[Analytics] Performance - ${metric}:`, value);
       return;
     }
 
     this.trackEvent({
-      category: 'Performance',
-      action: metric,
-      value: Math.round(value)
+      category,
+      action,
+      value)
     });
   }
 
   /**
    * Track user timing
    */
-  trackTiming(category, variable, time, label) {
+  trackTiming(
+    category,
+    variable,
+    time,
+    label?: string
+  ){
     if (!this.enabled) {
       console.log(`[Analytics] Timing - ${category}.${variable}:`, time);
       return;
     }
 
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'timing_complete', {
-        name: variable,
-        value: time,
-        event_category: category,
-        event_label: label
-      });
+    if (typeof window !== 'undefined' && (window).gtag) {
+      (window).gtag('event', 'timing_complete', {
+        name,
+        value,
+        event_category,
+        event_label);
     }
   }
 
   /**
    * Set user properties
    */
-  setUserProperties(properties) {
+  setUserProperties(properties){
     if (!this.enabled) {
-      console.log('[Analytics] User properties:', properties);
+      console.log('[Analytics] User properties, properties);
       return;
     }
 
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('set', 'user_properties', properties);
+    if (typeof window !== 'undefined' && (window).gtag) {
+      (window).gtag('set', 'user_properties', properties);
     }
   }
 
   /**
    * Get tracked events (for debugging)
    */
-  getEvents() {
+  getEvents(){
     return this.events;
   }
 
   /**
    * Clear tracked events
    */
-  clearEvents() {
+  clearEvents(){
     this.events = [];
   }
 }
@@ -187,14 +208,14 @@ export const analytics = new Analytics();
  */
 export function useAnalytics() {
   return {
-    trackPageView: analytics.trackPageView.bind(analytics),
-    trackEvent: analytics.trackEvent.bind(analytics),
-    trackUserAction: analytics.trackUserAction.bind(analytics),
-    trackQuestEvent: analytics.trackQuestEvent.bind(analytics),
-    trackCombatEvent: analytics.trackCombatEvent.bind(analytics),
-    trackGuildEvent: analytics.trackGuildEvent.bind(analytics),
-    trackTransaction: analytics.trackTransaction.bind(analytics),
-    trackError: analytics.trackError.bind(analytics),
-    trackPerformance: analytics.trackPerformance.bind(analytics)
+    trackPageView),
+    trackEvent),
+    trackUserAction),
+    trackQuestEvent),
+    trackCombatEvent),
+    trackGuildEvent),
+    trackTransaction),
+    trackError),
+    trackPerformance)
   };
 }

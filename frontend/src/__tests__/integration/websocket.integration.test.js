@@ -1,116 +1,140 @@
 /**
  * Integration tests for WebSocket connection
  */
-import { websocketService } from '../../services/websocket/websocketService';
+
+import websocketService from '../../services/websocket/websocketService';
 import WS from 'jest-websocket-mock';
-let server;
-beforeEach(() => {
-    server = new WS('ws://localhost:8001/ws');
+
+let server) => {
+  server = new WS('ws);
 });
+
 afterEach(() => {
-    WS.clean();
+  WS.clean();
 });
+
 describe('WebSocket Integration Tests', () => {
-    describe('Connection', () => {
-        test('connects to WebSocket server', async () => {
-            websocketService.connect('test-token');
-            await server.connected;
-            expect(server).toHaveReceivedMessages([{
-                    type: 'authenticate',
-                    token: 'test-token'
-                }]);
-        });
-        test('reconnects on disconnect', async () => {
-            websocketService.connect('test-token');
-            await server.connected;
-            server.close();
-            // Should attempt reconnect
-            await new Promise(resolve => setTimeout(resolve, 1000));
-        });
+  describe('Connection', () => {
+    test('connects to WebSocket server', async () => {
+      websocketService.connect('test-token');
+      await server.connected;
+      
+      expect(server).toHaveReceivedMessages([{
+        type,
+        token);
     });
-    describe('Message Handling', () => {
-        test('receives player_joined event', async () => {
-            const handler = jest.fn();
-            websocketService.on('player_joined', handler);
-            websocketService.connect('test-token');
-            await server.connected;
-            server.send(JSON.stringify({
-                type: 'player_joined',
-                data: { username: 'NewPlayer' }
-            }));
-            expect(handler).toHaveBeenCalledWith({ username: 'NewPlayer' });
-        });
-        test('receives karma_changed event', async () => {
-            const handler = jest.fn();
-            websocketService.on('karma_changed', handler);
-            websocketService.connect('test-token');
-            await server.connected;
-            server.send(JSON.stringify({
-                type: 'karma_changed',
-                data: { old_karma: 100, new_karma: 150 }
-            }));
-            expect(handler).toHaveBeenCalledWith({ old_karma: 100, new_karma: 150 });
-        });
+    
+    test('reconnects on disconnect', async () => {
+      websocketService.connect('test-token');
+      await server.connected;
+      
+      server.close();
+      
+      // Should attempt reconnect
+      await new Promise(resolve => setTimeout(resolve, 1000));
     });
-    describe('Sending Messages', () => {
-        test('sends chat message', async () => {
-            websocketService.connect('test-token');
-            await server.connected;
-            websocketService.sendMessage('chat_message', {
-                message: 'Hello world',
-                room: 'global'
-            });
-            await expect(server).toReceiveMessage(JSON.stringify({
-                type: 'chat_message',
-                data: { message: 'Hello world', room: 'global' }
-            }));
-        });
-        test('sends location update', async () => {
-            websocketService.connect('test-token');
-            await server.connected;
-            websocketService.sendMessage('location_update', {
-                x: 100,
-                y: 200,
-                z: 0
-            });
-            await expect(server).toReceiveMessage(JSON.stringify({
-                type: 'location_update',
-                data: { x: 100, y: 200, z: 0 }
-            }));
-        });
+  });
+  
+  describe('Message Handling', () => {
+    test('receives player_joined event', async () => {
+      const handler = jest.fn();
+      websocketService.on('player_joined', handler);
+      
+      websocketService.connect('test-token');
+      await server.connected;
+      
+      server.send(JSON.stringify({
+        type,
+        data));
+      
+      expect(handler).toHaveBeenCalledWith({ username);
     });
-    describe('Room Management', () => {
-        test('joins room', async () => {
-            websocketService.connect('test-token');
-            await server.connected;
-            websocketService.joinRoom('guild-123');
-            await expect(server).toReceiveMessage(JSON.stringify({
-                type: 'join_room',
-                data: { room: 'guild-123' }
-            }));
-        });
-        test('leaves room', async () => {
-            websocketService.connect('test-token');
-            await server.connected;
-            websocketService.leaveRoom('guild-123');
-            await expect(server).toReceiveMessage(JSON.stringify({
-                type: 'leave_room',
-                data: { room: 'guild-123' }
-            }));
-        });
+    
+    test('receives karma_changed event', async () => {
+      const handler = jest.fn();
+      websocketService.on('karma_changed', handler);
+      
+      websocketService.connect('test-token');
+      await server.connected;
+      
+      server.send(JSON.stringify({
+        type,
+        data, new_karma));
+      
+      expect(handler).toHaveBeenCalledWith({ old_karma, new_karma);
     });
-    describe('Error Handling', () => {
-        test('handles connection error', async () => {
-            const errorHandler = jest.fn();
-            websocketService.on('error', errorHandler);
-            server.error();
-            expect(errorHandler).toHaveBeenCalled();
-        });
-        test('handles malformed messages', async () => {
-            websocketService.connect('test-token');
-            await server.connected;
-            server.send('invalid json');
-            // Should not crash
-        });
+  });
+  
+  describe('Sending Messages', () => {
+    test('sends chat message', async () => {
+      websocketService.connect('test-token');
+      await server.connected;
+      
+      websocketService.sendMessage('chat_message', {
+        message,
+        room);
+      
+      await expect(server).toReceiveMessage(JSON.stringify({
+        type,
+        data, room));
     });
+    
+    test('sends location update', async () => {
+      websocketService.connect('test-token');
+      await server.connected;
+      
+      websocketService.sendMessage('location_update', {
+        x,
+        y,
+        z);
+      
+      await expect(server).toReceiveMessage(JSON.stringify({
+        type,
+        data, y, z));
+    });
+  });
+  
+  describe('Room Management', () => {
+    test('joins room', async () => {
+      websocketService.connect('test-token');
+      await server.connected;
+      
+      websocketService.joinRoom('guild-123');
+      
+      await expect(server).toReceiveMessage(JSON.stringify({
+        type,
+        data));
+    });
+    
+    test('leaves room', async () => {
+      websocketService.connect('test-token');
+      await server.connected;
+      
+      websocketService.leaveRoom('guild-123');
+      
+      await expect(server).toReceiveMessage(JSON.stringify({
+        type,
+        data));
+    });
+  });
+  
+  describe('Error Handling', () => {
+    test('handles connection error', async () => {
+      const errorHandler = jest.fn();
+      websocketService.on('error', errorHandler);
+      
+      server.error();
+      
+      expect(errorHandler).toHaveBeenCalled();
+    });
+    
+    test('handles malformed messages', async () => {
+      websocketService.connect('test-token');
+      await server.connected;
+      
+      server.send('invalid json');
+      
+      // Should not crash
+    });
+  });
 });

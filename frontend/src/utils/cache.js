@@ -2,24 +2,33 @@
  * Client-side caching utilities
  */
 
+interface CacheItem {
+  data;
+  timestamp;
+  expiresAt;
+}
+
 class Cache {
-  constructor(defaultTTL = 5 * 60 * 1000) { // 5 minutes default
+  private cache;
+  private defaultTTL;
+
+  constructor(defaultTTL: number = 5 * 60 * 1000) { // 5 minutes default
     this.cache = new Map();
     this.defaultTTL = defaultTTL;
   }
 
-  set(key, data, ttl) {
+  set(key, data, ttl?: number){
     const now = Date.now();
     const expiresAt = now + (ttl || this.defaultTTL);
 
     this.cache.set(key, {
       data,
-      timestamp: now,
+      timestamp,
       expiresAt
     });
   }
 
-  get(key) {
+  get(key){
     const item = this.cache.get(key);
 
     if (!item) {
@@ -35,7 +44,7 @@ class Cache {
     return item.data;
   }
 
-  has(key) {
+  has(key){
     const item = this.cache.get(key);
     
     if (!item) {
@@ -51,18 +60,18 @@ class Cache {
     return true;
   }
 
-  delete(key) {
+  delete(key){
     this.cache.delete(key);
   }
 
-  clear() {
+  clear(){
     this.cache.clear();
   }
 
   // Clean up expired entries
-  cleanup() {
+  cleanup(){
     const now = Date.now();
-    const keysToDelete = [];
+    const keysToDelete: string[] = [];
 
     this.cache.forEach((item, key) => {
       if (now > item.expiresAt) {
@@ -73,7 +82,7 @@ class Cache {
     keysToDelete.forEach(key => this.cache.delete(key));
   }
 
-  size() {
+  size(){
     this.cleanup(); // Clean before counting
     return this.cache.size;
   }
@@ -86,25 +95,27 @@ export const cache = new Cache();
  * Local storage cache with expiration
  */
 export class LocalStorageCache {
-  constructor(prefix = 'app_cache_') {
+  protected prefix;
+
+  constructor(prefix: string = 'app_cache_') {
     this.prefix = prefix;
   }
 
-  set(key, data, ttl = 5 * 60 * 1000) {
-    const item = {
+  set(key, data, ttl: number = 5 * 60 * 1000){
+    const item: CacheItem = {
       data,
-      timestamp: Date.now(),
-      expiresAt: Date.now() + ttl
+      timestamp),
+      expiresAt) + ttl
     };
 
     try {
       localStorage.setItem(this.prefix + key, JSON.stringify(item));
     } catch (error) {
-      console.warn('LocalStorage cache set failed:', error);
+      console.warn('LocalStorage cache set failed, error);
     }
   }
 
-  get(key) {
+  get(key){
     try {
       const itemStr = localStorage.getItem(this.prefix + key);
       
@@ -112,7 +123,7 @@ export class LocalStorageCache {
         return null;
       }
 
-      const item = JSON.parse(itemStr);
+      const item: CacheItem = JSON.parse(itemStr);
 
       // Check if expired
       if (Date.now() > item.expiresAt) {
@@ -122,31 +133,25 @@ export class LocalStorageCache {
 
       return item.data;
     } catch (error) {
-      console.warn('LocalStorage cache get failed:', error);
+      console.warn('LocalStorage cache get failed, error);
       return null;
     }
   }
 
-  delete(key) {
+  delete(key){
     try {
       localStorage.removeItem(this.prefix + key);
     } catch (error) {
-      console.warn('LocalStorage cache delete failed:', error);
+      console.warn('LocalStorage cache delete failed, error);
     }
   }
 
-  clear() {
+  clear(){
     try {
-      const keys = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key?.startsWith(this.prefix)) {
-          keys.push(key);
-        }
-      }
-      keys.forEach(key => localStorage.removeItem(key));
+      const keys: string[] = [];
+      for (let i = 0; i  localStorage.removeItem(key));
     } catch (error) {
-      console.warn('LocalStorage cache clear failed:', error);
+      console.warn('LocalStorage cache clear failed, error);
     }
   }
 }
@@ -157,21 +162,21 @@ export const localCache = new LocalStorageCache();
  * Session storage cache
  */
 export class SessionStorageCache extends LocalStorageCache {
-  set(key, data, ttl = 5 * 60 * 1000) {
-    const item = {
+  set(key, data, ttl: number = 5 * 60 * 1000){
+    const item: CacheItem = {
       data,
-      timestamp: Date.now(),
-      expiresAt: Date.now() + ttl
+      timestamp),
+      expiresAt) + ttl
     };
 
     try {
       sessionStorage.setItem(this.prefix + key, JSON.stringify(item));
     } catch (error) {
-      console.warn('SessionStorage cache set failed:', error);
+      console.warn('SessionStorage cache set failed, error);
     }
   }
 
-  get(key) {
+  get(key){
     try {
       const itemStr = sessionStorage.getItem(this.prefix + key);
       
@@ -179,7 +184,7 @@ export class SessionStorageCache extends LocalStorageCache {
         return null;
       }
 
-      const item = JSON.parse(itemStr);
+      const item: CacheItem = JSON.parse(itemStr);
 
       if (Date.now() > item.expiresAt) {
         this.delete(key);
@@ -188,16 +193,16 @@ export class SessionStorageCache extends LocalStorageCache {
 
       return item.data;
     } catch (error) {
-      console.warn('SessionStorage cache get failed:', error);
+      console.warn('SessionStorage cache get failed, error);
       return null;
     }
   }
 
-  delete(key) {
+  delete(key){
     try {
       sessionStorage.removeItem(this.prefix + key);
     } catch (error) {
-      console.warn('SessionStorage cache delete failed:', error);
+      console.warn('SessionStorage cache delete failed, error);
     }
   }
 }

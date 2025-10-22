@@ -1,23 +1,71 @@
+/**
+ * Karma service for karma system API.
+ */
+
 import { apiClient } from '../api/client';
+
+
+
+
+
+/**
+ * Get current karma score.
+ */
+export const getKarmaScore = async ()=> {
+  const response = await apiClient.get('/api/karma/score');
+  return response.data;
+};
+
+/**
+ * Get karma history.
+ */
+export const getKarmaHistory = async (limit: number = 50)=> {
+  const response = await apiClient.get('/api/karma/history', {
+    params);
+  return response.data;
+};
+
+/**
+ * Get karma events (triggered events).
+ */
+export const getKarmaEvents = async ()=> {
+  const response = await apiClient.get('/api/karma/events');
+  return response.data;
+};
+
+/**
+ * Respond to a karma event.
+ */
+export const respondToKarmaEvent = async (
+  eventId,
+  response)=> {
+  const res = await apiClient.post(`/api/karma/events/${eventId}/respond`, {
+    response
+  });
+  return res.data;
+};
+
+/**
+ * Get world karma state.
+ */
+export const getWorldKarmaState = async ()=> {
+  const response = await apiClient.get('/api/karma/world-state');
+  return response.data;
+};
+
+/**
+ * Get collective karma.
+ */
+export const getCollectiveKarma = async ()=> {
+  const response = await apiClient.get('/api/karma/collective');
+  return response.data;
+};
+
 export const karmaService = {
-    async getKarmaScore() {
-        const response = await apiClient.get('/api/karma/score');
-        return response.data;
-    },
-    async getKarmaHistory(limit = 50) {
-        const response = await apiClient.get(`/api/karma/history?limit=${limit}`);
-        return response.data;
-    },
-    async getKarmaEvents() {
-        const response = await apiClient.get('/api/karma/events');
-        return response.data;
-    },
-    async getWorldState() {
-        const response = await apiClient.get('/api/karma/world-state');
-        return response.data;
-    },
-    async getCollectiveKarma() {
-        const response = await apiClient.get('/api/karma/collective');
-        return response.data;
-    }
+  getKarmaScore,
+  getKarmaHistory,
+  getKarmaEvents,
+  respondToKarmaEvent,
+  getWorldKarmaState,
+  getCollectiveKarma
 };

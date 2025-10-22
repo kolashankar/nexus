@@ -5,7 +5,7 @@
 /**
  * Email validation
  */
-export function isValidEmail(email) {
+export function isValidEmail(email){
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
@@ -13,7 +13,7 @@ export function isValidEmail(email) {
 /**
  * Username validation
  */
-export function isValidUsername(username) {
+export function isValidUsername(username){
   // 3-20 characters, alphanumeric and underscores only
   const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
   return usernameRegex.test(username);
@@ -21,59 +21,24 @@ export function isValidUsername(username) {
 
 /**
  * Password strength validation
- * @param {string} password
- * @returns {{isValid: boolean, strength: 'weak'|'medium'|'strong', feedback: string[]}}
  */
-export function validatePasswordStrength(password) {
-  const feedback = [];
+export function validatePasswordStrength(password){
+  isValid;
+  strength;
+  feedback;
+} {
+  const feedback: string[] = [];
   let score = 0;
 
   // Length check
-  if (password.length < 8) {
-    feedback.push('Password should be at least 8 characters long');
-  } else {
-    score++;
-  }
-
-  // Uppercase check
-  if (!/[A-Z]/.test(password)) {
-    feedback.push('Include at least one uppercase letter');
-  } else {
-    score++;
-  }
-
-  // Lowercase check
-  if (!/[a-z]/.test(password)) {
-    feedback.push('Include at least one lowercase letter');
-  } else {
-    score++;
-  }
-
-  // Number check
-  if (!/\d/.test(password)) {
-    feedback.push('Include at least one number');
-  } else {
-    score++;
-  }
-
-  // Special character check
-  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+  if (password.length ]/.test(password)) {
     feedback.push('Include at least one special character');
   } else {
     score++;
   }
 
   let strength;
-  if (score <= 2) {
-    strength = 'weak';
-  } else if (score <= 4) {
-    strength = 'medium';
-  } else {
-    strength = 'strong';
-  }
-
-  return {
-    isValid: score >= 3,
+  if (score = 3,
     strength,
     feedback
   };
@@ -82,16 +47,11 @@ export function validatePasswordStrength(password) {
 /**
  * Number range validation
  */
-export function isInRange(value, min, max) {
-  return value >= min && value <= max;
-}
-
-/**
- * Required field validation
- */
-export function isRequired(value) {
-  if (typeof value === 'string') {
-    return value.trim().length > 0;
+export function isInRange(
+  value,
+  min,
+  max){
+  return value >= min && value  0;
   }
   return value !== null && value !== undefined;
 }
@@ -99,7 +59,7 @@ export function isRequired(value) {
 /**
  * URL validation
  */
-export function isValidUrl(url) {
+export function isValidUrl(url){
   try {
     new URL(url);
     return true;
@@ -111,7 +71,7 @@ export function isValidUrl(url) {
 /**
  * Credit card number validation (Luhn algorithm)
  */
-export function isValidCreditCard(cardNumber) {
+export function isValidCreditCard(cardNumber){
   const cleanNumber = cardNumber.replace(/\s/g, '');
   
   if (!/^\d{13,19}$/.test(cleanNumber)) {
@@ -141,7 +101,9 @@ export function isValidCreditCard(cardNumber) {
 /**
  * Form validation helper
  */
-export function validateForm(values, rules) {
+export function validateForm>(
+  values,
+  rules){
   const errors = {};
 
   for (const field in rules) {
@@ -164,35 +126,30 @@ export function validateForm(values, rules) {
  * Common validation rules
  */
 export const validationRules = {
-  required: (message = 'This field is required') => (value) => {
+  required: (message: string = 'This field is required') => (value) => {
     return isRequired(value) ? null : message;
   },
 
-  email: (message = 'Invalid email address') => (value) => {
+  email: (message: string = 'Invalid email address') => (value) => {
     return isValidEmail(value) ? null : message;
   },
 
-  minLength: (min, message) => (value) => {
+  minLength, message?: string) => (value) => {
     return value.length >= min
       ? null
       : message || `Minimum ${min} characters required`;
   },
 
-  maxLength: (max, message) => (value) => {
-    return value.length <= max
-      ? null
-      : message || `Maximum ${max} characters allowed`;
-  },
-
-  pattern: (regex, message) => (value) => {
+  maxLength, message?: string) => (value) => {
+    return value.length  (value) => {
     return regex.test(value) ? null : message;
   },
 
-  numeric: (message = 'Must be a number') => (value) => {
+  numeric: (message: string = 'Must be a number') => (value) => {
     return !isNaN(Number(value)) ? null : message;
   },
 
-  range: (min, max, message) => (value) => {
+  range, max, message?: string) => (value) => {
     return isInRange(value, min, max)
       ? null
       : message || `Value must be between ${min} and ${max}`;
