@@ -22,7 +22,7 @@ class QuestGeneratorTask:
             # Import here to avoid circular imports
             
             # Get all active players (logged in within last 7 days)
-            cutoff_date = datetime.utcnow() - timedelta(days=7)
+            # cutoff_date = datetime.utcnow() - timedelta(days=7)  # Unused for now - placeholder for future
             
             # This is a placeholder - actual implementation would query database
             # players = await db.players.find({"last_login": {"$gte": cutoff_date}}).to_list(length=100)
