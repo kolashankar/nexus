@@ -1,13 +1,6 @@
-"""World Management Services"""
+"""World services package."""
 
-from .state_manager import WorldStateManager
-from .event_manager import EventManager
-from .territory_manager import TerritoryManager
-from .collective_karma import CollectiveKarmaTracker
+from .events import WorldEventsService
+from .karma_tracker import GlobalKarmaTracker
 
-__all__ = [
-    "WorldStateManager",
-    "EventManager",
-    "TerritoryManager",
-    "CollectiveKarmaTracker"
-]
+__all__ = ['WorldEventsService', 'GlobalKarmaTracker']
