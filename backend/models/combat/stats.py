@@ -1,73 +1,91 @@
+"""Combat statistics model."""
+
+from datetime import datetime
+from typing import Dict, Any
 from pydantic import BaseModel, Field
-from typing import Dict, List
 
 
 class CombatStats(BaseModel):
-    """Combat statistics for a player"""
+    """Player combat statistics."""
     player_id: str
     
-    # Base stats (derived from traits)
-    hp: int = Field(default=100)
-    max_hp: int = Field(default=100)
-    attack: int = Field(default=10)
-    defense: int = Field(default=10)
-    speed: int = Field(default=10)
-    evasion: int = Field(default=5)
-    critical_chance: int = Field(default=5)
+    # Base combat stats (derived from traits)
+    hp: int
+    max_hp: int
+    attack: int
+    defense: int
+    evasion: int
+    crit_chance: float
     
-    # Combat metrics
+    # Combat history
     total_battles: int = 0
     wins: int = 0
     losses: int = 0
     draws: int = 0
+    fled: int = 0
     
-    # PvP stats
-    duel_wins: int = 0
-    duel_losses: int = 0
+    # PvP specific
+    pvp_wins: int = 0
+    pvp_losses: int = 0
+    pvp_rating: int = 1000  # Elo rating
+    
+    # Arena stats
     arena_wins: int = 0
     arena_losses: int = 0
-    ambush_success: int = 0
-    ambush_failed: int = 0
+    arena_rank: int = 0
+    arena_tier: str = "Bronze"
     
-    # Combat rating (Elo)
-    combat_rating: int = 1500
-    highest_rating: int = 1500
+    # Guild war stats
+    guild_war_kills: int = 0
+    guild_war_deaths: int = 0
+    territories_captured: int = 0
+    
+    # Damage stats
+    total_damage_dealt: int = 0
+    total_damage_taken: int = 0
+    highest_damage: int = 0
+    
+    # Ability usage
+    abilities_used: Dict[str, int] = Field(default_factory=dict)
+    
+    # Combat abilities unlocked
+    unlocked_abilities: list = Field(default_factory=list)
+    
+    # Achievements
+    combat_achievements: list = Field(default_factory=list)
     
     # Streak tracking
     current_win_streak: int = 0
     best_win_streak: int = 0
     
-    # Damage stats
-    total_damage_dealt: int = 0
-    total_damage_taken: int = 0
-    total_healing_done: int = 0
-    
-    # Abilities
-    abilities_used: Dict[str, int] = Field(default_factory=dict)
-    favorite_ability: str = ""
-    
-    # Special achievements
-    perfect_victories: int = 0  # Won without taking damage
-    comeback_victories: int = 0  # Won from < 20% HP
-    flawless_rounds: int = 0
-    
-    # Tournament stats
-    tournaments_entered: int = 0
-    tournaments_won: int = 0
-    tournament_finals: int = 0
+    last_battle: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
         json_schema_extra = {
             "example": {
-                "player_id": "550e8400-e29b-41d4-a716-446655440000",
+                "player_id": "player-123",
                 "hp": 100,
                 "max_hp": 100,
-                "attack": 15,
-                "defense": 12,
-                "speed": 14,
+                "attack": 50,
+                "defense": 30,
+                "evasion": 20,
+                "crit_chance": 0.15,
                 "total_battles": 50,
-                "wins": 32,
-                "losses": 18,
-                "combat_rating": 1650
+                "wins": 30,
+                "losses": 15,
+                "pvp_rating": 1200
             }
         }
+
+    def calculate_win_rate(self) -> float:
+        """Calculate win rate percentage."""
+        if self.total_battles == 0:
+            return 0.0
+        return (self.wins / self.total_battles) * 100
+
+    def update_rating(self, won: bool, opponent_rating: int, k_factor: int = 32):
+        """Update Elo rating after a match."""
+        expected = 1 / (1 + 10 ** ((opponent_rating - self.pvp_rating) / 400))
+        actual = 1.0 if won else 0.0
+        self.pvp_rating += int(k_factor * (actual - expected))

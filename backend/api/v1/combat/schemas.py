@@ -1,57 +1,76 @@
+"""Combat API schemas."""
+
 from pydantic import BaseModel, Field
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
 from datetime import datetime
 
 
 class ChallengeRequest(BaseModel):
-    """Request to challenge a player"""
-    attacker_id: str
-    defender_id: str
-    battle_type: str = "duel"  # duel, arena, ambush
+    """Request to challenge a player."""
+    target_id: str = Field(..., description="ID of player to challenge")
+    combat_type: str = Field(default="duel", description="Type of combat (duel, ambush, arena)")
 
 
 class ChallengeResponse(BaseModel):
-    """Response after sending challenge"""
-    battle_id: str
+    """Response for challenge creation."""
+    challenge_id: str
     status: str
     message: str
 
 
-class ActionRequest(BaseModel):
-    """Request to execute combat action"""
+class AcceptChallengeRequest(BaseModel):
+    """Request to accept a challenge."""
+    challenge_id: str = Field(..., description="ID of challenge to accept/decline")
+
+
+class CombatActionRequest(BaseModel):
+    """Request to perform a combat action."""
+    battle_id: str = Field(..., description="ID of the battle")
+    action_type: str = Field(..., description="Type of action (attack, defend, use_power, use_item, flee)")
+    target: Optional[str] = Field(None, description="Target of the action")
+    ability_id: Optional[str] = Field(None, description="ID of ability to use")
+
+
+class FleeRequest(BaseModel):
+    """Request to flee from combat."""
+    battle_id: str = Field(..., description="ID of the battle")
+
+
+class CombatantState(BaseModel):
+    """State of a combatant."""
+    player_id: str
+    username: str
+    hp: int
+    max_hp: int
+    action_points: int
+    max_action_points: int = 4
+    attack: int
+    defense: int
+    evasion: int
+    status_effects: List[Dict[str, Any]] = []
+    active_abilities: List[str] = []
+
+
+class CombatStateResponse(BaseModel):
+    """Current state of combat."""
     battle_id: str
-    actor_id: str
-    action_type: str  # attack, defend, use_power, use_item, flee
-    target_id: Optional[str] = None
-    ability_name: Optional[str] = None
-
-
-class ActionResponse(BaseModel):
-    """Response after action execution"""
-    success: bool
-    description: str
-    damage: Optional[int] = None
-    battle_status: str
-    winner_id: Optional[str] = None
-    rewards: Optional[Dict] = None
-
-
-class BattleStateResponse(BaseModel):
-    """Current battle state"""
-    battle_id: str
-    battle_type: str
-    status: str
+    status: str  # active, completed, fled
+    combat_type: str
     current_turn: int
-    active_participant_id: Optional[str] = None
-    participants: List[Dict]
-    winner_id: Optional[str] = None
+    current_actor: str
+    combatants: List[CombatantState]
+    combat_log: List[Dict[str, Any]]
+    winner: Optional[str] = None
+    started_at: datetime
+    ended_at: Optional[datetime] = None
 
 
-class BattleHistoryResponse(BaseModel):
-    """Battle history item"""
-    battle_id: str
-    battle_type: str
-    opponent_username: str
-    result: str  # won, lost, draw
-    ended_at: datetime
-    rewards: Dict
+class CombatResultSchema(BaseModel):
+    """Result of a combat action."""
+    success: bool
+    action_type: str
+    damage: Optional[int] = None
+    healing: Optional[int] = None
+    effects_applied: List[str] = []
+    message: str
+    combat_log_entry: Dict[str, Any]

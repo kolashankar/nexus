@@ -1,303 +1,377 @@
-from typing import Dict, List, Optional, Tuple
-from datetime import datetime
+"""Combat engine - main battle logic."""
+
+from datetime import datetime, timedelta
+from typing import Dict, Any, Optional, List
 import random
-from ...models.combat.battle import Battle, BattleParticipant, BattleAction, BattleTurn
-from ...models.combat.stats import CombatStats
-from .calculator import CombatCalculator
-from .abilities import AbilitySystem
-from .turn_manager import TurnManager
+from bson import ObjectId
+
+from backend.core.database import get_database
+from backend.models.combat.battle import Battle, CombatChallenge, Combatant, CombatLogEntry
+from backend.services.combat.calculator import CombatCalculator
+from backend.services.player.profile import PlayerProfileService
 
 
 class CombatEngine:
-    """
-    Main combat engine for Karma Nexus
-    Handles turn-based combat mechanics
-    """
-    
+    """Main combat engine for turn-based battles."""
+
     def __init__(self):
         self.calculator = CombatCalculator()
-        self.ability_system = AbilitySystem()
-        self.turn_manager = TurnManager()
-    
-    def initialize_battle(self, 
-                         attacker: Dict,
-                         defender: Dict,
-                         battle_type: str = "duel") -> Battle:
-        """
-        Initialize a new battle
+        self.player_service = PlayerProfileService()
+
+    async def create_challenge(
+        self,
+        challenger_id: str,
+        target_id: str,
+        combat_type: str = "duel"
+    ) -> Dict[str, Any]:
+        """Create a combat challenge."""
+        db = await get_database()
         
-        Args:
-            attacker: Player initiating the battle
-            defender: Target player
-            battle_type: Type of battle (duel, arena, ambush)
+        # Get player data
+        challenger = await db.players.find_one({"_id": ObjectId(challenger_id)})
+        target = await db.players.find_one({"_id": ObjectId(target_id)})
         
-        Returns:
-            Initialized Battle object
-        """
-        # Calculate combat stats for both players
-        attacker_stats = self.calculator.calculate_combat_stats(attacker)
-        defender_stats = self.calculator.calculate_combat_stats(defender)
+        if not challenger or not target:
+            raise ValueError("Player not found")
         
-        # Roll initiative
-        attacker_initiative = self.calculator.roll_initiative(attacker)
-        defender_initiative = self.calculator.roll_initiative(defender)
+        if challenger_id == target_id:
+            raise ValueError("Cannot challenge yourself")
         
-        # Create participants
-        participants = [
-            BattleParticipant(
-                player_id=attacker["player_id"],
-                username=attacker.get("username", "Player1"),
-                hp=attacker_stats["max_hp"],
-                max_hp=attacker_stats["max_hp"],
-                initiative=attacker_initiative,
-                position=0 if attacker_initiative >= defender_initiative else 1,
-                combat_stats=attacker_stats,
-                equipped_abilities=attacker.get("equipped_abilities", [])
-            ),
-            BattleParticipant(
-                player_id=defender["player_id"],
-                username=defender.get("username", "Player2"),
-                hp=defender_stats["max_hp"],
-                max_hp=defender_stats["max_hp"],
-                initiative=defender_initiative,
-                position=1 if attacker_initiative >= defender_initiative else 0,
-                combat_stats=defender_stats,
-                equipped_abilities=defender.get("equipped_abilities", [])
-            )
-        ]
+        # Check if already in combat
+        active_battle = await self.get_active_battle(challenger_id)
+        if active_battle:
+            raise ValueError("Already in active combat")
         
-        # Sort by position (higher initiative goes first)
-        participants.sort(key=lambda p: p.position)
+        # Create challenge
+        challenge = CombatChallenge(
+            challenger_id=challenger_id,
+            challenger_username=challenger.get("username"),
+            target_id=target_id,
+            target_username=target.get("username"),
+            combat_type=combat_type,
+            expires_at=datetime.utcnow() + timedelta(minutes=5)
+        )
+        
+        result = await db.combat_challenges.insert_one(challenge.model_dump())
+        challenge_dict = challenge.model_dump()
+        challenge_dict["_id"] = result.inserted_id
+        
+        return challenge_dict
+
+    async def accept_challenge(
+        self,
+        challenge_id: str,
+        accepter_id: str
+    ) -> Dict[str, Any]:
+        """Accept a combat challenge and start battle."""
+        db = await get_database()
+        
+        # Get challenge
+        challenge = await db.combat_challenges.find_one({"_id": ObjectId(challenge_id)})
+        if not challenge:
+            raise ValueError("Challenge not found")
+        
+        if challenge["target_id"] != accepter_id:
+            raise ValueError("Not your challenge to accept")
+        
+        if challenge["status"] != "pending":
+            raise ValueError("Challenge no longer available")
+        
+        # Create battle
+        battle = await self._create_battle(
+            player1_id=challenge["challenger_id"],
+            player2_id=challenge["target_id"],
+            battle_type=challenge["combat_type"]
+        )
+        
+        # Update challenge
+        await db.combat_challenges.update_one(
+            {"_id": ObjectId(challenge_id)},
+            {"$set": {
+                "status": "accepted",
+                "battle_id": battle["id"]
+            }}
+        )
+        
+        return battle
+
+    async def decline_challenge(self, challenge_id: str, decliner_id: str):
+        """Decline a combat challenge."""
+        db = await get_database()
+        
+        challenge = await db.combat_challenges.find_one({"_id": ObjectId(challenge_id)})
+        if not challenge:
+            raise ValueError("Challenge not found")
+        
+        if challenge["target_id"] != decliner_id:
+            raise ValueError("Not your challenge to decline")
+        
+        await db.combat_challenges.update_one(
+            {"_id": ObjectId(challenge_id)},
+            {"$set": {"status": "declined"}}
+        )
+
+    async def _create_battle(
+        self,
+        player1_id: str,
+        player2_id: str,
+        battle_type: str = "duel"
+    ) -> Dict[str, Any]:
+        """Create a new battle instance."""
+        db = await get_database()
+        
+        # Get players
+        player1 = await db.players.find_one({"_id": ObjectId(player1_id)})
+        player2 = await db.players.find_one({"_id": ObjectId(player2_id)})
+        
+        # Calculate combat stats
+        stats1 = await self.calculator.calculate_combat_stats(player1)
+        stats2 = await self.calculator.calculate_combat_stats(player2)
+        
+        # Create combatants
+        combatant1 = Combatant(
+            player_id=player1_id,
+            username=player1.get("username"),
+            hp=stats1["hp"],
+            max_hp=stats1["max_hp"],
+            attack=stats1["attack"],
+            defense=stats1["defense"],
+            evasion=stats1["evasion"]
+        )
+        
+        combatant2 = Combatant(
+            player_id=player2_id,
+            username=player2.get("username"),
+            hp=stats2["hp"],
+            max_hp=stats2["max_hp"],
+            attack=stats2["attack"],
+            defense=stats2["defense"],
+            evasion=stats2["evasion"]
+        )
+        
+        # Determine turn order (based on speed/perception)
+        turn_order = self._determine_turn_order([combatant1, combatant2], [player1, player2])
         
         # Create battle
         battle = Battle(
             battle_type=battle_type,
-            status="active",
-            participants=participants,
-            attacker_id=attacker["player_id"],
-            defender_id=defender["player_id"],
-            active_participant_id=participants[0].player_id,
-            started_at=datetime.utcnow()
+            combatants=turn_order
         )
         
-        return battle
-    
-    def execute_action(self, 
-                      battle: Battle,
-                      action_type: str,
-                      actor_id: str,
-                      target_id: Optional[str] = None,
-                      ability_name: Optional[str] = None) -> Tuple[Battle, BattleAction]:
-        """
-        Execute a combat action
+        # Store in database
+        await db.battles.insert_one(battle.model_dump())
         
-        Args:
-            battle: Current battle state
-            action_type: Type of action (attack, defend, use_power, use_item, flee)
-            actor_id: Player performing the action
-            target_id: Target of the action (if applicable)
-            ability_name: Name of ability to use (if applicable)
+        return battle.model_dump()
+
+    def _determine_turn_order(
+        self,
+        combatants: List[Combatant],
+        players: List[Dict[str, Any]]
+    ) -> List[Combatant]:
+        """Determine initiative order."""
+        # Calculate initiative (Speed + Perception + random)
+        initiatives = []
+        for combatant, player in zip(combatants, players):
+            speed = player.get("traits", {}).get("speed", 50)
+            perception = player.get("traits", {}).get("perception", 50)
+            initiative = speed + perception + random.randint(1, 20)
+            initiatives.append((initiative, combatant))
         
-        Returns:
-            Tuple of updated battle and action result
-        """
-        # Get actor and target
-        actor = next((p for p in battle.participants if p.player_id == actor_id), None)
-        target = next((p for p in battle.participants if p.player_id == target_id), None) if target_id else None
+        # Sort by initiative (highest first)
+        initiatives.sort(key=lambda x: x[0], reverse=True)
+        return [c for _, c in initiatives]
+
+    async def execute_action(
+        self,
+        battle_id: str,
+        player_id: str,
+        action_type: str,
+        target: Optional[str] = None,
+        ability_id: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Execute a combat action."""
+        db = await get_database()
         
-        if not actor:
-            raise ValueError(f"Actor {actor_id} not found in battle")
+        # Get battle
+        battle_doc = await db.battles.find_one({"id": battle_id})
+        if not battle_doc:
+            raise ValueError("Battle not found")
         
-        # Determine AP cost
-        ap_cost = self._get_action_cost(action_type, ability_name)
+        battle = Battle(**battle_doc)
         
-        # Check if actor has enough AP
-        if actor.action_points < ap_cost:
-            raise ValueError(f"Insufficient action points. Need {ap_cost}, have {actor.action_points}")
+        # Verify it's player's turn
+        current_combatant = battle.combatants[battle.current_actor_index]
+        if current_combatant.player_id != player_id:
+            raise ValueError("Not your turn")
         
-        # Execute action based on type
+        # Process action
         if action_type == "attack":
-            action_result = self._execute_attack(actor, target, battle)
+            result = await self._process_attack(battle, target)
         elif action_type == "defend":
-            action_result = self._execute_defend(actor)
+            result = await self._process_defend(battle)
         elif action_type == "use_power":
-            action_result = self._execute_ability(actor, target, ability_name, battle)
-        elif action_type == "flee":
-            action_result = self._execute_flee(actor, battle)
+            result = await self._process_power(battle, ability_id, target)
         else:
             raise ValueError(f"Unknown action type: {action_type}")
         
-        # Deduct AP
-        actor.action_points -= ap_cost
-        
-        # Create action record
-        action = BattleAction(
-            actor_id=actor_id,
-            action_type=action_type,
-            target_id=target_id,
-            ability_name=ability_name,
-            ap_cost=ap_cost,
-            **action_result
+        # Add to combat log
+        log_entry = CombatLogEntry(
+            turn=battle.current_turn,
+            actor=player_id,
+            action=action_type,
+            target=target,
+            result=result
         )
+        battle.combat_log.append(log_entry)
+        
+        # Check for battle end
+        if await self._check_battle_end(battle):
+            battle.status = "completed"
+            battle.ended_at = datetime.utcnow()
+        else:
+            # Next turn
+            battle.current_actor_index = (battle.current_actor_index + 1) % len(battle.combatants)
+            if battle.current_actor_index == 0:
+                battle.current_turn += 1
         
         # Update battle
-        battle = self._update_battle_state(battle, action)
-        
-        return battle, action
-    
-    def _execute_attack(self, actor: BattleParticipant, target: BattleParticipant, battle: Battle) -> Dict:
-        """Execute basic attack"""
-        # Calculate damage
-        base_damage = self.calculator.calculate_damage(
-            actor.combat_stats,
-            target.combat_stats
-        )
-        
-        # Check for critical hit
-        is_critical = random.randint(1, 100) <= actor.combat_stats.get("critical_chance", 5)
-        if is_critical:
-            base_damage = int(base_damage * 1.5)
-        
-        # Check for evasion
-        is_evaded = random.randint(1, 100) <= target.combat_stats.get("evasion", 5)
-        
-        if is_evaded:
-            damage = 0
-            success = False
-            description = f"{actor.username}'s attack missed {target.username}!"
-        else:
-            damage = max(1, base_damage)  # Minimum 1 damage
-            target.hp = max(0, target.hp - damage)
-            success = True
-            crit_text = " Critical hit!" if is_critical else ""
-            description = f"{actor.username} attacks {target.username} for {damage} damage!{crit_text}"
-        
-        return {
-            "damage": damage,
-            "success": success,
-            "description": description,
-            "effects": [{"type": "critical", "value": True}] if is_critical else []
-        }
-    
-    def _execute_defend(self, actor: BattleParticipant) -> Dict:
-        """Execute defend action (increases defense temporarily)"""
-        # Add defense buff
-        defense_boost = int(actor.combat_stats.get("defense", 10) * 0.5)
-        effect = {
-            "type": "defense_boost",
-            "value": defense_boost,
-            "duration": 1  # lasts 1 turn
-        }
-        actor.status_effects.append(effect)
-        
-        return {
-            "damage": None,
-            "success": True,
-            "description": f"{actor.username} takes a defensive stance! (+{defense_boost} defense)",
-            "effects": [effect]
-        }
-    
-    def _execute_ability(self, actor: BattleParticipant, target: BattleParticipant, 
-                        ability_name: str, battle: Battle) -> Dict:
-        """Execute superpower/ability"""
-        # Use ability system
-        result = self.ability_system.use_ability(
-            ability_name=ability_name,
-            actor=actor,
-            target=target
+        await db.battles.update_one(
+            {"id": battle_id},
+            {"$set": battle.model_dump()}
         )
         
         return result
-    
-    def _execute_flee(self, actor: BattleParticipant, battle: Battle) -> Dict:
-        """Attempt to flee from battle"""
-        # Calculate flee chance based on speed
-        speed_diff = actor.combat_stats.get("speed", 10)
-        flee_chance = min(75, 50 + (speed_diff // 2))  # Base 50%, max 75%
+
+    async def _process_attack(
+        self,
+        battle: Battle,
+        target_id: Optional[str]
+    ) -> Dict[str, Any]:
+        """Process an attack action."""
+        attacker = battle.combatants[battle.current_actor_index]
         
-        success = random.randint(1, 100) <= flee_chance
+        # Find target (opponent)
+        target = next((c for c in battle.combatants if c.player_id == target_id), None)
+        if not target:
+            target = next((c for c in battle.combatants if c.player_id != attacker.player_id), None)
         
-        if success:
-            actor.has_fled = True
-            battle.status = "completed"
-            battle.victory_type = "fled"
-            description = f"{actor.username} successfully fled from battle!"
-        else:
-            description = f"{actor.username} failed to flee!"
+        # Calculate damage
+        damage = await self.calculator.calculate_damage(attacker, target)
+        
+        # Apply damage
+        target.hp = max(0, target.hp - damage)
         
         return {
-            "damage": None,
-            "success": success,
-            "description": description,
-            "effects": []
+            "success": True,
+            "damage": damage,
+            "message": f"{attacker.username} deals {damage} damage to {target.username}!",
+            "target_hp": target.hp
         }
-    
-    def _get_action_cost(self, action_type: str, ability_name: Optional[str] = None) -> int:
-        """Get AP cost for an action"""
-        costs = {
-            "attack": 1,
-            "defend": 1,
-            "use_item": 1,
-            "flee": 3
+
+    async def _process_defend(self, battle: Battle) -> Dict[str, Any]:
+        """Process a defend action."""
+        defender = battle.combatants[battle.current_actor_index]
+        
+        # Add temporary defense buff
+        defender.status_effects.append({
+            "type": "defense_boost",
+            "value": 20,
+            "duration": 1
+        })
+        
+        return {
+            "success": True,
+            "message": f"{defender.username} takes a defensive stance!"
         }
+
+    async def _process_power(
+        self,
+        battle: Battle,
+        ability_id: Optional[str],
+        target_id: Optional[str]
+    ) -> Dict[str, Any]:
+        """Process superpower usage."""
+        # Placeholder for superpower system
+        return {
+            "success": True,
+            "message": "Superpower activated!"
+        }
+
+    async def _check_battle_end(self, battle: Battle) -> bool:
+        """Check if battle has ended."""
+        for combatant in battle.combatants:
+            if combatant.hp <= 0:
+                # Find winner
+                winner = next((c for c in battle.combatants if c.hp > 0), None)
+                if winner:
+                    battle.winner = winner.player_id
+                    loser = next((c for c in battle.combatants if c.hp <= 0), None)
+                    if loser:
+                        battle.loser = loser.player_id
+                return True
+        return False
+
+    async def get_active_battle(self, player_id: str) -> Optional[Dict[str, Any]]:
+        """Get active battle for a player."""
+        db = await get_database()
+        battle = await db.battles.find_one({
+            "status": "active",
+            "combatants.player_id": player_id
+        })
+        return battle
+
+    async def get_combat_state(self, battle_id: str) -> Dict[str, Any]:
+        """Get current combat state."""
+        db = await get_database()
+        battle = await db.battles.find_one({"id": battle_id})
+        if not battle:
+            raise ValueError("Battle not found")
+        return battle
+
+    async def attempt_flee(self, battle_id: str, player_id: str) -> Dict[str, Any]:
+        """Attempt to flee from combat."""
+        db = await get_database()
+        battle_doc = await db.battles.find_one({"id": battle_id})
+        if not battle_doc:
+            raise ValueError("Battle not found")
         
-        if action_type == "use_power":
-            # Ability costs vary, default to 2
-            return self.ability_system.get_ability_cost(ability_name) if ability_name else 2
+        battle = Battle(**battle_doc)
         
-        return costs.get(action_type, 1)
-    
-    def _update_battle_state(self, battle: Battle, action: BattleAction) -> Battle:
-        """Update battle state after an action"""
-        # Check for battle end conditions
-        alive_participants = [p for p in battle.participants if p.hp > 0 and not p.has_fled]
+        # Find player
+        combatant = next((c for c in battle.combatants if c.player_id == player_id), None)
+        if not combatant:
+            raise ValueError("Not in this battle")
         
-        if len(alive_participants) <= 1:
-            battle.status = "completed"
+        # Calculate flee chance (based on evasion/speed)
+        flee_chance = min(0.8, combatant.evasion / 100)
+        
+        if random.random() < flee_chance:
+            battle.status = "fled"
+            battle.loser = player_id
             battle.ended_at = datetime.utcnow()
             
-            if alive_participants:
-                winner = alive_participants[0]
-                battle.winner_id = winner.player_id
-                loser = next((p for p in battle.participants if p.player_id != winner.player_id), None)
-                if loser:
-                    battle.loser_id = loser.player_id
-                battle.victory_type = "knockout"
+            await db.battles.update_one(
+                {"id": battle_id},
+                {"$set": battle.model_dump()}
+            )
+            
+            return {"success": True, "message": "Successfully fled from battle!"}
+        else:
+            return {"success": False, "message": "Failed to flee! You remain in combat."}
+
+    async def get_combat_history(
+        self,
+        player_id: str,
+        limit: int = 20,
+        skip: int = 0
+    ) -> List[Dict[str, Any]]:
+        """Get combat history for a player."""
+        db = await get_database()
+        history = await db.battles.find(
+            {
+                "combatants.player_id": player_id,
+                "status": {"$in": ["completed", "fled"]}
+            }
+        ).sort("started_at", -1).skip(skip).limit(limit).to_list(length=limit)
         
-        # Check for turn end (actor out of AP)
-        active_participant = next((p for p in battle.participants if p.player_id == battle.active_participant_id), None)
-        if active_participant and active_participant.action_points == 0:
-            battle = self.turn_manager.end_turn(battle)
-            battle = self.turn_manager.start_new_turn(battle)
-        
-        return battle
-    
-    def calculate_rewards(self, battle: Battle) -> Dict:
-        """Calculate rewards for battle outcome"""
-        if not battle.winner_id:
-            return {}
-        
-        winner = next((p for p in battle.participants if p.player_id == battle.winner_id), None)
-        loser = next((p for p in battle.participants if p.player_id == battle.loser_id), None)
-        
-        if not winner or not loser:
-            return {}
-        
-        # Base rewards
-        rewards = {
-            "xp": 100,
-            "credits": 50,
-            "karma": 5
-        }
-        
-        # Bonus for battle type
-        if battle.battle_type == "arena":
-            rewards["xp"] *= 1.5
-            rewards["credits"] *= 1.5
-        
-        # Bonus for perfect victory
-        if winner.hp == winner.max_hp:
-            rewards["xp"] *= 1.3
-            rewards["bonus"] = "Perfect Victory"
-        
-        return rewards
+        return history

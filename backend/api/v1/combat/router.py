@@ -1,312 +1,202 @@
+"""Combat API routes."""
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import Optional
-from ....core.database import get_database
-from ....services.combat.engine import CombatEngine
+from typing import Dict, Any
+from bson import ObjectId
+
+from backend.core.security import get_current_user
+from backend.services.combat.engine import CombatEngine
+from backend.services.combat.calculator import CombatCalculator
 from .schemas import (
     ChallengeRequest,
     ChallengeResponse,
-    ActionRequest,
-    ActionResponse,
-    BattleStateResponse,
-    BattleHistoryResponse
+    CombatActionRequest,
+    CombatStateResponse,
+    AcceptChallengeRequest,
+    FleeRequest
 )
 
 router = APIRouter(prefix="/combat", tags=["combat"])
 combat_engine = CombatEngine()
+combat_calculator = CombatCalculator()
 
 
 @router.post("/challenge", response_model=ChallengeResponse)
 async def challenge_player(
     request: ChallengeRequest,
-    db = Depends(get_database),
-    current_user: dict = None  # Add auth dependency
+    current_user: Dict[str, Any] = Depends(get_current_user)
 ):
-    """
-    Challenge another player to combat
-    """
-    # Get attacker (current user)
-    attacker = await db.players.find_one({"player_id": request.attacker_id})
-    if not attacker:
-        raise HTTPException(status_code=404, detail="Attacker not found")
-    
-    # Get defender
-    defender = await db.players.find_one({"player_id": request.defender_id})
-    if not defender:
-        raise HTTPException(status_code=404, detail="Defender not found")
-    
-    # Check if defender is online (optional)
-    if not defender.get("online", False) and request.battle_type == "duel":
-        raise HTTPException(status_code=400, detail="Player is offline")
-    
-    # Initialize battle
-    battle = combat_engine.initialize_battle(
-        attacker=attacker,
-        defender=defender,
-        battle_type=request.battle_type
-    )
-    
-    # Save battle to database
-    await db.battles.insert_one(battle.dict())
-    
-    # Notify defender via WebSocket (TODO: implement)
-    
-    return ChallengeResponse(
-        battle_id=battle.battle_id,
-        status="pending",
-        message=f"Challenge sent to {defender['username']}"
-    )
-
-
-@router.post("/accept/{battle_id}")
-async def accept_challenge(
-    battle_id: str,
-    db = Depends(get_database)
-):
-    """
-    Accept a combat challenge
-    """
-    battle = await db.battles.find_one({"battle_id": battle_id})
-    if not battle:
-        raise HTTPException(status_code=404, detail="Battle not found")
-    
-    if battle["status"] != "pending":
-        raise HTTPException(status_code=400, detail="Battle already started or completed")
-    
-    # Update battle status
-    await db.battles.update_one(
-        {"battle_id": battle_id},
-        {"$set": {"status": "active", "started_at": datetime.utcnow()}}
-    )
-    
-    return {"message": "Challenge accepted", "battle_id": battle_id}
-
-
-@router.post("/decline/{battle_id}")
-async def decline_challenge(
-    battle_id: str,
-    db = Depends(get_database)
-):
-    """
-    Decline a combat challenge
-    """
-    battle = await db.battles.find_one({"battle_id": battle_id})
-    if not battle:
-        raise HTTPException(status_code=404, detail="Battle not found")
-    
-    # Update battle status
-    await db.battles.update_one(
-        {"battle_id": battle_id},
-        {"$set": {"status": "declined"}}
-    )
-    
-    return {"message": "Challenge declined"}
-
-
-@router.get("/active")
-async def get_active_battles(
-    player_id: str,
-    db = Depends(get_database)
-):
-    """
-    Get all active battles for a player
-    """
-    battles = await db.battles.find({
-        "$or": [
-            {"attacker_id": player_id},
-            {"defender_id": player_id}
-        ],
-        "status": {"$in": ["pending", "active"]}
-    }).to_list(length=10)
-    
-    return {"battles": battles}
-
-
-@router.post("/action", response_model=ActionResponse)
-async def execute_action(
-    request: ActionRequest,
-    db = Depends(get_database)
-):
-    """
-    Execute a combat action
-    """
-    # Get battle
-    battle_dict = await db.battles.find_one({"battle_id": request.battle_id})
-    if not battle_dict:
-        raise HTTPException(status_code=404, detail="Battle not found")
-    
-    # Convert to Battle model
-    from ....models.combat.battle import Battle
-    battle = Battle(**battle_dict)
-    
-    if battle.status != "active":
-        raise HTTPException(status_code=400, detail="Battle is not active")
-    
-    # Check if it's player's turn
-    if battle.active_participant_id != request.actor_id:
-        raise HTTPException(status_code=400, detail="Not your turn")
-    
+    """Challenge another player to combat."""
     try:
-        # Execute action
-        updated_battle, action = combat_engine.execute_action(
-            battle=battle,
-            action_type=request.action_type,
-            actor_id=request.actor_id,
+        challenge = await combat_engine.create_challenge(
+            challenger_id=current_user["_id"],
             target_id=request.target_id,
-            ability_name=request.ability_name
+            combat_type=request.combat_type
         )
-        
-        # Save updated battle
-        await db.battles.update_one(
-            {"battle_id": request.battle_id},
-            {"$set": updated_battle.dict()}
+        return ChallengeResponse(
+            challenge_id=str(challenge["_id"]),
+            status="pending",
+            message=f"Challenge sent to {request.target_id}"
         )
-        
-        # If battle ended, calculate rewards
-        if updated_battle.status == "completed":
-            rewards = combat_engine.calculate_rewards(updated_battle)
-            updated_battle.rewards = rewards
-            
-            # Update player stats
-            await _update_player_combat_stats(db, updated_battle)
-        
-        return ActionResponse(
-            success=action.success,
-            description=action.description,
-            damage=action.damage,
-            battle_status=updated_battle.status,
-            winner_id=updated_battle.winner_id,
-            rewards=updated_battle.rewards if updated_battle.status == "completed" else None
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
         )
-    
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.get("/state/{battle_id}", response_model=BattleStateResponse)
-async def get_battle_state(
-    battle_id: str,
-    db = Depends(get_database)
+@router.post("/accept")
+async def accept_challenge(
+    request: AcceptChallengeRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user)
 ):
-    """
-    Get current battle state
-    """
-    battle = await db.battles.find_one({"battle_id": battle_id})
-    if not battle:
-        raise HTTPException(status_code=404, detail="Battle not found")
-    
-    return BattleStateResponse(**battle)
+    """Accept a combat challenge."""
+    try:
+        battle = await combat_engine.accept_challenge(
+            challenge_id=request.challenge_id,
+            accepter_id=current_user["_id"]
+        )
+        return {
+            "battle_id": str(battle["_id"]),
+            "status": "started",
+            "message": "Combat has begun!"
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
 
 
-@router.post("/flee/{battle_id}")
-async def flee_battle(
-    battle_id: str,
-    player_id: str,
-    db = Depends(get_database)
+@router.post("/decline")
+async def decline_challenge(
+    request: AcceptChallengeRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user)
 ):
-    """
-    Attempt to flee from battle
-    """
-    battle_dict = await db.battles.find_one({"battle_id": battle_id})
-    if not battle_dict:
-        raise HTTPException(status_code=404, detail="Battle not found")
-    
-    from ....models.combat.battle import Battle
-    battle = Battle(**battle_dict)
-    
-    # Execute flee action
-    updated_battle, action = combat_engine.execute_action(
-        battle=battle,
-        action_type="flee",
-        actor_id=player_id
-    )
-    
-    # Save
-    await db.battles.update_one(
-        {"battle_id": battle_id},
-        {"$set": updated_battle.dict()}
-    )
-    
-    return {
-        "success": action.success,
-        "message": action.description
-    }
+    """Decline a combat challenge."""
+    try:
+        await combat_engine.decline_challenge(
+            challenge_id=request.challenge_id,
+            decliner_id=current_user["_id"]
+        )
+        return {"status": "declined", "message": "Challenge declined"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/active", response_model=CombatStateResponse)
+async def get_active_combat(
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
+    """Get current active combat state."""
+    try:
+        battle = await combat_engine.get_active_battle(current_user["_id"])
+        if not battle:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No active combat"
+            )
+        
+        return await combat_engine.get_combat_state(str(battle["_id"]))
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
+@router.post("/action")
+async def perform_combat_action(
+    request: CombatActionRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
+    """Perform a combat action."""
+    try:
+        result = await combat_engine.execute_action(
+            battle_id=request.battle_id,
+            player_id=current_user["_id"],
+            action_type=request.action_type,
+            target=request.target,
+            ability_id=request.ability_id
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/state/{battle_id}", response_model=CombatStateResponse)
+async def get_combat_state(
+    battle_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
+    """Get combat state for a specific battle."""
+    try:
+        return await combat_engine.get_combat_state(battle_id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        )
+
+
+@router.post("/flee")
+async def flee_combat(
+    request: FleeRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
+    """Attempt to flee from combat."""
+    try:
+        result = await combat_engine.attempt_flee(
+            battle_id=request.battle_id,
+            player_id=current_user["_id"]
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.get("/stats")
+async def get_combat_stats(
+    current_user: Dict[str, Any] = Depends(get_current_user)
+):
+    """Get player's combat statistics."""
+    try:
+        stats = await combat_calculator.get_player_combat_stats(current_user["_id"])
+        return stats
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
 
 
 @router.get("/history")
 async def get_combat_history(
-    player_id: str,
-    limit: int = 10,
-    db = Depends(get_database)
+    current_user: Dict[str, Any] = Depends(get_current_user),
+    limit: int = 20,
+    skip: int = 0
 ):
-    """
-    Get combat history for a player
-    """
-    battles = await db.battles.find({
-        "$or": [
-            {"attacker_id": player_id},
-            {"defender_id": player_id}
-        ],
-        "status": "completed"
-    }).sort("ended_at", -1).limit(limit).to_list(length=limit)
-    
-    return {"battles": battles}
-
-
-@router.get("/stats/{player_id}")
-async def get_combat_stats(
-    player_id: str,
-    db = Depends(get_database)
-):
-    """
-    Get combat statistics for a player
-    """
-    player = await db.players.find_one({"player_id": player_id})
-    if not player:
-        raise HTTPException(status_code=404, detail="Player not found")
-    
-    combat_stats = player.get("combat_stats", {})
-    
-    return {"stats": combat_stats}
-
-
-async def _update_player_combat_stats(db, battle):
-    """
-    Update combat stats for both players after battle
-    """
-    from datetime import datetime
-    
-    winner_id = battle.winner_id
-    loser_id = battle.loser_id
-    
-    if winner_id:
-        # Update winner stats
-        await db.players.update_one(
-            {"player_id": winner_id},
-            {
-                "$inc": {
-                    "combat_stats.total_battles": 1,
-                    "combat_stats.wins": 1,
-                    f"combat_stats.{battle.battle_type}_wins": 1,
-                    "combat_stats.current_win_streak": 1
-                }
-            }
+    """Get combat history."""
+    try:
+        history = await combat_engine.get_combat_history(
+            player_id=current_user["_id"],
+            limit=limit,
+            skip=skip
         )
-    
-    if loser_id:
-        # Update loser stats
-        await db.players.update_one(
-            {"player_id": loser_id},
-            {
-                "$inc": {
-                    "combat_stats.total_battles": 1,
-                    "combat_stats.losses": 1,
-                    f"combat_stats.{battle.battle_type}_losses": 1
-                },
-                "$set": {
-                    "combat_stats.current_win_streak": 0
-                }
-            }
+        return {"history": history, "total": len(history)}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
         )
-
-
-from datetime import datetime

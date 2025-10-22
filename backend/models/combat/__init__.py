@@ -1,4 +1,6 @@
-from .battle import Battle, BattleParticipant, BattleAction, BattleTurn
+"""Combat models."""
+
+from .battle import Battle, CombatChallenge
 from .stats import CombatStats
 
-__all__ = ["Battle", "BattleParticipant", "BattleAction", "BattleTurn", "CombatStats"]
+__all__ = ["Battle", "CombatChallenge", "CombatStats"]

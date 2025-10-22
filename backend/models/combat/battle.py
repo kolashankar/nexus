@@ -1,105 +1,107 @@
+"""Battle and combat challenge models."""
+
 from datetime import datetime
-from typing import List, Optional, Dict
+from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
 import uuid
 
 
-class BattleParticipant(BaseModel):
-    """Participant in a battle"""
+class Combatant(BaseModel):
+    """Combatant in a battle."""
     player_id: str
     username: str
     hp: int
     max_hp: int
     action_points: int = 4
     max_action_points: int = 4
-    initiative: int
-    position: int  # Position in battle order
-    status_effects: List[Dict] = Field(default_factory=list)
-    combat_stats: Dict
-    equipped_abilities: List[str] = Field(default_factory=list)
-    has_fled: bool = False
-    
+    attack: int
+    defense: int
+    evasion: int
+    status_effects: List[Dict[str, Any]] = Field(default_factory=list)
+    active_abilities: List[str] = Field(default_factory=list)
 
-class BattleAction(BaseModel):
-    """Single action taken during battle"""
-    action_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    actor_id: str
-    action_type: str  # attack, defend, use_power, use_item, flee
-    target_id: Optional[str] = None
-    ability_name: Optional[str] = None
-    ap_cost: int
-    damage: Optional[int] = None
-    effects: List[Dict] = Field(default_factory=list)
-    success: bool
-    description: str
+
+class CombatLogEntry(BaseModel):
+    """Entry in combat log."""
+    turn: int
+    actor: str
+    action: str
+    target: Optional[str] = None
+    result: Dict[str, Any]
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
-class BattleTurn(BaseModel):
-    """Complete turn in battle"""
-    turn_number: int
-    active_player_id: str
-    actions: List[BattleAction] = Field(default_factory=list)
-    turn_start: datetime = Field(default_factory=datetime.utcnow)
-    turn_end: Optional[datetime] = None
-
-
 class Battle(BaseModel):
-    """Main battle model"""
-    battle_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    battle_type: str  # duel, arena, ambush, guild_war, tournament
-    status: str = "pending"  # pending, active, completed, cancelled
+    """Battle model."""
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    battle_type: str  # duel, ambush, arena, guild_war
+    status: str = "active"  # active, completed, fled
     
-    # Participants
-    participants: List[BattleParticipant]
-    attacker_id: str
-    defender_id: str
+    combatants: List[Combatant]
+    current_turn: int = 1
+    current_actor_index: int = 0
     
-    # Battle state
-    current_turn: int = 0
-    active_participant_id: Optional[str] = None
-    turn_history: List[BattleTurn] = Field(default_factory=list)
+    combat_log: List[CombatLogEntry] = Field(default_factory=list)
     
-    # Timing
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    started_at: Optional[datetime] = None
+    winner: Optional[str] = None
+    loser: Optional[str] = None
+    
+    rewards: Dict[str, Any] = Field(default_factory=dict)
+    penalties: Dict[str, Any] = Field(default_factory=dict)
+    
+    started_at: datetime = Field(default_factory=datetime.utcnow)
     ended_at: Optional[datetime] = None
     
-    # Results
-    winner_id: Optional[str] = None
-    loser_id: Optional[str] = None
-    victory_type: Optional[str] = None  # knockout, fled, timeout
-    
-    # Rewards
-    rewards: Dict = Field(default_factory=dict)
-    
-    # Settings
-    max_turns: int = 50
-    turn_timeout: int = 60  # seconds
-    
-    # Arena specific
-    ranked: bool = False
-    elo_change: Optional[Dict[str, int]] = None
+    # Additional metadata
+    guild_war_id: Optional[str] = None
+    territory_id: Optional[int] = None
+    arena_match_id: Optional[str] = None
 
     class Config:
         json_schema_extra = {
             "example": {
-                "battle_id": "550e8400-e29b-41d4-a716-446655440000",
+                "id": "battle-123",
                 "battle_type": "duel",
                 "status": "active",
-                "participants": [
+                "combatants": [
                     {
                         "player_id": "player1",
-                        "username": "Hero",
-                        "hp": 85,
+                        "username": "Warrior1",
+                        "hp": 100,
                         "max_hp": 100,
                         "action_points": 4,
-                        "initiative": 15,
-                        "position": 0
+                        "attack": 50,
+                        "defense": 30,
+                        "evasion": 20
                     }
                 ],
-                "attacker_id": "player1",
-                "defender_id": "player2",
-                "current_turn": 1
+                "current_turn": 1,
+                "current_actor_index": 0
+            }
+        }
+
+
+class CombatChallenge(BaseModel):
+    """Combat challenge model."""
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    challenger_id: str
+    challenger_username: str
+    target_id: str
+    target_username: str
+    combat_type: str = "duel"
+    status: str = "pending"  # pending, accepted, declined, expired
+    message: Optional[str] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    expires_at: Optional[datetime] = None
+    battle_id: Optional[str] = None
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "id": "challenge-123",
+                "challenger_id": "player1",
+                "target_id": "player2",
+                "combat_type": "duel",
+                "status": "pending"
             }
         }
