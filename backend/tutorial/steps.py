@@ -12,8 +12,10 @@ def get_tutorial_step(step_id: str):
     return tutorial_steps.get(step_id)
 
 
-def get_all_steps() -> List[TutorialStep]:
+def get_all_steps() -> List:
     """Get all tutorial steps in order."""
+    from .tutorial import tutorial_steps
+    
     steps_order = [
         'welcome',
         'learn_traits',
@@ -31,11 +33,13 @@ def get_all_steps() -> List[TutorialStep]:
 
 def get_step_count() -> int:
     """Get total number of tutorial steps."""
+    from .tutorial import tutorial_steps
     return len(tutorial_steps)
 
 
 def validate_completion(step_id: str, player_data: Dict) -> bool:
     """Validate if a step's completion condition is met."""
+    from .tutorial import tutorial_steps
     step = tutorial_steps.get(step_id)
     if not step:
         return False
