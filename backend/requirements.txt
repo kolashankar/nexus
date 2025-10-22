@@ -35,7 +35,7 @@ apscheduler==3.10.4
 email-validator==2.1.0
 
 # CORS
-python-cors==1.0.0
+fastapi-cors==0.0.6
 
 # Testing
 pytest==7.4.4
