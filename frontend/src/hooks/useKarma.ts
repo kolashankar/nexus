@@ -9,6 +9,7 @@ export const useKarma = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [karmaHistory, setKarmaHistory] = useState<any[]>([]);
+  const [karmaScore, setKarmaScore] = useState<number>(0);
 
   /**
    * Load karma history.
