@@ -22,8 +22,8 @@ const KarmaScore: React.FC<KarmaScoreProps> = ({ karmaData }) => {
   };
 
   const getKarmaLevelColor = (level: string) => {
-    const positiveL evels = ['saint', 'virtuous', 'good', 'neutral_good'];
-    const negativeLevel = ['demon', 'evil', 'bad', 'neutral_bad'];
+    const positiveLevels = ['saint', 'virtuous', 'good', 'neutral_good'];
+    const negativeLevels = ['demon', 'evil', 'bad', 'neutral_bad'];
     
     if (positiveLevels.includes(level)) return 'text-green-600';
     if (negativeLevels.includes(level)) return 'text-red-600';
