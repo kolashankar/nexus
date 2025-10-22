@@ -139,23 +139,46 @@ $ yarn build
 
 ## 📝 Recommended Actions
 
-### High Priority (Should Fix)
-1. ❌ Fix unused imports in combat arena router
-   - Command: `ruff check --fix /app/backend/api/v1/combat/arena/router.py`
+### ✅ Completed
+1. ✅ Fixed all backend lint issues (0 errors)
+2. ✅ Auto-fixed unused imports and variables
+3. ✅ Resolved circular import in tutorial system
+4. ✅ Fixed undefined variable in karma arbiter
 
-### Medium Priority (Nice to Have)
-1. ⚠️ Review missing dependencies in hooks
-   - File: `/app/frontend/src/hooks/useQuests.ts`
-   - Impact: Potential stale closure issues (rare)
+### High Priority (Required for Production Build)
+1. 🔴 **Install missing test dependencies**
+   ```bash
+   cd /app/frontend
+   yarn add -D msw jest-websocket-mock @types/jest
+   ```
+   - Impact: Enables TypeScript compilation and build
 
-2. ⚠️ Remove debug console statements in production
-   - Files: Various analytics and cache utilities
-   - Impact: Console clutter in production
+2. 🔴 **Fix test file TypeScript errors**
+   - Files: `src/__tests__/integration/*.test.tsx`
+   - Impact: Blocks production build
+   - Estimated effort: 2-3 hours
 
-### Low Priority (Optional)
-1. 📝 Add missing docstrings
-   - Primarily in utility modules
-   - Impact: Documentation completeness
+### Medium Priority (Code Quality)
+1. 🟡 **Reduce `any` type usage** (180 occurrences)
+   - Files: Utility files, type definitions
+   - Impact: Better type safety
+   - Estimated effort: 4-6 hours
+
+2. 🟡 **Add missing useEffect dependencies**
+   - Files: Various hooks
+   - Impact: Prevents potential stale closure bugs
+   - Estimated effort: 1-2 hours
+
+### Low Priority (Polish)
+1. 🟢 **Remove console statements for production**
+   - Files: `utils/analytics.ts`, `utils/performance.ts`
+   - Impact: Cleaner production logs
+   - Use: `console.log` → `logger.debug`
+
+2. 🟢 **Escape HTML entities in JSX**
+   - Files: Various components
+   - Impact: Proper HTML rendering
+   - Quick fix: Replace `'` with `&apos;` or use `{" '"}` in JSX
 
 ---
 
