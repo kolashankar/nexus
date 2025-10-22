@@ -62,7 +62,7 @@ export const StatsOverview: React.FC = () => {
     if (player) {
       // Mock stats calculation
       const calculatedStats: PlayerStats = {
-        player_id: player._id,
+        player_id: player.id,
         username: player.username,
         level: player.level,
         combat_stats: {
