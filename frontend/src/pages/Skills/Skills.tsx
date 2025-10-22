@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
-import { SuperpowersList } from '../../components/player/SuperpowersList/SuperpowersList';
-import { SkillTree } from '../../components/player/SkillTree/SkillTree';
+import SuperpowersList from '../../components/player/SuperpowersList/SuperpowersList';
+import SkillTree from '../../components/player/SkillTree/SkillTree';
 
 export const Skills: React.FC = () => {
   const [selectedTrait, setSelectedTrait] = useState<string>('hacking');
