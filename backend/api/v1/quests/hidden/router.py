@@ -1,32 +1,43 @@
+"""Hidden quests API routes"""
+
 from fastapi import APIRouter, Depends
-from .....core.security import get_current_user
+
+from .....core.database import get_database
 from .....services.quests.hidden import HiddenQuestService
+from ....deps import get_current_player
 
 router = APIRouter(prefix="/hidden", tags=["hidden-quests"])
 
 
 @router.post("/discover")
 async def discover_hidden_quest(
-    location: dict,
-    current_user: dict = Depends(get_current_user)
+    location: str,
+    action: str,
+    current_player: dict = Depends(get_current_player),
+    db = Depends(get_database),
 ):
-    """Attempt to discover a hidden quest at location."""
-    hidden_service = HiddenQuestService()
+    """Try to discover a hidden quest"""
+    service = HiddenQuestService(db)
     
-    result = await hidden_service.attempt_discovery(
-        current_user["_id"],
-        location
+    result = await service.check_discovery(
+        player_id=current_player["_id"],
+        location=location,
+        action=action,
+        player=current_player,
     )
     
     return result
 
 
-@router.get("/hints")
-async def get_hidden_quest_hints(
-    current_user: dict = Depends(get_current_user)
+@router.get("/discovered")
+async def get_discovered_hidden_quests(
+    current_player: dict = Depends(get_current_player),
+    db = Depends(get_database),
 ):
-    """Get cryptic hints about hidden quests."""
-    hidden_service = HiddenQuestService()
+    """Get all discovered hidden quests"""
+    service = HiddenQuestService(db)
+    quests = await service.get_player_hidden_quests(
+        player_id=current_player["_id"],
+    )
     
-    hints = await hidden_service.get_hints(current_user["_id"])
-    return {"hints": hints}
+    return {"quests": quests, "total": len(quests)}

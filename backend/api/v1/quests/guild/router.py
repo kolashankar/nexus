@@ -1,64 +1,70 @@
+"""Guild quests API routes"""
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from .....core.security import get_current_user
+from typing import List
+
+from .....core.database import get_database
 from .....services.quests.guild import GuildQuestService
-from .schemas import CreateGuildQuestRequest
+from .....services.quests.manager import QuestManager
+from ....deps import get_current_player
 
 router = APIRouter(prefix="/guild", tags=["guild-quests"])
 
 
-@router.get("")
-async def get_guild_quests(
-    current_user: dict = Depends(get_current_user)
+@router.get("/available")
+async def get_available_guild_quests(
+    current_player: dict = Depends(get_current_player),
+    db = Depends(get_database),
 ):
-    """Get guild quests for player's guild."""
-    guild_quest_service = GuildQuestService()
-    
-    if not current_user.get("guild_id"):
+    """Get available guild quests"""
+    if not current_player.get("guild_id"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Must be in a guild"
+            detail="You must be in a guild to view guild quests",
         )
     
-    quests = await guild_quest_service.get_guild_quests(current_user["guild_id"])
-    return {"quests": quests}
-
-
-@router.post("/create")
-async def create_guild_quest(
-    request: CreateGuildQuestRequest,
-    current_user: dict = Depends(get_current_user)
-):
-    """Create a new guild quest (leader/officer only)."""
-    guild_quest_service = GuildQuestService()
-    
-    result = await guild_quest_service.create_guild_quest(
-        current_user["_id"],
-        current_user.get("guild_id"),
-        request.dict()
+    service = GuildQuestService(db)
+    quests = await service.get_guild_quests(
+        guild_id=current_player["guild_id"],
     )
     
-    if not result["success"]:
+    return {"quests": quests, "total": len(quests)}
+
+
+@router.post("/generate")
+async def generate_guild_quest(
+    current_player: dict = Depends(get_current_player),
+    db = Depends(get_database),
+):
+    """Generate a new guild quest (requires officer+)"""
+    if not current_player.get("guild_id"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=result.get("error", "Unable to create guild quest")
+            detail="You must be in a guild",
         )
     
-    return result
+    service = GuildQuestService(db)
+    
+    try:
+        quest = await service.generate_guild_quest(
+            guild_id=current_player["guild_id"],
+        )
+        return {"quest": quest, "message": "Guild quest generated!"}
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e),
+        )
 
 
-@router.post("/contribute/{quest_id}")
-async def contribute_to_guild_quest(
+@router.get("/progress/{quest_id}")
+async def get_guild_quest_progress(
     quest_id: str,
-    contribution: dict,
-    current_user: dict = Depends(get_current_user)
+    current_player: dict = Depends(get_current_player),
+    db = Depends(get_database),
 ):
-    """Contribute to a guild quest objective."""
-    guild_quest_service = GuildQuestService()
+    """Get guild quest progress"""
+    service = GuildQuestService(db)
+    progress = await service.get_quest_progress(quest_id)
     
-    result = await guild_quest_service.contribute(
-        current_user["_id"],
-        quest_id,
-        contribution
-    )
-    
-    return result
+    return {"progress": progress}
