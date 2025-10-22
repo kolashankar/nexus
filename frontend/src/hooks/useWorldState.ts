@@ -7,9 +7,9 @@ interface WorldState {
   karma_trend: string;
   total_players: number;
   online_players: number;
-  total_actions_24h: number;
-  positive_actions_24h: number;
-  negative_actions_24h: number;
+  total_actions_24h?: number;
+  positive_actions_24h?: number;
+  negative_actions_24h?: number;
   [key: string]: any;
 }
 
