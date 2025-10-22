@@ -1,0 +1,4 @@
+/**
+ * Player type definitions
+ */
+export {};

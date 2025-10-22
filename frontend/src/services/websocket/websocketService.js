@@ -1,136 +1,120 @@
+/**
+ * WebSocket service for real-time communication
+ */
 class WebSocketService {
-  constructor() {
-    this.ws = null;
-    this.listeners = {};
-    this.reconnectInterval = 5000;
-    this.reconnectAttempts = 0;
-    this.maxReconnectAttempts = 10;
-  }
-
-  connect(playerId, username) {
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      console.log('WebSocket already connected');
-      return;
+    constructor() {
+        Object.defineProperty(this, "ws", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: null
+        });
+        Object.defineProperty(this, "handlers", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: new Map()
+        });
+        Object.defineProperty(this, "reconnectAttempts", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: 0
+        });
+        Object.defineProperty(this, "maxReconnectAttempts", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: 5
+        });
+        Object.defineProperty(this, "reconnectDelay", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: 3000
+        });
+        Object.defineProperty(this, "url", {
+            enumerable: true,
+            configurable: true,
+            writable: true,
+            value: void 0
+        });
+        const wsUrl = process.env.REACT_APP_WS_URL || 'ws://localhost:8001/ws';
+        this.url = wsUrl;
     }
-
-    const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-    const wsUrl = BACKEND_URL.replace('http', 'ws');
-    const url = `${wsUrl}/ws?player_id=${playerId}&username=${encodeURIComponent(username)}`;
-
-    try {
-      this.ws = new WebSocket(url);
-
-      this.ws.onopen = () => {
-        console.log('✅ WebSocket connected');
-        this.reconnectAttempts = 0;
-        this.emit('connected', { playerId, username });
-      };
-
-      this.ws.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          console.log('📨 WebSocket message:', data);
-          
-          // Emit event to listeners
-          if (data.type && data.event) {
-            this.emit(`${data.type}:${data.event}`, data.data);
-          }
-          
-          // Also emit the raw message
-          this.emit('message', data);
-        } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
+    connect(token) {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            return;
         }
-      };
-
-      this.ws.onerror = (error) => {
-        console.error('❌ WebSocket error:', error);
-        this.emit('error', error);
-      };
-
-      this.ws.onclose = () => {
-        console.log('WebSocket disconnected');
-        this.emit('disconnected');
-        this.attemptReconnect(playerId, username);
-      };
-    } catch (error) {
-      console.error('Failed to create WebSocket:', error);
+        this.ws = new WebSocket(`${this.url}?token=${token}`);
+        this.ws.onopen = () => {
+            console.log('WebSocket connected');
+            this.reconnectAttempts = 0;
+        };
+        this.ws.onmessage = (event) => {
+            try {
+                const message = JSON.parse(event.data);
+                this.handleMessage(message);
+            }
+            catch (error) {
+                console.error('Failed to parse WebSocket message:', error);
+            }
+        };
+        this.ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+        this.ws.onclose = () => {
+            console.log('WebSocket disconnected');
+            this.attemptReconnect(token);
+        };
     }
-  }
-
-  attemptReconnect(playerId, username) {
-    if (this.reconnectAttempts < this.maxReconnectAttempts) {
-      this.reconnectAttempts++;
-      console.log(`Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
-      
-      setTimeout(() => {
-        this.connect(playerId, username);
-      }, this.reconnectInterval);
-    } else {
-      console.error('Max reconnection attempts reached');
-      this.emit('reconnect_failed');
+    disconnect() {
+        if (this.ws) {
+            this.ws.close();
+            this.ws = null;
+        }
     }
-  }
-
-  disconnect() {
-    if (this.ws) {
-      this.ws.close();
-      this.ws = null;
+    send(eventType, data) {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify({ type: eventType, data }));
+        }
+        else {
+            console.error('WebSocket is not connected');
+        }
     }
-  }
-
-  send(data) {
-    if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify(data));
-    } else {
-      console.error('WebSocket is not connected');
+    on(eventType, handler) {
+        if (!this.handlers.has(eventType)) {
+            this.handlers.set(eventType, []);
+        }
+        this.handlers.get(eventType).push(handler);
     }
-  }
-
-  // Event emitter functionality
-  on(event, callback) {
-    if (!this.listeners[event]) {
-      this.listeners[event] = [];
+    off(eventType, handler) {
+        const handlers = this.handlers.get(eventType);
+        if (handlers) {
+            const index = handlers.indexOf(handler);
+            if (index > -1) {
+                handlers.splice(index, 1);
+            }
+        }
     }
-    this.listeners[event].push(callback);
-  }
-
-  off(event, callback) {
-    if (this.listeners[event]) {
-      this.listeners[event] = this.listeners[event].filter(cb => cb !== callback);
+    handleMessage(message) {
+        const { type, data } = message;
+        const handlers = this.handlers.get(type);
+        if (handlers) {
+            handlers.forEach(handler => handler(data));
+        }
     }
-  }
-
-  emit(event, data) {
-    if (this.listeners[event]) {
-      this.listeners[event].forEach(callback => callback(data));
+    attemptReconnect(token) {
+        if (this.reconnectAttempts < this.maxReconnectAttempts) {
+            this.reconnectAttempts++;
+            console.log(`Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`);
+            setTimeout(() => {
+                this.connect(token);
+            }, this.reconnectDelay);
+        }
+        else {
+            console.error('Max reconnection attempts reached');
+        }
     }
-  }
-
-  // Game-specific methods
-  updateLocation(location) {
-    this.send({
-      type: 'player',
-      event: 'location_update',
-      data: { location }
-    });
-  }
-
-  joinRoom(roomId) {
-    this.send({
-      type: 'player',
-      event: 'join_room',
-      data: { room_id: roomId }
-    });
-  }
-
-  leaveRoom(roomId) {
-    this.send({
-      type: 'player',
-      event: 'leave_room',
-      data: { room_id: roomId }
-    });
-  }
 }
-
 export default new WebSocketService();

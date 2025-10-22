@@ -1,8 +1,19 @@
+/**
+ * Main Zustand store configuration
+ */
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-
-// Re-export all stores
-export { useAuthStore } from './slices/authSlice';
-export { usePlayerStore } from './slices/playerSlice';
-export { useGameStore } from './slices/gameSlice';
-export { useUIStore } from './slices/uiSlice';
+import { authSlice } from './slices/authSlice';
+import { playerSlice } from './slices/playerSlice';
+export const useStore = create()(devtools(persist((...args) => ({
+    ...authSlice(...args),
+    ...playerSlice(...args),
+}), {
+    name: 'karma-nexus-storage',
+    partialize: (state) => ({
+        // Only persist auth tokens
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
+    }),
+})));
+export default useStore;

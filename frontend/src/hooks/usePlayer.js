@@ -1,32 +1,24 @@
+/**
+ * Custom hook for player data
+ */
 import { useEffect } from 'react';
-import { usePlayerStore } from '../store';
-
+import useStore from '../store';
 export const usePlayer = () => {
-  const {
-    profile,
-    traits,
-    stats,
-    isLoading,
-    error,
-    fetchProfile,
-    fetchTraits,
-    fetchStats,
-    updateProfile,
-    updateTraits,
-    clearError,
-  } = usePlayerStore();
-
-  return {
-    profile,
-    traits,
-    stats,
-    isLoading,
-    error,
-    fetchProfile,
-    fetchTraits,
-    fetchStats,
-    updateProfile,
-    updateTraits,
-    clearError,
-  };
+    const { player, fetchPlayer, updatePlayer, isLoadingPlayer, playerError } = useStore();
+    useEffect(() => {
+        if (!player && !isLoadingPlayer) {
+            fetchPlayer();
+        }
+    }, [player, isLoadingPlayer, fetchPlayer]);
+    const refreshPlayer = async () => {
+        await fetchPlayer();
+    };
+    return {
+        player,
+        isLoading: isLoadingPlayer,
+        error: playerError,
+        refreshPlayer,
+        updatePlayer,
+    };
 };
+export default usePlayer;

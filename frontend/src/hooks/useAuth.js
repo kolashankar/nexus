@@ -1,16 +1,61 @@
-import { useAuthStore } from '../store';
-
+/**
+ * Custom hook for authentication
+ */
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useStore from '../store';
+import websocketService from '../services/websocket/websocketService';
 export const useAuth = () => {
-  const { user, isAuthenticated, isLoading, error, login, register, logout, clearError } = useAuthStore();
-
-  return {
-    user,
-    isAuthenticated,
-    isLoading,
-    error,
-    login,
-    register,
-    logout,
-    clearError,
-  };
+    const navigate = useNavigate();
+    const { isAuthenticated, accessToken, login, register, logout, isLoading, error } = useStore();
+    useEffect(() => {
+        // Connect WebSocket when authenticated
+        if (isAuthenticated && accessToken) {
+            websocketService.connect(accessToken);
+        }
+        // Disconnect WebSocket when logging out
+        return () => {
+            if (!isAuthenticated) {
+                websocketService.disconnect();
+            }
+        };
+    }, [isAuthenticated, accessToken]);
+    const handleLogin = async (username, password) => {
+        try {
+            await login({ username, password });
+            navigate('/dashboard');
+        }
+        catch (err) {
+            console.error('Login failed:', err);
+            throw err;
+        }
+    };
+    const handleRegister = async (username, email, password) => {
+        try {
+            await register({ username, email, password });
+            navigate('/dashboard');
+        }
+        catch (err) {
+            console.error('Registration failed:', err);
+            throw err;
+        }
+    };
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate('/login');
+        }
+        catch (err) {
+            console.error('Logout failed:', err);
+        }
+    };
+    return {
+        isAuthenticated,
+        isLoading,
+        error,
+        login: handleLogin,
+        register: handleRegister,
+        logout: handleLogout,
+    };
 };
+export default useAuth;
