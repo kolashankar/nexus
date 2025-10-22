@@ -3,10 +3,10 @@ import { Card } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import guildsService from '../../services/guilds/guildsService';
 import { Guild as GuildType, GuildMember } from '../../types/guilds';
-import { useAuth } from '../../hooks/useAuth';
+import { usePlayer } from '../../hooks/usePlayer';
 
 const Guild: React.FC = () => {
-  const { user } = useAuth();
+  const { player: user } = usePlayer();
   const [guild, setGuild] = useState<GuildType | null>(null);
   const [members, setMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
