@@ -2,7 +2,7 @@
  * Integration tests for WebSocket connection
  */
 
-import { websocketService } from '../../services/websocket/websocketService';
+import websocketService from '../../services/websocket/websocketService';
 import WS from 'jest-websocket-mock';
 
 let server: WS;
