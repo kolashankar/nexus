@@ -87,9 +87,10 @@ class StatsCalculator:
         trading = traits.get('trading', 50)
         negotiation = traits.get('negotiation', 50)
         greed = traits.get('greed', 50)
+        perception_trait = traits.get('perception', 50)
         
         business_acumen = int((trading + negotiation) / 2)
-        market_intuition = int((trading + perception) / 2)
+        market_intuition = int((trading + perception_trait) / 2)
         
         # Spiritual traits
         meditation = traits.get('meditation', 50)
