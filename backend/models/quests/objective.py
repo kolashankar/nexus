@@ -2,7 +2,7 @@
 
 from enum import Enum
 from typing import Optional, Any, Dict
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class ObjectiveType(str, Enum):

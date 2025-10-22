@@ -1,7 +1,7 @@
 """Quest reward distribution service."""
 
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict
 from motor.motor_asyncio import AsyncIOMotorClient
 import logging
 

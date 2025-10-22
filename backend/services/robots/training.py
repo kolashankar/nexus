@@ -2,7 +2,6 @@
 
 from typing import Dict, Any, List
 from datetime import datetime, timedelta
-from bson import ObjectId
 
 from backend.core.database import get_database
 from backend.services.robots.manager import RobotManager

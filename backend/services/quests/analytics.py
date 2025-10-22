@@ -1,7 +1,7 @@
 """Quest analytics service"""
 
 from typing import Dict, Any, List
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 class QuestAnalyticsService:

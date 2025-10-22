@@ -1,5 +1,4 @@
 from typing import List, Dict, Optional
-import random
 
 
 class InvestmentOpportunities:

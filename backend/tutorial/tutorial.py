@@ -1,6 +1,6 @@
 """Tutorial manager for guiding new players."""
 
-from typing import Dict, List, Any, Optional
+from typing import Dict, Any, Optional
 from datetime import datetime
 from enum import Enum
 

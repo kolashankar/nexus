@@ -1,6 +1,6 @@
 """Quest management service - handles quest lifecycle and operations."""
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict, List, Optional
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId

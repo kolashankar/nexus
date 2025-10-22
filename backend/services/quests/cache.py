@@ -1,8 +1,6 @@
 """Quest caching service"""
 
 from typing import Dict, Any, Optional
-import json
-import hashlib
 
 
 class QuestCacheService:

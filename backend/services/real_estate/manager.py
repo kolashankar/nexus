@@ -1,6 +1,5 @@
 from typing import List, Dict, Optional
 from datetime import datetime, timedelta
-import uuid
 from ...models.player.player import Player
 from ...models.economy.transaction import Transaction
 from .property_types import PropertyTypes

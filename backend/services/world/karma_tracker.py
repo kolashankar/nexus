@@ -3,7 +3,6 @@
 from typing import Dict, List, Any
 from datetime import datetime, timedelta
 from backend.core.database import db
-from collections import defaultdict
 
 
 class GlobalKarmaTracker:

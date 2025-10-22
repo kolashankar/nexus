@@ -1,7 +1,6 @@
 """Seasonal content API routes."""
 
 from fastapi import APIRouter, Depends, HTTPException
-from typing import Optional
 from backend.api.deps import get_current_player
 from backend.models.player.player import Player
 from backend.services.seasonal.battle_pass import BattlePassService

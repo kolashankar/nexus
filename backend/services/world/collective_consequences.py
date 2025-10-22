@@ -1,10 +1,9 @@
 """Collective Consequences Service - Track and apply consequences of collective player behavior."""
 
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Any
 from datetime import datetime, timedelta
 from backend.core.database import db
 from backend.services.world.events import WorldEventsService
-import statistics
 
 
 class CollectiveConsequencesService:

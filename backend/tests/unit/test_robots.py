@@ -1,5 +1,4 @@
 """Unit tests for robot system."""
-import pytest
 from backend.services.robots.factory import RobotFactory
 from backend.models.robots.robot import ROBOT_TYPES
 

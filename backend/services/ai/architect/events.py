@@ -1,7 +1,6 @@
 """Pre-defined event templates and generators for The Architect"""
 
 import logging
-from typing import Dict, List, Optional
 from datetime import datetime
 
 from .schemas import EventType, EventSeverity, EventEffect, WorldEventResponse

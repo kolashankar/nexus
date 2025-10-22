@@ -1,5 +1,4 @@
 from typing import List, Dict
-import random
 from datetime import datetime, timedelta
 import uuid
 from ...models.quests.quest import Quest

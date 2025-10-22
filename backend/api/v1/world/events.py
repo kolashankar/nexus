@@ -1,13 +1,10 @@
 """World Events API Routes"""
 
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from typing import List, Optional
-from datetime import datetime
+from typing import Optional
 
 from ....core.database import get_database
 from ....services.world.event_manager import EventManager
-from ....services.world.state_manager import WorldStateManager
-from ....services.ai.architect.schemas import EventType
 from .schemas import (
     EventResponse,
     EventListResponse,

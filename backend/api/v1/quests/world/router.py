@@ -1,12 +1,10 @@
 """World quests API routes"""
 
 from fastapi import APIRouter, Depends
-from typing import List
 
 from .....core.database import get_database
 from .....services.quests.world import WorldQuestService
 from .....services.quests.manager import QuestManager
-from .....models.quests.quest import QuestType
 from ....deps import get_current_player
 
 router = APIRouter(prefix="/world", tags=["world-quests"])

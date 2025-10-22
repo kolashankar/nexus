@@ -1,14 +1,14 @@
 """Arena-specific combat routes."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import Dict, Any, List
+from typing import Dict, Any
 from datetime import datetime
 import random
 
 from backend.core.security import get_current_user
 from backend.core.database import get_database
 from backend.services.combat.engine import CombatEngine
-from .schemas import JoinQueueRequest, ArenaMatchResponse
+from .schemas import JoinQueueRequest
 
 router = APIRouter(prefix="/arena", tags=["combat", "arena"])
 combat_engine = CombatEngine()
@@ -106,7 +106,6 @@ async def get_arena_rankings(
     skip: int = 0
 ):
     """Get arena rankings."""
-    from backend.models.combat.stats import CombatStats
     db = await get_database()
     
     # Get top players by arena rating

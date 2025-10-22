@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import List
 from .....core.security import get_current_user
 from .....services.quests.campaigns import CampaignService
 from .schemas import (

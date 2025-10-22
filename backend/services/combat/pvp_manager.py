@@ -1,5 +1,4 @@
-from typing import Dict, List, Optional
-from ...models.combat.battle import Battle
+from typing import Dict
 from .engine import CombatEngine
 
 

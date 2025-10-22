@@ -1,6 +1,6 @@
 """Quest validation service"""
 
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 
 class QuestValidationService:

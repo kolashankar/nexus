@@ -3,12 +3,6 @@
 from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
 from backend.core.database import db
-from backend.models.seasonal.season import (
-    Season,
-    SeasonStatus,
-    PlayerSeasonProgress,
-    SeasonReset
-)
 import uuid
 
 

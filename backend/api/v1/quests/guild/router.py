@@ -1,11 +1,9 @@
 """Guild quests API routes"""
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import List
 
 from .....core.database import get_database
 from .....services.quests.guild import GuildQuestService
-from .....services.quests.manager import QuestManager
 from ....deps import get_current_player
 
 router = APIRouter(prefix="/guild", tags=["guild-quests"])

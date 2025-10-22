@@ -1,7 +1,7 @@
 """Leaderboard Manager Service."""
 
-from typing import Dict, List, Optional, Any
-from datetime import datetime, timedelta
+from typing import Dict, Optional, Any
+from datetime import datetime
 from backend.core.database import db
 
 

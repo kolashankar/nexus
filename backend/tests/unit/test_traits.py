@@ -1,5 +1,4 @@
 """Unit tests for traits system."""
-import pytest
 from backend.services.player.traits import TraitService
 from backend.models.player.player import initialize_traits, VIRTUES, VICES, SKILLS
 

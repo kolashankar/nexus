@@ -1,7 +1,7 @@
 """Background tasks for seasonal content."""
 
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime
 from backend.core.database import db
 from backend.services.seasonal.battle_pass import BattlePassService
 from backend.services.seasonal.seasons import SeasonService

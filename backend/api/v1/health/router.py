@@ -1,6 +1,6 @@
 """Health check routes."""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from typing import Dict, Any
 import os
 

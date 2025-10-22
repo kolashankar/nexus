@@ -1,9 +1,7 @@
 """Quest progression tracking service."""
 
-from datetime import datetime
 from typing import Dict, List
 from motor.motor_asyncio import AsyncIOMotorClient
-from bson import ObjectId
 import logging
 
 logger = logging.getLogger(__name__)

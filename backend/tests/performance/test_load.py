@@ -3,7 +3,6 @@
 import pytest
 import asyncio
 import time
-from httpx import AsyncClient
 from statistics import mean, median
 
 

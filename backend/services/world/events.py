@@ -1,6 +1,5 @@
 """World Events Service - Manages dynamic world events."""
 
-import asyncio
 from typing import List, Optional, Dict, Any
 from datetime import datetime, timedelta
 from backend.core.database import db

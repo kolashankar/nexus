@@ -4,11 +4,7 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
 from backend.core.database import db
 from backend.models.tournaments.tournament import (
-    Tournament,
-    TournamentType,
-    TournamentStatus,
-    BracketType,
-    TournamentMatch
+    TournamentType
 )
 import uuid
 import math

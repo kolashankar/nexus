@@ -1,5 +1,4 @@
 """Unit tests for combat system."""
-import pytest
 from backend.services.combat.calculator import CombatCalculator
 from backend.models.combat.stats import calculate_combat_stats
 

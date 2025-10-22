@@ -2,7 +2,6 @@
 
 from typing import Dict, Any, Optional
 from datetime import datetime
-from bson import ObjectId
 import uuid
 
 from backend.core.database import get_database

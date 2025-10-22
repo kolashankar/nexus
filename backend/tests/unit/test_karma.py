@@ -1,5 +1,4 @@
 """Unit tests for karma system."""
-import pytest
 from backend.services.karma.calculator import KarmaCalculator
 
 

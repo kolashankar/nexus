@@ -1,7 +1,6 @@
 """Quest WebSocket events"""
 
 from typing import Dict, Any
-import json
 
 
 class QuestEventHandler:

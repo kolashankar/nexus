@@ -1,7 +1,6 @@
 """World State API Routes"""
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import Optional
 
 from ....core.database import get_database
 from ....services.world.state_manager import WorldStateManager
@@ -9,7 +8,6 @@ from ....services.world.collective_karma import CollectiveKarmaTracker
 from .schemas import (
     WorldStateResponse,
     KarmaStatsResponse,
-    KarmaDistributionResponse,
     TopPlayersResponse
 )
 

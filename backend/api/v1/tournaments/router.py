@@ -7,9 +7,7 @@ from backend.models.player.player import Player
 from backend.services.tournaments.manager import TournamentManager
 from .schemas import (
     TournamentResponse,
-    TournamentListResponse,
-    RegisterTournamentRequest,
-    CreateTournamentRequest
+    RegisterTournamentRequest
 )
 
 router = APIRouter(prefix="/tournaments", tags=["tournaments"])

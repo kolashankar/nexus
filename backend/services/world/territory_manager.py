@@ -5,7 +5,7 @@ from typing import Dict, Any, Optional, List
 from datetime import datetime, timedelta
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
-from ...models.world.territory import TerritoryModel, TerritoryStatus, TerritoryEvent
+from ...models.world.territory import TerritoryModel, TerritoryEvent
 
 logger = logging.getLogger(__name__)
 

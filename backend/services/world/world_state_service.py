@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Dict, Any, Optional
 
-from ...models.world.world_state import WorldState, GlobalKarma, KarmaTrend
+from ...models.world.world_state import WorldState, GlobalKarma
 
 
 class WorldStateService:

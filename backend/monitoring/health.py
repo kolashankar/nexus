@@ -3,7 +3,6 @@
 import asyncio
 from typing import Dict, Any
 from datetime import datetime
-import aiohttp
 from motor.motor_asyncio import AsyncIOMotorClient
 import redis.asyncio as aioredis
 

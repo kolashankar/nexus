@@ -4,12 +4,11 @@ import logging
 from typing import Dict, Any, Optional, List
 from datetime import datetime, timedelta
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from uuid import uuid4
 
 from ...models.world.karma_event import KarmaEventModel, EventStatus, EventParticipation
 from ..ai.architect.architect import Architect
 from ..ai.architect.triggers import EventTrigger, TriggerEvaluator
-from ..ai.architect.schemas import WorldState, EventType
+from ..ai.architect.schemas import WorldState
 from .state_manager import WorldStateManager
 from .collective_karma import CollectiveKarmaTracker
 

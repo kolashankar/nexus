@@ -2,7 +2,6 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Dict, Any
-from bson import ObjectId
 
 from backend.core.security import get_current_user
 from backend.services.combat.engine import CombatEngine

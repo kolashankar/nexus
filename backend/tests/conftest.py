@@ -7,7 +7,6 @@ import os
 
 # Import app components
 from server import app
-from core.config import settings
 from core.database import get_database
 
 # Test database name
@@ -61,7 +60,6 @@ async def client(test_db) -> AsyncGenerator:
 @pytest.fixture
 async def test_user(test_db):
     """Create a test user"""
-    from models.player.player import Player
     from core.security import get_password_hash
     
     user_data = {

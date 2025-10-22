@@ -1,6 +1,6 @@
 """Quest objectives manager"""
 
-from typing import Dict, Any, List
+from typing import Dict, Any
 import uuid
 
 

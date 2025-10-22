@@ -1,13 +1,10 @@
 """World Events Notification System"""
 
-from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from typing import Dict, Set
 import json
-import asyncio
 import logging
 
-from ....core.database import get_database
-from ....services.world.event_manager import EventManager
 
 logger = logging.getLogger(__name__)
 

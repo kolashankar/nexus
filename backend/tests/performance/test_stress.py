@@ -3,7 +3,6 @@
 import pytest
 import asyncio
 import time
-from httpx import AsyncClient
 
 
 @pytest.mark.asyncio
@@ -15,7 +14,7 @@ async def test_rapid_fire_requests(client):
         try:
             response = await client.get("/api/leaderboards/karma")
             return response.status_code
-        except Exception as e:
+        except Exception:
             return 0
     
     start = time.time()
@@ -27,7 +26,7 @@ async def test_rapid_fire_requests(client):
     success_rate = success_count / num_requests
     throughput = num_requests / elapsed
     
-    print(f"\nRapid-fire test results:")
+    print("\nRapid-fire test results:")
     print(f"Total requests: {num_requests}")
     print(f"Time elapsed: {elapsed:.2f}s")
     print(f"Success rate: {success_rate * 100:.1f}%")
@@ -52,7 +51,7 @@ async def test_memory_leak_detection(client, auth_headers):
     final_memory = process.memory_info().rss / 1024 / 1024  # MB
     memory_increase = final_memory - initial_memory
     
-    print(f"\nMemory usage:")
+    print("\nMemory usage:")
     print(f"Initial: {initial_memory:.2f} MB")
     print(f"Final: {final_memory:.2f} MB")
     print(f"Increase: {memory_increase:.2f} MB")

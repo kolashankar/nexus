@@ -2,8 +2,7 @@
 
 import logging
 import json
-from typing import Dict, Any, Optional, List
-from datetime import datetime
+from typing import Dict, Any, Optional
 
 from ..base import BaseAIService
 from .prompts import (
@@ -12,7 +11,6 @@ from .prompts import (
     REGIONAL_EVENT_PROMPT
 )
 from .schemas import (
-    WorldEventRequest,
     WorldEventResponse,
     WorldState,
     EventType,
@@ -63,7 +61,7 @@ class Architect(BaseAIService):
         cached_event = await self.cache_manager.get(cache_key)
         
         if cached_event and not force_event_type:
-            logger.info(f"Using cached event for similar world state")
+            logger.info("Using cached event for similar world state")
             return WorldEventResponse(**cached_event, cached=True)
         
         # Prepare world state summary

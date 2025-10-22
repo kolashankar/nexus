@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 import uuid
 from ...models.quests.quest import Quest
 from ...models.player.player import Player
-from ...models.guilds.guild import Guild
 
 
 class GuildQuestService:

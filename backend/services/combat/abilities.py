@@ -1,6 +1,6 @@
 """Combat abilities system - trait-based special moves."""
 
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from bson import ObjectId
 
 from backend.core.database import get_database

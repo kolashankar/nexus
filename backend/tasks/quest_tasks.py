@@ -2,7 +2,6 @@
 
 from datetime import datetime, timedelta
 import asyncio
-from typing import Optional
 
 
 class QuestBackgroundTasks:

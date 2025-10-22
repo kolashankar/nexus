@@ -1,7 +1,6 @@
 """Unit tests for guild system."""
 import pytest
 from backend.services.guilds.management import GuildService
-from datetime import datetime
 
 
 class TestGuildCreation:

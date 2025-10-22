@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 import uuid
 
-from ...models.quests.campaign import Campaign, CampaignType, CampaignStatus
+from ...models.quests.campaign import CampaignType
 
 
 class CampaignService:

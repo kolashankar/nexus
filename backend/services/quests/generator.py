@@ -1,11 +1,11 @@
 """Quest generator service - Creates quests using AI (Oracle)"""
 
 from datetime import datetime, timedelta
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 import uuid
 import random
 
-from ...models.quests.quest import QuestType, QuestStatus, QuestObjective, QuestReward, QuestRequirements
+from ...models.quests.quest import QuestType
 from ...models.quests.objective import ObjectiveType
 from ..ai.oracle.oracle import Oracle
 

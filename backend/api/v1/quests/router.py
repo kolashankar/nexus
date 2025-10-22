@@ -1,13 +1,13 @@
 """Quest API routes"""
 
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from typing import List, Optional
+from typing import Optional
 from datetime import datetime
 
 from ....core.database import get_database
 from ....services.quests.manager import QuestManager
 from ....services.quests.generator import QuestGenerator
-from ....models.quests.quest import Quest, QuestType, QuestStatus
+from ....models.quests.quest import QuestType, QuestStatus
 from .schemas import (
     QuestResponse,
     QuestListResponse,
@@ -15,8 +15,6 @@ from .schemas import (
     QuestAbandonRequest,
     QuestCompleteRequest,
     ObjectiveProgressRequest,
-    CampaignStartRequest,
-    CampaignChoiceRequest,
     QuestGenerateRequest,
 )
 from ...deps import get_current_player

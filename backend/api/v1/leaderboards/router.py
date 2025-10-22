@@ -1,13 +1,12 @@
 """Leaderboards API routes."""
 
 from fastapi import APIRouter, Depends, Query
-from typing import List, Optional
+from typing import Optional
 from backend.api.deps import get_current_player
 from backend.models.player.player import Player
 from backend.services.leaderboards.manager import LeaderboardManager
 from .schemas import (
     LeaderboardResponse,
-    LeaderboardEntryResponse,
     PlayerRankResponse
 )
 

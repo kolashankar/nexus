@@ -1,7 +1,6 @@
 """Territories API Routes"""
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import List
 
 from ....core.database import get_database
 from ....services.world.territory_manager import TerritoryManager

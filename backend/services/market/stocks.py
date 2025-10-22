@@ -3,7 +3,6 @@
 from typing import Dict, Any, List
 from datetime import datetime, timedelta
 import random
-from bson import ObjectId
 
 from backend.core.database import get_database
 from backend.services.economy.currency import CurrencyService

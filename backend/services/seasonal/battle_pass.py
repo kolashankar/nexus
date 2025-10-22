@@ -1,15 +1,8 @@
 """Battle Pass Service."""
 
 from typing import Dict, List, Optional, Any
-from datetime import datetime, timedelta
+from datetime import datetime
 from backend.core.database import db
-from backend.models.seasonal.battle_pass import (
-    BattlePass,
-    BattlePassTier,
-    PlayerBattlePass,
-    BattlePassReward,
-    RewardType
-)
 import uuid
 
 

@@ -1,6 +1,6 @@
 """Quest templates - Predefined quest structures"""
 
-from typing import Dict, Any, List
+from typing import Dict, Any
 import random
 
 
