@@ -66,13 +66,9 @@ def validate_completion(step_id: str, player_data: Dict) -> bool:
     return validation_func()
 
 
-# Import tutorial_steps from tutorial.py to avoid circular import
-from .tutorial import tutorial_steps
-
 __all__ = [
     'get_tutorial_step',
     'get_all_steps',
     'get_step_count',
-    'validate_completion',
-    'tutorial_steps'
+    'validate_completion'
 ]
