@@ -128,6 +128,8 @@ export interface Player {
   online: boolean;
   created_at: string;
   last_action: string;
+  guild_id?: string;
+  guild_rank?: string;
 }
 
 export interface PlayerStats {
