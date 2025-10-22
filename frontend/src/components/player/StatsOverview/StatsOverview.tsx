@@ -22,7 +22,7 @@ import './StatsOverview.css';
 interface PlayerStats {
   player_id: string;
   username: string;
-  level: int;
+  level: number;
   combat_stats: {
     hp: number;
     max_hp: number;
