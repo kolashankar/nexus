@@ -1,7 +1,7 @@
 """Oracle API Routes"""
 
 from fastapi import APIRouter, Depends, HTTPException
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 import logging
 
 from .schemas import QuestGenerationRequestAPI, GeneratedQuestAPI, GeneratedCampaignAPI
