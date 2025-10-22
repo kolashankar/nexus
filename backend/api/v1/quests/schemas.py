@@ -1,70 +1,98 @@
+"""Quest API schemas"""
+
 from pydantic import BaseModel, Field
-from typing import List, Dict, Optional
+from typing import Optional, List, Dict, Any
 from datetime import datetime
 
 
-class ObjectiveSchema(BaseModel):
-    """Quest objective schema."""
+class QuestObjectiveSchema(BaseModel):
+    """Quest objective schema"""
+    objective_id: str
     description: str
-    type: str  # kill, collect, talk, hack, trade, visit
+    type: str
     target: str
-    current: int = 0
+    current: int
     required: int
-    completed: bool = False
+    completed: bool
 
 
-class RewardSchema(BaseModel):
-    """Quest reward schema."""
+class QuestRewardSchema(BaseModel):
+    """Quest reward schema"""
     credits: int = 0
     xp: int = 0
     karma: int = 0
-    items: List[str] = []
-    trait_boosts: Dict[str, int] = {}
+    karma_tokens: int = 0
+    items: List[str] = Field(default_factory=list)
+    trait_boosts: Dict[str, int] = Field(default_factory=dict)
     special: Optional[str] = None
 
 
-class QuestBase(BaseModel):
-    id: str
+class QuestSchema(BaseModel):
+    """Quest schema"""
+    id: str = Field(alias="_id")
+    quest_type: str
     title: str
     description: str
-    quest_type: str  # personal, daily, weekly, guild, world, hidden, campaign
-    difficulty: str  # easy, medium, hard, legendary
-
-
-class QuestListItem(QuestBase):
-    rewards: RewardSchema
-    status: str  # available, active, completed, failed, expired
-    expires_at: Optional[datetime] = None
-
-
-class QuestDetailResponse(QuestBase):
-    lore: str
-    objectives: List[ObjectiveSchema]
-    rewards: RewardSchema
-    requirements: Dict[str, any]
+    lore: Optional[str] = None
     status: str
-    generated_by: str
+    objectives: List[QuestObjectiveSchema]
+    rewards: QuestRewardSchema
+    expires_at: Optional[datetime] = None
+    started_at: Optional[datetime] = None
+    completed_at: Optional[datetime] = None
     generated_at: datetime
-    expires_at: Optional[datetime]
-    story_data: Optional[Dict] = None
+    
+    class Config:
+        populate_by_name = True
+
+
+class QuestResponse(BaseModel):
+    """Quest response"""
+    quest: Dict[str, Any]
 
 
 class QuestListResponse(BaseModel):
-    quests: List[QuestListItem]
+    """Quest list response"""
+    quests: List[Dict[str, Any]]
     total: int
 
 
-class AcceptQuestRequest(BaseModel):
-    quest_id: str = Field(..., description="Quest ID to accept")
-
-
-class CompleteQuestRequest(BaseModel):
-    quest_id: str = Field(..., description="Quest ID to complete")
-
-
-class QuestProgressResponse(BaseModel):
+class QuestAcceptRequest(BaseModel):
+    """Request to accept quest"""
     quest_id: str
-    quest_title: str
-    objectives: List[ObjectiveSchema]
-    completion_percentage: float
-    can_complete: bool
+
+
+class QuestAbandonRequest(BaseModel):
+    """Request to abandon quest"""
+    quest_id: str
+
+
+class QuestCompleteRequest(BaseModel):
+    """Request to complete quest"""
+    quest_id: str
+
+
+class ObjectiveProgressRequest(BaseModel):
+    """Request to update objective progress"""
+    quest_id: str
+    objective_id: str
+    progress: int = 1
+
+
+class CampaignStartRequest(BaseModel):
+    """Request to start campaign"""
+    campaign_id: Optional[str] = None
+    campaign_type: Optional[str] = None
+
+
+class CampaignChoiceRequest(BaseModel):
+    """Request to make campaign choice"""
+    campaign_id: str
+    choice_id: str
+    option_id: str
+
+
+class QuestGenerateRequest(BaseModel):
+    """Request to generate quest"""
+    quest_type: Optional[str] = "personal"
+    preferences: Optional[Dict[str, Any]] = None
