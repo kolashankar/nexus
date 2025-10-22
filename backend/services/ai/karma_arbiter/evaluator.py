@@ -151,8 +151,8 @@ class ActionEvaluator:
     def _fallback_evaluation(self, request: EvaluationRequest) -> EvaluationResponse:
         """Fallback evaluation when AI is unavailable"""
         action_type = request.context.action_type
-        severity = ACTION_SEVERITY.get(action_type, "moderate")
-        scale = KARMA_SCALES[severity]
+        # severity = ACTION_SEVERITY.get(action_type, "moderate")
+        # scale = KARMA_SCALES[severity]  # Unused for now - kept for future use
         
         # Simple rule-based evaluation
         karma_change = 0
