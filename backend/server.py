@@ -10,8 +10,12 @@ from api.v1.auth.router import router as auth_router
 from api.v1.actions import actions_router
 from api.v1.player import player_router
 from api.v1.karma import karma_router
+from api.v1.ai.karma_arbiter.router import router as karma_arbiter_router
+from api.v1.ai.oracle.router import router as oracle_router
+from api.v1.ai.companion.router import router as companion_router
 from api.websocket.handlers import websocket_endpoint
 from core.database import Database
+from core.redis import redis_manager
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
