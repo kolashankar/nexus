@@ -1,11 +1,14 @@
 """Tutorial step definitions and utilities."""
 
-from typing import Dict, List
-from .tutorial import TutorialStep
+from typing import Dict, List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .tutorial import TutorialStep
 
 
-def get_tutorial_step(step_id: str) -> TutorialStep:
+def get_tutorial_step(step_id: str):
     """Get a specific tutorial step by ID."""
+    from .tutorial import tutorial_steps
     return tutorial_steps.get(step_id)
 
 
