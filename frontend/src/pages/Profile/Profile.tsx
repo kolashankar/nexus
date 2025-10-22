@@ -6,7 +6,7 @@ import { usePlayer } from '@/hooks/usePlayer';
 
 const Profile: React.FC = () => {
   const { playerId } = useParams<{ playerId?: string }>();
-  const { player, loading } = usePlayer();
+  const { player, isLoading: loading } = usePlayer();
 
   if (loading) {
     return (
