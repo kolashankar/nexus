@@ -1,9 +1,4 @@
-import React, { useRef, useState, useEffect, ReactNode } from 'react';
-
-interface VirtualListProps {
-  items, index) => ReactNode;
-  overscan?;
-}
+import React, { useRef, useState, useEffect } from 'react';
 
 /**
  * Virtual list component for rendering large lists efficiently
@@ -15,7 +10,7 @@ export function VirtualList({
   containerHeight,
   renderItem,
   overscan = 3
-}: VirtualListProps) {
+}) {
   const containerRef = useRef(null);
   const [scrollTop, setScrollTop] = useState(0);
 
@@ -43,16 +38,19 @@ export function VirtualList({
   }, []);
 
   return (
-    
-      
-        
+    <div
+      ref={containerRef}
+      style={{ height: containerHeight, overflow: 'auto' }}
+    >
+      <div style={{ height: totalHeight, position: 'relative' }}>
+        <div style={{ transform: `translateY(${offsetY}px)` }}>
           {visibleItems.map((item, idx) => (
-            
+            <div key={startIndex + idx} style={{ height: itemHeight }}>
               {renderItem(item, startIndex + idx)}
-            
+            </div>
           ))}
-        
-      
-    
+        </div>
+      </div>
+    </div>
   );
 }

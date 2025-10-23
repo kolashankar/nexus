@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, ReactNode } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
-
-
 
 /**
  * Infinite scroll component
@@ -13,12 +11,13 @@ export const InfiniteScroll = ({
   hasMore,
   loading = false,
   threshold = 0.8,
-  loader = Loading...
- }) => {
+  loader = <div>Loading...</div>
+}) => {
   const loadMoreRef = useRef(null);
   const isIntersecting = useIntersectionObserver(loadMoreRef, {
     threshold,
-    rootMargin);
+    rootMargin: '100px'
+  });
 
   useEffect(() => {
     if (isIntersecting && hasMore && !loading) {
@@ -27,13 +26,13 @@ export const InfiniteScroll = ({
   }, [isIntersecting, hasMore, loading, onLoadMore]);
 
   return (
-    
+    <div>
       {children}
       {hasMore && (
-        
+        <div ref={loadMoreRef}>
           {loading && loader}
-        
+        </div>
       )}
-    
+    </div>
   );
 };
