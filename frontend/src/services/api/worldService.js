@@ -17,7 +17,7 @@ class WorldService {
       const response = await apiClient.get('/api/world/events/active');
       return response.data;
     } catch (error) {
-      console.error('Error fetching active event, error);
+      console.error('Error fetching active event', error);
       return null;
     }
   }

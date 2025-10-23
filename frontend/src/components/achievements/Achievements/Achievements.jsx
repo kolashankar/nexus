@@ -30,7 +30,7 @@ const Achievements: React.FC = () => {
       const data = await achievementsService.getAchievements();
       setAchievements(data);
     } catch (error) {
-      console.error('Failed to fetch achievements, error);
+      console.error('Failed to fetch achievements', error);
     } finally {
       setLoading(false);
     }
@@ -41,7 +41,7 @@ const Achievements: React.FC = () => {
       const data = await achievementsService.getAchievementDefinitions();
       setAllAchievements(data);
     } catch (error) {
-      console.error('Failed to fetch achievement definitions, error);
+      console.error('Failed to fetch achievement definitions', error);
     }
   };
 

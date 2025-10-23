@@ -31,7 +31,7 @@ const Combat: React.FC = () => {
       setActiveBattles(battlesData.battles || []);
       setTournaments(tournamentsData || []);
     } catch (error) {
-      console.error('Failed to load combat data, error);
+      console.error('Failed to load combat data', error);
     } finally {
       setLoading(false);
     }

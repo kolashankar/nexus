@@ -25,7 +25,7 @@ const SeasonalLeaderboard: React.FC = () => {
         headers);
       setSeason(response.data);
     } catch (error) {
-      console.error('Error fetching current season, error);
+      console.error('Error fetching current season', error);
     } finally {
       setLoading(false);
     }

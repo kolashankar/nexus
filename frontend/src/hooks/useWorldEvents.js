@@ -22,7 +22,7 @@ export const useWorldEvents = ()=> {
         headers);
       setWorldState(response.data);
     } catch (err) {
-      console.error('Error fetching world state, err);
+      console.error('Error fetching world state', err);
       setError(err.message);
     }
   };
@@ -34,7 +34,7 @@ export const useWorldEvents = ()=> {
         headers);
       setActiveEvents(response.data);
     } catch (err) {
-      console.error('Error fetching active events, err);
+      console.error('Error fetching active events', err);
       setError(err.message);
     }
   };

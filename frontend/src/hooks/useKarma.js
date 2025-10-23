@@ -42,7 +42,7 @@ export const useKarma = () => {
       // In real implementation, call karma service
       // return await karmaService.getKarmaScore();
       return { karma_points, moral_class) {
-      console.error('Failed to get karma score, err);
+      console.error('Failed to get karma score', err);
       throw err;
     }
   }, []);

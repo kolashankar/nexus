@@ -28,7 +28,7 @@ export const RealEstateMarket: React.FC = () => {
       const data = await response.json();
       setProperties(data.properties || []);
     } catch (error) {
-      console.error('Failed to fetch properties, error);
+      console.error('Failed to fetch properties', error);
     }
   };
 
@@ -41,7 +41,7 @@ export const RealEstateMarket: React.FC = () => {
       const data = await response.json();
       setMyProperties(data.properties || []);
     } catch (error) {
-      console.error('Failed to fetch my properties, error);
+      console.error('Failed to fetch my properties', error);
     }
   };
 

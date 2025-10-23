@@ -170,7 +170,7 @@ export const useActions = () => {
     try {
       return await actionService.checkCooldown(actionType);
     } catch (err) {
-      console.error('Failed to check cooldown, err);
+      console.error('Failed to check cooldown', err);
       return { on_cooldown, can_perform, []);
 
   return {

@@ -28,7 +28,7 @@ export const ActionCooldowns: React.FC = () => {
       // For now, mock data
       setLoading(false);
     } catch (error) {
-      console.error('Failed to load cooldowns, error);
+      console.error('Failed to load cooldowns', error);
       setLoading(false);
     }
   };

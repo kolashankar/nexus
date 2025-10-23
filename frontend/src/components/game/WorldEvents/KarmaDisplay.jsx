@@ -25,7 +25,7 @@ export const KarmaDisplay = ({  worldState  }) => {
       const stats = await worldService.getKarmaStatistics();
       setKarmaStats(stats);
     } catch (error) {
-      console.error('Error fetching karma stats, error);
+      console.error('Error fetching karma stats', error);
     } finally {
       setLoading(false);
     }

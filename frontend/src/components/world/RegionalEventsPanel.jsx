@@ -32,7 +32,7 @@ const RegionalEventsPanel = ({  territoryId  }) => {
           headers);
       setEvents(response.data);
     } catch (error) {
-      console.error('Error fetching regional events, error);
+      console.error('Error fetching regional events', error);
     } finally {
       setLoading(false);
     }

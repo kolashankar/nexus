@@ -22,7 +22,7 @@ export const useBattlePass = ()=> {
         headers);
       setBattlePass(response.data);
     } catch (err) {
-      console.error('Error fetching battle pass, err);
+      console.error('Error fetching battle pass', err);
       setError(err.response?.data?.detail || err.message);
     }
   };
@@ -34,7 +34,7 @@ export const useBattlePass = ()=> {
         headers);
       setProgress(response.data);
     } catch (err) {
-      console.error('Error fetching battle pass progress, err);
+      console.error('Error fetching battle pass progress', err);
       setError(err.response?.data?.detail || err.message);
     }
   };

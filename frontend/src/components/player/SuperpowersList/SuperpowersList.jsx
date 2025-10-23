@@ -22,7 +22,7 @@ const SuperpowersList: React.FC = () => {
       const data = await superpowersService.getSuperpowers();
       setSuperpowers(data);
     } catch (error) {
-      console.error('Failed to fetch superpowers, error);
+      console.error('Failed to fetch superpowers', error);
     } finally {
       setLoading(false);
     }
@@ -33,7 +33,7 @@ const SuperpowersList: React.FC = () => {
       const data = await superpowersService.getAvailablePowers();
       setAvailablePowers(data);
     } catch (error) {
-      console.error('Failed to fetch available powers, error);
+      console.error('Failed to fetch available powers', error);
     }
   };
 

@@ -29,7 +29,7 @@ export const InvestmentPortfolio: React.FC = () => {
       const data = await response.json();
       setPortfolio(data);
     } catch (error) {
-      console.error('Failed to fetch portfolio, error);
+      console.error('Failed to fetch portfolio', error);
     }
   };
 
@@ -42,7 +42,7 @@ export const InvestmentPortfolio: React.FC = () => {
       const data = await response.json();
       setOpportunities(data.opportunities || []);
     } catch (error) {
-      console.error('Failed to fetch opportunities, error);
+      console.error('Failed to fetch opportunities', error);
     }
   };
 

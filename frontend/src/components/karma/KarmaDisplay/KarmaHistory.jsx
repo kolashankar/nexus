@@ -18,7 +18,7 @@ const KarmaHistory: React.FC = () => {
       const response = await apiClient.get('/api/karma/history?limit=20');
       setHistory(response.data);
     } catch (error) {
-      console.error('Failed to fetch karma history, error);
+      console.error('Failed to fetch karma history', error);
     } finally {
       setLoading(false);
     }

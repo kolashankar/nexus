@@ -41,7 +41,7 @@ const TutorialOverlay = ({  onClose  }) => {
         setCurrentStep(stepData);
       }
     } catch (error) {
-      console.error('Error fetching tutorial data, error);
+      console.error('Error fetching tutorial data', error);
     } finally {
       setLoading(false);
     }
@@ -62,7 +62,7 @@ const TutorialOverlay = ({  onClose  }) => {
       // Refresh tutorial data
       await fetchTutorialData();
     } catch (error) {
-      console.error('Error completing step, error);
+      console.error('Error completing step', error);
     }
   };
 
@@ -81,7 +81,7 @@ const TutorialOverlay = ({  onClose  }) => {
       // Refresh tutorial data
       await fetchTutorialData();
     } catch (error) {
-      console.error('Error skipping step, error);
+      console.error('Error skipping step', error);
     }
   };
 
@@ -94,7 +94,7 @@ const TutorialOverlay = ({  onClose  }) => {
       });
       onClose();
     } catch (error) {
-      console.error('Error skipping tutorial, error);
+      console.error('Error skipping tutorial', error);
     }
   };
 

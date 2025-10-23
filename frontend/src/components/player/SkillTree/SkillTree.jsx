@@ -31,7 +31,7 @@ const SkillTree = ({  traitName  }) => {
       const data = await skillTreesService.getSkillTrees();
       setSkillTrees(data);
     } catch (error) {
-      console.error('Failed to fetch skill trees, error);
+      console.error('Failed to fetch skill trees', error);
       toast.error('Failed to load skill trees');
     } finally {
       setLoading(false);

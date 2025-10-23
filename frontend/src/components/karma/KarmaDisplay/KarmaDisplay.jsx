@@ -17,7 +17,7 @@ const KarmaDisplay: React.FC = () => {
       const response = await apiClient.get('/api/karma/score');
       setKarmaData(response.data);
     } catch (error) {
-      console.error('Failed to fetch karma data, error);
+      console.error('Failed to fetch karma data', error);
     } finally {
       setLoading(false);
     }

@@ -18,7 +18,7 @@ export const ActionHistory: React.FC = () => {
       const history = await actionsService.getHistory();
       setActions(history);
     } catch (error) {
-      console.error('Failed to load action history, error);
+      console.error('Failed to load action history', error);
     } finally {
       setLoading(false);
     }

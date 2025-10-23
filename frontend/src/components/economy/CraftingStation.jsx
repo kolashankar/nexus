@@ -36,7 +36,7 @@ export const CraftingStation: React.FC = () => {
       const data = await response.json();
       setRecipes(data.recipes || []);
     } catch (error) {
-      console.error('Failed to fetch recipes, error);
+      console.error('Failed to fetch recipes', error);
     }
   };
 

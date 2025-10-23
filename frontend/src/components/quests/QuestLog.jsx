@@ -36,7 +36,7 @@ export const QuestLog: React.FC = () => {
       const data = await response.json();
       setActiveQuests(data.quests || []);
     } catch (error) {
-      console.error('Failed to fetch active quests, error);
+      console.error('Failed to fetch active quests', error);
     }
   };
 
@@ -49,7 +49,7 @@ export const QuestLog: React.FC = () => {
       const data = await response.json();
       setAvailableQuests(data.quests || []);
     } catch (error) {
-      console.error('Failed to fetch available quests, error);
+      console.error('Failed to fetch available quests', error);
     }
   };
 
@@ -62,7 +62,7 @@ export const QuestLog: React.FC = () => {
       const data = await response.json();
       setCompletedQuests(data.quests || []);
     } catch (error) {
-      console.error('Failed to fetch completed quests, error);
+      console.error('Failed to fetch completed quests', error);
     }
   };
 

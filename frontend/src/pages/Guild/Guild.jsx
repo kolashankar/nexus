@@ -26,7 +26,7 @@ const Guild: React.FC = () => {
         setMembers(membersData);
       }
     } catch (error) {
-      console.error('Failed to load guild, error);
+      console.error('Failed to load guild', error);
     } finally {
       setLoading(false);
     }

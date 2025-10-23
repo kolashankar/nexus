@@ -39,7 +39,7 @@ export const CampaignViewer: React.FC = () => {
         }
       }
     } catch (error) {
-      console.error('Failed to fetch campaign, error);
+      console.error('Failed to fetch campaign', error);
     } finally {
       setLoading(false);
     }
@@ -54,7 +54,7 @@ export const CampaignViewer: React.FC = () => {
       const data = await response.json();
       setAvailableCampaigns(data.campaigns || []);
     } catch (error) {
-      console.error('Failed to fetch available campaigns, error);
+      console.error('Failed to fetch available campaigns', error);
     }
   };
 

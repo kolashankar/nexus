@@ -20,7 +20,7 @@ export const useTournaments = ()=> {
         headers);
       setTournaments(response.data);
     } catch (err) {
-      console.error('Error fetching tournaments, err);
+      console.error('Error fetching tournaments', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -34,7 +34,7 @@ export const useTournaments = ()=> {
         headers);
       return response.data;
     } catch (err) {
-      console.error('Error fetching tournament, err);
+      console.error('Error fetching tournament', err);
       return null;
     }
   };
@@ -56,7 +56,7 @@ export const useTournaments = ()=> {
         headers);
       return response.data;
     } catch (err) {
-      console.error('Error fetching my tournaments, err);
+      console.error('Error fetching my tournaments', err);
       return [];
     }
   };

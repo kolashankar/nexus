@@ -74,7 +74,7 @@ export const Model3D = ({
   }
 
   if (error) {
-    console.error('Model loading error, error);
+    console.error('Model loading error', error);
     return null; // Or show error state
   }
 

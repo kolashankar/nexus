@@ -27,7 +27,7 @@ export const HiddenQuests: React.FC = () => {
       const data = await response.json();
       setDiscoveredQuests(data.quests || []);
     } catch (error) {
-      console.error('Failed to fetch hidden quests, error);
+      console.error('Failed to fetch hidden quests', error);
     } finally {
       setLoading(false);
     }
@@ -42,7 +42,7 @@ export const HiddenQuests: React.FC = () => {
       const data = await response.json();
       setHints(data.hints || []);
     } catch (error) {
-      console.error('Failed to fetch hints, error);
+      console.error('Failed to fetch hints', error);
     }
   };
 

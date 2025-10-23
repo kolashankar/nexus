@@ -28,7 +28,7 @@ export const useTerritories = ()=> {
       setContested(contestedTerritories.territories);
     } catch (err) {
       setError(err.message || 'Failed to fetch territories');
-      console.error('Error fetching territories, err);
+      console.error('Error fetching territories', err);
     } finally {
       setLoading(false);
     }

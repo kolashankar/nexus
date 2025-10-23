@@ -64,7 +64,7 @@ const SocialHub: React.FC = () => {
         // No requests
       }
     } catch (error) {
-      console.error('Failed to load social data, error);
+      console.error('Failed to load social data', error);
     }
   };
 

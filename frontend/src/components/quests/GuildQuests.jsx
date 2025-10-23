@@ -39,7 +39,7 @@ export const GuildQuests: React.FC = () => {
       setQuests(data.available || []);
       setActiveQuests(data.active || []);
     } catch (error) {
-      console.error('Failed to fetch guild quests, error);
+      console.error('Failed to fetch guild quests', error);
     } finally {
       setLoading(false);
     }

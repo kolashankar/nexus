@@ -24,7 +24,7 @@ export const QuestTracker: React.FC = () => {
       const quests = await questService.getActiveQuests();
       setTrackedQuests(quests.slice(0, 5)); // Track max 5 quests
     } catch (error) {
-      console.error('Failed to fetch tracked quests, error);
+      console.error('Failed to fetch tracked quests', error);
     }
   };
 

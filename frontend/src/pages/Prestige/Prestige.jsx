@@ -23,7 +23,7 @@ const Prestige: React.FC = () => {
       const data = await prestigeService.getPrestige();
       setPrestige(data);
     } catch (error) {
-      console.error('Failed to fetch prestige, error);
+      console.error('Failed to fetch prestige', error);
     } finally {
       setLoading(false);
     }
@@ -34,7 +34,7 @@ const Prestige: React.FC = () => {
       const data = await prestigeService.checkPrestigeEligibility();
       setEligibility(data);
     } catch (error) {
-      console.error('Failed to check eligibility, error);
+      console.error('Failed to check eligibility', error);
     }
   };
 

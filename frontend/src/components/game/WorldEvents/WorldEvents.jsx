@@ -53,7 +53,7 @@ export const WorldEvents: React.FC = () => {
       setRecentEvents(eventsData.events);
       setWorldState(stateData);
     } catch (error) {
-      console.error('Error fetching world data, error);
+      console.error('Error fetching world data', error);
     } finally {
       setLoading(false);
     }

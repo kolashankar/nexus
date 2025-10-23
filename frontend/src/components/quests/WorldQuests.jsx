@@ -25,7 +25,7 @@ export const WorldQuests: React.FC = () => {
       const data = await response.json();
       setQuests(data.quests || []);
     } catch (error) {
-      console.error('Failed to fetch world quests, error);
+      console.error('Failed to fetch world quests', error);
     }
   };
 

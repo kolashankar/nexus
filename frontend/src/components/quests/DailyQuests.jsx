@@ -27,7 +27,7 @@ export const DailyQuests: React.FC = () => {
       setQuests(data.quests || []);
       setResetTime(data.reset_time);
     } catch (error) {
-      console.error('Failed to fetch daily quests, error);
+      console.error('Failed to fetch daily quests', error);
     }
   };
 

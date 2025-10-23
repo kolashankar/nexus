@@ -19,7 +19,7 @@ const Territories: React.FC = () => {
       const data = await guildsService.getAllTerritories();
       setTerritories(data);
     } catch (error) {
-      console.error('Failed to load territories, error);
+      console.error('Failed to load territories', error);
     } finally {
       setLoading(false);
     }

@@ -37,7 +37,7 @@ export const useAuth = () => {
       await login({ username, password });
       navigate('/dashboard');
     } catch (err) {
-      console.error('Login failed, err);
+      console.error('Login failed', err);
       throw err;
     }
   };
@@ -47,7 +47,7 @@ export const useAuth = () => {
       await register({ username, email, password });
       navigate('/dashboard');
     } catch (err) {
-      console.error('Registration failed, err);
+      console.error('Registration failed', err);
       throw err;
     }
   };
@@ -57,7 +57,7 @@ export const useAuth = () => {
       await logout();
       navigate('/login');
     } catch (err) {
-      console.error('Logout failed, err);
+      console.error('Logout failed', err);
     }
   };
 

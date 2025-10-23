@@ -26,7 +26,7 @@ export const WorldMap: React.FC = () => {
         setSelectedTerritory(data.territories[0]);
       }
     } catch (error) {
-      console.error('Error fetching territories, error);
+      console.error('Error fetching territories', error);
     } finally {
       setLoading(false);
     }

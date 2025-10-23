@@ -25,7 +25,7 @@ export const useSuperpowers = () => {
       const data = await superpowersService.getAvailablePowers();
       setAvailablePowers(data);
     } catch (err) {
-      console.error('Failed to fetch available powers, err);
+      console.error('Failed to fetch available powers', err);
     }
   };
 

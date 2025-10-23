@@ -22,7 +22,7 @@ export const useWorldState = ()=> {
       setWorldState(state);
     } catch (err) {
       setError(err.message || 'Failed to fetch world state');
-      console.error('Error fetching world state, err);
+      console.error('Error fetching world state', err);
     } finally {
       setLoading(false);
     }

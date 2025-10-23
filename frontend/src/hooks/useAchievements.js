@@ -25,7 +25,7 @@ export const useAchievements = () => {
       const data = await achievementsService.getAchievementSummary();
       setSummary(data);
     } catch (err) {
-      console.error('Failed to fetch summary, err);
+      console.error('Failed to fetch summary', err);
     }
   };
 
