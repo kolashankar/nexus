@@ -13,7 +13,7 @@ class CraftingHistory(BaseModel):
     quantity: int = Field(default=1, ge=1, description="Quantity crafted")
     success: bool = Field(default=True, description="Whether craft was successful")
     
-    materials_used: List[Dict[str, any]] = Field(
+    materials_used: List[Dict[str, Any]] = Field(
         default_factory=list,
         description="Materials consumed"
     )

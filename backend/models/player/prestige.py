@@ -24,7 +24,7 @@ class PlayerPrestige(BaseModel):
     total_prestiges: int = 0
     prestige_points: int = 0
     can_prestige: bool = False
-    next_prestige_requirements: Dict[str, any] = Field(default_factory=dict)
+    next_prestige_requirements: Dict[str, Any] = Field(default_factory=dict)
     prestige_history: List[datetime] = Field(default_factory=list)
     permanent_bonuses: Dict[str, float] = Field(default_factory=dict)
     

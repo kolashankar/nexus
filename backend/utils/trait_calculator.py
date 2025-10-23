@@ -78,7 +78,7 @@ class TraitCalculator:
             return ('average', alignment_score)
 
     @staticmethod
-    def calculate_trait_balance(traits: Dict[str, int]) -> Dict[str, any]:
+    def calculate_trait_balance(traits: Dict[str, int]) -> Dict[str, Any]:
         """Calculate overall trait balance.
         
         Args:
@@ -153,7 +153,7 @@ class TraitCalculator:
         return sorted_traits[:count]
 
     @staticmethod
-    def suggest_trait_improvements(traits: Dict[str, int]) -> List[Dict[str, any]]:
+    def suggest_trait_improvements(traits: Dict[str, int]) -> List[Dict[str, Any]]:
         """Suggest traits that should be improved.
         
         Args:
@@ -181,7 +181,7 @@ class TraitCalculator:
         return suggestions
 
     @staticmethod
-    def calculate_synergies(traits: Dict[str, int]) -> List[Dict[str, any]]:
+    def calculate_synergies(traits: Dict[str, int]) -> List[Dict[str, Any]]:
         """Calculate trait synergies.
         
         Args:

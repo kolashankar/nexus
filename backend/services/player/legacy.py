@@ -225,7 +225,7 @@ class LegacyService:
     @staticmethod
     def apply_new_character_bonuses(
         player_legacy: PlayerLegacy
-    ) -> Dict[str, any]:
+    ) -> Dict[str, Any]:
         """Apply legacy bonuses to a new character"""
         bonuses = {
             "xp_multiplier": 1.0,

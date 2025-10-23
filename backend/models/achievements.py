@@ -31,7 +31,7 @@ class AchievementDefinition(BaseModel):
     rarity: AchievementRarity
     icon: str
     points: int = 10
-    requirements: Dict[str, any] = Field(default_factory=dict)
+    requirements: Dict[str, Any] = Field(default_factory=dict)
     rewards: Dict[str, int] = Field(default_factory=dict)
     hidden: bool = False
     repeatable: bool = False

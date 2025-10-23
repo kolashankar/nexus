@@ -9,7 +9,7 @@ class PropertyBase(BaseModel):
     description: str
     property_type: str  # apartment, house, mansion, commercial, industrial
     size: int  # square meters
-    location: Dict[str, any]
+    location: Dict[str, Any]
     territory_id: int
 
 
@@ -23,7 +23,7 @@ class PropertyDetailResponse(PropertyBase):
     price: int
     passive_income: int
     maintenance_cost: int
-    upgrades: List[Dict[str, any]]
+    upgrades: List[Dict[str, Any]]
     owner_id: Optional[str]
     tenant_id: Optional[str]
     status: str

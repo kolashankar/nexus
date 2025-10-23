@@ -19,7 +19,7 @@ class SuperpowerDefinition(BaseModel):
     requirements: Dict[str, float] = Field(default_factory=dict)  # {"trait_name": min_value}
     cooldown_seconds: int = 300  # 5 minutes default
     energy_cost: int = 50
-    effects: Dict[str, any] = Field(default_factory=dict)
+    effects: Dict[str, Any] = Field(default_factory=dict)
     
 class UnlockedSuperpower(BaseModel):
     """Player's unlocked superpower"""

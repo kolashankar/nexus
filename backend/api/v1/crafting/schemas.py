@@ -26,14 +26,14 @@ class RecipeBase(BaseModel):
 
 
 class RecipeListItem(RecipeBase):
-    materials_required: List[Dict[str, any]]
-    result_item: Dict[str, any]
+    materials_required: List[Dict[str, Any]]
+    result_item: Dict[str, Any]
     unlocked: bool
 
 
 class RecipeDetailResponse(RecipeBase):
     materials_required: List[MaterialRequirement]
-    result_item: Dict[str, any]
+    result_item: Dict[str, Any]
     success_rate: float
     bonus_effects: Optional[List[str]]
     unlocked: bool
@@ -51,7 +51,7 @@ class CraftItemResponse(BaseModel):
     item_name: str
     quantity_crafted: int
     xp_gained: int
-    materials_consumed: List[Dict[str, any]]
+    materials_consumed: List[Dict[str, Any]]
     bonus_received: Optional[str]
 
 

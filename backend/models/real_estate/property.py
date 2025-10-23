@@ -23,7 +23,7 @@ class Property(BaseModel):
     )
     size: int = Field(..., ge=1, description="Size in square meters")
     
-    location: Dict[str, any] = Field(..., description="Property location")
+    location: Dict[str, Any] = Field(..., description="Property location")
     territory_id: int = Field(..., description="Territory ID")
     
     price: int = Field(..., ge=0, description="Purchase price")
