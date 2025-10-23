@@ -8,39 +8,43 @@ import { StealModal } from '../../components/actions/StealModal/StealModal';
 import { DonateModal } from '../../components/actions/DonateModal/DonateModal';
 import { TradeModal } from '../../components/actions/TradeModal/TradeModal';
 
-export const Actions: React.FC = () => {
+export const Actions = () => {
   const [activeModal, setActiveModal] = useState(null);
 
   return (
-    
-      Game Actions
+    <div className="container mx-auto py-6">
+      <h1 className="text-3xl font-bold mb-6">Game Actions</h1>
       
-      
-        
-          Choose Your Action
-        
-        
-          
-             setActiveModal('hack')} />
-             setActiveModal('help')} />
-             setActiveModal('steal')}
+      <Card>
+        <CardHeader>
+          <CardTitle>Choose Your Action</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <ActionButton label="Hack" onClick={() => setActiveModal('hack')} />
+            <ActionButton label="Help" onClick={() => setActiveModal('help')} />
+            <ActionButton
+              label="Steal"
+              onClick={() => setActiveModal('steal')}
               variant="destructive"
             />
-             setActiveModal('donate')} />
-             setActiveModal('trade')}
+            <ActionButton label="Donate" onClick={() => setActiveModal('donate')} />
+            <ActionButton
+              label="Trade"
+              onClick={() => setActiveModal('trade')}
               variant="outline"
             />
-          
-        
-      
+          </div>
+        </CardContent>
+      </Card>
 
-      
+      <ActionHistory />
 
-       setActiveModal(null)} />
-       setActiveModal(null)} />
-       setActiveModal(null)} />
-       setActiveModal(null)} />
-       setActiveModal(null)} />
-    
+      <HackModal isOpen={activeModal === 'hack'} onClose={() => setActiveModal(null)} />
+      <HelpModal isOpen={activeModal === 'help'} onClose={() => setActiveModal(null)} />
+      <StealModal isOpen={activeModal === 'steal'} onClose={() => setActiveModal(null)} />
+      <DonateModal isOpen={activeModal === 'donate'} onClose={() => setActiveModal(null)} />
+      <TradeModal isOpen={activeModal === 'trade'} onClose={() => setActiveModal(null)} />
+    </div>
   );
 };
