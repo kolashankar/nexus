@@ -5,16 +5,18 @@ import { Input } from '../../ui/input';
 import { useToast } from '../../../hooks/useToast';
 import { actionsService } from '../../../services/actions/actionsService';
 
-
-
-export const HackModal = ({  open, onClose, onSuccess  }) => {
+export const HackModal = ({ open, onClose, onSuccess }) => {
   const [targetId, setTargetId] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const handleHack = async () => {
     if (!targetId) {
-      toast({ title, description, variant);
+      toast({ 
+        title: 'Error', 
+        description: 'Please enter a target player ID', 
+        variant: 'destructive' 
+      });
       return;
     }
 
@@ -22,41 +24,46 @@ export const HackModal = ({  open, onClose, onSuccess  }) => {
     try {
       const result = await actionsService.hack(targetId);
       toast({
-        title,
-        description,
-        variant);
+        title: 'Hack Successful!',
+        description: `You hacked player ${targetId}`,
+        variant: 'success'
+      });
       if (result.success && onSuccess) {
         onSuccess();
       }
       onClose();
     } catch (error) {
-      toast({ title, description, variant);
+      toast({ 
+        title: 'Hack Failed', 
+        description: error.message || 'Unable to hack player', 
+        variant: 'destructive' 
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    
-      
-        
-          🔐 Hack Player
-          
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>🔐 Hack Player</DialogTitle>
+          <DialogDescription>
             Attempt to hack another player's systems. Success depends on your hacking skill vs their technical knowledge.
-          
-        
-        
-           setTargetId(e.target.value)} />
-          
-            
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <Input placeholder="Target Player ID" value={targetId} onChange={(e) => setTargetId(e.target.value)} />
+          <div className="flex gap-2">
+            <Button onClick={handleHack} disabled={loading}>
               {loading ? 'Hacking...' : 'Execute Hack'}
-            
-            
+            </Button>
+            <Button variant="outline" onClick={onClose}>
               Cancel
-            
-          
-        
-      
-    
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
