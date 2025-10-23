@@ -162,7 +162,7 @@ export class TouchGestureDetector {
     this.startTime = Date.now();
   };
 
-  private handleTouchEnd = (event) => {
+  handleTouchEnd = (event) => {
     const endX = event.changedTouches[0].clientX;
     const endY = event.changedTouches[0].clientY;
     const endTime = Date.now();
@@ -174,7 +174,13 @@ export class TouchGestureDetector {
     const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
 
     // Tap
-    if (distance  50 && duration  Math.abs(deltaY)) {
+    if (distance < 10 && duration < 200) {
+      this.onTap?.();
+    }
+
+    // Swipe
+    if (distance > 50 && duration < 300) {
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
         // Horizontal swipe
         if (deltaX > 0) {
           this.onSwipeRight?.();
@@ -192,19 +198,12 @@ export class TouchGestureDetector {
     }
 
     // Long press
-    if (distance  500) {
+    if (distance < 10 && duration > 500) {
       this.onLongPress?.();
     }
   };
 
-  public onTap?: () => void;
-  public onSwipeLeft?: () => void;
-  public onSwipeRight?: () => void;
-  public onSwipeUp?: () => void;
-  public onSwipeDown?: () => void;
-  public onLongPress?: () => void;
-
-  public destroy() {
+  destroy() {
     this.element.removeEventListener('touchstart', this.handleTouchStart);
     this.element.removeEventListener('touchend', this.handleTouchEnd);
   }
