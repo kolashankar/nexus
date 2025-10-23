@@ -94,42 +94,47 @@ All shadcn/ui components with parsing errors have been fixed:
 
 ## ⚠️ Remaining Issues (84 errors, 69 warnings)
 
+## ⚠️ Remaining Issues (84 errors, 69 warnings)
+
 ### Category Breakdown:
 
-#### 1. TypeScript Syntax in .js Files (~150 files)
+#### 1. Service Files (~19 errors)
 Files that need TypeScript syntax converted to JavaScript:
 
-**3D Service Files (6 files)**
-- services/3d/TextureManager.js - has TypeScript interfaces
-- services/3d/AnimationController.js - has TypeScript types
-- services/3d/SceneManager.js - has TypeScript types
-- services/3d/AssetLoader.js - has TypeScript types
-- services/3d/ModelPaths.js - has TypeScript interfaces
+**API Service Files:**
+- services/achievements/achievementsService.js - TypeScript return type annotations
+- services/action/actionService.js - TypeScript syntax
+- services/actions/actionsService.js - TypeScript syntax
+- services/api/client.js - Malformed object
+- services/api/worldService.js - TypeScript syntax
+- services/auth/authService.js - Type cast expressions
+- services/combat/combatService.js - TypeScript syntax
+- services/guilds/guildsService.js - TypeScript syntax
+- services/karma/karmaService.js - TypeScript syntax
+- services/legacy/legacyService.js - TypeScript syntax
+- services/player/playerService.js - Missing semicolon
+- services/player/traitsService.js - TypeScript return types
+- services/prestige/prestigeService.js - TypeScript return types
+- services/progression/progressionService.js - TypeScript syntax
+- services/questService.js - TypeScript syntax
+- services/skillTrees/skillTreesService.js - TypeScript return types
+- services/social/socialService.js - TypeScript syntax
+- services/superpowers/superpowersService.js - TypeScript syntax
+- services/tournaments/tournamentsService.js - TypeScript syntax
+- services/websocket/websocketService.js - Parsing error
 
-**Component Files (~100 files)**
-- All component directories have files with TypeScript remnants
-- Most have TypeScript function signatures and type annotations
-- Need conversion to plain JavaScript
+#### 2. Test Files (~45 errors) - LOW PRIORITY
+- Component test files in __tests__ directories
+- Integration test files in tests/integration/
+- E2E test files in tests/e2e/
+- Test setup file
+**Note:** Can be addressed in later phase, don't affect production functionality
 
-**Hook Files (~30 files)**
-- Custom hooks with TypeScript signatures
-- Type annotations need removal
-
-**Service Files (~25 files)**
-- API service files with TypeScript
-- Type definitions mixed with JavaScript
-
-**Store Files (6 files)**
-- Redux slices with TypeScript annotations
-
-#### 2. Test Files (~30 files) - LOW PRIORITY
-- Can be addressed in later phase
-- Don't affect production functionality
-
-#### 3. No-Undef Warnings (77 instances)
-- Browser globals (screen, window properties)
-- Test globals in non-test files
-- Configuration file globals
+#### 3. Warnings (~69 instances) - LOWEST PRIORITY
+- Unused variables
+- Missing default cases in switch statements
+- Expected default cases
+**Note:** These are code quality warnings, not blocking issues
 
 ---
 
