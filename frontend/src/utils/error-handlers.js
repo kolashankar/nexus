@@ -34,14 +34,14 @@ export class ValidationError extends GameError {
 }
 
 export class NotFoundError extends GameError {
-  constructor(message= 'Resource not found', data?  {
+  constructor(message = 'Resource not found', data) {
     super(message, 'NOT_FOUND', 404, data);
     this.name = 'NotFoundError';
   }
 }
 
 export class ServerError extends GameError {
-  constructor(message= 'Server error occurred', data?  {
+  constructor(message = 'Server error occurred', data) {
     super(message, 'SERVER_ERROR', 500, data);
     this.name = 'ServerError';
   }
@@ -50,7 +50,7 @@ export class ServerError extends GameError {
 /**
  * Handle API errors and transform them into appropriate error types
  */
-export const handleApiError = (error)=> {
+export const handleApiError = (error) => {
   // Network errors
   if (!error.response) {
     return new NetworkError('Unable to connect to server. Please check your connection.');
