@@ -5,7 +5,7 @@
 /**
  * Detect if device is mobile
  */
-export const isMobile = ()=> {
+export const isMobile = () => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
   );
@@ -14,25 +14,25 @@ export const isMobile = ()=> {
 /**
  * Detect if device is iOS
  */
-export const isIOS = ()=> {
+export const isIOS = () => {
   return /iPad|iPhone|iPod/.test(navigator.userAgent);
 };
 
 /**
  * Detect if device is Android
  */
-export const isAndroid = ()=> {
+export const isAndroid = () => {
   return /Android/.test(navigator.userAgent);
 };
 
 /**
  * Check if device supports touch
  */
-export const hasTouch = ()=> {
+export const hasTouch = () => {
   return (
     'ontouchstart' in window ||
     navigator.maxTouchPoints > 0 ||
-    (navigator).msMaxTouchPoints > 0
+    navigator.msMaxTouchPoints > 0
   );
 };
 
@@ -49,21 +49,22 @@ export const getViewport = () => {
 /**
  * Check if device is in landscape mode
  */
-export const isLandscape = ()=> {
+export const isLandscape = () => {
   return window.innerWidth > window.innerHeight;
 };
 
 /**
  * Lock screen orientation (if supported)
  */
-export const lockOrientation = async (
-  orientation)=> {
-  if ('orientation' in screen && 'lock' in (screen).orientation) {
+export const lockOrientation = async (orientation) => {
+  // eslint-disable-next-line no-restricted-globals
+  if ('orientation' in screen && 'lock' in screen.orientation) {
     try {
-      await (screen).orientation.lock(orientation);
+      // eslint-disable-next-line no-restricted-globals
+      await screen.orientation.lock(orientation);
       return true;
     } catch (error) {
-      console.warn('Screen orientation lock not supported', error);
+      console.warn('Screen orientation lock not supported:', error);
       return false;
     }
   }
@@ -74,15 +75,17 @@ export const lockOrientation = async (
  * Unlock screen orientation
  */
 export const unlockOrientation = () => {
-  if ('orientation' in screen && 'unlock' in (screen).orientation) {
-    (screen).orientation.unlock();
+  // eslint-disable-next-line no-restricted-globals
+  if ('orientation' in screen && 'unlock' in screen.orientation) {
+    // eslint-disable-next-line no-restricted-globals
+    screen.orientation.unlock();
   }
 };
 
 /**
  * Vibrate device (if supported)
  */
-export const vibrate = (pattern)=> {
+export const vibrate = (pattern) => {
   if ('vibrate' in navigator) {
     return navigator.vibrate(pattern);
   }
@@ -271,9 +274,9 @@ export class PullToRefresh {
  */
 export const getNetworkInfo = () => {
   const connection =
-    (navigator).connection ||
-    (navigator).mozConnection ||
-    (navigator).webkitConnection;
+    navigator.connection ||
+    navigator.mozConnection ||
+    navigator.webkitConnection;
 
   if (connection) {
     return {
@@ -290,7 +293,7 @@ export const getNetworkInfo = () => {
 /**
  * Check if connection is slow
  */
-export const isSlowConnection = ()=> {
+export const isSlowConnection = () => {
   const info = getNetworkInfo();
   if (!info) return false;
 
@@ -300,16 +303,16 @@ export const isSlowConnection = ()=> {
 /**
  * Add to home screen prompt
  */
-export const promptInstallPWA = ()=> {
+export const promptInstallPWA = () => {
   return new Promise((resolve) => {
-    const deferredPrompt = (window).deferredPrompt;
+    const deferredPrompt = window.deferredPrompt;
 
     if (deferredPrompt) {
       deferredPrompt.prompt();
 
       deferredPrompt.userChoice.then((choiceResult) => {
         resolve(choiceResult.outcome === 'accepted');
-        (window).deferredPrompt = null;
+        window.deferredPrompt = null;
       });
     } else {
       resolve(false);

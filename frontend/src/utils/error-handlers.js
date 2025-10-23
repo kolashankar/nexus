@@ -90,7 +90,7 @@ export const handleApiError = (error) => {
 /**
  * Format error message for display to user
  */
-export const formatErrorMessage = (error)=> {
+export const formatErrorMessage = (error) => {
   if (error instanceof GameError) {
     return error.message;
   }
@@ -107,18 +107,18 @@ export const formatErrorMessage = (error)=> {
 /**
  * Log error to console (and potentially to monitoring service)
  */
-export const logError = (error, context?  => {
+export const logError = (error, context) => {
   console.error('[Karma Nexus Error]', {
-    name,
-    message,
-    stack,
-    context,
-    timestamp).toISOString(),
+    name: error.name,
+    message: error.message,
+    stack: error.stack,
+    context: context,
+    timestamp: new Date().toISOString(),
   });
 
-  // TODO, Sentry)
+  // TODO: Send to error monitoring service (e.g., Sentry)
   // if (process.env.NODE_ENV === 'production') {
-  //   Sentry.captureException(error, { contexts);
+  //   Sentry.captureException(error, { contexts: { custom: context } });
   // }
 };
 
@@ -126,27 +126,34 @@ export const logError = (error, context?  => {
  * Retry helper for failed operations
  */
 export const retryOperation = async (
-  operation) => Promise,
-  maxRetries= 3,
-  delayMs= 1000
-)=> {
+  operation,
+  maxRetries = 3,
+  delayMs = 1000
+) => {
   let lastError;
 
-  for (let attempt = 1; attempt  setTimeout(resolve, delayMs * attempt));
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      if (attempt < maxRetries) {
+        // Wait before retrying with exponential backoff
+        await new Promise(resolve => setTimeout(resolve, delayMs * attempt));
       }
     }
   }
 
-  throw lastError!;
+  throw lastError;
 };
 
 /**
  * Safe async wrapper that catches errors
  */
 export const safeAsync = async (
-  operation) => Promise,
-  fallback? 
-)=> {
+  operation,
+  fallback
+) => {
   try {
     return await operation();
   } catch (error) {
@@ -160,14 +167,12 @@ export const safeAsync = async (
  */
 export const errorRecovery = {
   // Retry with exponential backoff
-  retryExponential) => Promise,
-    maxRetries= 3
-  )=> {
+  retryExponential: async (operation, maxRetries = 3) => {
     return retryOperation(operation, maxRetries, 1000);
   },
 
   // Fallback to cached data
-  useCached)=> {
+  useCached: (cacheKey) => {
     try {
       const cached = localStorage.getItem(cacheKey);
       return cached ? JSON.parse(cached) : null;
@@ -177,7 +182,7 @@ export const errorRecovery = {
   },
 
   // Graceful degradation
-  gracefulFallback) => T, fallback) => T)=> {
+  gracefulFallback: (primary, fallback) => {
     try {
       return primary();
     } catch {
@@ -192,17 +197,17 @@ export const errorRecovery = {
 export const setupGlobalErrorHandler = () => {
   // Handle unhandled promise rejections
   window.addEventListener('unhandledrejection', (event) => {
-    logError(new Error(`Unhandled promise rejection), {
-      promise,
+    logError(new Error(`Unhandled promise rejection: ${event.reason}`), {
+      promise: event.promise,
     });
   });
 
   // Handle global errors
   window.addEventListener('error', (event) => {
     logError(event.error || new Error(event.message), {
-      filename,
-      lineno,
-      colno,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
     });
   });
 };

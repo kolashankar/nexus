@@ -31,13 +31,13 @@ export class FocusTrap {
     this.focusableElements = this.getFocusableElements();
   }
 
-  getFocusableElements(){
+  getFocusableElements() {
     const selectors = [
       'a[href]',
-      'button)',
-      'textarea)',
-      'input)',
-      'select)',
+      'button:not([disabled])',
+      'textarea:not([disabled])',
+      'input:not([disabled])',
+      'select:not([disabled])',
       '[tabindex]:not([tabindex="-1"])',
     ];
 
@@ -100,15 +100,7 @@ export const createKeyboardNavigation = ({
   onArrowDown,
   onArrowLeft,
   onArrowRight,
-}: {
-  onEnter?: () => void;
-  onSpace?: () => void;
-  onEscape?: () => void;
-  onArrowUp?: () => void;
-  onArrowDown?: () => void;
-  onArrowLeft?: () => void;
-  onArrowRight?: () => void;
-}) => {
+} = {}) => {
   return (event) => {
     switch (event.key) {
       case 'Enter':
@@ -147,22 +139,22 @@ export const createKeyboardNavigation = ({
  * ARIA label generators
  */
 export const aria = {
-  button, pressed?: boolean, expanded?  => ({
+  button: (label, role = 'button', tabIndex = 0, pressed, expanded) => ({
     'aria-label': label,
-    role,
-    tabIndex,
+    role: role,
+    tabIndex: tabIndex,
     ...(pressed !== undefined && { 'aria-pressed': pressed }),
     ...(expanded !== undefined && { 'aria-expanded': expanded }),
   }),
 
-  link, current?  => ({
+  link: (label, role = 'link', current) => ({
     'aria-label': label,
-    role,
+    role: role,
     ...(current && { 'aria-current': 'page' }),
   }),
 
-  progressBar, max= 100, label?  => ({
-    role,
+  progressBar: (value, max = 100, label, role = 'progressbar') => ({
+    role: role,
     'aria-valuenow': value,
     'aria-valuemin': 0,
     'aria-valuemax': max,
@@ -170,42 +162,42 @@ export const aria = {
     ...(label && { 'aria-label': label }),
   }),
 
-  tab, selected, controls) => ({
-    role,
+  tab: (label, selected, controls, tabIndex = selected ? 0 : -1) => ({
+    role: 'tab',
     'aria-label': label,
     'aria-selected': selected,
     'aria-controls': controls,
-    tabIndex,
+    tabIndex: tabIndex,
   }),
 
-  tabPanel, labelledBy, hidden) => ({
-    role,
-    id,
+  tabPanel: (id, labelledBy, hidden) => ({
+    role: 'tabpanel',
+    id: id,
     'aria-labelledby': labelledBy,
-    hidden,
+    hidden: hidden,
   }),
 
-  dialog, describedBy?  => ({
-    role,
+  dialog: (label, describedBy) => ({
+    role: 'dialog',
     'aria-label': label,
     'aria-modal': true,
     ...(describedBy && { 'aria-describedby': describedBy }),
   }),
 
-  alert) => ({
-    role,
+  alert: (type = 'status') => ({
+    role: type === 'error' ? 'alert' : 'status',
     'aria-live': type === 'error' ? 'assertive' : 'polite',
     'aria-atomic': true,
   }),
 
-  listbox, multiselectable?  => ({
-    role,
+  listbox: (label, multiselectable) => ({
+    role: 'listbox',
     'aria-label': label,
     ...(multiselectable && { 'aria-multiselectable': true }),
   }),
 
-  option, selected, disabled?  => ({
-    role,
+  option: (label, selected, disabled) => ({
+    role: 'option',
     'aria-label': label,
     'aria-selected': selected,
     ...(disabled && { 'aria-disabled': true }),
@@ -226,7 +218,7 @@ export const createSkipLink = (targetId) => {
     const target = document.getElementById(targetId);
     if (target) {
       target.focus();
-      target.scrollIntoView({ behavior);
+      target.scrollIntoView({ behavior: 'smooth' });
     }
   });
 
@@ -236,15 +228,15 @@ export const createSkipLink = (targetId) => {
 /**
  * Check if user prefers reduced motion
  */
-export const prefersReducedMotion = ()=> {
-  return window.matchMedia('(prefers-reduced-motion)').matches;
+export const prefersReducedMotion = () => {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
 /**
  * High contrast mode detection
  */
-export const prefersHighContrast = ()=> {
-  return window.matchMedia('(prefers-contrast)').matches;
+export const prefersHighContrast = () => {
+  return window.matchMedia('(prefers-contrast: high)').matches;
 };
 
 /**
@@ -252,13 +244,13 @@ export const prefersHighContrast = ()=> {
  */
 export const colorBlindnessAdjustments = {
   // Ensure text contrast ratio meets WCAG AA standards
-  ensureContrast, background)=> {
+  ensureContrast: (foreground, background) => {
     // This is a simplified check - in production, use a proper contrast ratio calculator
     return true; // Placeholder
   },
 
   // Add patterns/textures in addition to color
-  addPattern, type) => {
+  addPattern: (element, type) => {
     element.classList.add(`pattern-${type}`);
   },
 };
@@ -268,19 +260,19 @@ export const colorBlindnessAdjustments = {
  */
 export const focusManagement = {
   // Save current focus
-  saveFocus)=> {
+  saveFocus: () => {
     return document.activeElement;
   },
 
   // Restore saved focus
-  restoreFocus) => {
+  restoreFocus: (element) => {
     if (element && typeof element.focus === 'function') {
       element.focus();
     }
   },
 
   // Move focus to first error in form
-  focusFirstError) => {
+  focusFirstError: (formElement) => {
     const firstError = formElement.querySelector(
       '[aria-invalid="true"]'
     );
@@ -294,7 +286,7 @@ export const focusManagement = {
  * Roving tabindex for keyboard navigation in lists
  */
 export class RovingTabIndex {
-  items, initialIndex= 0) {
+  constructor(items, initialIndex = 0) {
     this.items = items;
     this.currentIndex = initialIndex;
     this.updateTabIndex();
