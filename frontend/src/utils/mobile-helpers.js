@@ -41,8 +41,8 @@ export const hasTouch = ()=> {
  */
 export const getViewport = () => {
   return {
-    width,
-    height,
+    width: window.innerWidth,
+    height: window.innerHeight,
   };
 };
 
