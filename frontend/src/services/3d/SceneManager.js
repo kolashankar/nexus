@@ -2,11 +2,10 @@
  * Scene Manager for managing Three.js scenes
  */
 
-import * from 'three';
+import * as THREE from 'three';
 
-;
-  ambient?: {
-    color, config?: SceneConfig) {
+export class SceneManager {
+  constructor(canvas, config) {
     // Initialize scene
     this.scene = new THREE.Scene();
 
@@ -21,9 +20,10 @@ import * from 'three';
 
     // Initialize renderer
     this.renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias,
-      alpha);
+      canvas: canvas,
+      antialias: true,
+      alpha: true
+    });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
@@ -50,7 +50,7 @@ import * from 'three';
   /**
    * Apply scene configuration
    */
-  applyConfig(config){
+  applyConfig(config) {
     if (config.background) {
       this.scene.background = config.background;
     }
@@ -80,7 +80,7 @@ import * from 'three';
   /**
    * Setup default lighting
    */
-  setupDefaultLighting(){
+  setupDefaultLighting() {
     // Ambient light
     this.addAmbientLight('ambient', new THREE.Color(0xffffff), 0.4);
 
@@ -96,10 +96,7 @@ import * from 'three';
   /**
    * Add ambient light
    */
-  addAmbientLight(
-    name,
-    color,
-    intensity){
+  addAmbientLight(name, color, intensity) {
     const light = new THREE.AmbientLight(color, intensity);
     this.lights.set(name, light);
     this.scene.add(light);
@@ -109,11 +106,7 @@ import * from 'three';
   /**
    * Add directional light
    */
-  addDirectionalLight(
-    name,
-    color,
-    intensity,
-    position){
+  addDirectionalLight(name, color, intensity, position) {
     const light = new THREE.DirectionalLight(color, intensity);
     light.position.copy(position);
     light.castShadow = true;
@@ -130,13 +123,7 @@ import * from 'three';
   /**
    * Add point light
    */
-  addPointLight(
-    name,
-    color,
-    intensity,
-    position,
-    distance= 0
-  ){
+  addPointLight(name, color, intensity, position, distance = 0) {
     const light = new THREE.PointLight(color, intensity, distance);
     light.position.copy(position);
     light.castShadow = true;
@@ -149,7 +136,7 @@ import * from 'three';
   /**
    * Add object to scene
    */
-  addObject(name, object){
+  addObject(name, object) {
     this.objects.set(name, object);
     this.scene.add(object);
   }
@@ -157,7 +144,7 @@ import * from 'three';
   /**
    * Remove object from scene
    */
-  removeObject(name){
+  removeObject(name) {
     const object = this.objects.get(name);
     if (object) {
       this.scene.remove(object);
@@ -168,21 +155,21 @@ import * from 'three';
   /**
    * Get object by name
    */
-  getObject(name){
+  getObject(name) {
     return this.objects.get(name);
   }
 
   /**
    * Get light by name
    */
-  getLight(name){
+  getLight(name) {
     return this.lights.get(name);
   }
 
   /**
    * Handle window resize
    */
-  handleResize(){
+  handleResize() {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -196,28 +183,28 @@ import * from 'three';
   /**
    * Render scene
    */
-  render(){
+  render() {
     this.renderer.render(this.scene, this.camera);
   }
 
   /**
    * Set camera position
    */
-  setCameraPosition(x, y, z){
+  setCameraPosition(x, y, z) {
     this.camera.position.set(x, y, z);
   }
 
   /**
    * Look at target
    */
-  lookAt(target){
+  lookAt(target) {
     this.camera.lookAt(target);
   }
 
   /**
    * Dispose of resources
    */
-  dispose(){
+  dispose() {
     window.removeEventListener('resize', this.handleResize.bind(this));
     
     // Dispose renderer

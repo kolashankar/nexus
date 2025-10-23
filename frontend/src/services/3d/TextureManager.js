@@ -2,12 +2,10 @@
  * Texture Manager for loading and managing textures
  */
 
-import * from 'three';
-
-
+import * as THREE from 'three';
 
 class TextureManager {
-  loader) {
+  constructor() {
     this.loader = new THREE.TextureLoader();
     this.cache = new Map();
     this.loadingPromises = new Map();
@@ -16,18 +14,15 @@ class TextureManager {
   /**
    * Load a single texture
    */
-  async load(
-    url,
-    options: TextureOptions = {}
-  ){
+  async load(url, options = {}) {
     // Check cache
     if (this.cache.has(url)) {
-      return this.cache.get(url)!;
+      return this.cache.get(url);
     }
 
     // Check if already loading
     if (this.loadingPromises.has(url)) {
-      return this.loadingPromises.get(url)!;
+      return this.loadingPromises.get(url);
     }
 
     // Load new texture
@@ -41,7 +36,7 @@ class TextureManager {
           resolve(texture);
         },
         undefined,
-        (error: () => {
+        (error) => {
           this.loadingPromises.delete(url);
           reject(error);
         }
@@ -55,10 +50,7 @@ class TextureManager {
   /**
    * Load multiple textures
    */
-  async loadMultiple(
-    urls,
-    options: TextureOptions = {}
-  ){
+  async loadMultiple(urls, options = {}) {
     const promises = urls.map((url) => this.load(url, options));
     return Promise.all(promises);
   }
@@ -66,7 +58,7 @@ class TextureManager {
   /**
    * Apply texture options
    */
-  applyOptions(texture, options){
+  applyOptions(texture, options) {
     if (options.wrapS !== undefined) {
       texture.wrapS = options.wrapS;
     }
@@ -93,13 +85,10 @@ class TextureManager {
   /**
    * Create a material with texture
    */
-  async createMaterial(
-    textureUrl,
-    materialOptions: THREE.MeshStandardMaterialParameters = {}
-  ){
+  async createMaterial(textureUrl, materialOptions = {}) {
     const texture = await this.load(textureUrl);
     return new THREE.MeshStandardMaterial({
-      map,
+      map: texture,
       ...materialOptions
     });
   }
@@ -107,7 +96,7 @@ class TextureManager {
   /**
    * Create PBR material with multiple textures
    */
-  async createPBRMaterial(textures){
+  async createPBRMaterial(textures) {
     const material = new THREE.MeshStandardMaterial();
 
     if (textures.diffuse) {
@@ -141,14 +130,14 @@ class TextureManager {
   /**
    * Get cached texture
    */
-  getCached(url){
+  getCached(url) {
     return this.cache.get(url);
   }
 
   /**
    * Remove texture from cache
    */
-  remove(url){
+  remove(url) {
     const texture = this.cache.get(url);
     if (texture) {
       texture.dispose();
@@ -159,7 +148,7 @@ class TextureManager {
   /**
    * Clear all cached textures
    */
-  clear(){
+  clear() {
     this.cache.forEach((texture) => texture.dispose());
     this.cache.clear();
   }
@@ -167,7 +156,7 @@ class TextureManager {
   /**
    * Get cache size
    */
-  getCacheSize(){
+  getCacheSize() {
     return this.cache.size;
   }
 }

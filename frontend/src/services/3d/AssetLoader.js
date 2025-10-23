@@ -3,17 +3,13 @@
  * Handles loading and caching of 3D models, textures, and animations
  */
 
-import * from 'three';
+import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
-
-
-
-
 class AssetLoader {
-  gltfLoader) {
+  constructor() {
     // Setup GLTF Loader with Draco compression
     this.gltfLoader = new GLTFLoader();
     const dracoLoader = new DRACOLoader();
@@ -34,18 +30,15 @@ class AssetLoader {
   /**
    * Load a GLTF/GLB model
    */
-  async loadGLTF(
-    url,
-    onProgress?: (progress) => void
-  ){
+  async loadGLTF(url, onProgress) {
     // Check cache first
     if (this.cache.has(url)) {
-      return this.cache.get(url)!;
+      return this.cache.get(url);
     }
 
     // Check if already loading
     if (this.loadingPromises.has(url)) {
-      return this.loadingPromises.get(url)!;
+      return this.loadingPromises.get(url);
     }
 
     // Load new asset
@@ -53,10 +46,11 @@ class AssetLoader {
       this.gltfLoader.load(
         url,
         (gltf) => {
-          const asset: LoadedAsset = {
-            model,
-            animations,
-            mixer)
+          const asset = {
+            model: gltf.scene,
+            animations: gltf.animations,
+            mixer: gltf.animations.length > 0
+              ? new THREE.AnimationMixer(gltf.scene)
               : undefined
           };
 
@@ -67,13 +61,13 @@ class AssetLoader {
         (xhr) => {
           if (onProgress) {
             onProgress({
-              loaded,
-              total,
-              percentage) * 100
+              loaded: xhr.loaded,
+              total: xhr.total,
+              percentage: (xhr.loaded / xhr.total) * 100
             });
           }
         },
-        (error: () => {
+        (error) => {
           this.loadingPromises.delete(url);
           reject(error);
         }
@@ -87,18 +81,15 @@ class AssetLoader {
   /**
    * Load an FBX model
    */
-  async loadFBX(
-    url,
-    onProgress?: (progress) => void
-  ){
+  async loadFBX(url, onProgress) {
     // Check cache first
     if (this.cache.has(url)) {
-      return this.cache.get(url)!;
+      return this.cache.get(url);
     }
 
     // Check if already loading
     if (this.loadingPromises.has(url)) {
-      return this.loadingPromises.get(url)!;
+      return this.loadingPromises.get(url);
     }
 
     // Load new asset
@@ -106,10 +97,11 @@ class AssetLoader {
       this.fbxLoader.load(
         url,
         (fbx) => {
-          const asset: LoadedAsset = {
-            model,
-            animations,
-            mixer)
+          const asset = {
+            model: fbx,
+            animations: fbx.animations,
+            mixer: fbx.animations.length > 0
+              ? new THREE.AnimationMixer(fbx)
               : undefined
           };
 
@@ -120,13 +112,13 @@ class AssetLoader {
         (xhr) => {
           if (onProgress) {
             onProgress({
-              loaded,
-              total,
-              percentage) * 100
+              loaded: xhr.loaded,
+              total: xhr.total,
+              percentage: (xhr.loaded / xhr.total) * 100
             });
           }
         },
-        (error: () => {
+        (error) => {
           this.loadingPromises.delete(url);
           reject(error);
         }
@@ -140,10 +132,7 @@ class AssetLoader {
   /**
    * Load a texture
    */
-  async loadTexture(
-    url,
-    onProgress?: (progress) => void
-  ){
+  async loadTexture(url, onProgress) {
     return new Promise((resolve, reject) => {
       this.textureLoader.load(
         url,
@@ -151,13 +140,13 @@ class AssetLoader {
         (xhr) => {
           if (onProgress) {
             onProgress({
-              loaded,
-              total,
-              percentage) * 100
+              loaded: xhr.loaded,
+              total: xhr.total,
+              percentage: (xhr.loaded / xhr.total) * 100
             });
           }
         },
-        (error: () => reject(error)
+        (error) => reject(error)
       );
     });
   }
@@ -165,10 +154,7 @@ class AssetLoader {
   /**
    * Load multiple assets in parallel
    */
-  async loadMultiple(
-    urls,
-    onProgress?: (overall) => void
-  ){
+  async loadMultiple(urls, onProgress) {
     let totalLoaded = 0;
     const total = urls.length;
 
@@ -177,9 +163,9 @@ class AssetLoader {
         totalLoaded += progress.loaded;
         if (onProgress) {
           onProgress({
-            loaded,
-            total,
-            percentage)) * 100
+            loaded: totalLoaded,
+            total: total,
+            percentage: (totalLoaded / total) * 100
           });
         }
       });
@@ -192,7 +178,7 @@ class AssetLoader {
   /**
    * Clone a cached model for reuse
    */
-  cloneModel(url){
+  cloneModel(url) {
     const asset = this.cache.get(url);
     if (!asset) return null;
 
@@ -202,14 +188,14 @@ class AssetLoader {
   /**
    * Get cached asset
    */
-  getCached(url){
+  getCached(url) {
     return this.cache.get(url);
   }
 
   /**
    * Clear cache
    */
-  clearCache(){
+  clearCache() {
     this.cache.forEach((asset) => {
       if (asset.model) {
         asset.model.traverse((child) => {
@@ -230,7 +216,7 @@ class AssetLoader {
   /**
    * Remove specific asset from cache
    */
-  removeFromCache(url){
+  removeFromCache(url) {
     const asset = this.cache.get(url);
     if (asset && asset.model) {
       asset.model.traverse((child) => {
@@ -250,7 +236,7 @@ class AssetLoader {
   /**
    * Get cache size
    */
-  getCacheSize(){
+  getCacheSize() {
     return this.cache.size;
   }
 }

@@ -2,12 +2,10 @@
  * Animation Controller for managing character and object animations
  */
 
-import * from 'three';
-
-
+import * as THREE from 'three';
 
 export class AnimationController {
-  mixer, animations) {
+  constructor(model, animations) {
     this.mixer = new THREE.AnimationMixer(model);
     this.actions = new Map();
     this.currentAction = null;
@@ -23,15 +21,7 @@ export class AnimationController {
   /**
    * Play an animation
    */
-  play(
-    name,
-    options: {
-      loop?;
-      fadeIn?;
-      fadeOut?;
-      weight?;
-    } = {}
-  ){
+  play(name, options = {}) {
     const action = this.actions.get(name);
     if (!action) {
       console.warn(`Animation "${name}" not found`);
@@ -68,7 +58,7 @@ export class AnimationController {
   /**
    * Stop current animation
    */
-  stop(fadeOut= 0.2){
+  stop(fadeOut = 0.2) {
     if (this.currentAction) {
       this.currentAction.fadeOut(fadeOut);
       this.previousAction = this.currentAction;
@@ -79,7 +69,7 @@ export class AnimationController {
   /**
    * Pause current animation
    */
-  pause(){
+  pause() {
     if (this.currentAction) {
       this.currentAction.paused = true;
     }
@@ -88,7 +78,7 @@ export class AnimationController {
   /**
    * Resume paused animation
    */
-  resume(){
+  resume() {
     if (this.currentAction) {
       this.currentAction.paused = false;
     }
@@ -97,7 +87,7 @@ export class AnimationController {
   /**
    * Cross-fade between animations
    */
-  crossFade(toName, duration= 0.3){
+  crossFade(toName, duration = 0.3) {
     const toAction = this.actions.get(toName);
     if (!toAction) {
       console.warn(`Animation "${toName}" not found`);
@@ -119,7 +109,7 @@ export class AnimationController {
   /**
    * Set animation speed
    */
-  setSpeed(name, speed){
+  setSpeed(name, speed) {
     const action = this.actions.get(name);
     if (action) {
       action.setEffectiveTimeScale(speed);
@@ -129,7 +119,7 @@ export class AnimationController {
   /**
    * Get current animation name
    */
-  getCurrentAnimation(){
+  getCurrentAnimation() {
     if (!this.currentAction) return null;
 
     for (const [name, action] of this.actions.entries()) {
@@ -144,7 +134,7 @@ export class AnimationController {
   /**
    * Check if animation is playing
    */
-  isPlaying(name?: string){
+  isPlaying(name) {
     if (name) {
       const action = this.actions.get(name);
       return action ? action.isRunning() : false;
@@ -155,21 +145,21 @@ export class AnimationController {
   /**
    * Get all available animation names
    */
-  getAnimationNames(){
+  getAnimationNames() {
     return Array.from(this.actions.keys());
   }
 
   /**
    * Update mixer (call in animation loop)
    */
-  update(deltaTime){
+  update(deltaTime) {
     this.mixer.update(deltaTime);
   }
 
   /**
    * Set weight for layered animations
    */
-  setWeight(name, weight){
+  setWeight(name, weight) {
     const action = this.actions.get(name);
     if (action) {
       action.setEffectiveWeight(weight);
@@ -179,7 +169,7 @@ export class AnimationController {
   /**
    * Blend multiple animations
    */
-  blend(animations){
+  blend(animations) {
     animations.forEach(({ name, weight }) => {
       const action = this.actions.get(name);
       if (action) {
@@ -194,7 +184,7 @@ export class AnimationController {
   /**
    * Dispose of resources
    */
-  dispose(){
+  dispose() {
     this.mixer.stopAllAction();
     this.actions.clear();
     this.currentAction = null;
