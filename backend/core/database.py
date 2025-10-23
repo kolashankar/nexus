@@ -28,3 +28,6 @@ class Database:
 
 def get_database():
     return Database.get_db()
+
+# Alias for backward compatibility
+db = Database.get_db()
