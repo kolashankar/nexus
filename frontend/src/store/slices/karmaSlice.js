@@ -1,14 +1,12 @@
 import { create } from 'zustand';
 
-
-
 export const useKarmaStore = create((set) => ({
-  karmaScore,
-  karmaHistory,
-  worldKarma,
-  loading,
-  setKarmaScore) => set({ karmaScore),
-  setKarmaHistory) => set({ karmaHistory),
-  setWorldKarma) => set({ worldKarma),
-  setLoading) => set({ loading })
+  karmaScore: 0,
+  karmaHistory: [],
+  worldKarma: { good: 0, evil: 0, neutral: 0 },
+  loading: false,
+  setKarmaScore: (score) => set({ karmaScore: score }),
+  setKarmaHistory: (history) => set({ karmaHistory: history }),
+  setWorldKarma: (worldKarma) => set({ worldKarma }),
+  setLoading: (loading) => set({ loading })
 }));

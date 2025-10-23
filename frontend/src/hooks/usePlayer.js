@@ -25,8 +25,8 @@ export const usePlayer = () => {
 
   return {
     player,
-    isLoading,
-    error,
+    isLoading: isLoadingPlayer,
+    error: playerError,
     refreshPlayer,
     updatePlayer,
   };

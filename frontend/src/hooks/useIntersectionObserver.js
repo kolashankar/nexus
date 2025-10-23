@@ -1,12 +1,12 @@
-import { useEffect, useState, RefObject } from 'react';
+import { useEffect, useState } from 'react';
 
 /**
  * Hook to observe element intersection with viewport
  */
 export function useIntersectionObserver(
   elementRef,
-  options?: IntersectionObserverInit
-){
+  options = {}
+) {
   const [isIntersecting, setIsIntersecting] = useState(false);
 
   useEffect(() => {
@@ -17,12 +17,7 @@ export function useIntersectionObserver(
       ([entry]) => {
         setIsIntersecting(entry.isIntersecting);
       },
-      {
-        root,
-        rootMargin,
-        threshold,
-        ...options
-      }
+      options
     );
 
     observer.observe(element);

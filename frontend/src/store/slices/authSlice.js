@@ -1,83 +1,80 @@
 /**
  * Authentication state slice
  */
-import { StateCreator } from 'zustand';
-import authService, { LoginData, RegisterData } from '../../services/auth/authService';
+import authService from '../../services/auth/authService';
 
+export const authSlice = (set, get) => ({
+  accessToken: null,
+  refreshToken: null,
+  isAuthenticated: false,
+  isLoading: false,
+  error: null,
 
-
-export const authSlice: StateCreator = (set, get) => ({
-  accessToken,
-  refreshToken,
-  isAuthenticated,
-  isLoading,
-  error,
-
-  login) => {
-    set({ isLoading, error);
+  login: async (data) => {
+    set({ isLoading: true, error: null });
     try {
       const response = await authService.login(data);
       set({
-        accessToken,
-        refreshToken,
-        isAuthenticated,
-        isLoading,
+        accessToken: response.access_token,
+        refreshToken: response.refresh_token,
+        isAuthenticated: true,
+        isLoading: false,
       });
     } catch (error) {
       set({
-        error,
-        isLoading,
+        error: error.message,
+        isLoading: false,
       });
       throw error;
     }
   },
 
-  register) => {
-    set({ isLoading, error);
+  register: async (data) => {
+    set({ isLoading: true, error: null });
     try {
       const response = await authService.register(data);
       set({
-        accessToken,
-        refreshToken,
-        isAuthenticated,
-        isLoading,
+        accessToken: response.access_token,
+        refreshToken: response.refresh_token,
+        isAuthenticated: true,
+        isLoading: false,
       });
     } catch (error) {
       set({
-        error,
-        isLoading,
+        error: error.message,
+        isLoading: false,
       });
       throw error;
     }
   },
 
-  logout) => {
+  logout: async () => {
     try {
       await authService.logout();
     } finally {
       set({
-        accessToken,
-        refreshToken,
-        isAuthenticated,
-        error,
+        accessToken: null,
+        refreshToken: null,
+        isAuthenticated: false,
+        error: null,
       });
     }
   },
 
-  setTokens, refreshToken) => {
+  setTokens: (accessToken, refreshToken) => {
     set({
       accessToken,
       refreshToken,
-      isAuthenticated,
+      isAuthenticated: true,
     });
   },
 
-  clearAuth) => {
+  clearAuth: () => {
     set({
-      accessToken,
-      refreshToken,
-      isAuthenticated,
-      error,
+      accessToken: null,
+      refreshToken: null,
+      isAuthenticated: false,
+      error: null,
     });
   },
 });

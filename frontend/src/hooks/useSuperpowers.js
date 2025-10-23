@@ -25,7 +25,7 @@ export const useSuperpowers = () => {
       const data = await superpowersService.getAvailablePowers();
       setAvailablePowers(data);
     } catch (err) {
-      console.error('Failed to fetch available powers', err);
+      console.error('Failed to fetch available powers:', err);
     }
   };
 
@@ -39,8 +39,9 @@ export const useSuperpowers = () => {
       await superpowersService.unlockPower(powerId);
       await fetchSuperpowers();
       await fetchAvailablePowers();
-      return { success) {
-      return { success, error;
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
     }
   };
 
@@ -48,8 +49,9 @@ export const useSuperpowers = () => {
     try {
       await superpowersService.equipPower(powerId);
       await fetchSuperpowers();
-      return { success) {
-      return { success, error;
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
     }
   };
 
@@ -57,12 +59,18 @@ export const useSuperpowers = () => {
     try {
       const result = await superpowersService.usePower(powerId);
       await fetchSuperpowers();
-      return { success, data) {
-      return { success, error,
+      return { success: true, data: result };
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  };
+
+  return {
+    superpowers,
     availablePowers,
     loading,
     error,
-    refetch,
+    refetch: fetchSuperpowers,
     unlockPower,
     equipPower,
     usePower,

@@ -16,7 +16,7 @@ export const useActions = () => {
    */
   const performHack = useCallback(async (
     targetPlayerId,
-    onSuccess?: (result) => void
+    onSuccess
   ) => {
     setLoading(true);
     setError(null);
@@ -26,18 +26,20 @@ export const useActions = () => {
       
       if (result.success) {
         toast.success('Hack successful!', {
-          description);
+          description: result.message || 'You successfully hacked the target'
+        });
         onSuccess?.(result);
       } else {
         toast.error('Hack failed', {
-          description);
+          description: result.message || 'The hack attempt failed'
+        });
       }
 
       return result;
     } catch (err) {
       const errorMsg = err.response?.data?.detail || 'Failed to perform hack';
       setError(errorMsg);
-      toast.error('Action failed', { description);
+      toast.error('Action failed', { description: errorMsg });
       throw err;
     } finally {
       setLoading(false);
@@ -50,8 +52,8 @@ export const useActions = () => {
   const performHelp = useCallback(async (
     targetPlayerId,
     helpType,
-    amount?: number,
-    onSuccess?: (result) => void
+    amount,
+    onSuccess
   ) => {
     setLoading(true);
     setError(null);
@@ -61,7 +63,8 @@ export const useActions = () => {
       
       if (result.success) {
         toast.success('Help provided!', {
-          description);
+          description: result.message || 'You successfully helped the player'
+        });
         onSuccess?.(result);
       }
 
@@ -69,7 +72,7 @@ export const useActions = () => {
     } catch (err) {
       const errorMsg = err.response?.data?.detail || 'Failed to help player';
       setError(errorMsg);
-      toast.error('Action failed', { description);
+      toast.error('Action failed', { description: errorMsg });
       throw err;
     } finally {
       setLoading(false);
@@ -82,8 +85,8 @@ export const useActions = () => {
   const performSteal = useCallback(async (
     targetPlayerId,
     stealType,
-    targetItemId?: string,
-    onSuccess?: (result) => void
+    targetItemId,
+    onSuccess
   ) => {
     setLoading(true);
     setError(null);
@@ -93,18 +96,20 @@ export const useActions = () => {
       
       if (result.success) {
         toast.success('Steal successful!', {
-          description);
+          description: result.message || 'You successfully stole from the target'
+        });
         onSuccess?.(result);
       } else {
         toast.warning('Steal failed', {
-          description);
+          description: result.message || 'The steal attempt failed'
+        });
       }
 
       return result;
     } catch (err) {
       const errorMsg = err.response?.data?.detail || 'Failed to steal';
       setError(errorMsg);
-      toast.error('Action failed', { description);
+      toast.error('Action failed', { description: errorMsg });
       throw err;
     } finally {
       setLoading(false);
@@ -117,8 +122,8 @@ export const useActions = () => {
   const performDonate = useCallback(async (
     targetPlayerId,
     amount,
-    message?: string,
-    onSuccess?: (result) => void
+    message,
+    onSuccess
   ) => {
     setLoading(true);
     setError(null);
@@ -128,7 +133,8 @@ export const useActions = () => {
       
       if (result.success) {
         toast.success('Donation sent!', {
-          description);
+          description: result.message || `You donated ${amount} to the player`
+        });
         onSuccess?.(result);
       }
 
@@ -136,7 +142,7 @@ export const useActions = () => {
     } catch (err) {
       const errorMsg = err.response?.data?.detail || 'Failed to donate';
       setError(errorMsg);
-      toast.error('Action failed', { description);
+      toast.error('Action failed', { description: errorMsg });
       throw err;
     } finally {
       setLoading(false);
@@ -146,7 +152,7 @@ export const useActions = () => {
   /**
    * Load action history.
    */
-  const loadHistory = useCallback(async (limit= 50, offset= 0) => {
+  const loadHistory = useCallback(async (limit = 50, offset = 0) => {
     setLoading(true);
     setError(null);
 
@@ -170,8 +176,10 @@ export const useActions = () => {
     try {
       return await actionService.checkCooldown(actionType);
     } catch (err) {
-      console.error('Failed to check cooldown', err);
-      return { on_cooldown, can_perform, []);
+      console.error('Failed to check cooldown:', err);
+      return { on_cooldown: false, can_perform: true, remaining_time: 0 };
+    }
+  }, []);
 
   return {
     loading,

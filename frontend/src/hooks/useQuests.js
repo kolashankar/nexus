@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from './useToast';
 
-
-
 export const useQuests = () => {
   const [quests, setQuests] = useState([]);
   const [activeQuests, setActiveQuests] = useState([]);
@@ -15,7 +13,9 @@ export const useQuests = () => {
     try {
       setLoading(true);
       const response = await fetch('/api/quests', {
-        headers)}`
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
 
@@ -37,9 +37,10 @@ export const useQuests = () => {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       toast({
-        title,
-        description,
-        variant);
+        title: 'Error',
+        description: err instanceof Error ? err.message : 'Failed to fetch quests',
+        variant: 'destructive'
+      });
     } finally {
       setLoading(false);
     }
@@ -48,11 +49,12 @@ export const useQuests = () => {
   const acceptQuest = useCallback(async (questId) => {
     try {
       const response = await fetch('/api/quests/accept', {
-        method,
-        headers,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body)
+        body: JSON.stringify({ quest_id: questId })
       });
 
       if (!response.ok) {
@@ -60,17 +62,19 @@ export const useQuests = () => {
       }
 
       toast({
-        title,
-        description);
+        title: 'Quest Accepted',
+        description: 'You have successfully accepted the quest'
+      });
 
       // Refresh quests
       await fetchQuests();
       return true;
     } catch (err) {
       toast({
-        title,
-        description,
-        variant);
+        title: 'Error',
+        description: err instanceof Error ? err.message : 'Failed to accept quest',
+        variant: 'destructive'
+      });
       return false;
     }
   }, [fetchQuests, toast]);
@@ -78,11 +82,12 @@ export const useQuests = () => {
   const abandonQuest = useCallback(async (questId) => {
     try {
       const response = await fetch('/api/quests/abandon', {
-        method,
-        headers,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body)
+        body: JSON.stringify({ quest_id: questId })
       });
 
       if (!response.ok) {
@@ -90,22 +95,24 @@ export const useQuests = () => {
       }
 
       toast({
-        title,
-        description);
+        title: 'Quest Abandoned',
+        description: 'You have abandoned the quest'
+      });
 
       // Refresh quests
       await fetchQuests();
       return true;
     } catch (err) {
       toast({
-        title,
-        description,
-        variant);
+        title: 'Error',
+        description: err instanceof Error ? err.message : 'Failed to abandon quest',
+        variant: 'destructive'
+      });
       return false;
     }
   }, [fetchQuests, toast]);
 
-  const getQuestById = useCallback((questId)=> {
+  const getQuestById = useCallback((questId) => {
     return [
       ...quests,
       ...activeQuests,

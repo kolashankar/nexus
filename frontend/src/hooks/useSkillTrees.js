@@ -25,22 +25,29 @@ export const useSkillTrees = () => {
 
   const unlockNode = async (traitName, nodeId) => {
     try {
-      await skillTreesService.unlockNode({ trait_name, node_id);
+      await skillTreesService.unlockNode({ trait_name: traitName, node_id: nodeId });
       await fetchSkillTrees();
-      return { success) {
-      return { success, error;
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
     }
   };
 
   const chooseBranch = async (traitName, branch) => {
     try {
-      await skillTreesService.chooseBranch({ trait_name, branch });
+      await skillTreesService.chooseBranch({ trait_name: traitName, branch });
       await fetchSkillTrees();
-      return { success) {
-      return { success, error,
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err };
+    }
+  };
+
+  return {
+    skillTrees,
     loading,
     error,
-    refetch,
+    refetch: fetchSkillTrees,
     unlockNode,
     chooseBranch,
   };

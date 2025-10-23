@@ -14,7 +14,7 @@ export const useKarma = () => {
   /**
    * Load karma history.
    */
-  const loadKarmaHistory = useCallback(async (limit= 20) => {
+  const loadKarmaHistory = useCallback(async (limit = 20) => {
     setLoading(true);
     setError(null);
 
@@ -28,7 +28,7 @@ export const useKarma = () => {
     } catch (err) {
       const errorMsg = err.response?.data?.detail || 'Failed to load karma history';
       setError(errorMsg);
-      toast.error('Error', { description);
+      toast.error('Error', { description: errorMsg });
     } finally {
       setLoading(false);
     }
@@ -41,8 +41,9 @@ export const useKarma = () => {
     try {
       // In real implementation, call karma service
       // return await karmaService.getKarmaScore();
-      return { karma_points, moral_class) {
-      console.error('Failed to get karma score', err);
+      return { karma_points: 0, moral_class: 'Neutral', alignment: 'Neutral' };
+    } catch (err) {
+      console.error('Failed to get karma score:', err);
       throw err;
     }
   }, []);

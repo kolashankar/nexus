@@ -28,7 +28,7 @@ export function use3DScene(canvasRef) {
     };
   }, [canvasRef]);
 
-  const startAnimationLoop = (callback) => void) => {
+  const startAnimationLoop = (callback) => {
     if (!sceneManagerRef.current) return;
 
     let lastTime = performance.now();
@@ -57,7 +57,7 @@ export function use3DScene(canvasRef) {
   };
 
   return {
-    sceneManager,
+    sceneManager: sceneManagerRef.current,
     isReady,
     startAnimationLoop,
     stopAnimationLoop

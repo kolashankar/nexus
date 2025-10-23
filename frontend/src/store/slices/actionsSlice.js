@@ -1,15 +1,13 @@
 import { create } from 'zustand';
 
-
-
 export const useActionsStore = create((set) => ({
-  recentActions,
-  loading,
-  error,
-  addAction) => set((state) => ({
-    recentActions, ...state.recentActions].slice(0, 50)
+  recentActions: [],
+  loading: false,
+  error: null,
+  addAction: (action) => set((state) => ({
+    recentActions: [action, ...state.recentActions].slice(0, 50)
   })),
-  setRecentActions) => set({ recentActions),
-  setLoading) => set({ loading }),
-  setError) => set({ error })
+  setRecentActions: (actions) => set({ recentActions: actions }),
+  setLoading: (loading) => set({ loading }),
+  setError: (error) => set({ error })
 }));
