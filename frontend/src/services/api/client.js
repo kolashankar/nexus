@@ -22,7 +22,7 @@ apiClient.interceptors.request.use(
     }
     return config;
   },
-  (error: () => {
+  (error) => {
     return Promise.reject(error);
   }
 );
@@ -30,7 +30,7 @@ apiClient.interceptors.request.use(
 // Response interceptor
 apiClient.interceptors.response.use(
   (response) => response,
-  async (error: () => {
+  async (error) => {
     const originalRequest = error.config;
     
     // Handle 401 errors (unauthorized)
@@ -41,7 +41,7 @@ apiClient.interceptors.response.use(
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
           const response = await axios.post(`${API_URL}/api/auth/refresh`, {
-            refresh_token,
+            refresh_token: refreshToken,
           });
           
           const { access_token } = response.data;

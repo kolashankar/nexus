@@ -9,10 +9,10 @@ import { apiClient } from '../api/client';
  */
 export const performHack = async (
   targetPlayerId,
-  actionData?: Record
-)=> {
+  actionData
+) => {
   const response = await apiClient.post('/api/actions/hack', {
-    target_player_id,
+    target_player_id: targetPlayerId,
     ...actionData
   });
   return response.data;
@@ -24,11 +24,11 @@ export const performHack = async (
 export const performHelp = async (
   targetPlayerId,
   helpType,
-  amount?: number
-)=> {
+  amount
+) => {
   const response = await apiClient.post('/api/actions/help', {
-    target_player_id,
-    help_type,
+    target_player_id: targetPlayerId,
+    help_type: helpType,
     amount
   });
   return response.data;
@@ -40,12 +40,13 @@ export const performHelp = async (
 export const performSteal = async (
   targetPlayerId,
   stealType,
-  targetItemId?: string
-)=> {
+  targetItemId
+) => {
   const response = await apiClient.post('/api/actions/steal', {
-    target_player_id,
-    steal_type,
-    target_item_id);
+    target_player_id: targetPlayerId,
+    steal_type: stealType,
+    target_item_id: targetItemId
+  });
   return response.data;
 };
 
@@ -55,10 +56,10 @@ export const performSteal = async (
 export const performDonate = async (
   targetPlayerId,
   amount,
-  message?: string
-)=> {
+  message
+) => {
   const response = await apiClient.post('/api/actions/donate', {
-    target_player_id,
+    target_player_id: targetPlayerId,
     amount,
     message
   });
@@ -72,15 +73,16 @@ export const performTrade = async (
   targetPlayerId,
   offerItems,
   requestItems,
-  offerCredits?: number,
-  requestCredits?: number
-)=> {
+  offerCredits,
+  requestCredits
+) => {
   const response = await apiClient.post('/api/actions/trade', {
-    target_player_id,
-    offer_items,
-    request_items,
-    offer_credits,
-    request_credits);
+    target_player_id: targetPlayerId,
+    offer_items: offerItems,
+    request_items: requestItems,
+    offer_credits: offerCredits,
+    request_credits: requestCredits
+  });
   return response.data;
 };
 
@@ -88,11 +90,11 @@ export const performTrade = async (
  * Get action history for current player.
  */
 export const getActionHistory = async (
-  limit= 50,
-  offset= 0
-)=> {
+  limit = 50,
+  offset = 0
+) => {
   const response = await apiClient.get('/api/actions/history', {
-    params, offset }
+    params: { limit, offset }
   });
   return response.data;
 };
@@ -100,7 +102,7 @@ export const getActionHistory = async (
 /**
  * Get recent actions (last 24 hours).
  */
-export const getRecentActions = async ()=> {
+export const getRecentActions = async () => {
   const response = await apiClient.get('/api/actions/recent');
   return response.data;
 };
@@ -108,8 +110,7 @@ export const getRecentActions = async ()=> {
 /**
  * Get available actions for a target player.
  */
-export const getAvailableActions = async (
-  targetPlayerId)=> {
+export const getAvailableActions = async (targetPlayerId) => {
   const response = await apiClient.get(`/api/actions/available/${targetPlayerId}`);
   return response.data;
 };
@@ -117,8 +118,7 @@ export const getAvailableActions = async (
 /**
  * Check cooldown status for an action.
  */
-export const checkCooldown = async (
-  actionType)=> {
+export const checkCooldown = async (actionType) => {
   const response = await apiClient.get(`/api/actions/cooldown/${actionType}`);
   return response.data;
 };
@@ -126,7 +126,7 @@ export const checkCooldown = async (
 /**
  * Cancel a pending trade.
  */
-export const cancelTrade = async (tradeId)=> {
+export const cancelTrade = async (tradeId) => {
   const response = await apiClient.delete(`/api/actions/trade/${tradeId}`);
   return response.data.success;
 };
@@ -134,7 +134,7 @@ export const cancelTrade = async (tradeId)=> {
 /**
  * Accept a pending trade.
  */
-export const acceptTrade = async (tradeId)=> {
+export const acceptTrade = async (tradeId) => {
   const response = await apiClient.post(`/api/actions/trade/${tradeId}/accept`);
   return response.data;
 };
@@ -142,7 +142,7 @@ export const acceptTrade = async (tradeId)=> {
 /**
  * Decline a pending trade.
  */
-export const declineTrade = async (tradeId)=> {
+export const declineTrade = async (tradeId) => {
   const response = await apiClient.post(`/api/actions/trade/${tradeId}/decline`);
   return response.data.success;
 };

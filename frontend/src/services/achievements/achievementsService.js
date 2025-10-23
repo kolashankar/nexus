@@ -4,7 +4,7 @@ class AchievementsService {
   /**
    * Get all achievements for the current player
    */
-  async getAchievements(){
+  async getAchievements() {
     const response = await apiClient.get('/achievements');
     return response.data;
   }
@@ -12,7 +12,7 @@ class AchievementsService {
   /**
    * Get achievement summary
    */
-  async getAchievementSummary(){
+  async getAchievementSummary() {
     const response = await apiClient.get('/achievements/summary');
     return response.data;
   }
@@ -20,7 +20,7 @@ class AchievementsService {
   /**
    * Get unlocked achievements
    */
-  async getUnlockedAchievements(){
+  async getUnlockedAchievements() {
     const response = await apiClient.get('/achievements/unlocked');
     return response.data.unlocked;
   }
@@ -28,7 +28,7 @@ class AchievementsService {
   /**
    * Get achievement progress
    */
-  async getAchievementProgress()> {
+  async getAchievementProgress() {
     const response = await apiClient.get('/achievements/progress');
     return response.data.progress;
   }
@@ -36,10 +36,7 @@ class AchievementsService {
   /**
    * Get achievement definitions with optional filters
    */
-  async getAchievementDefinitions(
-    category?: AchievementCategory,
-    rarity?: AchievementRarity
-  ){
+  async getAchievementDefinitions(category, rarity) {
     let url = '/achievements/definitions';
     const params = new URLSearchParams();
     if (category) params.append('category', category);
@@ -53,7 +50,7 @@ class AchievementsService {
   /**
    * Get a specific achievement definition
    */
-  async getAchievementDefinition(achievementId){
+  async getAchievementDefinition(achievementId) {
     const response = await apiClient.get(`/achievements/definitions/${achievementId}`);
     return response.data;
   }
@@ -61,7 +58,7 @@ class AchievementsService {
   /**
    * Get achievements by category
    */
-  async getAchievementsByCategory(category){
+  async getAchievementsByCategory(category) {
     const response = await apiClient.get(`/achievements/category/${category}`);
     return response.data;
   }
@@ -69,7 +66,7 @@ class AchievementsService {
   /**
    * Unlock an achievement (usually called by system)
    */
-  async unlockAchievement(achievementId){
+  async unlockAchievement(achievementId) {
     const response = await apiClient.post(`/achievements/unlock/${achievementId}`);
     return response.data;
   }
@@ -77,10 +74,10 @@ class AchievementsService {
   /**
    * Update progress towards an achievement
    */
-  async updateAchievementProgress(achievementId, progressAmount){
+  async updateAchievementProgress(achievementId, progressAmount) {
     const response = await apiClient.post('/achievements/progress/update', {
-      achievement_id,
-      progress_amount,
+      achievement_id: achievementId,
+      progress_amount: progressAmount,
     });
     return response.data;
   }
@@ -88,7 +85,7 @@ class AchievementsService {
   /**
    * Get recently unlocked achievements
    */
-  async getRecentUnlocks(){
+  async getRecentUnlocks() {
     const response = await apiClient.get('/achievements/recent');
     return response.data.recent;
   }
