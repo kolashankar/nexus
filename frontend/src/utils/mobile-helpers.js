@@ -277,10 +277,10 @@ export const getNetworkInfo = () => {
 
   if (connection) {
     return {
-      type, // '4g', '3g', '2g', 'slow-2g'
-      downlink, // Mbps
-      rtt, // Round-trip time in ms
-      saveData, // User preference
+      type: connection.effectiveType, // '4g', '3g', '2g', 'slow-2g'
+      downlink: connection.downlink, // Mbps
+      rtt: connection.rtt, // Round-trip time in ms
+      saveData: connection.saveData, // User preference
     };
   }
 
