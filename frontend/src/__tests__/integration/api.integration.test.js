@@ -10,23 +10,26 @@ const server = setupServer(
   rest.post('/api/auth/login', (req, res, ctx) => {
     return res(
       ctx.json({
-        access_token,
-        user, username)
+        access_token: 'mock-token',
+        user: { username: 'testuser' }
+      })
     );
   }),
   
   rest.get('/api/player/profile', (req, res, ctx) => {
     const auth = req.headers.get('Authorization');
     if (!auth) {
-      return res(ctx.status(401), ctx.json({ error));
+      return res(ctx.status(401), ctx.json({ error: 'Unauthorized' }));
     }
     
     return res(
       ctx.json({
-        _id,
-        username,
-        level,
-        karma_points)
+        _id: 'test-id',
+        username: 'testuser',
+        level: 1,
+        karma_points: 0
+      })
+    );
     );
   })
 );
