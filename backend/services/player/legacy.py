@@ -1,4 +1,4 @@
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Any
 from backend.models.player.legacy import (
     PlayerLegacy, LegacyTitle, HeirloomItem, LegacyPerk
 )
