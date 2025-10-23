@@ -2,23 +2,23 @@ import { apiClient } from '../api/client';
 
 export const actionsService = {
   async hack(targetId) {
-    const response = await apiClient.post('/api/actions/hack', { target_id);
+    const response = await apiClient.post('/api/actions/hack', { target_id: targetId });
     return response.data;
   },
 
   async help(targetId) {
-    const response = await apiClient.post('/api/actions/help', { target_id);
+    const response = await apiClient.post('/api/actions/help', { target_id: targetId });
     return response.data;
   },
 
   async steal(targetId) {
-    const response = await apiClient.post('/api/actions/steal', { target_id);
+    const response = await apiClient.post('/api/actions/steal', { target_id: targetId });
     return response.data;
   },
 
   async donate(targetId, amount) {
     const response = await apiClient.post('/api/actions/donate', {
-      target_id,
+      target_id: targetId,
       amount
     });
     return response.data;
@@ -26,7 +26,7 @@ export const actionsService = {
 
   async trade(targetId, offer, request) {
     const response = await apiClient.post('/api/actions/trade', {
-      target_id,
+      target_id: targetId,
       offer,
       request
     });

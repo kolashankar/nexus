@@ -1,18 +1,10 @@
 import { apiClient } from './client';
 
-
-
-
-
-
-
-
-
 class WorldService {
   /**
    * Get currently active global event
    */
-  async getActiveEvent(){
+  async getActiveEvent() {
     try {
       const response = await apiClient.get('/api/world/events/active');
       return response.data;
@@ -25,7 +17,7 @@ class WorldService {
   /**
    * Get recent world events
    */
-  async getRecentEvents(limit= 10){
+  async getRecentEvents(limit = 10) {
     const response = await apiClient.get(`/api/world/events/recent?limit=${limit}`);
     return response.data;
   }
@@ -33,7 +25,7 @@ class WorldService {
   /**
    * Get event by ID
    */
-  async getEventById(eventId){
+  async getEventById(eventId) {
     const response = await apiClient.get(`/api/world/events/${eventId}`);
     return response.data;
   }
@@ -41,16 +33,17 @@ class WorldService {
   /**
    * Participate in an event
    */
-  async participateInEvent(eventId){
+  async participateInEvent(eventId) {
     const response = await apiClient.post('/api/world/events/participate', {
-      event_id);
+      event_id: eventId
+    });
     return response.data;
   }
 
   /**
    * Get regional events for a territory
    */
-  async getTerritoryEvents(territoryId){
+  async getTerritoryEvents(territoryId) {
     const response = await apiClient.get(`/api/world/events/territory/${territoryId}`);
     return response.data;
   }
@@ -58,7 +51,7 @@ class WorldService {
   /**
    * Get current world state
    */
-  async getWorldState(){
+  async getWorldState() {
     const response = await apiClient.get('/api/world/state/current');
     return response.data;
   }
@@ -66,7 +59,7 @@ class WorldService {
   /**
    * Get karma statistics
    */
-  async getKarmaStatistics(){
+  async getKarmaStatistics() {
     const response = await apiClient.get('/api/world/state/karma');
     return response.data;
   }
@@ -74,7 +67,7 @@ class WorldService {
   /**
    * Get top karma players
    */
-  async getTopKarmaPlayers(limit= 10){
+  async getTopKarmaPlayers(limit = 10) {
     const response = await apiClient.get(`/api/world/state/karma/top?limit=${limit}`);
     return response.data;
   }
@@ -82,7 +75,7 @@ class WorldService {
   /**
    * Get bottom karma players
    */
-  async getBottomKarmaPlayers(limit= 10){
+  async getBottomKarmaPlayers(limit = 10) {
     const response = await apiClient.get(`/api/world/state/karma/bottom?limit=${limit}`);
     return response.data;
   }
@@ -90,7 +83,7 @@ class WorldService {
   /**
    * Get all territories
    */
-  async getAllTerritories(){
+  async getAllTerritories() {
     const response = await apiClient.get('/api/world/territories/all');
     return response.data;
   }
@@ -98,7 +91,7 @@ class WorldService {
   /**
    * Get contested territories
    */
-  async getContestedTerritories(){
+  async getContestedTerritories() {
     const response = await apiClient.get('/api/world/territories/contested');
     return response.data;
   }
@@ -106,15 +99,15 @@ class WorldService {
   /**
    * Get territory by ID
    */
-  async getTerritoryById(territoryId){
-    const response = await apiClient.get(`/api/world/territories/${territoryId}`);
+  async getTerritoryById(territoryId) {
+    const response = await apiClient.get(`/app/world/territories/${territoryId}`);
     return response.data;
   }
 
   /**
    * Get territories controlled by a guild
    */
-  async getGuildTerritories(guildId){
+  async getGuildTerritories(guildId) {
     const response = await apiClient.get(`/api/world/territories/guild/${guildId}`);
     return response.data;
   }
@@ -122,7 +115,7 @@ class WorldService {
   /**
    * Initialize territories (admin)
    */
-  async initializeTerritories(){
+  async initializeTerritories() {
     const response = await apiClient.post('/api/world/territories/initialize');
     return response.data;
   }

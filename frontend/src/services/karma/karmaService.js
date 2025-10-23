@@ -4,14 +4,10 @@
 
 import { apiClient } from '../api/client';
 
-
-
-
-
 /**
  * Get current karma score.
  */
-export const getKarmaScore = async ()=> {
+export const getKarmaScore = async () => {
   const response = await apiClient.get('/api/karma/score');
   return response.data;
 };
@@ -19,16 +15,17 @@ export const getKarmaScore = async ()=> {
 /**
  * Get karma history.
  */
-export const getKarmaHistory = async (limit= 50)=> {
+export const getKarmaHistory = async (limit = 50) => {
   const response = await apiClient.get('/api/karma/history', {
-    params);
+    params: { limit }
+  });
   return response.data;
 };
 
 /**
  * Get karma events (triggered events).
  */
-export const getKarmaEvents = async ()=> {
+export const getKarmaEvents = async () => {
   const response = await apiClient.get('/api/karma/events');
   return response.data;
 };
@@ -38,7 +35,8 @@ export const getKarmaEvents = async ()=> {
  */
 export const respondToKarmaEvent = async (
   eventId,
-  response)=> {
+  response
+) => {
   const res = await apiClient.post(`/api/karma/events/${eventId}/respond`, {
     response
   });
@@ -48,7 +46,7 @@ export const respondToKarmaEvent = async (
 /**
  * Get world karma state.
  */
-export const getWorldKarmaState = async ()=> {
+export const getWorldKarmaState = async () => {
   const response = await apiClient.get('/api/karma/world-state');
   return response.data;
 };
@@ -56,7 +54,7 @@ export const getWorldKarmaState = async ()=> {
 /**
  * Get collective karma.
  */
-export const getCollectiveKarma = async ()=> {
+export const getCollectiveKarma = async () => {
   const response = await apiClient.get('/api/karma/collective');
   return response.data;
 };

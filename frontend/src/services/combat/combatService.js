@@ -1,12 +1,12 @@
 import apiClient from '../api/client';
-import { Battle, CombatAbility } from '../../types/combat';
 
 class CombatService {
-  async challengePlayer(attackerId, defenderId, battleType= 'duel') {
+  async challengePlayer(attackerId, defenderId, battleType = 'duel') {
     const response = await apiClient.post('/api/combat/challenge', {
-      attacker_id,
-      defender_id,
-      battle_type);
+      attacker_id: attackerId,
+      defender_id: defenderId,
+      battle_type: battleType
+    });
     return response.data;
   }
 
@@ -20,9 +20,10 @@ class CombatService {
     return response.data;
   }
 
-  async getActiveBattles(playerId){
+  async getActiveBattles(playerId) {
     const response = await apiClient.get('/api/combat/active', {
-      params);
+      params: { player_id: playerId }
+    });
     return response.data;
   }
 
@@ -30,32 +31,34 @@ class CombatService {
     battleId,
     actorId,
     actionType,
-    targetId?: string,
-    abilityName?: string
+    targetId,
+    abilityName
   ) {
     const response = await apiClient.post('/api/combat/action', {
-      battle_id,
-      actor_id,
-      action_type,
-      target_id,
-      ability_name);
+      battle_id: battleId,
+      actor_id: actorId,
+      action_type: actionType,
+      target_id: targetId,
+      ability_name: abilityName
+    });
     return response.data;
   }
 
-  async getBattleState(battleId){
+  async getBattleState(battleId) {
     const response = await apiClient.get(`/api/combat/state/${battleId}`);
     return response.data;
   }
 
   async fleeBattle(battleId, playerId) {
     const response = await apiClient.post(`/api/combat/flee/${battleId}`, null, {
-      params);
+      params: { player_id: playerId }
+    });
     return response.data;
   }
 
-  async getCombatHistory(playerId, limit= 10) {
+  async getCombatHistory(playerId, limit = 10) {
     const response = await apiClient.get('/api/combat/history', {
-      params, limit }
+      params: { player_id: playerId, limit }
     });
     return response.data;
   }
@@ -68,9 +71,10 @@ class CombatService {
   // Duel specific
   async challengeToDuel(attackerId, defenderId) {
     const response = await apiClient.post('/api/combat/duel/challenge', {
-      attacker_id,
-      defender_id,
-      battle_type);
+      attacker_id: attackerId,
+      defender_id: defenderId,
+      battle_type: 'duel'
+    });
     return response.data;
   }
 
@@ -80,28 +84,31 @@ class CombatService {
   }
 
   // Arena specific
-  async joinArenaQueue(playerId, ranked= false) {
+  async joinArenaQueue(playerId, ranked = false) {
     const response = await apiClient.post('/api/combat/arena/join', null, {
-      params, ranked }
+      params: { player_id: playerId, ranked }
     });
     return response.data;
   }
 
   async leaveArenaQueue(playerId) {
     const response = await apiClient.post('/api/combat/arena/leave', null, {
-      params);
+      params: { player_id: playerId }
+    });
     return response.data;
   }
 
   async getQueueStatus(playerId) {
     const response = await apiClient.get('/api/combat/arena/queue', {
-      params);
+      params: { player_id: playerId }
+    });
     return response.data;
   }
 
-  async getArenaLeaderboard(limit= 100) {
+  async getArenaLeaderboard(limit = 100) {
     const response = await apiClient.get('/api/combat/arena/leaderboard', {
-      params);
+      params: { limit }
+    });
     return response.data;
   }
 }

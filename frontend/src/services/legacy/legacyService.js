@@ -4,7 +4,7 @@ class LegacyService {
   /**
    * Get legacy information for the current account
    */
-  async getLegacy(){
+  async getLegacy() {
     const response = await apiClient.get('/player/legacy');
     return response.data;
   }
@@ -12,7 +12,7 @@ class LegacyService {
   /**
    * Get legacy system summary
    */
-  async getLegacySummary(){
+  async getLegacySummary() {
     const response = await apiClient.get('/player/legacy/summary');
     return response.data;
   }
@@ -20,7 +20,7 @@ class LegacyService {
   /**
    * Get all available legacy perks
    */
-  async getAvailablePerks(){
+  async getAvailablePerks() {
     const response = await apiClient.get('/player/legacy/perks');
     return response.data.perks;
   }
@@ -28,7 +28,7 @@ class LegacyService {
   /**
    * Get unlocked perks
    */
-  async getUnlockedPerks(){
+  async getUnlockedPerks() {
     const response = await apiClient.get('/player/legacy/perks/unlocked');
     return response.data.unlocked_perks;
   }
@@ -36,7 +36,7 @@ class LegacyService {
   /**
    * Get active perks
    */
-  async getActivePerks(){
+  async getActivePerks() {
     const response = await apiClient.get('/player/legacy/perks/active');
     return response.data.active_perks;
   }
@@ -44,23 +44,23 @@ class LegacyService {
   /**
    * Unlock a legacy perk
    */
-  async unlockPerk(perkId){
-    const response = await apiClient.post('/player/legacy/perks/unlock', { perk_id);
+  async unlockPerk(perkId) {
+    const response = await apiClient.post('/player/legacy/perks/unlock', { perk_id: perkId });
     return response.data;
   }
 
   /**
    * Activate a legacy perk
    */
-  async activatePerk(perkId){
-    const response = await apiClient.post('/player/legacy/perks/activate', { perk_id);
+  async activatePerk(perkId) {
+    const response = await apiClient.post('/player/legacy/perks/activate', { perk_id: perkId });
     return response.data;
   }
 
   /**
    * Deactivate a legacy perk
    */
-  async deactivatePerk(perkId){
+  async deactivatePerk(perkId) {
     const response = await apiClient.post(`/player/legacy/perks/deactivate/${perkId}`);
     return response.data;
   }
@@ -68,7 +68,7 @@ class LegacyService {
   /**
    * Earn legacy points
    */
-  async earnLegacyPoints(amount, source){
+  async earnLegacyPoints(amount, source) {
     const response = await apiClient.post('/player/legacy/points/earn', { amount, source });
     return response.data;
   }
@@ -76,7 +76,7 @@ class LegacyService {
   /**
    * Get legacy titles
    */
-  async getLegacyTitles(){
+  async getLegacyTitles() {
     const response = await apiClient.get('/player/legacy/titles');
     return response.data.titles;
   }
@@ -84,7 +84,7 @@ class LegacyService {
   /**
    * Activate a legacy title
    */
-  async activateTitle(titleId){
+  async activateTitle(titleId) {
     const response = await apiClient.post(`/player/legacy/titles/activate/${titleId}`);
     return response.data;
   }
@@ -92,7 +92,7 @@ class LegacyService {
   /**
    * Get heirloom items
    */
-  async getHeirlooms(){
+  async getHeirlooms() {
     const response = await apiClient.get('/player/legacy/heirlooms');
     return response.data.heirlooms;
   }
@@ -100,7 +100,7 @@ class LegacyService {
   /**
    * Get mentorship statistics
    */
-  async getMentorshipStats(){
+  async getMentorshipStats() {
     const response = await apiClient.get('/player/legacy/mentorship');
     return response.data;
   }
@@ -108,7 +108,7 @@ class LegacyService {
   /**
    * Get bonuses that apply to new characters
    */
-  async getNewCharacterBonuses(){
+  async getNewCharacterBonuses() {
     const response = await apiClient.get('/player/legacy/new-character-bonuses');
     return response.data.bonuses;
   }
