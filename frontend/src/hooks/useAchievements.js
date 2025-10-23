@@ -39,6 +39,6 @@ export const useAchievements = () => {
     summary,
     loading,
     error,
-    refetch,
+    refetch: fetchAchievements,
   };
 };
