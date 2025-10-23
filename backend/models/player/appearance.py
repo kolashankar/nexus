@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Any
 
 class AppearanceCustomization(BaseModel):
     """Player appearance customization."""
@@ -12,7 +12,7 @@ class AppearanceCustomization(BaseModel):
     hair_color: str = Field(default="#2C1810")  # Hex color
     
     # Face features
-    face_features: Dict[str, any] = Field(default_factory=dict)
+    face_features: Dict[str, Any] = Field(default_factory=dict)
     
     # Body type
     body_type: Dict[str, float] = Field(default_factory=lambda: {
