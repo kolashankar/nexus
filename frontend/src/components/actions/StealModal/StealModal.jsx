@@ -5,16 +5,18 @@ import { Input } from '../../ui/input';
 import { useToast } from '../../../hooks/useToast';
 import { actionsService } from '../../../services/actions/actionsService';
 
-
-
-export const StealModal = ({  open, onClose, onSuccess  }) => {
+export const StealModal = ({ open, onClose, onSuccess }) => {
   const [targetId, setTargetId] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const handleSteal = async () => {
     if (!targetId) {
-      toast({ title, description, variant);
+      toast({ 
+        title: 'Error', 
+        description: 'Please enter a target player ID', 
+        variant: 'destructive' 
+      });
       return;
     }
 
@@ -22,39 +24,44 @@ export const StealModal = ({  open, onClose, onSuccess  }) => {
     try {
       const result = await actionsService.steal(targetId);
       toast({
-        title,
-        description,
-        variant);
+        title: 'Steal Successful!',
+        description: `You stole from player ${targetId}`,
+        variant: 'success'
+      });
       if (result.success && onSuccess) onSuccess();
       onClose();
     } catch (error) {
-      toast({ title, description, variant);
+      toast({ 
+        title: 'Steal Failed', 
+        description: error.message || 'Unable to steal from player', 
+        variant: 'destructive' 
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    
-      
-        
-          💰 Steal from Player
-          
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>💰 Steal from Player</DialogTitle>
+          <DialogDescription>
             Attempt to steal credits from another player. Risky! Success depends on your stealth vs their perception.
-          
-        
-        
-           setTargetId(e.target.value)} />
-          
-            
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <Input placeholder="Target Player ID" value={targetId} onChange={(e) => setTargetId(e.target.value)} />
+          <div className="flex gap-2">
+            <Button onClick={handleSteal} disabled={loading} variant="destructive">
               {loading ? 'Stealing...' : 'Attempt Steal'}
-            
-            
+            </Button>
+            <Button variant="outline" onClick={onClose}>
               Cancel
-            
-          
-        
-      
-    
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };

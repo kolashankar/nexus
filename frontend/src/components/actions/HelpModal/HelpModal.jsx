@@ -5,16 +5,18 @@ import { Input } from '../../ui/input';
 import { useToast } from '../../../hooks/useToast';
 import { actionsService } from '../../../services/actions/actionsService';
 
-
-
-export const HelpModal = ({  open, onClose, onSuccess  }) => {
+export const HelpModal = ({ open, onClose, onSuccess }) => {
   const [targetId, setTargetId] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const handleHelp = async () => {
     if (!targetId) {
-      toast({ title, description, variant);
+      toast({ 
+        title: 'Error', 
+        description: 'Please enter a target player ID', 
+        variant: 'destructive' 
+      });
       return;
     }
 
@@ -22,39 +24,44 @@ export const HelpModal = ({  open, onClose, onSuccess  }) => {
     try {
       const result = await actionsService.help(targetId);
       toast({
-        title,
-        description,
-        variant);
+        title: 'Help Successful!',
+        description: `You helped player ${targetId}`,
+        variant: 'success'
+      });
       if (onSuccess) onSuccess();
       onClose();
     } catch (error) {
-      toast({ title, description, variant);
+      toast({ 
+        title: 'Help Failed', 
+        description: error.message || 'Unable to help player', 
+        variant: 'destructive' 
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    
-      
-        
-          🤝 Help Player
-          
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>🤝 Help Player</DialogTitle>
+          <DialogDescription>
             Provide assistance to another player. This will increase your karma and strengthen positive traits.
-          
-        
-        
-           setTargetId(e.target.value)} />
-          
-            
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <Input placeholder="Target Player ID" value={targetId} onChange={(e) => setTargetId(e.target.value)} />
+          <div className="flex gap-2">
+            <Button onClick={handleHelp} disabled={loading}>
               {loading ? 'Helping...' : 'Help Player'}
-            
-            
+            </Button>
+            <Button variant="outline" onClick={onClose}>
               Cancel
-            
-          
-        
-      
-    
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
