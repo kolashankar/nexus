@@ -3,13 +3,14 @@
  */
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http;
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
 export const apiClient = axios.create({
-  baseURL,
-  headers,
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
   },
-  timeout,
+  timeout: 10000,
 });
 
 // Request interceptor
