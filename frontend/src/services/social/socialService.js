@@ -3,12 +3,12 @@ import { Alliance, Marriage, Mentorship, MarriageProposal, MentorshipRequest } f
 
 class SocialService {
   // General social
-  async getNearbyPlayers(limit: number = 20){
+  async getNearbyPlayers(limit= 20){
     const response = await apiClient.get('/social/nearby', { params);
     return response.data;
   }
 
-  async getOnlinePlayers(skip: number = 0, limit: number = 20){
+  async getOnlinePlayers(skip= 0, limit= 20){
     const response = await apiClient.get('/social/online', { params, limit } });
     return response.data;
   }
@@ -101,7 +101,7 @@ class SocialService {
     return response.data;
   }
 
-  async getMyMentorship(asMentor: boolean = false){
+  async getMyMentorship(asMentor= false){
     const response = await apiClient.get('/social/mentorship/my-mentorship', {
       params);
     return response.data;
@@ -117,7 +117,7 @@ class SocialService {
     return response.data;
   }
 
-  async listAvailableMentors(skip: number = 0, limit: number = 20){
+  async listAvailableMentors(skip= 0, limit= 20){
     const response = await apiClient.get('/social/mentorship/mentors', { params, limit } });
     return response.data;
   }

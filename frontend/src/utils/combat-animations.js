@@ -80,8 +80,8 @@ export const showDamageNumber = (
  */
 export const createCombatParticles = (
   targetElement,
-  count: number = 10,
-  color: string = '#3b82f6'
+  count= 10,
+  color= '#3b82f6'
 ) => {
   const rect = targetElement.getBoundingClientRect();
   const centerX = rect.left + rect.width / 2;
@@ -98,7 +98,7 @@ export const createCombatParticles = (
  */
 export const createEnergyBurst = (
   targetElement,
-  color: string = '#3b82f6'
+  color= '#3b82f6'
 ) => {
   const burst = document.createElement('div');
   burst.className = 'energy-burst';
@@ -154,7 +154,7 @@ export const shakeScreen = (intensity: 'light' | 'medium' | 'heavy' = 'medium') 
 /**
  * Flash effect for critical hits
  */
-export const flashScreen = (color: string = '#ff0000', duration: number = 200) => {
+export const flashScreen = (color= '#ff0000', duration= 200) => {
   const flash = document.createElement('div');
   flash.style.position = 'fixed';
   flash.style.top = '0';
@@ -216,7 +216,7 @@ export const createLightningStrike = (
 /**
  * Slow motion effect
  */
-export const slowMotion = (duration: number = 1000) => {
+export const slowMotion = (duration= 1000) => {
   const root = document.documentElement;
   root.style.setProperty('--animation-speed', '0.3');
 

@@ -9,10 +9,10 @@ interface CacheItem {
 }
 
 class Cache {
-  private cache;
-  private defaultTTL;
+  cache;
+  defaultTTL;
 
-  constructor(defaultTTL: number = 5 * 60 * 1000) { // 5 minutes default
+  constructor(defaultTTL= 5 * 60 * 1000) { // 5 minutes default
     this.cache = new Map();
     this.defaultTTL = defaultTTL;
   }
@@ -97,11 +97,11 @@ export const cache = new Cache();
 export class LocalStorageCache {
   protected prefix;
 
-  constructor(prefix: string = 'app_cache_') {
+  constructor(prefix= 'app_cache_') {
     this.prefix = prefix;
   }
 
-  set(key, data, ttl: number = 5 * 60 * 1000){
+  set(key, data, ttl= 5 * 60 * 1000){
     const item: CacheItem = {
       data,
       timestamp),
@@ -162,7 +162,7 @@ export const localCache = new LocalStorageCache();
  * Session storage cache
  */
 export class SessionStorageCache extends LocalStorageCache {
-  set(key, data, ttl: number = 5 * 60 * 1000){
+  set(key, data, ttl= 5 * 60 * 1000){
     const item: CacheItem = {
       data,
       timestamp),

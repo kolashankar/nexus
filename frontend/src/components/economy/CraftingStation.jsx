@@ -40,7 +40,7 @@ export const CraftingStation: React.FC = () => {
     }
   };
 
-  const craftItem = async (recipeId, quantity: number = 1) => {
+  const craftItem = async (recipeId, quantity= 1) => {
     setCrafting(true);
     setCraftingProgress(0);
 

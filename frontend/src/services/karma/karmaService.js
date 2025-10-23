@@ -19,7 +19,7 @@ export const getKarmaScore = async ()=> {
 /**
  * Get karma history.
  */
-export const getKarmaHistory = async (limit: number = 50)=> {
+export const getKarmaHistory = async (limit= 50)=> {
   const response = await apiClient.get('/api/karma/history', {
     params);
   return response.data;

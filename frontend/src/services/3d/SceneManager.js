@@ -50,7 +50,7 @@ import * from 'three';
   /**
    * Apply scene configuration
    */
-  private applyConfig(config){
+  applyConfig(config){
     if (config.background) {
       this.scene.background = config.background;
     }
@@ -80,7 +80,7 @@ import * from 'three';
   /**
    * Setup default lighting
    */
-  private setupDefaultLighting(){
+  setupDefaultLighting(){
     // Ambient light
     this.addAmbientLight('ambient', new THREE.Color(0xffffff), 0.4);
 
@@ -135,7 +135,7 @@ import * from 'three';
     color,
     intensity,
     position,
-    distance: number = 0
+    distance= 0
   ){
     const light = new THREE.PointLight(color, intensity, distance);
     light.position.copy(position);
@@ -182,7 +182,7 @@ import * from 'three';
   /**
    * Handle window resize
    */
-  private handleResize(){
+  handleResize(){
     const width = window.innerWidth;
     const height = window.innerHeight;
 

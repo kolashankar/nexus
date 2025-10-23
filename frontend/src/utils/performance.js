@@ -30,7 +30,7 @@ export function debounce any>(
 export function throttle any>(
   func,
   limit)=> void {
-  let inThrottle: boolean = false;
+  let inThrottle= false;
 
   return function executedFunction(...args) {
     if (!inThrottle) {

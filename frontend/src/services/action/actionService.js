@@ -88,8 +88,8 @@ export const performTrade = async (
  * Get action history for current player.
  */
 export const getActionHistory = async (
-  limit: number = 50,
-  offset: number = 0
+  limit= 50,
+  offset= 0
 )=> {
   const response = await apiClient.get('/api/actions/history', {
     params, offset }

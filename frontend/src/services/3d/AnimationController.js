@@ -7,7 +7,7 @@ import * from 'three';
 
 
 export class AnimationController {
-  private mixer, animations) {
+  mixer, animations) {
     this.mixer = new THREE.AnimationMixer(model);
     this.actions = new Map();
     this.currentAction = null;
@@ -26,10 +26,10 @@ export class AnimationController {
   play(
     name,
     options: {
-      loop?: boolean;
-      fadeIn?: number;
-      fadeOut?: number;
-      weight?: number;
+      loop?;
+      fadeIn?;
+      fadeOut?;
+      weight?;
     } = {}
   ){
     const action = this.actions.get(name);
@@ -68,7 +68,7 @@ export class AnimationController {
   /**
    * Stop current animation
    */
-  stop(fadeOut: number = 0.2){
+  stop(fadeOut= 0.2){
     if (this.currentAction) {
       this.currentAction.fadeOut(fadeOut);
       this.previousAction = this.currentAction;
@@ -97,7 +97,7 @@ export class AnimationController {
   /**
    * Cross-fade between animations
    */
-  crossFade(toName, duration: number = 0.3){
+  crossFade(toName, duration= 0.3){
     const toAction = this.actions.get(toName);
     if (!toAction) {
       console.warn(`Animation "${toName}" not found`);

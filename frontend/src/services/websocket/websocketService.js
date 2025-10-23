@@ -5,12 +5,12 @@
 
 
 class WebSocketService {
-  private ws: WebSocket | null = null;
-  private handlers: Map = new Map();
-  private reconnectAttempts = 0;
-  private maxReconnectAttempts = 5;
-  private reconnectDelay = 3000;
-  private url) {
+  ws: WebSocket | null = null;
+  handlers: Map = new Map();
+  reconnectAttempts = 0;
+  maxReconnectAttempts = 5;
+  reconnectDelay = 3000;
+  url) {
     const wsUrl = process.env.REACT_APP_WS_URL || 'ws;
     this.url = wsUrl;
   }
@@ -36,7 +36,7 @@ class WebSocketService {
       }
     };
 
-    this.ws.onerror = (error) => {
+    this.ws.onerror = (error: () => {
       console.error('WebSocket error', error);
     };
 
@@ -78,7 +78,7 @@ class WebSocketService {
     }
   }
 
-  private handleMessage(message){
+  handleMessage(message){
     const { type, data } = message;
     const handlers = this.handlers.get(type);
     
@@ -87,7 +87,7 @@ class WebSocketService {
     }
   }
 
-  private attemptReconnect(token){
+  attemptReconnect(token){
     if (this.reconnectAttempts  {
         this.connect(token);
       }, this.reconnectDelay);

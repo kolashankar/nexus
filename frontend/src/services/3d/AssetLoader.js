@@ -13,7 +13,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
 
 class AssetLoader {
-  private gltfLoader) {
+  gltfLoader) {
     // Setup GLTF Loader with Draco compression
     this.gltfLoader = new GLTFLoader();
     const dracoLoader = new DRACOLoader();
@@ -73,7 +73,7 @@ class AssetLoader {
             });
           }
         },
-        (error) => {
+        (error: () => {
           this.loadingPromises.delete(url);
           reject(error);
         }
@@ -126,7 +126,7 @@ class AssetLoader {
             });
           }
         },
-        (error) => {
+        (error: () => {
           this.loadingPromises.delete(url);
           reject(error);
         }
@@ -157,7 +157,7 @@ class AssetLoader {
             });
           }
         },
-        (error) => reject(error)
+        (error: () => reject(error)
       );
     });
   }

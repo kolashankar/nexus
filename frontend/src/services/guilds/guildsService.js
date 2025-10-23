@@ -7,7 +7,7 @@ class GuildsService {
     return response.data;
   }
 
-  async listGuilds(skip: number = 0, limit: number = 20){
+  async listGuilds(skip= 0, limit= 20){
     const response = await apiClient.get('/guilds', { params, limit } });
     return response.data;
   }

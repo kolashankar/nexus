@@ -7,7 +7,7 @@ import * from 'three';
 
 
 class TextureManager {
-  private loader) {
+  loader) {
     this.loader = new THREE.TextureLoader();
     this.cache = new Map();
     this.loadingPromises = new Map();
@@ -41,7 +41,7 @@ class TextureManager {
           resolve(texture);
         },
         undefined,
-        (error) => {
+        (error: () => {
           this.loadingPromises.delete(url);
           reject(error);
         }
@@ -66,7 +66,7 @@ class TextureManager {
   /**
    * Apply texture options
    */
-  private applyOptions(texture, options){
+  applyOptions(texture, options){
     if (options.wrapS !== undefined) {
       texture.wrapS = options.wrapS;
     }

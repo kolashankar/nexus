@@ -26,7 +26,7 @@ import apiClient from '../api/client';
     return response.data;
   }
 
-  async getNearbyPlayers(limit: number = 10){
+  async getNearbyPlayers(limit= 10){
     const response = await apiClient.get(`/api/player/nearby?limit=${limit}`);
     return response.data;
   }

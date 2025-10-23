@@ -17,7 +17,7 @@ export const useLeaderboards = ()=> {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchLeaderboard = async (type, limit: number = 50) => {
+  const fetchLeaderboard = async (type, limit= 50) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');

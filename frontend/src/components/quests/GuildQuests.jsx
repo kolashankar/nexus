@@ -15,7 +15,7 @@ import { useToast } from '../../hooks/useToast';
   participants;
   required_members;
   status;
-  expires_at?: string;
+  expires_at?;
 }
 
 export const GuildQuests: React.FC = () => {

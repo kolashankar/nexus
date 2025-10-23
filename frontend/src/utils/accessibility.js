@@ -25,13 +25,13 @@ export const announceToScreenReader = (message, priority: 'polite' | 'assertive'
  * Focus trap for modals and dialogs
  */
 export class FocusTrap {
-  private element) {
+  element) {
     this.element = element;
     this.previousFocus = document.activeElement;
     this.focusableElements = this.getFocusableElements();
   }
 
-  private getFocusableElements(){
+  getFocusableElements(){
     const selectors = [
       'a[href]',
       'button)',
@@ -66,7 +66,7 @@ export class FocusTrap {
     }
   }
 
-  private handleKeyDown = (event) => {
+  handleKeyDown = (event) => {
     if (event.key !== 'Tab') return;
 
     const firstElement = this.focusableElements[0];
@@ -161,7 +161,7 @@ export const aria = {
     ...(current && { 'aria-current': 'page' }),
   }),
 
-  progressBar, max: number = 100, label?: string) => ({
+  progressBar, max= 100, label?: string) => ({
     role,
     'aria-valuenow': value,
     'aria-valuemin': 0,
@@ -294,13 +294,13 @@ export const focusManagement = {
  * Roving tabindex for keyboard navigation in lists
  */
 export class RovingTabIndex {
-  private items, initialIndex: number = 0) {
+  items, initialIndex= 0) {
     this.items = items;
     this.currentIndex = initialIndex;
     this.updateTabIndex();
   }
 
-  private updateTabIndex() {
+  updateTabIndex() {
     this.items.forEach((item, index) => {
       item.tabIndex = index === this.currentIndex ? 0 : -1;
     });

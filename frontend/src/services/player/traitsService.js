@@ -20,12 +20,12 @@ class TraitsService {
     return response.data;
   }
 
-  async getTopTraits(limit: number = 10){
+  async getTopTraits(limit= 10){
     const response = await apiClient.get(`/api/player/traits/top?limit=${limit}`);
     return response.data;
   }
 
-  async getBottomTraits(limit: number = 10){
+  async getBottomTraits(limit= 10){
     const response = await apiClient.get(`/api/player/traits/bottom?limit=${limit}`);
     return response.data;
   }

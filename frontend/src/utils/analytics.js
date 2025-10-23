@@ -5,7 +5,7 @@
 
 
 class Analytics {
-  private enabled) {
+  enabled) {
     this.enabled = process.env.NODE_ENV === 'production';
     this.events = [];
   }
@@ -52,7 +52,7 @@ class Analytics {
    */
   trackUserAction(
     action,
-    category: string = 'User',
+    category= 'User',
     label?: string,
     value?: number
   ){
@@ -118,8 +118,8 @@ class Analytics {
    */
   trackError(
     error,
-    category: string = 'Error',
-    fatal: boolean = false
+    category= 'Error',
+    fatal= false
   ){
     this.trackEvent({
       category,

@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 
 const WS_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
   let socket;
-  const authToken: string = 'test_token_here';
+  const authToken= 'test_token_here';
 
   beforeAll((done) => {
     socket = io(WS_URL, {

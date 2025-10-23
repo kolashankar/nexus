@@ -14,7 +14,7 @@ import { CheckCircle, Circle, Trophy, Star, Coins } from 'lucide-react';
     trait_boosts?: Record;
   };
   status;
-  expires_at?: string;
+  expires_at?;
 }
 
 

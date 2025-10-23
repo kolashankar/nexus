@@ -30,7 +30,7 @@ class TournamentsService {
     return response.data;
   }
 
-  async getTournamentHistory(playerId?: string, limit: number = 10) {
+  async getTournamentHistory(playerId?: string, limit= 10) {
     const response = await apiClient.get('/api/tournaments/history', {
       params, limit }
     });

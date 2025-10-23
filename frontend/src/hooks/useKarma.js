@@ -14,7 +14,7 @@ export const useKarma = () => {
   /**
    * Load karma history.
    */
-  const loadKarmaHistory = useCallback(async (limit: number = 20) => {
+  const loadKarmaHistory = useCallback(async (limit= 20) => {
     setLoading(true);
     setError(null);
 

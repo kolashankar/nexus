@@ -22,7 +22,7 @@ apiClient.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
+  (error: () => {
     return Promise.reject(error);
   }
 );
@@ -30,7 +30,7 @@ apiClient.interceptors.request.use(
 // Response interceptor
 apiClient.interceptors.response.use(
   (response) => response,
-  async (error) => {
+  async (error: () => {
     const originalRequest = error.config;
     
     // Handle 401 errors (unauthorized)

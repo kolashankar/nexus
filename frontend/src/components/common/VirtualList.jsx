@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, ReactNode } from 'react';
 
 interface VirtualListProps {
   items, index) => ReactNode;
-  overscan?: number;
+  overscan?;
 }
 
 /**

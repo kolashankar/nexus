@@ -25,7 +25,7 @@ class WorldService {
   /**
    * Get recent world events
    */
-  async getRecentEvents(limit: number = 10){
+  async getRecentEvents(limit= 10){
     const response = await apiClient.get(`/api/world/events/recent?limit=${limit}`);
     return response.data;
   }
@@ -74,7 +74,7 @@ class WorldService {
   /**
    * Get top karma players
    */
-  async getTopKarmaPlayers(limit: number = 10){
+  async getTopKarmaPlayers(limit= 10){
     const response = await apiClient.get(`/api/world/state/karma/top?limit=${limit}`);
     return response.data;
   }
@@ -82,7 +82,7 @@ class WorldService {
   /**
    * Get bottom karma players
    */
-  async getBottomKarmaPlayers(limit: number = 10){
+  async getBottomKarmaPlayers(limit= 10){
     const response = await apiClient.get(`/api/world/state/karma/bottom?limit=${limit}`);
     return response.data;
   }

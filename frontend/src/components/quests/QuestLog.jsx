@@ -11,7 +11,7 @@ import { toast } from '../ui/sonner';
 
 ;
   status;
-  expires_at?: string;
+  expires_at?;
 }
 
 export const QuestLog: React.FC = () => {

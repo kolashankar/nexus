@@ -3,7 +3,7 @@
  */
 
 export class GameError extends Error {
-  public code, code, statusCode?: number, data?: any) {
+  code, code, statusCode?: number, data?: any) {
     super(message);
     this.name = 'GameError';
     this.code = code;
@@ -13,35 +13,35 @@ export class GameError extends Error {
 }
 
 export class NetworkError extends GameError {
-  constructor(message: string = 'Network connection failed', data?: any) {
+  constructor(message= 'Network connection failed', data?: any) {
     super(message, 'NETWORK_ERROR', 0, data);
     this.name = 'NetworkError';
   }
 }
 
 export class AuthenticationError extends GameError {
-  constructor(message: string = 'Authentication failed', data?: any) {
+  constructor(message= 'Authentication failed', data?: any) {
     super(message, 'AUTH_ERROR', 401, data);
     this.name = 'AuthenticationError';
   }
 }
 
 export class ValidationError extends GameError {
-  constructor(message: string = 'Validation failed', data?: any) {
+  constructor(message= 'Validation failed', data?: any) {
     super(message, 'VALIDATION_ERROR', 400, data);
     this.name = 'ValidationError';
   }
 }
 
 export class NotFoundError extends GameError {
-  constructor(message: string = 'Resource not found', data?: any) {
+  constructor(message= 'Resource not found', data?: any) {
     super(message, 'NOT_FOUND', 404, data);
     this.name = 'NotFoundError';
   }
 }
 
 export class ServerError extends GameError {
-  constructor(message: string = 'Server error occurred', data?: any) {
+  constructor(message= 'Server error occurred', data?: any) {
     super(message, 'SERVER_ERROR', 500, data);
     this.name = 'ServerError';
   }
@@ -127,8 +127,8 @@ export const logError = (error, context?: Record) => {
  */
 export const retryOperation = async (
   operation) => Promise,
-  maxRetries: number = 3,
-  delayMs: number = 1000
+  maxRetries= 3,
+  delayMs= 1000
 )=> {
   let lastError;
 
@@ -161,7 +161,7 @@ export const safeAsync = async (
 export const errorRecovery = {
   // Retry with exponential backoff
   retryExponential) => Promise,
-    maxRetries: number = 3
+    maxRetries= 3
   )=> {
     return retryOperation(operation, maxRetries, 1000);
   },

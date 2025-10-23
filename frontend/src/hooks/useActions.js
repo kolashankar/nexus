@@ -146,7 +146,7 @@ export const useActions = () => {
   /**
    * Load action history.
    */
-  const loadHistory = useCallback(async (limit: number = 50, offset: number = 0) => {
+  const loadHistory = useCallback(async (limit= 50, offset= 0) => {
     setLoading(true);
     setError(null);
 

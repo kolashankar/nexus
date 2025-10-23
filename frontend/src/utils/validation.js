@@ -126,11 +126,11 @@ export function validateForm>(
  * Common validation rules
  */
 export const validationRules = {
-  required: (message: string = 'This field is required') => (value) => {
+  required: (message= 'This field is required') => (value) => {
     return isRequired(value) ? null : message;
   },
 
-  email: (message: string = 'Invalid email address') => (value) => {
+  email: (message= 'Invalid email address') => (value) => {
     return isValidEmail(value) ? null : message;
   },
 
@@ -145,7 +145,7 @@ export const validationRules = {
     return regex.test(value) ? null : message;
   },
 
-  numeric: (message: string = 'Must be a number') => (value) => {
+  numeric: (message= 'Must be a number') => (value) => {
     return !isNaN(Number(value)) ? null : message;
   },
 

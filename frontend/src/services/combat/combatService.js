@@ -2,7 +2,7 @@ import apiClient from '../api/client';
 import { Battle, CombatAbility } from '../../types/combat';
 
 class CombatService {
-  async challengePlayer(attackerId, defenderId, battleType: string = 'duel') {
+  async challengePlayer(attackerId, defenderId, battleType= 'duel') {
     const response = await apiClient.post('/api/combat/challenge', {
       attacker_id,
       defender_id,
@@ -53,7 +53,7 @@ class CombatService {
     return response.data;
   }
 
-  async getCombatHistory(playerId, limit: number = 10) {
+  async getCombatHistory(playerId, limit= 10) {
     const response = await apiClient.get('/api/combat/history', {
       params, limit }
     });
@@ -80,7 +80,7 @@ class CombatService {
   }
 
   // Arena specific
-  async joinArenaQueue(playerId, ranked: boolean = false) {
+  async joinArenaQueue(playerId, ranked= false) {
     const response = await apiClient.post('/api/combat/arena/join', null, {
       params, ranked }
     });
@@ -99,7 +99,7 @@ class CombatService {
     return response.data;
   }
 
-  async getArenaLeaderboard(limit: number = 100) {
+  async getArenaLeaderboard(limit= 100) {
     const response = await apiClient.get('/api/combat/arena/leaderboard', {
       params);
     return response.data;

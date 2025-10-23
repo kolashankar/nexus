@@ -17,8 +17,8 @@ import './WorldEvents.css';
   is_global;
   status;
   estimated_impact;
-  started_at?: string;
-  ends_at?: string;
+  started_at?;
+  ends_at?;
   requires_participation;
   total_participants;
 }
