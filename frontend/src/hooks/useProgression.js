@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { progressionService } from '@/services/progression/progressionService';
 
-
-
 export const useProgression = () => {
   const [progression, setProgression] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +26,7 @@ export const useProgression = () => {
   const gainXP = useCallback(async (amount) => {
     try {
       const result = await progressionService.gainXP(amount);
-      setProgression(prev => prev ? { ...prev, xp, level);
+      setProgression(prev => prev ? { ...prev, xp: result.xp, level: result.level } : null);
       return result;
     } catch (err) {
       throw err;
@@ -56,7 +54,7 @@ export const useProgression = () => {
   const unlockAchievement = useCallback(async (achievementId) => {
     try {
       const result = await progressionService.unlockAchievement(achievementId);
-      setProgression(prev => prev ? { ...prev, achievementsUnlocked);
+      setProgression(prev => prev ? { ...prev, achievementsUnlocked: result.achievementsUnlocked } : null);
       return result;
     } catch (err) {
       throw err;

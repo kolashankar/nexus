@@ -1,15 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http;
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
-
-
-
-
-
-
-export const useBattlePass = ()=> {
+export const useBattlePass = () => {
   const [battlePass, setBattlePass] = useState(null);
   const [progress, setProgress] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,7 +13,8 @@ export const useBattlePass = ()=> {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/seasonal/battle-pass/active`, {
-        headers);
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setBattlePass(response.data);
     } catch (err) {
       console.error('Error fetching battle pass', err);
@@ -31,7 +26,8 @@ export const useBattlePass = ()=> {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/seasonal/battle-pass/progress`, {
-        headers);
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setProgress(response.data);
     } catch (err) {
       console.error('Error fetching battle pass progress', err);
@@ -51,7 +47,9 @@ export const useBattlePass = ()=> {
       `${API_URL}/api/seasonal/battle-pass/claim-rewards`,
       { tier },
       {
-        headers);
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
     return response.data;
   };
 
@@ -61,12 +59,15 @@ export const useBattlePass = ()=> {
       `${API_URL}/api/seasonal/battle-pass/purchase-premium`,
       {},
       {
-        headers);
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
     return response.data;
   };
 
   useEffect(() => {
     refreshProgress();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

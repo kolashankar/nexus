@@ -1,15 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http;
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
 
-
-
-
-
-
-
-export const useWorldEvents = ()=> {
+export const useWorldEvents = () => {
   const [worldState, setWorldState] = useState(null);
   const [activeEvents, setActiveEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +13,8 @@ export const useWorldEvents = ()=> {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/world/state`, {
-        headers);
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setWorldState(response.data);
     } catch (err) {
       console.error('Error fetching world state', err);
@@ -31,7 +26,8 @@ export const useWorldEvents = ()=> {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/world/events`, {
-        headers);
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setActiveEvents(response.data);
     } catch (err) {
       console.error('Error fetching active events', err);
@@ -68,6 +64,7 @@ export const useWorldEvents = ()=> {
     }, 30000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
