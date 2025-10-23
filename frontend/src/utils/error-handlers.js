@@ -3,7 +3,7 @@
  */
 
 export class GameError extends Error {
-  code, code, statusCode?: number, data?  {
+  constructor(message, code, statusCode, data) {
     super(message);
     this.name = 'GameError';
     this.code = code;
@@ -13,21 +13,21 @@ export class GameError extends Error {
 }
 
 export class NetworkError extends GameError {
-  constructor(message= 'Network connection failed', data?  {
+  constructor(message = 'Network connection failed', data) {
     super(message, 'NETWORK_ERROR', 0, data);
     this.name = 'NetworkError';
   }
 }
 
 export class AuthenticationError extends GameError {
-  constructor(message= 'Authentication failed', data?  {
+  constructor(message = 'Authentication failed', data) {
     super(message, 'AUTH_ERROR', 401, data);
     this.name = 'AuthenticationError';
   }
 }
 
 export class ValidationError extends GameError {
-  constructor(message= 'Validation failed', data?  {
+  constructor(message = 'Validation failed', data) {
     super(message, 'VALIDATION_ERROR', 400, data);
     this.name = 'ValidationError';
   }
