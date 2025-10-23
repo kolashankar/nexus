@@ -4,7 +4,7 @@ class PrestigeService {
   /**
    * Get prestige information for the current player
    */
-  async getPrestige(){
+  async getPrestige() {
     const response = await apiClient.get('/player/prestige');
     return response.data;
   }
@@ -12,7 +12,7 @@ class PrestigeService {
   /**
    * Get current prestige benefits
    */
-  async getPrestigeBenefits(){
+  async getPrestigeBenefits() {
     const response = await apiClient.get('/player/prestige/benefits');
     return response.data;
   }
@@ -20,7 +20,7 @@ class PrestigeService {
   /**
    * Check if player can prestige
    */
-  async checkPrestigeEligibility(){
+  async checkPrestigeEligibility() {
     const response = await apiClient.get('/player/prestige/eligibility');
     return response.data;
   }
@@ -28,7 +28,7 @@ class PrestigeService {
   /**
    * Perform prestige reset
    */
-  async performPrestige(){
+  async performPrestige() {
     const response = await apiClient.post('/player/prestige/perform');
     return response.data;
   }
@@ -36,7 +36,7 @@ class PrestigeService {
   /**
    * Get all prestige rewards
    */
-  async getPrestigeRewards()> {
+  async getPrestigeRewards() {
     const response = await apiClient.get('/player/prestige/rewards');
     return response.data.rewards;
   }
@@ -44,7 +44,7 @@ class PrestigeService {
   /**
    * Get rewards for a specific prestige level
    */
-  async getPrestigeReward(level){
+  async getPrestigeReward(level) {
     const response = await apiClient.get(`/player/prestige/rewards/${level}`);
     return response.data;
   }
@@ -52,7 +52,7 @@ class PrestigeService {
   /**
    * Get prestige history
    */
-  async getPrestigeHistory(){
+  async getPrestigeHistory() {
     const response = await apiClient.get('/player/prestige/history');
     return response.data;
   }

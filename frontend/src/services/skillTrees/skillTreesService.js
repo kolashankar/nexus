@@ -4,7 +4,7 @@ class SkillTreesService {
   /**
    * Get all skill trees for the current player
    */
-  async getSkillTrees(){
+  async getSkillTrees() {
     const response = await apiClient.get('/player/skill-trees');
     return response.data;
   }
@@ -12,7 +12,7 @@ class SkillTreesService {
   /**
    * Get skill tree summary
    */
-  async getSkillTreeSummary(){
+  async getSkillTreeSummary() {
     const response = await apiClient.get('/player/skill-trees/summary');
     return response.data;
   }
@@ -20,7 +20,7 @@ class SkillTreesService {
   /**
    * Get a specific skill tree
    */
-  async getSkillTree(traitName){
+  async getSkillTree(traitName) {
     const response = await apiClient.get(`/player/skill-trees/${traitName}`);
     return response.data;
   }
@@ -28,7 +28,7 @@ class SkillTreesService {
   /**
    * Unlock a skill node
    */
-  async unlockNode(request){
+  async unlockNode(request) {
     const response = await apiClient.post('/player/skill-trees/unlock-node', request);
     return response.data;
   }
@@ -36,7 +36,7 @@ class SkillTreesService {
   /**
    * Choose a branch path (A or B)
    */
-  async chooseBranch(request){
+  async chooseBranch(request) {
     const response = await apiClient.post('/player/skill-trees/choose-branch', request);
     return response.data;
   }
@@ -44,7 +44,7 @@ class SkillTreesService {
   /**
    * Calculate synergy bonuses
    */
-  async calculateSynergies()> {
+  async calculateSynergies() {
     const response = await apiClient.get('/player/skill-trees/synergies/calculate');
     return response.data.synergies;
   }
