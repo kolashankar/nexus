@@ -1,84 +1,84 @@
 """API v1 package - Import all routers."""
 
-from api.v1.auth import router as auth_router
-from api.v1.player import router as player_router
-from api.v1.actions import router as actions_router
+from backend.api.v1.auth import router as auth_router
+from backend.api.v1.player import router as player_router
+from backend.api.v1.actions import router as actions_router
 
 # Combat
 try:
-    from api.v1.combat import router as combat_router
+    from backend.api.v1.combat import router as combat_router
 except ImportError:
     combat_router = None
 
 # Robots
 try:
-    from api.v1.robots import router as robots_router
+    from backend.api.v1.robots import router as robots_router
 except ImportError:
     robots_router = None
 
 # Guilds
 try:
-    from api.v1.guilds import router as guilds_router
+    from backend.api.v1.guilds import router as guilds_router
 except ImportError:
     guilds_router = None
 
 # Quests
 try:
-    from api.v1.quests import router as quests_router
+    from backend.api.v1.quests import router as quests_router
 except ImportError:
     quests_router = None
 
 # Market
 try:
-    from api.v1.market import router as market_router
+    from backend.api.v1.market import router as market_router
 except ImportError:
     market_router = None
 
 # Social
 try:
-    from api.v1.social import router as social_router
+    from backend.api.v1.social import router as social_router
 except ImportError:
     social_router = None
 
 # Karma
 try:
-    from api.v1.karma import router as karma_router
+    from backend.api.v1.karma import router as karma_router
 except ImportError:
     karma_router = None
 
 # Leaderboards
 try:
-    from api.v1.leaderboards import router as leaderboards_router
+    from backend.api.v1.leaderboards import router as leaderboards_router
 except ImportError:
     leaderboards_router = None
 
 # Tournaments
 try:
-    from api.v1.tournaments import router as tournaments_router
+    from backend.api.v1.tournaments import router as tournaments_router
 except ImportError:
     tournaments_router = None
 
 # Achievements
 try:
-    from api.v1.achievements import router as achievements_router
+    from backend.api.v1.achievements import router as achievements_router
 except ImportError:
     achievements_router = None
 
 # AI Companion
 try:
-    from api.v1.ai import router as ai_companion_router
+    from backend.api.v1.ai import router as ai_companion_router
 except ImportError:
     ai_companion_router = None
 
 # World
 try:
-    from api.v1.world import router as world_router
+    from backend.api.v1.world import router as world_router
 except ImportError:
     world_router = None
 
 # Seasonal
 try:
-    from api.v1.seasonal import router as seasonal_router
+    from backend.api.v1.seasonal import router as seasonal_router
 except ImportError:
     seasonal_router = None
 
