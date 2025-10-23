@@ -12,8 +12,8 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const { login, isLoading, error } = useStore();
   const [formData, setFormData] = useState({
-    username,
-    password,
+    username: '',
+    password: '',
   });
 
   const handleSubmit = async (e) => {
