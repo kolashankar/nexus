@@ -1,30 +1,7 @@
-export const AchievementCategory = {
-  TRAIT_MASTERY = 'trait_mastery',
-  POWER_COLLECTOR = 'power_collector',
-  KARMA = 'karma',
-  SOCIAL = 'social',
-  ECONOMIC = 'economic',
-  COMBAT = 'combat',
-  STORY = 'story',
-  HIDDEN = 'hidden',
-  SEASONAL = 'seasonal',
-  LEGACY = 'legacy',
-}
+/**
+ * ACHIEVEMENTS type definitions
+ */
 
-export const AchievementRarity = {
-  COMMON = 'common',
-  UNCOMMON = 'uncommon',
-  RARE = 'rare',
-  EPIC = 'epic',
-  LEGENDARY = 'legendary',
-}
-
-
-
-
-
-
-
-
-
-
+// Types are now defined inline in components
+// This file exists for backward compatibility
+export default {};

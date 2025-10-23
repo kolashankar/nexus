@@ -1,20 +1,7 @@
-export const RelationshipType = {
-  ALLIANCE = 'alliance',
-  RIVAL = 'rival',
-  MARRIAGE = 'marriage',
-  MENTORSHIP = 'mentorship',
-  FRIEND = 'friend',
-  ENEMY = 'enemy'
-}
+/**
+ * SOCIAL type definitions
+ */
 
-
-
-
-
-
-
-
-
-
-
-
+// Types are now defined inline in components
+// This file exists for backward compatibility
+export default {};

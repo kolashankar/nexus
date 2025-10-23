@@ -1,6 +1,7 @@
 /**
- * Central export for all types
+ * INDEX type definitions
  */
-export * from './player';
-export * from './actions';
-export * from './traits';
+
+// Types are now defined inline in components
+// This file exists for backward compatibility
+export default {};
