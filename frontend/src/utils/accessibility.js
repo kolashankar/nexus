@@ -5,7 +5,7 @@
 /**
  * Screen reader announcement helper
  */
-export const announceToScreenReader = (message, priority: 'polite' | 'assertive' = 'polite') => {
+export const announceToScreenReader = (message, priority = 'polite') => {
   const announcement = document.createElement('div');
   announcement.setAttribute('role', 'status');
   announcement.setAttribute('aria-live', priority);
