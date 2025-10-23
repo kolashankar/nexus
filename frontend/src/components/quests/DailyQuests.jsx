@@ -6,9 +6,7 @@ import { Progress } from '../ui/progress';
 import { Calendar, RefreshCw, Clock } from 'lucide-react';
 import { toast } from '../ui/sonner';
 
-
-
-export const DailyQuests: React.FC = () => {
+export const DailyQuests = () => {
   const [quests, setQuests] = useState([]);
   const [resetTime, setResetTime] = useState('');
   const [canRefresh, setCanRefresh] = useState(true);
@@ -20,7 +18,8 @@ export const DailyQuests: React.FC = () => {
   const fetchDailyQuests = async () => {
     try {
       const response = await fetch('/api/quests/daily', {
-        headers)}`
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
       const data = await response.json();
@@ -34,8 +33,9 @@ export const DailyQuests: React.FC = () => {
   const refreshQuests = async () => {
     try {
       const response = await fetch('/api/quests/daily/refresh', {
-        method,
-        headers)}`
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
 
@@ -47,7 +47,8 @@ export const DailyQuests: React.FC = () => {
         setCanRefresh(false);
       } else {
         toast.error('Cannot refresh', {
-          description);
+          description: data.detail
+        });
       }
     } catch (error) {
       toast.error('Failed to refresh quests');
@@ -55,59 +56,61 @@ export const DailyQuests: React.FC = () => {
   };
 
   return (
-    
-      
-        
-          
-          Daily Quests
-        
-        
-          
-            
-            Resets in: {resetTime}
-          
-          
-            
-            Refresh
-          
-        
-      
+    <div className="space-y-4">
+      <Card className="p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-5 h-5" />
+            <h2 className="text-xl font-bold">Daily Quests</h2>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Clock className="w-4 h-4" />
+              Resets in: {resetTime}
+            </div>
+            <Button size="sm" onClick={refreshQuests} disabled={!canRefresh}>
+              <RefreshCw className="mr-2" />
+              Refresh
+            </Button>
+          </div>
+        </div>
+      </Card>
 
-      
+      <div className="grid gap-4">
         {quests.map(quest => (
-          
-            
-              
-                {quest.title}
-                
+          <Card key={quest.id} className="p-6">
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-bold mb-2">{quest.title}</h3>
+                <p className="text-sm text-muted-foreground">
                   {quest.description}
-                
-              
+                </p>
+              </div>
 
-              
+              <div className="space-y-2">
                 {quest.objectives.map((obj, idx) => (
-                  
-                    
-                      {obj.description}
-                      {obj.current}/{obj.required}
-                    
-                    
-                  
+                  <div key={idx} className="space-y-1">
+                    <div className="flex justify-between text-sm">
+                      <span>{obj.description}</span>
+                      <span>{obj.current}/{obj.required}</span>
+                    </div>
+                    <Progress value={(obj.current / obj.required) * 100} />
+                  </div>
                 ))}
-              
+              </div>
 
-              
-                💰 {quest.rewards.credits}
-                ⭐ {quest.rewards.xp} XP
-              
+              <div className="flex items-center gap-4 text-sm">
+                <span>💰 {quest.rewards.credits}</span>
+                <span>⭐ {quest.rewards.xp} XP</span>
+              </div>
 
               {quest.status === 'available' && (
-                Accept
+                <Button size="sm">Accept</Button>
               )}
-            
-          
+            </div>
+          </Card>
         ))}
-      
-    
+      </div>
+    </div>
   );
 };
