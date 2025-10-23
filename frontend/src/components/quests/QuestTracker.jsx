@@ -4,11 +4,8 @@ import { Progress } from '../ui/progress';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Target, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
-import { questService } from '../../services/questService';
 
-
-
-export const QuestTracker: React.FC = () => {
+export const QuestTracker = () => {
   const [trackedQuests, setTrackedQuests] = useState([]);
   const [expanded, setExpanded] = useState([]);
   const [minimized, setMinimized] = useState(false);
@@ -21,8 +18,13 @@ export const QuestTracker: React.FC = () => {
 
   const fetchTrackedQuests = async () => {
     try {
-      const quests = await questService.getActiveQuests();
-      setTrackedQuests(quests.slice(0, 5)); // Track max 5 quests
+      const response = await fetch('/api/quests/active', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      const data = await response.json();
+      setTrackedQuests((data.quests || []).slice(0, 5)); // Track max 5 quests
     } catch (error) {
       console.error('Failed to fetch tracked quests', error);
     }
@@ -44,89 +46,83 @@ export const QuestTracker: React.FC = () => {
 
   if (minimized) {
     return (
-      
-         setMinimized(false)}
+      <div className="fixed bottom-4 right-4 z-50">
+        <Button
+          onClick={() => setMinimized(false)}
           variant="default"
           size="sm"
         >
-          
+          <Target className="mr-2" />
           Quests ({trackedQuests.length})
-        
-      
+        </Button>
+      </div>
     );
   }
 
   return (
-    
-      
-        
-          
-            
-              
-              Active Quests
-            
-             setMinimized(true)}
-            >
-              Minimize
-            
-          
+    <div className="fixed bottom-4 right-4 z-50 w-96">
+      <Card className="p-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Target className="w-5 h-5" />
+            <h3 className="font-bold">Active Quests</h3>
+          </div>
+          <Button onClick={() => setMinimized(true)} variant="ghost" size="sm">
+            Minimize
+          </Button>
+        </div>
 
-          {trackedQuests.length === 0 ? (
-            
-              No active quests
-            
-          ) : (
-            
-              {trackedQuests.map(quest => (
-                
-                   toggleExpanded(quest.id)}
-                  >
-                    
-                      
-                        
-                          {quest.title}
-                        
-                        
-                          {quest.quest_type}
-                        
-                      
-                      {expanded.includes(quest.id) ? (
-                        
-                      ) : (
-                        
-                      )}
-                    
+        <div className="space-y-3 max-h-96 overflow-y-auto">
+          {trackedQuests.map(quest => {
+            const isExpanded = expanded.includes(quest.id);
+            const progress = calculateProgress(quest.objectives);
 
-                    
-                  
-
-                  {expanded.includes(quest.id) && (
-                    
-                      {quest.objectives.map((obj, idx) => (
-                        
-                          {obj.completed ? (
-                            
-                          ) : (
-                            
-                          )}
-                          
-                            
-                              {obj.description}
-                            
-                            
-                              {obj.current}/{obj.required}
-                            
-                          
-                        
-                      ))}
-                    
+            return (
+              <div key={quest.id} className="border rounded-lg p-3">
+                <div
+                  className="flex items-start justify-between cursor-pointer"
+                  onClick={() => toggleExpanded(quest.id)}
+                >
+                  <div className="flex-1">
+                    <p className="font-semibold text-sm">{quest.title}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Progress value={progress} className="flex-1" />
+                      <span className="text-xs text-muted-foreground">
+                        {Math.round(progress)}%
+                      </span>
+                    </div>
+                  </div>
+                  {isExpanded ? (
+                    <ChevronUp className="w-4 h-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
                   )}
-                
-              ))}
-            
-          )}
-        
-      
-    
+                </div>
+
+                {isExpanded && (
+                  <div className="mt-3 space-y-2">
+                    {quest.objectives.map((obj, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-sm">
+                        {obj.completed ? (
+                          <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
+                        ) : (
+                          <div className="w-4 h-4 border rounded-full mt-0.5" />
+                        )}
+                        <div className="flex-1">
+                          <p>{obj.description}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {obj.current}/{obj.required}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </Card>
+    </div>
   );
 };
