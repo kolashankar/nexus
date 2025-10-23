@@ -93,12 +93,12 @@ export const vibrate = (pattern)=> {
  * Haptic feedback patterns
  */
 export const haptic = {
-  light) => vibrate(10),
-  medium) => vibrate(20),
-  heavy) => vibrate(30),
-  success) => vibrate([10, 50, 10]),
-  error) => vibrate([30, 50, 30, 50, 30]),
-  warning) => vibrate([20, 100, 20]),
+  light: () => vibrate(10),
+  medium: () => vibrate(20),
+  heavy: () => vibrate(30),
+  success: () => vibrate([10, 50, 10]),
+  error: () => vibrate([30, 50, 30, 50, 30]),
+  warning: () => vibrate([20, 100, 20]),
 };
 
 /**
