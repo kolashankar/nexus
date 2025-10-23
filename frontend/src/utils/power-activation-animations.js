@@ -5,17 +5,15 @@
 import { haptic } from './mobile-helpers';
 import { createEnergyBurst, createCombatParticles } from './combat-animations';
 
-
-
 /**
  * Power tier colors
  */
-const TIER_COLORS {
-  1, // Green - Basic
-  2, // Blue - Intermediate
-  3, // Purple - Advanced
-  4, // Orange - Master
-  5, // Red - Legendary
+const TIER_COLORS = {
+  1: '#10b981', // Green - Basic
+  2: '#3b82f6', // Blue - Intermediate
+  3: '#8b5cf6', // Purple - Advanced
+  4: '#f59e0b', // Orange - Master
+  5: '#ef4444', // Red - Legendary
 };
 
 /**
@@ -24,8 +22,8 @@ const TIER_COLORS {
 export const activatePower = async ({
   powerName,
   element,
-  tier,
-} => {
+  tier = 1,
+}) => {
   const color = TIER_COLORS[tier];
 
   // Add glow effect
@@ -59,42 +57,43 @@ export const activatePower = async ({
 const playPowerSpecificEffect = async (
   powerName,
   element,
-  color)=> {
-  const effects: Record void> = {
+  color
+) => {
+  const effects = {
     // Tier 1
-    mind_reading) => createMindReadingEffect(element),
-    enhanced_reflexes) => createReflexEffect(element),
-    persuasion_aura) => createAuraEffect(element, color),
-    danger_sense) => createDangerSenseEffect(element),
-    quick_heal) => createHealEffect(element),
+    mind_reading: () => createMindReadingEffect(element),
+    enhanced_reflexes: () => createReflexEffect(element),
+    persuasion_aura: () => createAuraEffect(element, color),
+    danger_sense: () => createDangerSenseEffect(element),
+    quick_heal: () => createHealEffect(element),
 
     // Tier 2
-    telekinesis) => createTelekinesisEffect(element),
-    invisibility) => createInvisibilityEffect(element),
-    energy_shield) => createShieldEffect(element, color),
-    psychic_vision) => createVisionEffect(element),
-    tech_control) => createTechEffect(element),
+    telekinesis: () => createTelekinesisEffect(element),
+    invisibility: () => createInvisibilityEffect(element),
+    energy_shield: () => createShieldEffect(element, color),
+    psychic_vision: () => createVisionEffect(element),
+    tech_control: () => createTechEffect(element),
 
     // Tier 3
-    time_slow) => createTimeSlowEffect(element),
-    healing_touch) => createHealingTouchEffect(element),
-    probability_manipulation) => createProbabilityEffect(element),
-    empathic_link) => createEmpathicEffect(element, color),
-    shadow_walk) => createShadowWalkEffect(element),
+    time_slow: () => createTimeSlowEffect(element),
+    healing_touch: () => createHealingTouchEffect(element),
+    probability_manipulation: () => createProbabilityEffect(element),
+    empathic_link: () => createEmpathicEffect(element, color),
+    shadow_walk: () => createShadowWalkEffect(element),
 
     // Tier 4
-    charm_mastery) => createCharmEffect(element, color),
-    combat_supremacy) => createCombatSupremacyEffect(element),
-    memory_vault) => createMemoryEffect(element),
-    future_glimpse) => createFutureGlimpseEffect(element),
-    reality_bend) => createRealityBendEffect(element),
+    charm_mastery: () => createCharmEffect(element, color),
+    combat_supremacy: () => createCombatSupremacyEffect(element),
+    memory_vault: () => createMemoryEffect(element),
+    future_glimpse: () => createFutureGlimpseEffect(element),
+    reality_bend: () => createRealityBendEffect(element),
 
     // Tier 5
-    karmic_transfer) => createKarmaTransferEffect(element),
-    soul_bond) => createSoulBondEffect(element, color),
-    temporal_echo) => createTemporalEchoEffect(element),
-    omniscience) => createOmniscienceEffect(element),
-    ascension) => createAscensionEffect(element),
+    karmic_transfer: () => createKarmaTransferEffect(element),
+    soul_bond: () => createSoulBondEffect(element, color),
+    temporal_echo: () => createTemporalEchoEffect(element),
+    omniscience: () => createOmniscienceEffect(element),
+    ascension: () => createAscensionEffect(element),
   };
 
   const effectFn = effects[powerName.toLowerCase().replace(/\s+/g, '_')];
@@ -106,7 +105,8 @@ const playPowerSpecificEffect = async (
 // Individual power effects
 const createMindReadingEffect = (element) => {
   const thoughtBubbles = 5;
-  for (let i = 0; i  {
+  for (let i = 0; i < thoughtBubbles; i++) {
+    setTimeout(() => {
       const bubble = document.createElement('div');
       bubble.textContent = '?';
       bubble.className = 'floating-text';
@@ -148,7 +148,8 @@ const createAuraEffect = (element, color) => {
 
 const createDangerSenseEffect = (element) => {
   const pulseCount = 3;
-  for (let i = 0; i  {
+  for (let i = 0; i < pulseCount; i++) {
+    setTimeout(() => {
       element.style.boxShadow = '0 0 20px #ef4444';
       setTimeout(() => {
         element.style.boxShadow = '';
@@ -210,7 +211,8 @@ const createVisionEffect = (element) => {
 
 const createTechEffect = (element) => {
   // Binary rain effect
-  for (let i = 0; i  {
+  for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
       const binary = document.createElement('div');
       binary.textContent = Math.random() > 0.5 ? '1' : '0';
       binary.className = 'floating-text';
@@ -262,7 +264,8 @@ const createProbabilityEffect = (element) => {
 
 const createEmpathicEffect = (element, color) => {
   // Heart particles
-  for (let i = 0; i  {
+  for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
       const heart = document.createElement('div');
       heart.textContent = '❤️';
       heart.className = 'floating-text';
@@ -351,7 +354,8 @@ const createKarmaTransferEffect = (element) => {
 const createSoulBondEffect = (element, color) => {
   // Connection lines and hearts
   createAuraEffect(element, color);
-  for (let i = 0; i  {
+  for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
       const heart = document.createElement('div');
       heart.textContent = '💕';
       heart.className = 'floating-text';
@@ -368,7 +372,8 @@ const createSoulBondEffect = (element, color) => {
 
 const createTemporalEchoEffect = (element) => {
   // Create ghost copies
-  for (let i = 0; i  {
+  for (let i = 0; i < 3; i++) {
+    setTimeout(() => {
       const echo = element.cloneNode(true);
       echo.style.position = 'absolute';
       echo.style.opacity = '0.3';
