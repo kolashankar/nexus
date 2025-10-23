@@ -4,8 +4,6 @@
 
 import { haptic } from './mobile-helpers';
 
-
-
 /**
  * Execute combat animation
  */
@@ -13,15 +11,15 @@ export const playCombatAnimation = ({
   type,
   element,
   duration = 500,
-} => {
+}) => {
   return new Promise((resolve) => {
-    const animations {
-      attack,
-      defend,
-      power,
-      damage,
-      heal,
-      miss,
+    const animations = {
+      attack: 'animate-attack',
+      defend: 'animate-defend',
+      power: 'animate-power',
+      damage: 'animate-damage',
+      heal: 'animate-heal',
+      miss: 'animate-miss',
     };
 
     const animationClass = animations[type] || 'animate-fade-in';
@@ -49,16 +47,16 @@ export const playCombatAnimation = ({
 export const showDamageNumber = (
   targetElement,
   damage,
-  type: 'damage' | 'heal' | 'crit' = 'damage'
+  type = 'damage'
 ) => {
   const damageEl = document.createElement('div');
   damageEl.className = `floating-text ${type}`;
   damageEl.textContent = type === 'heal' ? `+${damage}` : `-${damage}`;
 
-  const colors {
-    damage,
-    heal,
-    crit,
+  const colors = {
+    damage: '#ef4444',
+    heal: '#10b981',
+    crit: '#f59e0b',
   };
 
   damageEl.style.color = colors[type];
@@ -80,16 +78,27 @@ export const showDamageNumber = (
  */
 export const createCombatParticles = (
   targetElement,
-  count= 10,
-  color= '#3b82f6'
+  count = 10,
+  color = '#3b82f6'
 ) => {
   const rect = targetElement.getBoundingClientRect();
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
 
-  for (let i = 0; i  {
-      document.body.removeChild(particle);
-    }, 800);
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = `${centerX}px`;
+      particle.style.top = `${centerY}px`;
+      particle.style.backgroundColor = color;
+
+      document.body.appendChild(particle);
+
+      setTimeout(() => {
+        document.body.removeChild(particle);
+      }, 800);
+    }, i * 20);
   }
 };
 
@@ -98,7 +107,7 @@ export const createCombatParticles = (
  */
 export const createEnergyBurst = (
   targetElement,
-  color= '#3b82f6'
+  color = '#3b82f6'
 ) => {
   const burst = document.createElement('div');
   burst.className = 'energy-burst';
@@ -118,11 +127,11 @@ export const createEnergyBurst = (
 /**
  * Screen shake effect
  */
-export const shakeScreen = (intensity: 'light' | 'medium' | 'heavy' = 'medium') => {
+export const shakeScreen = (intensity = 'medium') => {
   const intensityValues = {
-    light,
-    medium,
-    heavy,
+    light: 5,
+    medium: 10,
+    heavy: 20,
   };
 
   const value = intensityValues[intensity];
@@ -154,7 +163,7 @@ export const shakeScreen = (intensity: 'light' | 'medium' | 'heavy' = 'medium') 
 /**
  * Flash effect for critical hits
  */
-export const flashScreen = (color= '#ff0000', duration= 200) => {
+export const flashScreen = (color = '#ff0000', duration = 200) => {
   const flash = document.createElement('div');
   flash.style.position = 'fixed';
   flash.style.top = '0';
@@ -182,7 +191,8 @@ export const flashScreen = (color= '#ff0000', duration= 200) => {
  */
 export const createLightningStrike = (
   startElement,
-  endElement) => {
+  endElement
+) => {
   const startRect = startElement.getBoundingClientRect();
   const endRect = endElement.getBoundingClientRect();
 
@@ -216,7 +226,7 @@ export const createLightningStrike = (
 /**
  * Slow motion effect
  */
-export const slowMotion = (duration= 1000) => {
+export const slowMotion = (duration = 1000) => {
   const root = document.documentElement;
   root.style.setProperty('--animation-speed', '0.3');
 
@@ -232,7 +242,8 @@ export const celebrateVictory = () => {
   // Create confetti
   const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
 
-  for (let i = 0; i  {
+  for (let i = 0; i < 50; i++) {
+    setTimeout(() => {
       const confetti = document.createElement('div');
       confetti.className = 'confetti';
       confetti.style.left = `${Math.random() * 100}%`;
@@ -257,7 +268,8 @@ export const celebrateVictory = () => {
  */
 export const showComboCounter = (
   count,
-  targetElement) => {
+  targetElement
+) => {
   const comboEl = document.createElement('div');
   comboEl.className = 'floating-text';
   comboEl.textContent = `${count}x COMBO!`;
