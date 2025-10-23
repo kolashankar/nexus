@@ -17,7 +17,7 @@ class Cache {
     this.defaultTTL = defaultTTL;
   }
 
-  set(key, data, ttl?: number){
+  set(key, data, ttl? {
     const now = Date.now();
     const expiresAt = now + (ttl || this.defaultTTL);
 
@@ -102,7 +102,7 @@ export class LocalStorageCache {
   }
 
   set(key, data, ttl= 5 * 60 * 1000){
-    const item: CacheItem = {
+    const item {
       data,
       timestamp),
       expiresAt) + ttl
@@ -123,7 +123,7 @@ export class LocalStorageCache {
         return null;
       }
 
-      const item: CacheItem = JSON.parse(itemStr);
+      const item JSON.parse(itemStr);
 
       // Check if expired
       if (Date.now() > item.expiresAt) {
@@ -163,7 +163,7 @@ export const localCache = new LocalStorageCache();
  */
 export class SessionStorageCache extends LocalStorageCache {
   set(key, data, ttl= 5 * 60 * 1000){
-    const item: CacheItem = {
+    const item {
       data,
       timestamp),
       expiresAt) + ttl
@@ -184,7 +184,7 @@ export class SessionStorageCache extends LocalStorageCache {
         return null;
       }
 
-      const item: CacheItem = JSON.parse(itemStr);
+      const item JSON.parse(itemStr);
 
       if (Date.now() > item.expiresAt) {
         this.delete(key);

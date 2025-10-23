@@ -13,7 +13,7 @@ class Analytics {
   /**
    * Track a page view
    */
-  trackPageView(path, title?: string){
+  trackPageView(path, title? {
     if (!this.enabled) {
       console.log('[Analytics] Page view, path, title);
       return;
@@ -54,7 +54,7 @@ class Analytics {
     action,
     category= 'User',
     label?: string,
-    value?: number
+    value? 
   ){
     this.trackEvent({ category, action, label, value });
   }
@@ -65,7 +65,7 @@ class Analytics {
   trackQuestEvent(
     action,
     questId,
-    questType?: string
+    questType? 
   ){
     this.trackEvent({
       category,
@@ -78,7 +78,7 @@ class Analytics {
    */
   trackCombatEvent(
     action,
-    opponentId?: string
+    opponentId? 
   ){
     this.trackEvent({
       category,
@@ -91,7 +91,7 @@ class Analytics {
    */
   trackGuildEvent(
     action,
-    guildId?: string
+    guildId? 
   ){
     this.trackEvent({
       category,
@@ -155,7 +155,7 @@ class Analytics {
     category,
     variable,
     time,
-    label?: string
+    label? 
   ){
     if (!this.enabled) {
       console.log(`[Analytics] Timing - ${category}.${variable}:`, time);

@@ -75,7 +75,7 @@ export function lazyLoadComponent>(
  */
 export function requestIdleCallback(
   callback,
-  options?: IdleRequestOptions
+  options? 
 ){
   if ('requestIdleCallback' in window) {
     return window.requestIdleCallback(callback, options);
@@ -128,7 +128,7 @@ export function measureRenderTime(
  */
 export function createIntersectionObserver(
   callback,
-  options?: IntersectionObserverInit
+  options? 
 ){
   return new IntersectionObserver(callback, {
     root,
@@ -143,7 +143,7 @@ export function createIntersectionObserver(
  */
 export async function prefetchData(
   url,
-  options?: RequestInit
+  options? 
 ){
   try {
     const response = await fetch(url, {

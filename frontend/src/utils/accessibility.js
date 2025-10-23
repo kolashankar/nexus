@@ -147,7 +147,7 @@ export const createKeyboardNavigation = ({
  * ARIA label generators
  */
 export const aria = {
-  button, pressed?: boolean, expanded?: boolean) => ({
+  button, pressed?: boolean, expanded?  => ({
     'aria-label': label,
     role,
     tabIndex,
@@ -155,13 +155,13 @@ export const aria = {
     ...(expanded !== undefined && { 'aria-expanded': expanded }),
   }),
 
-  link, current?: boolean) => ({
+  link, current?  => ({
     'aria-label': label,
     role,
     ...(current && { 'aria-current': 'page' }),
   }),
 
-  progressBar, max= 100, label?: string) => ({
+  progressBar, max= 100, label?  => ({
     role,
     'aria-valuenow': value,
     'aria-valuemin': 0,
@@ -185,7 +185,7 @@ export const aria = {
     hidden,
   }),
 
-  dialog, describedBy?: string) => ({
+  dialog, describedBy?  => ({
     role,
     'aria-label': label,
     'aria-modal': true,
@@ -198,13 +198,13 @@ export const aria = {
     'aria-atomic': true,
   }),
 
-  listbox, multiselectable?: boolean) => ({
+  listbox, multiselectable?  => ({
     role,
     'aria-label': label,
     ...(multiselectable && { 'aria-multiselectable': true }),
   }),
 
-  option, selected, disabled?: boolean) => ({
+  option, selected, disabled?  => ({
     role,
     'aria-label': label,
     'aria-selected': selected,

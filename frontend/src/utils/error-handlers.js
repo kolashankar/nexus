@@ -3,7 +3,7 @@
  */
 
 export class GameError extends Error {
-  code, code, statusCode?: number, data?: any) {
+  code, code, statusCode?: number, data?  {
     super(message);
     this.name = 'GameError';
     this.code = code;
@@ -13,35 +13,35 @@ export class GameError extends Error {
 }
 
 export class NetworkError extends GameError {
-  constructor(message= 'Network connection failed', data?: any) {
+  constructor(message= 'Network connection failed', data?  {
     super(message, 'NETWORK_ERROR', 0, data);
     this.name = 'NetworkError';
   }
 }
 
 export class AuthenticationError extends GameError {
-  constructor(message= 'Authentication failed', data?: any) {
+  constructor(message= 'Authentication failed', data?  {
     super(message, 'AUTH_ERROR', 401, data);
     this.name = 'AuthenticationError';
   }
 }
 
 export class ValidationError extends GameError {
-  constructor(message= 'Validation failed', data?: any) {
+  constructor(message= 'Validation failed', data?  {
     super(message, 'VALIDATION_ERROR', 400, data);
     this.name = 'ValidationError';
   }
 }
 
 export class NotFoundError extends GameError {
-  constructor(message= 'Resource not found', data?: any) {
+  constructor(message= 'Resource not found', data?  {
     super(message, 'NOT_FOUND', 404, data);
     this.name = 'NotFoundError';
   }
 }
 
 export class ServerError extends GameError {
-  constructor(message= 'Server error occurred', data?: any) {
+  constructor(message= 'Server error occurred', data?  {
     super(message, 'SERVER_ERROR', 500, data);
     this.name = 'ServerError';
   }
@@ -107,7 +107,7 @@ export const formatErrorMessage = (error)=> {
 /**
  * Log error to console (and potentially to monitoring service)
  */
-export const logError = (error, context?: Record) => {
+export const logError = (error, context?  => {
   console.error('[Karma Nexus Error]', {
     name,
     message,
@@ -145,7 +145,7 @@ export const retryOperation = async (
  */
 export const safeAsync = async (
   operation) => Promise,
-  fallback?: T
+  fallback? 
 )=> {
   try {
     return await operation();

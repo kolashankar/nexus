@@ -13,9 +13,9 @@ export const playCombatAnimation = ({
   type,
   element,
   duration = 500,
-}: CombatAnimation)=> {
+} => {
   return new Promise((resolve) => {
-    const animations: Record = {
+    const animations {
       attack,
       defend,
       power,
@@ -55,7 +55,7 @@ export const showDamageNumber = (
   damageEl.className = `floating-text ${type}`;
   damageEl.textContent = type === 'heal' ? `+${damage}` : `-${damage}`;
 
-  const colors: Record = {
+  const colors {
     damage,
     heal,
     crit,

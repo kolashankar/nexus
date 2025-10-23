@@ -9,7 +9,7 @@ export const canCompleteQuest = (objectives)=> {
 };
 
 export const getDifficultyColor = (difficulty)=> {
-  const colors: Record = {
+  const colors {
     easy,
     medium,
     hard,
@@ -19,7 +19,7 @@ export const getDifficultyColor = (difficulty)=> {
 };
 
 export const getQuestTypeIcon = (type)=> {
-  const icons: Record = {
+  const icons {
     personal,
     daily,
     weekly,

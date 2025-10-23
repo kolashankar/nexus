@@ -134,13 +134,13 @@ export const validationRules = {
     return isValidEmail(value) ? null : message;
   },
 
-  minLength, message?: string) => (value) => {
+  minLength, message?  => (value) => {
     return value.length >= min
       ? null
       : message || `Minimum ${min} characters required`;
   },
 
-  maxLength, message?: string) => (value) => {
+  maxLength, message?  => (value) => {
     return value.length  (value) => {
     return regex.test(value) ? null : message;
   },
@@ -149,7 +149,7 @@ export const validationRules = {
     return !isNaN(Number(value)) ? null : message;
   },
 
-  range, max, message?: string) => (value) => {
+  range, max, message?  => (value) => {
     return isInRange(value, min, max)
       ? null
       : message || `Value must be between ${min} and ${max}`;

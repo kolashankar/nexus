@@ -10,7 +10,7 @@ import { createEnergyBurst, createCombatParticles } from './combat-animations';
 /**
  * Power tier colors
  */
-const TIER_COLORS: Record = {
+const TIER_COLORS {
   1, // Green - Basic
   2, // Blue - Intermediate
   3, // Purple - Advanced
@@ -25,7 +25,7 @@ export const activatePower = async ({
   powerName,
   element,
   tier,
-}: PowerActivation)=> {
+} => {
   const color = TIER_COLORS[tier];
 
   // Add glow effect
