@@ -25,7 +25,7 @@ export const announceToScreenReader = (message, priority = 'polite') => {
  * Focus trap for modals and dialogs
  */
 export class FocusTrap {
-  element) {
+  constructor(element) {
     this.element = element;
     this.previousFocus = document.activeElement;
     this.focusableElements = this.getFocusableElements();
