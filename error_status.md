@@ -92,48 +92,63 @@ All shadcn/ui components with parsing errors have been fixed:
 
 ---
 
-## ⚠️ Remaining Issues (84 errors, 69 warnings)
-
-## ⚠️ Remaining Issues (84 errors, 69 warnings)
+## ⚠️ Remaining Issues (153 errors, 91 warnings)
 
 ### Category Breakdown:
 
-#### 1. Service Files (~19 errors)
-Files that need TypeScript syntax converted to JavaScript:
+#### 1. Service Files - **COMPLETE** ✅
+All 19 service files have been fixed:
+- ✅ services/achievements/achievementsService.js
+- ✅ services/actions/actionsService.js  
+- ✅ services/api/worldService.js
+- ✅ services/auth/authService.js
+- ✅ services/combat/combatService.js
+- ✅ services/guilds/guildsService.js
+- ✅ services/karma/karmaService.js
+- ✅ services/legacy/legacyService.js
+- ✅ services/player/playerService.js
+- ✅ services/player/traitsService.js
+- ✅ services/prestige/prestigeService.js
+- ✅ services/progression/progressionService.js
+- ✅ services/questService.js
+- ✅ services/skillTrees/skillTreesService.js
+- ✅ services/social/socialService.js
+- ✅ services/superpowers/superpowersService.js
+- ✅ services/tournaments/tournamentsService.js
+- ✅ services/websocket/websocketService.js
 
-**API Service Files:**
-- services/achievements/achievementsService.js - TypeScript return type annotations
-- services/action/actionService.js - TypeScript syntax
-- services/actions/actionsService.js - TypeScript syntax
-- services/api/client.js - Malformed object
-- services/api/worldService.js - TypeScript syntax
-- services/auth/authService.js - Type cast expressions
-- services/combat/combatService.js - TypeScript syntax
-- services/guilds/guildsService.js - TypeScript syntax
-- services/karma/karmaService.js - TypeScript syntax
-- services/legacy/legacyService.js - TypeScript syntax
-- services/player/playerService.js - Missing semicolon
-- services/player/traitsService.js - TypeScript return types
-- services/prestige/prestigeService.js - TypeScript return types
-- services/progression/progressionService.js - TypeScript syntax
-- services/questService.js - TypeScript syntax
-- services/skillTrees/skillTreesService.js - TypeScript return types
-- services/social/socialService.js - TypeScript syntax
-- services/superpowers/superpowersService.js - TypeScript syntax
-- services/tournaments/tournamentsService.js - TypeScript syntax
-- services/websocket/websocketService.js - Parsing error
+#### 2. React Hooks - **COMPLETE** ✅
+All critical hooks fixed:
+- ✅ useAchievements.js
+- ✅ useBattlePass.js
+- ✅ useLeaderboards.js
+- ✅ useProgression.js
+- ✅ useTerritories.js
+- ✅ useTournaments.js
+- ✅ useWorldEvents.js
 
-#### 2. Test Files (~45 errors) - LOW PRIORITY
-- Component test files in __tests__ directories
-- Integration test files in tests/integration/
-- E2E test files in tests/e2e/
-- Test setup file
-**Note:** Can be addressed in later phase, don't affect production functionality
+#### 3. Test Files (~29 errors) - LOW PRIORITY
+- Integration test files (~14 errors)
+- E2E test files (~15 errors)
+**Note:** Test files don't affect production functionality
 
-#### 3. Warnings (~69 instances) - LOWEST PRIORITY
+#### 4. Component & Page Files (~124 errors) - INCOMPLETE JSX
+These files contain incomplete/malformed JSX from code generation:
+- Page components: 18 files with parsing errors
+- Action components: 10 files
+- Player components: 15 files  
+- Combat components: 5 files
+- Game/World components: 8 files
+- Achievement/Progression: 9 files
+- Quest components: 4 files
+- Other components: ~55 files
+
+**Issue Type:** Most errors are due to incomplete JSX elements, missing closing tags, malformed object literals in JSX props, and incomplete string literals. These are artifacts from code generation that would need manual reconstruction of each component.
+
+#### 5. Warnings (~91 instances) - LOW PRIORITY
 - Unused variables
 - Missing default cases in switch statements
-- Expected default cases
+- Import/no-anonymous-default-export warnings
 **Note:** These are code quality warnings, not blocking issues
 
 ---
