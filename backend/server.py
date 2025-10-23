@@ -1,8 +1,14 @@
 """Main FastAPI server entry point."""
 
+import sys
+from pathlib import Path
+
+# Add parent directory to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.api.v1 import (
+from api.v1 import (
     auth,
     player,
     actions,
