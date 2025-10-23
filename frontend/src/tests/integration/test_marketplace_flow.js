@@ -4,7 +4,7 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
   let authToken) => {
     const login = await axios.post(`${API_URL}/api/auth/login`, {
-      username,
+      username: "testuser",
       password,
     });
     authToken = login.data.access_token;

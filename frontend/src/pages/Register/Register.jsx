@@ -12,7 +12,7 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const { register, isLoading, error } = useStore();
   const [formData, setFormData] = useState({
-    username,
+    username: "testuser",
     email,
     password,
     confirmPassword,

@@ -14,7 +14,7 @@ jest.mock('../../services/api/client', () => ({
 import { apiClient } from '../../services/api/client';
 
 const mockQuest = {
-  _id,
+  _id: "test-id",
   title,
   description,
   quest_type,
@@ -128,7 +128,7 @@ const mockQuest = {
 
   it('handles campaign flow', async () => {
     const mockCampaign = {
-      _id,
+      _id: "test-id",
       title,
       description,
       total_chapters,

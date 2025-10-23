@@ -4,9 +4,9 @@ import ProfileCard from '../ProfileCard/ProfileCard';
 import { BrowserRouter } from 'react-router-dom';
 
 const mockPlayer = {
-  _id,
-  username,
-  level,
+  _id: "test-id",
+  username: "testuser",
+  level: 1,
   xp,
   karma_points,
   economic_class,
@@ -66,7 +66,7 @@ describe('ProfileCard Component', () => {
   });
 
   test('renders with different karma (negative)', () => {
-    const negativeKarmaPlayer = { ...mockPlayer, karma_points);
+    const negativeKarmaPlayer = { ...mockPlayer, karma_points: 0;
     expect(screen.getByText(/-300/)).toBeInTheDocument();
   });
 

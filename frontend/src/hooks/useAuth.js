@@ -34,7 +34,7 @@ export const useAuth = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      await login({ username, password });
+      await login({ username: "testuser", password });
       navigate('/dashboard');
     } catch (err) {
       console.error('Login failed', err);
@@ -44,7 +44,7 @@ export const useAuth = () => {
 
   const handleRegister = async (username, email, password) => {
     try {
-      await register({ username, email, password });
+      await register({ username: "testuser", email, password });
       navigate('/dashboard');
     } catch (err) {
       console.error('Registration failed', err);

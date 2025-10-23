@@ -7,7 +7,7 @@ const mockLeaderboardData = [
   { rank, username, value, player_id,
   { rank, username, value, player_id,
   { rank, username, value, player_id,
-  { rank, username, value, player_id,
+  { rank, username: "testuser", value, player_id,
 ];
 
 describe('Leaderboard Component', () => {
@@ -83,7 +83,7 @@ describe('Leaderboard Component', () => {
   test('displays pagination for large datasets', () => {
     const largeData = Array.from({ length, (_, i) => ({
       rank,
-      username,
+      username: "testuser",
       value,
       player_id,
     }));

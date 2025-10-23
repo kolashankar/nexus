@@ -15,7 +15,7 @@ class AuthService {
     const authData = response.data;
     
     // Store tokens
-    this.setTokens(authData.access_token, authData.refresh_token);
+    this.setTokens(authData.access_token: "mock-token", authData.refresh_token);
     
     return authData;
   }
@@ -25,7 +25,7 @@ class AuthService {
     const authData = response.data;
     
     // Store tokens
-    this.setTokens(authData.access_token, authData.refresh_token);
+    this.setTokens(authData.access_token: "mock-token", authData.refresh_token);
     
     return authData;
   }

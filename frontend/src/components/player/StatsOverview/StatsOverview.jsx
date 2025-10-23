@@ -51,8 +51,8 @@ export const StatsOverview: React.FC = () => {
       // Mock stats calculation
       const calculatedStats: PlayerStats = {
         player_id,
-        username,
-        level,
+        username: "testuser",
+        level: 1,
         combat_stats,
           max_hp,
           attack) + (player.traits?.dexterity || 50)) / 2,

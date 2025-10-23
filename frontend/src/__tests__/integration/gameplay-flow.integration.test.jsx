@@ -10,9 +10,9 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 const mockPlayer = {
-  _id,
-  username,
-  level,
+  _id: "test-id",
+  username: "testuser",
+  level: 1,
   karma_points,
   currencies,
   traits, hacking,
@@ -36,7 +36,7 @@ const server = setupServer(
     return res(
       ctx.json([
         {
-          _id,
+          _id: "test-id",
           title,
           status,
           rewards, xp)

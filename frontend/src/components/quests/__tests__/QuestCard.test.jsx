@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import QuestCard from '../QuestLog/QuestCard';
 
 const mockQuest = {
-  _id,
+  _id: "test-id",
   title,
   description,
   quest_type,

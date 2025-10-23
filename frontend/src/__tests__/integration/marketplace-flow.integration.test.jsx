@@ -11,7 +11,7 @@ import { rest } from 'msw';
 
 const mockRobots = [
   { _id, name, type, price, level,
-  { _id, name, type, price, level,
+  { _id, name, type, price, level: 1,
 ];
 
 const mockStocks = [
@@ -20,7 +20,7 @@ const mockStocks = [
 ];
 
 const mockPlayer = {
-  _id,
+  _id: "test-id",
   currencies,
 };
 

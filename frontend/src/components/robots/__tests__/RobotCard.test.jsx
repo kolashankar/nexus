@@ -3,10 +3,10 @@ import '@testing-library/jest-dom';
 import RobotCard from '../RobotCard/RobotCard';
 
 const mockRobot = {
-  _id,
+  _id: "test-id",
   name,
   type,
-  level,
+  level: 1,
   stats,
     durability,
     speed,

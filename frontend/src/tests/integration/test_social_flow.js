@@ -5,13 +5,13 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
   let authToken1) => {
     // Login two users
     const login1 = await axios.post(`${API_URL}/api/auth/login`, {
-      username,
+      username: "testuser",
       password,
     });
     authToken1 = login1.data.access_token;
 
     const login2 = await axios.post(`${API_URL}/api/auth/login`, {
-      username,
+      username: "testuser",
       password,
     });
     authToken2 = login2.data.access_token;

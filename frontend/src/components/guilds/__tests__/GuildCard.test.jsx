@@ -3,14 +3,14 @@ import '@testing-library/jest-dom';
 import GuildCard from '../GuildDashboard/GuildCard';
 
 const mockGuild = {
-  _id,
+  _id: "test-id",
   name,
   tag,
   description,
   leader_id,
   total_members,
   max_members,
-  level,
+  level: 1,
   guild_karma,
   controlled_territories, 3, 5],
   recruitment_open,

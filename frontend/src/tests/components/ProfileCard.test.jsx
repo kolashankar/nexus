@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 
 describe('ProfileCard', () => {
   const mockPlayer = {
-    username,
-    level,
+    username: "testuser",
+    level: 1,
     karma_points,
     economic_class,
     moral_class,

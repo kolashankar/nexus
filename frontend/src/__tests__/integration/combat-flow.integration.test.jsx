@@ -12,7 +12,7 @@ import { rest } from 'msw';
 const mockCombatState = {
   battle_id,
   player1,
-    username,
+    username: "testuser",
     hp,
     max_hp,
     ap,

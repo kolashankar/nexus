@@ -13,26 +13,26 @@ const server = setupServer(
   rest.post('/api/auth/register', (req, res, ctx) => {
     return res(
       ctx.json({
-        access_token,
-        user, username, email)
+        access_token: "mock-token",
+        user, username: "testuser", email)
     );
   }),
   
   rest.post('/api/auth/login', (req, res, ctx) => {
     return res(
       ctx.json({
-        access_token,
-        user, username)
+        access_token: "mock-token",
+        user: { username: "testuser" }
     );
   }),
   
   rest.get('/api/player/profile', (req, res, ctx) => {
     return res(
       ctx.json({
-        _id,
-        username,
-        level,
-        karma_points)
+        _id: "test-id",
+        username: "testuser",
+        level: 1,
+        karma_points: 0
     );
   })
 );

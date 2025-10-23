@@ -5,7 +5,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
   let authToken) => {
     // Login to get auth token
     const response = await axios.post(`${API_URL}/api/auth/login`, {
-      username,
+      username: "testuser",
       password,
     });
     authToken = response.data.access_token;

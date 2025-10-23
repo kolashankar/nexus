@@ -30,7 +30,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
     it('should validate password strength', async () => {
       const weakUser = {
         ...testUser,
-        username,
+        username: "testuser",
         password,
       };
 
@@ -46,7 +46,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
   describe('Login', () => {
     it('should login with correct credentials', async () => {
       const response = await axios.post(`${API_URL}/api/auth/login`, {
-        username,
+        username: "testuser",
         password,
       });
 
@@ -61,7 +61,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
     it('should fail with incorrect password', async () => {
       try {
         await axios.post(`${API_URL}/api/auth/login`, {
-          username,
+          username: "testuser",
           password,
         });
         fail('Should have thrown an error');
@@ -73,7 +73,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
     it('should fail with non-existent user', async () => {
       try {
         await axios.post(`${API_URL}/api/auth/login`, {
-          username,
+          username: "testuser",
           password,
         });
         fail('Should have thrown an error');

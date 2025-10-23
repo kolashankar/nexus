@@ -42,7 +42,7 @@ describe('API Integration Tests', () => {
   describe('Authentication', () => {
     test('login returns token and user data', async () => {
       const result = await apiClient.post('/auth/login', {
-        username,
+        username: "testuser",
         password);
       
       expect(result.data.access_token).toBe('mock-token');
@@ -51,7 +51,7 @@ describe('API Integration Tests', () => {
     
     test('stores token in localStorage', async () => {
       await apiClient.post('/auth/login', {
-        username,
+        username: "testuser",
         password);
       
       expect(localStorage.getItem('token')).toBe('mock-token');
@@ -98,7 +98,7 @@ describe('API Integration Tests', () => {
     test('handles server errors', async () => {
       server.use(
         rest.get('/api/player/profile', (req, res, ctx) => {
-          return res(ctx.status(500), ctx.json({ error));
+          return res(ctx.status(500), ctx.json({ error: "Error" });
         })
       );
       

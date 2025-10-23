@@ -164,7 +164,7 @@ export const KarmaDisplay = ({  worldState  }) => {
           
           
             
-              {Object.entries(karmaStats.distribution).map(([level, count]) => (
+              {Object.entries(karmaStats.distribution).map(([level: 1, count]) => (
                 
                   {level.replace('_', ' ')}
                   {count} players
