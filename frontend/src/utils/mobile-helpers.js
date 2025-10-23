@@ -63,7 +63,7 @@ export const lockOrientation = async (
       await (screen).orientation.lock(orientation);
       return true;
     } catch (error) {
-      console.warn('Screen orientation lock not supported, error);
+      console.warn('Screen orientation lock not supported', error);
       return false;
     }
   }

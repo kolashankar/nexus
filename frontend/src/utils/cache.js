@@ -111,7 +111,7 @@ export class LocalStorageCache {
     try {
       localStorage.setItem(this.prefix + key, JSON.stringify(item));
     } catch (error) {
-      console.warn('LocalStorage cache set failed, error);
+      console.warn('LocalStorage cache set failed', error);
     }
   }
 
@@ -133,7 +133,7 @@ export class LocalStorageCache {
 
       return item.data;
     } catch (error) {
-      console.warn('LocalStorage cache get failed, error);
+      console.warn('LocalStorage cache get failed', error);
       return null;
     }
   }
@@ -142,7 +142,7 @@ export class LocalStorageCache {
     try {
       localStorage.removeItem(this.prefix + key);
     } catch (error) {
-      console.warn('LocalStorage cache delete failed, error);
+      console.warn('LocalStorage cache delete failed', error);
     }
   }
 
@@ -151,7 +151,7 @@ export class LocalStorageCache {
       const keys: string[] = [];
       for (let i = 0; i  localStorage.removeItem(key));
     } catch (error) {
-      console.warn('LocalStorage cache clear failed, error);
+      console.warn('LocalStorage cache clear failed', error);
     }
   }
 }
@@ -172,7 +172,7 @@ export class SessionStorageCache extends LocalStorageCache {
     try {
       sessionStorage.setItem(this.prefix + key, JSON.stringify(item));
     } catch (error) {
-      console.warn('SessionStorage cache set failed, error);
+      console.warn('SessionStorage cache set failed', error);
     }
   }
 
@@ -193,7 +193,7 @@ export class SessionStorageCache extends LocalStorageCache {
 
       return item.data;
     } catch (error) {
-      console.warn('SessionStorage cache get failed, error);
+      console.warn('SessionStorage cache get failed', error);
       return null;
     }
   }
@@ -202,7 +202,7 @@ export class SessionStorageCache extends LocalStorageCache {
     try {
       sessionStorage.removeItem(this.prefix + key);
     } catch (error) {
-      console.warn('SessionStorage cache delete failed, error);
+      console.warn('SessionStorage cache delete failed', error);
     }
   }
 }

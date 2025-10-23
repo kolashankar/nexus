@@ -152,7 +152,7 @@ export async function prefetchData(
     // Cache the response
     await response.json();
   } catch (error) {
-    console.warn('Prefetch failed, error);
+    console.warn('Prefetch failed', error);
   }
 }
 
