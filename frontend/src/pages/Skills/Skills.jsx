@@ -4,43 +4,45 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/ta
 import SuperpowersList from '../../components/player/SuperpowersList/SuperpowersList';
 import SkillTree from '../../components/player/SkillTree/SkillTree';
 
-export const Skills: React.FC = () => {
+export const Skills = () => {
   const [selectedTrait, setSelectedTrait] = useState('hacking');
 
   const traitCategories = {
-    skills, 'negotiation', 'stealth', 'leadership', 'technical_knowledge'],
-    virtues, 'integrity', 'discipline', 'creativity', 'resilience'],
-    vices, 'arrogance', 'deceit', 'cruelty', 'selfishness']
+    skills: ['hacking', 'negotiation', 'stealth', 'leadership', 'technical_knowledge'],
+    virtues: ['empathy', 'integrity', 'discipline', 'creativity', 'resilience'],
+    vices: ['greed', 'arrogance', 'deceit', 'cruelty', 'selfishness']
   };
 
   return (
-    
-      Skills & Powers
+    <div className="container mx-auto py-6">
+      <h1 className="text-3xl font-bold mb-6">Skills & Powers</h1>
 
-      
-        
-          Superpowers
-          Skill Trees
-        
+      <Tabs defaultValue="superpowers">
+        <TabsList>
+          <TabsTrigger value="superpowers">Superpowers</TabsTrigger>
+          <TabsTrigger value="skilltrees">Skill Trees</TabsTrigger>
+        </TabsList>
 
-        
-          
-        
+        <TabsContent value="superpowers">
+          <SuperpowersList />
+        </TabsContent>
 
-        
-          
-            
-              
-                Select a Trait
-              
-              
-                
+        <TabsContent value="skilltrees">
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Select a Trait</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
                   {Object.entries(traitCategories).map(([category, traits]) => (
-                    
-                      {category}
-                      
+                    <div key={category}>
+                      <h3 className="font-semibold mb-2 capitalize">{category}</h3>
+                      <div className="flex flex-wrap gap-2">
                         {traits.map((trait) => (
-                           setSelectedTrait(trait)}
+                          <button
+                            key={trait}
+                            onClick={() => setSelectedTrait(trait)}
                             className={`px-3 py-1 rounded text-sm ${
                               selectedTrait === trait
                                 ? 'bg-blue-500 text-white'
@@ -48,19 +50,19 @@ export const Skills: React.FC = () => {
                             }`}
                           >
                             {trait.replace('_', ' ')}
-                          
+                          </button>
                         ))}
-                      
-                    
+                      </div>
+                    </div>
                   ))}
-                
-              
-            
+                </div>
+              </CardContent>
+            </Card>
 
-            {selectedTrait && }
-          
-        
-      
-    
+            {selectedTrait && <SkillTree trait={selectedTrait} />}
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };

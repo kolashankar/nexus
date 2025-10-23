@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/ta
 import socialService from '../../services/social/socialService';
 import { usePlayer } from '../../hooks/usePlayer';
 
-const SocialHub: React.FC = () => {
+const SocialHub = () => {
   const { player: user } = usePlayer();
   const [onlinePlayers, setOnlinePlayers] = useState([]);
   const [alliance, setAlliance] = useState(null);
@@ -69,143 +69,149 @@ const SocialHub: React.FC = () => {
   };
 
   return (
-    
-      Social Hub
+    <div className="container mx-auto py-6">
+      <h1 className="text-3xl font-bold mb-6">Social Hub</h1>
 
-      
-        
-          Online Players
-          Alliance
-          Marriage
-          Mentorship
-        
+      <Tabs defaultValue="players">
+        <TabsList>
+          <TabsTrigger value="players">Online Players</TabsTrigger>
+          <TabsTrigger value="alliance">Alliance</TabsTrigger>
+          <TabsTrigger value="marriage">Marriage</TabsTrigger>
+          <TabsTrigger value="mentorship">Mentorship</TabsTrigger>
+        </TabsList>
 
-        
-          
-            Online Players ({onlinePlayers.length})
-            
+        <TabsContent value="players">
+          <Card className="p-6">
+            <h2 className="text-xl font-bold mb-4">Online Players ({onlinePlayers.length})</h2>
+            <div className="space-y-2">
               {onlinePlayers.map((player) => (
-                
-                  
-                    {player.username}
-                    Level {player.level}
-                  
-                  View Profile
-                
+                <div key={player.player_id} className="flex justify-between items-center p-3 border rounded">
+                  <div>
+                    <p className="font-semibold">{player.username}</p>
+                    <p className="text-sm text-muted-foreground">Level {player.level}</p>
+                  </div>
+                  <Button size="sm">View Profile</Button>
+                </div>
               ))}
-            
-          
-        
+            </div>
+          </Card>
+        </TabsContent>
 
-        
-          
+        <TabsContent value="alliance">
+          <Card className="p-6">
             {alliance ? (
-              
-                Your Alliance
-                Name);
+              <div>
+                <h2 className="text-xl font-bold mb-4">Your Alliance</h2>
+                <p className="mb-4">Name: {alliance.name}</p>
+                <Button onClick={async () => {
+                  await socialService.leaveAlliance();
                   loadSocialData();
                 }}>
                   Leave Alliance
-                
-              
+                </Button>
+              </div>
             ) : (
-              
-                No Alliance
-                You are not in an alliance yet.
-                 {
-                  const name = prompt('Enter alliance name (optional)
+              <div>
+                <h2 className="text-xl font-bold mb-4">No Alliance</h2>
+                <p className="mb-4">You are not in an alliance yet.</p>
+                <Button onClick={async () => {
+                  const name = prompt('Enter alliance name (optional)');
                   await socialService.createAlliance(name || undefined);
                   loadSocialData();
                 }}>
                   Create Alliance
-                
-              
+                </Button>
+              </div>
             )}
-          
-        
+          </Card>
+        </TabsContent>
 
-        
-          
+        <TabsContent value="marriage">
+          <Card className="p-6">
             {marriage ? (
-              
-                Marriage
-                Married Since).toLocaleDateString()}
-                Joint Karma)')) {
+              <div>
+                <h2 className="text-xl font-bold mb-4">Marriage</h2>
+                <p className="mb-2">Married Since: {new Date(marriage.married_since).toLocaleDateString()}</p>
+                <p className="mb-4">Joint Karma: {marriage.joint_karma}</p>
+                <Button onClick={async () => {
+                  if (confirm('Are you sure you want to divorce?')) {
                     await socialService.divorce();
                     loadSocialData();
                   }
                 }}>
                   Divorce
-                
-              
+                </Button>
+              </div>
             ) : (
-              
-                Not Married
+              <div>
+                <h2 className="text-xl font-bold mb-4">Not Married</h2>
                 {proposals.length > 0 && (
-                  
-                    Pending Proposals
+                  <div className="mt-4">
+                    <h3 className="font-semibold mb-2">Pending Proposals</h3>
                     {proposals.map((proposal) => (
-                      
-                        Proposal from {proposal.proposer_id}
-                        
-                           {
+                      <div key={proposal._id} className="flex justify-between items-center p-3 border rounded mb-2">
+                        <span>Proposal from {proposal.proposer_id}</span>
+                        <div className="flex gap-2">
+                          <Button size="sm" onClick={async () => {
                             await socialService.acceptProposal(proposal._id);
                             loadSocialData();
-                          }}>Accept
-                           {
+                          }}>Accept</Button>
+                          <Button size="sm" variant="destructive" onClick={async () => {
                             await socialService.rejectProposal(proposal._id);
                             loadSocialData();
-                          }}>Reject
-                        
-                      
+                          }}>Reject</Button>
+                        </div>
+                      </div>
                     ))}
-                  
+                  </div>
                 )}
-              
+              </div>
             )}
-          
-        
+          </Card>
+        </TabsContent>
 
-        
-          
+        <TabsContent value="mentorship">
+          <Card className="p-6">
             {mentorship ? (
-              
-                Mentorship
-                Lessons Completed);
+              <div>
+                <h2 className="text-xl font-bold mb-4">Mentorship</h2>
+                <p className="mb-4">Lessons Completed: {mentorship.lessons_completed}</p>
+                <Button onClick={async () => {
+                  await socialService.completeLesson();
                   loadSocialData();
                 }}>
                   Complete Lesson
-                
-              
+                </Button>
+              </div>
             ) : (
-              
-                No Mentorship
+              <div>
+                <h2 className="text-xl font-bold mb-4">No Mentorship</h2>
                 {mentorshipRequests.length > 0 && (
-                  
-                    Pending Requests
+                  <div className="mt-4">
+                    <h3 className="font-semibold mb-2">Pending Requests</h3>
                     {mentorshipRequests.map((request) => (
-                      
-                        Request from {request.apprentice_id}
-                        
-                           {
+                      <div key={request._id} className="flex justify-between items-center p-3 border rounded mb-2">
+                        <span>Request from {request.apprentice_id}</span>
+                        <div className="flex gap-2">
+                          <Button size="sm" onClick={async () => {
                             await socialService.acceptMentorshipRequest(request._id);
                             loadSocialData();
-                          }}>Accept
-                           {
+                          }}>Accept</Button>
+                          <Button size="sm" variant="destructive" onClick={async () => {
                             await socialService.rejectMentorshipRequest(request._id);
                             loadSocialData();
-                          }}>Reject
-                        
-                      
+                          }}>Reject</Button>
+                        </div>
+                      </div>
                     ))}
-                  
+                  </div>
                 )}
-              
+              </div>
             )}
-          
-        
-      
-    
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 
