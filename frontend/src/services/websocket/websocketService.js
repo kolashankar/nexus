@@ -2,20 +2,18 @@
  * WebSocket service for real-time communication
  */
 
-
-
 class WebSocketService {
-  ws: WebSocket | null = null;
-  handlers: Map = new Map();
-  reconnectAttempts = 0;
-  maxReconnectAttempts = 5;
-  reconnectDelay = 3000;
-  url) {
-    const wsUrl = process.env.REACT_APP_WS_URL || 'ws;
+  constructor() {
+    this.ws = null;
+    this.handlers = new Map();
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = 5;
+    this.reconnectDelay = 3000;
+    const wsUrl = process.env.REACT_APP_WS_URL || 'ws://localhost:8001';
     this.url = wsUrl;
   }
 
-  connect(token){
+  connect(token) {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       return;
     }
@@ -36,7 +34,7 @@ class WebSocketService {
       }
     };
 
-    this.ws.onerror = (error: () => {
+    this.ws.onerror = (error) => {
       console.error('WebSocket error', error);
     };
 
@@ -46,29 +44,29 @@ class WebSocketService {
     };
   }
 
-  disconnect(){
+  disconnect() {
     if (this.ws) {
       this.ws.close();
       this.ws = null;
     }
   }
 
-  send(eventType, data){
+  send(eventType, data) {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({ type, data }));
+      this.ws.send(JSON.stringify({ type: eventType, data }));
     } else {
       console.error('WebSocket is not connected');
     }
   }
 
-  on(eventType, handler){
+  on(eventType, handler) {
     if (!this.handlers.has(eventType)) {
       this.handlers.set(eventType, []);
     }
     this.handlers.get(eventType).push(handler);
   }
 
-  off(eventType, handler){
+  off(eventType, handler) {
     const handlers = this.handlers.get(eventType);
     if (handlers) {
       const index = handlers.indexOf(handler);
@@ -78,7 +76,7 @@ class WebSocketService {
     }
   }
 
-  handleMessage(message){
+  handleMessage(message) {
     const { type, data } = message;
     const handlers = this.handlers.get(type);
     
@@ -87,8 +85,10 @@ class WebSocketService {
     }
   }
 
-  attemptReconnect(token){
-    if (this.reconnectAttempts  {
+  attemptReconnect(token) {
+    if (this.reconnectAttempts < this.maxReconnectAttempts) {
+      this.reconnectAttempts++;
+      setTimeout(() => {
         this.connect(token);
       }, this.reconnectDelay);
     } else {

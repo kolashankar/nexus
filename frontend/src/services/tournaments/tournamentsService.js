@@ -1,20 +1,20 @@
 import apiClient from '../api/client';
-import { Tournament } from '../../types/combat';
 
 class TournamentsService {
-  async getActiveTournaments(){
+  async getActiveTournaments() {
     const response = await apiClient.get('/api/tournaments/active');
     return response.data;
   }
 
   async registerForTournament(tournamentId, playerId) {
     const response = await apiClient.post('/api/tournaments/register', {
-      tournament_id,
-      player_id);
+      tournament_id: tournamentId,
+      player_id: playerId
+    });
     return response.data;
   }
 
-  async getTournament(tournamentId){
+  async getTournament(tournamentId) {
     const response = await apiClient.get(`/api/tournaments/${tournamentId}`);
     return response.data;
   }
@@ -26,13 +26,15 @@ class TournamentsService {
 
   async getMyMatch(tournamentId, playerId) {
     const response = await apiClient.get(`/api/tournaments/${tournamentId}/my-match`, {
-      params);
+      params: { player_id: playerId }
+    });
     return response.data;
   }
 
-  async getTournamentHistory(playerId?: string, limit= 10) {
+  async getTournamentHistory(playerId, limit = 10) {
+    const params = playerId ? { player_id: playerId, limit } : { limit };
     const response = await apiClient.get('/api/tournaments/history', {
-      params, limit }
+      params
     });
     return response.data;
   }
