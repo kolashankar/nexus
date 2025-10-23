@@ -128,10 +128,10 @@ export const getSafeAreaInsets = () => {
   };
 
   return {
-    top),
-    right),
-    bottom),
-    left),
+    top: getInset('top'),
+    right: getInset('right'),
+    bottom: getInset('bottom'),
+    left: getInset('left'),
   };
 };
 
