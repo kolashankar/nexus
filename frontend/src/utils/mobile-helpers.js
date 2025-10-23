@@ -139,24 +139,24 @@ export const getSafeAreaInsets = () => {
  * Touch gesture detector
  */
 export class TouchGestureDetector {
-  private startX: number = 0;
-  private startY: number = 0;
-  private startTime: number = 0;
-  private element) {
+  constructor(element) {
+    this.startX = 0;
+    this.startY = 0;
+    this.startTime = 0;
     this.element = element;
     this.setupListeners();
   }
 
-  private setupListeners() {
+  setupListeners() {
     this.element.addEventListener('touchstart', this.handleTouchStart, {
-      passive,
+      passive: true,
     });
     this.element.addEventListener('touchend', this.handleTouchEnd, {
-      passive,
+      passive: true,
     });
   }
 
-  private handleTouchStart = (event) => {
+  handleTouchStart = (event) => {
     this.startX = event.touches[0].clientX;
     this.startY = event.touches[0].clientY;
     this.startTime = Date.now();
