@@ -7,7 +7,7 @@ import os
 
 # Import app components
 from server import app
-from core.database import get_database
+from backend.core.database import get_database
 
 # Test database name
 TEST_DB_NAME = "karma_nexus_test"

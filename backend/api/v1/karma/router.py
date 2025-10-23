@@ -3,10 +3,10 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import List
 
 from .schemas import KarmaScoreResponse, KarmaHistoryResponse
-from core.database import get_database
-from api.v1.auth.router import get_current_user_dep
-from models.player.player import Player
-from services.karma.calculator import KarmaCalculator
+from backend.core.database import get_database
+from backend.api.v1.auth.router import get_current_user_dep
+from backend.models.player.player import Player
+from backend.services.karma.calculator import KarmaCalculator
 
 router = APIRouter(prefix="/karma", tags=["karma"])
 

@@ -1,7 +1,7 @@
 from pydantic import Field
 from datetime import datetime
 from typing import Dict, Optional
-from models.base import BaseDBModel
+from backend.models.base import BaseDBModel
 
 class ActionHistory(BaseDBModel):
     """Extended action history with more details."""

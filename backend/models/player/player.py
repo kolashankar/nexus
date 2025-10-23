@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, EmailStr
 from typing import Dict, List, Optional
 from datetime import datetime
-from models.base import BaseDBModel
+from backend.models.base import BaseDBModel
 
 # Trait Model
 class Traits(BaseModel):

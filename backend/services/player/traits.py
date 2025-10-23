@@ -1,6 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import Dict, List
-from models.player.player import Player
+from backend.models.player.player import Player
 from fastapi import HTTPException
 
 class TraitsService:

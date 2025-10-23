@@ -1,6 +1,6 @@
 import logging
 from typing import Dict, Any
-from api.websocket.manager import manager
+from backend.api.websocket.manager import manager
 
 logger = logging.getLogger(__name__)
 

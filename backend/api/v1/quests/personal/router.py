@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from core.database import get_database
-from api.deps import get_current_user
-from services.quests.manager import QuestManager
-from api.v1.quests.schemas import QuestResponse
+from backend.core.database import get_database
+from backend.api.deps import get_current_user
+from backend.services.quests.manager import QuestManager
+from backend.api.v1.quests.schemas import QuestResponse
 
 router = APIRouter()
 

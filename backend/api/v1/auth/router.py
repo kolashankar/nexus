@@ -4,9 +4,9 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from datetime import datetime
 
 from .schemas import LoginRequest, RegisterRequest, TokenResponse
-from core.database import get_database
-from core.security import verify_password, get_password_hash, create_access_token, decode_access_token
-from models.player.player import Player, PlayerCreate, PlayerResponse
+from backend.core.database import get_database
+from backend.core.security import verify_password, get_password_hash, create_access_token, decode_access_token
+from backend.models.player.player import Player, PlayerCreate, PlayerResponse
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 security = HTTPBearer()

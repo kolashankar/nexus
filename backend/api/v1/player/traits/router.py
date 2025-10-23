@@ -3,10 +3,10 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import Dict
 
 from .schemas import TraitAllocateRequest, TraitsResponse, TraitDetailsResponse
-from core.database import get_database
-from api.v1.auth.router import get_current_user_dep
-from models.player.player import Player
-from services.player.traits import TraitsService
+from backend.core.database import get_database
+from backend.api.v1.auth.router import get_current_user_dep
+from backend.models.player.player import Player
+from backend.services.player.traits import TraitsService
 
 router = APIRouter(prefix="/traits", tags=["traits"])
 
