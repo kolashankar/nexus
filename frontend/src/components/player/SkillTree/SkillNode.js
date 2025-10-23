@@ -1,4 +1,4 @@
-import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Button } from '../../ui/button';
 import { Lock, Unlock, Star } from 'lucide-react';
 const SkillNode = ({ node, onUnlock, canUnlock }) => {

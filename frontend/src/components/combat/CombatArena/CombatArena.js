@@ -1,4 +1,4 @@
-import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from 'react';
 import combatService from '../../../services/combat/combatService';
 import ActionBar from '../ActionBar/ActionBar';

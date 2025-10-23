@@ -1,4 +1,4 @@
-import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { KarmaDisplay } from '../../components/karma/KarmaDisplay/KarmaDisplay';
 import { KarmaHistory } from '../../components/karma/KarmaDisplay/KarmaHistory';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';

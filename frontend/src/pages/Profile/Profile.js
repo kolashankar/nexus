@@ -1,4 +1,4 @@
-import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useParams } from 'react-router-dom';
 import ProfileCard from '@/components/player/ProfileCard/ProfileCard';
 import TraitsList from '@/components/player/TraitsList/TraitsList';

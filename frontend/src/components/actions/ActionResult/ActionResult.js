@@ -1,4 +1,4 @@
-import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Card, CardContent } from '../../ui/card';
 import { Badge } from '../../ui/badge';
 export const ActionResult = ({ success, message, karmaChange, creditsChange }) => {

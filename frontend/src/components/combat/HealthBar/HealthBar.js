@@ -1,4 +1,4 @@
-import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import './HealthBar.css';
 const HealthBar = ({ current, max, label = 'HP', showNumbers = true }) => {
     const percentage = (current / max) * 100;

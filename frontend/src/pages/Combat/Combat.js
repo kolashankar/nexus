@@ -1,4 +1,4 @@
-import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CombatArena from '../../components/combat/CombatArena/CombatArena';

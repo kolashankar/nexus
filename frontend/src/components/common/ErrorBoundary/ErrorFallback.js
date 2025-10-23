@@ -1,4 +1,4 @@
-import { jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '../../ui/button';
 export const ErrorFallback = ({ error, resetErrorBoundary, }) => {
