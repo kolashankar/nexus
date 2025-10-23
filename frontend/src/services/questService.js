@@ -1,115 +1,102 @@
 import { apiClient } from './api/client';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class QuestService {
-  async getAvailableQuests(questType?: string){
-    const params = questType ? { quest_type;
+  async getAvailableQuests(questType) {
+    const params = questType ? { quest_type: questType } : {};
     const response = await apiClient.get('/api/quests/available', { params });
     return response.data.quests;
   }
 
-  async getActiveQuests(){
+  async getActiveQuests() {
     const response = await apiClient.get('/api/quests/active');
     return response.data.quests;
   }
 
-  async getCompletedQuests(){
+  async getCompletedQuests() {
     const response = await apiClient.get('/api/quests/completed');
     return response.data.quests;
   }
 
-  async acceptQuest(questId){
-    const response = await apiClient.post('/api/quests/accept', { quest_id);
+  async acceptQuest(questId) {
+    const response = await apiClient.post('/api/quests/accept', { quest_id: questId });
     return response.data;
   }
 
-  async abandonQuest(questId){
-    const response = await apiClient.post('/api/quests/abandon', { quest_id);
+  async abandonQuest(questId) {
+    const response = await apiClient.post('/api/quests/abandon', { quest_id: questId });
     return response.data.success;
   }
 
-  async getQuestDetails(questId){
+  async getQuestDetails(questId) {
     const response = await apiClient.get(`/api/quests/${questId}`);
     return response.data.quest;
   }
 
-  async getDailyQuests(){
+  async getDailyQuests() {
     const response = await apiClient.get('/api/quests/daily');
     return response.data.quests;
   }
 
-  async getWeeklyQuests(){
+  async getWeeklyQuests() {
     const response = await apiClient.get('/api/quests/weekly');
     return response.data.quests;
   }
 
-  async getWorldQuests(){
+  async getWorldQuests() {
     const response = await apiClient.get('/api/quests/world');
     return response.data.quests;
   }
 
-  async getGuildQuests(){
+  async getGuildQuests() {
     const response = await apiClient.get('/api/quests/guild');
     return response.data;
   }
 
-  async joinGuildQuest(questId){
+  async joinGuildQuest(questId) {
     const response = await apiClient.post(`/api/quests/guild/${questId}/join`);
     return response.data;
   }
 
-  async getDiscoveredHiddenQuests(){
+  async getDiscoveredHiddenQuests() {
     const response = await apiClient.get('/api/quests/hidden/discovered');
     return response.data.quests;
   }
 
-  async getHiddenQuestHints(){
+  async getHiddenQuestHints() {
     const response = await apiClient.get('/api/quests/hidden/hints');
     return response.data.hints;
   }
 
-  async getCampaigns(status?: string){
+  async getCampaigns(status) {
     const params = status ? { status } : {};
     const response = await apiClient.get('/api/quests/campaigns', { params });
     return response.data.campaigns;
   }
 
-  async startCampaign(campaignId){
-    const response = await apiClient.post('/api/quests/campaigns/start', { campaign_id);
+  async startCampaign(campaignId) {
+    const response = await apiClient.post('/api/quests/campaigns/start', { campaign_id: campaignId });
     return response.data;
   }
 
-  async getCurrentChapter(campaignId){
+  async getCurrentChapter(campaignId) {
     const response = await apiClient.get(`/api/quests/campaigns/${campaignId}/current`);
     return response.data.chapter;
   }
 
-  async makeCampaignChoice(campaignId, choiceId){
+  async makeCampaignChoice(campaignId, choiceId) {
     const response = await apiClient.post('/api/quests/campaigns/choice', {
-      campaign_id,
-      choice_id);
+      campaign_id: campaignId,
+      choice_id: choiceId
+    });
     return response.data;
   }
 
-  async completeChapter(campaignId){
+  async completeChapter(campaignId) {
     const response = await apiClient.post(`/api/quests/campaigns/${campaignId}/complete-chapter`);
     return response.data;
   }
 
-  async getQuestStats(){
+  async getQuestStats() {
     const response = await apiClient.get('/api/quests/stats');
     return response.data.stats;
   }

@@ -4,7 +4,7 @@ class SuperpowersService {
   /**
    * Get all superpowers for the current player
    */
-  async getSuperpowers(){
+  async getSuperpowers() {
     const response = await apiClient.get('/player/superpowers');
     return response.data;
   }
@@ -12,7 +12,7 @@ class SuperpowersService {
   /**
    * Get list of powers player can unlock
    */
-  async getAvailablePowers(){
+  async getAvailablePowers() {
     const response = await apiClient.get('/player/superpowers/available');
     return response.data.available_powers;
   }
@@ -20,7 +20,7 @@ class SuperpowersService {
   /**
    * Get all superpower definitions
    */
-  async getPowerDefinitions(){
+  async getPowerDefinitions() {
     const response = await apiClient.get('/player/superpowers/definitions');
     return response.data.powers;
   }
@@ -28,7 +28,7 @@ class SuperpowersService {
   /**
    * Get a specific superpower definition
    */
-  async getPowerDefinition(powerId){
+  async getPowerDefinition(powerId) {
     const response = await apiClient.get(`/player/superpowers/definitions/${powerId}`);
     return response.data;
   }
@@ -36,23 +36,23 @@ class SuperpowersService {
   /**
    * Unlock a superpower
    */
-  async unlockPower(powerId){
-    const response = await apiClient.post('/player/superpowers/unlock', { power_id);
+  async unlockPower(powerId) {
+    const response = await apiClient.post('/player/superpowers/unlock', { power_id: powerId });
     return response.data;
   }
 
   /**
    * Equip a superpower
    */
-  async equipPower(powerId){
-    const response = await apiClient.post('/player/superpowers/equip', { power_id);
+  async equipPower(powerId) {
+    const response = await apiClient.post('/player/superpowers/equip', { power_id: powerId });
     return response.data;
   }
 
   /**
    * Unequip a superpower
    */
-  async unequipPower(powerId){
+  async unequipPower(powerId) {
     const response = await apiClient.post(`/player/superpowers/unequip/${powerId}`);
     return response.data;
   }
@@ -60,8 +60,8 @@ class SuperpowersService {
   /**
    * Use a superpower
    */
-  async usePower(powerId){
-    const response = await apiClient.post('/player/superpowers/use', { power_id);
+  async usePower(powerId) {
+    const response = await apiClient.post('/player/superpowers/use', { power_id: powerId });
     return response.data;
   }
 }

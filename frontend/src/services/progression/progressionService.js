@@ -14,7 +14,8 @@ class ProgressionService {
   async unlockSkillNode(trait, nodeId) {
     const response = await api.post('/player/skill-trees/unlock', {
       trait,
-      node_id);
+      node_id: nodeId
+    });
     return response.data;
   }
 
@@ -25,7 +26,8 @@ class ProgressionService {
 
   async activateSuperpower(powerId) {
     const response = await api.post('/player/superpowers/activate', {
-      power_id);
+      power_id: powerId
+    });
     return response.data;
   }
 
@@ -41,7 +43,8 @@ class ProgressionService {
 
   async unlockAchievement(achievementId) {
     const response = await api.post('/achievements/unlock', {
-      achievement_id);
+      achievement_id: achievementId
+    });
     return response.data;
   }
 
@@ -62,7 +65,8 @@ class ProgressionService {
 
   async purchaseLegacyPerk(perkId) {
     const response = await api.post('/player/legacy/perks/purchase', {
-      perk_id);
+      perk_id: perkId
+    });
     return response.data;
   }
 }
