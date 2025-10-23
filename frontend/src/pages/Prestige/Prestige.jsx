@@ -8,7 +8,7 @@ import prestigeService from '../../services/prestige/prestigeService';
 import { toast } from '../../components/ui/sonner';
 import { Crown, Sparkles } from 'lucide-react';
 
-const Prestige: React.FC = () => {
+const Prestige = () => {
   const [prestige, setPrestige] = useState(null);
   const [eligibility, setEligibility] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -50,155 +50,157 @@ const Prestige: React.FC = () => {
   };
 
   if (loading) {
-    return Loading prestige...;
+    return <div className="flex items-center justify-center min-h-screen">Loading prestige...</div>;
   }
 
   return (
-    
-      
-        
-          
-            
-              
-              Prestige System
-            
-            {prestige && (
-              
-                Level {prestige.current_prestige_level}
-              
-            )}
-          
-        
-        
-          {/* Current Status */}
+    <div className="container mx-auto py-6">
+      <div className="mb-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-3xl font-bold flex items-center gap-2">
+            <Crown className="w-8 h-8" />
+            Prestige System
+          </h1>
           {prestige && (
-            
-              
-                
-                  
-                    Prestige Level
-                    {prestige.current_prestige_level}/10
-                  
-                
-              
-              
-                
-                  
-                    Total Prestiges
-                    {prestige.total_prestiges}
-                  
-                
-              
-              
-                
-                  
-                    Prestige Points
-                    {prestige.prestige_points}
-                  
-                
-              
-            
+            <Badge variant="secondary" className="text-lg">
+              Level {prestige.current_prestige_level}
+            </Badge>
           )}
+        </div>
+      </div>
+      <div className="grid gap-6">
+        {/* Current Status */}
+        {prestige && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground">Prestige Level</p>
+                  <p className="text-3xl font-bold">{prestige.current_prestige_level}/10</p>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground">Total Prestiges</p>
+                  <p className="text-3xl font-bold">{prestige.total_prestiges}</p>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground">Prestige Points</p>
+                  <p className="text-3xl font-bold">{prestige.prestige_points}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
-          {/* Eligibility */}
-          {eligibility && (
-            
-              
-                Prestige Requirements
-              
-              
-                
-                  
-                    Level 100
-                    = 100 ? 'default' : 'secondary'}>
+        {/* Eligibility */}
+        {eligibility && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Prestige Requirements</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span>Level 100</span>
+                    <Badge variant={eligibility.current_level >= 100 ? 'default' : 'secondary'}>
                       {eligibility.current_level}/100
-                    
-                  
-                  
-                
+                    </Badge>
+                  </div>
+                  <Progress value={(eligibility.current_level / 100) * 100} />
+                </div>
 
-                
-                  
-                    Karma
-                    = 1000 ? 'default' : 'secondary'}>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span>Karma</span>
+                    <Badge variant={eligibility.current_karma >= 1000 ? 'default' : 'secondary'}>
                       {eligibility.current_karma}/1000
-                    
-                  
-                  
-                
+                    </Badge>
+                  </div>
+                  <Progress value={(eligibility.current_karma / 1000) * 100} />
+                </div>
 
                 {eligibility.requirements.achievements > 0 && (
-                  
-                    
-                      Achievements
-                      = eligibility.requirements.achievements
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span>Achievements</span>
+                      <Badge
+                        variant={
+                          eligibility.current_achievements >= eligibility.requirements.achievements
                             ? 'default'
                             : 'secondary'
                         }
                       >
                         {eligibility.current_achievements}/{eligibility.requirements.achievements}
-                      
-                    
-                    
-                  
+                      </Badge>
+                    </div>
+                    <Progress value={(eligibility.current_achievements / eligibility.requirements.achievements) * 100} />
+                  </div>
                 )}
 
-                
+                <div className="mt-6">
                   {eligibility.eligible ? (
-                    
-                      
-                        
-                          
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button className="w-full" size="lg">
+                          <Sparkles className="mr-2" />
                           Prestige Now
-                        
-                      
-                      
-                        
-                          Are you sure?
-                          
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                          <AlertDialogDescription>
                             Prestiging will reset your level and traits, but you'll keep 10% of your trait
                             progress and gain permanent bonuses. This action cannot be undone.
-                          
-                        
-                        
-                          Cancel
-                          
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction onClick={handlePrestige}>
                             Prestige
-                          
-                        
-                      
-                    
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   ) : (
-                    
+                    <Button className="w-full" size="lg" disabled>
                       {eligibility.message}
-                    
+                    </Button>
                   )}
-                
-              
-            
-          )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-          {/* Permanent Bonuses */}
-          {prestige && Object.keys(prestige.permanent_bonuses).length > 0 && (
-            
-              
-                Permanent Bonuses
-              
-              
-                
-                  {Object.entries(prestige.permanent_bonuses).map(([bonus, value]) => (
-                    
-                      {bonus.replace('_', ' ')}
-                      x{value.toFixed(2)}
-                    
-                  ))}
-                
-              
-            
-          )}
-        
-      
-    
+        {/* Permanent Bonuses */}
+        {prestige && Object.keys(prestige.permanent_bonuses).length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Permanent Bonuses</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {Object.entries(prestige.permanent_bonuses).map(([bonus, value]) => (
+                  <div key={bonus} className="flex justify-between p-3 border rounded">
+                    <span className="capitalize">{bonus.replace('_', ' ')}</span>
+                    <span className="font-bold">x{value.toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </div>
   );
 };
 

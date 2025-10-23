@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import guildsService from '../../services/guilds/guildsService';
-import { Guild, GuildMember } from '../../types/guilds';
 import { usePlayer } from '../../hooks/usePlayer';
 
-const Guild: React.FC = () => {
+const Guild = () => {
   const { player: user } = usePlayer();
   const [guild, setGuild] = useState(null);
   const [members, setMembers] = useState([]);
@@ -33,47 +32,47 @@ const Guild: React.FC = () => {
   };
 
   if (loading) {
-    return Loading guild...;
+    return <div className="flex items-center justify-center min-h-screen">Loading guild...</div>;
   }
 
   if (!guild) {
     return (
-      
-        
-          No Guild
-          You are not in a guild yet.
-           window.location.href = '/guilds/list'}>
+      <div className="container mx-auto py-6">
+        <Card className="p-6">
+          <h2 className="text-xl font-bold mb-4">No Guild</h2>
+          <p className="mb-4">You are not in a guild yet.</p>
+          <Button onClick={() => window.location.href = '/guilds/list'}>
             Browse Guilds
-          
-        
-      
+          </Button>
+        </Card>
+      </div>
     );
   }
 
   return (
-    
-      {guild.name} [{guild.tag}]
+    <div className="container mx-auto py-6">
+      <h1 className="text-3xl font-bold mb-6">{guild.name} [{guild.tag}]</h1>
       
-      
-        
-          Guild Info
-          
-            Level: {guild.level}
-            Members: {guild.total_members}/{guild.max_members}
-            Karma: {guild.guild_karma}
-            Reputation: {guild.reputation}
-            Territories: {guild.controlled_territories.length}
-          
-          {guild.description}
-        
+      <div className="grid gap-6">
+        <Card className="p-6">
+          <h2 className="text-xl font-bold mb-4">Guild Info</h2>
+          <div className="space-y-2">
+            <p>Level: {guild.level}</p>
+            <p>Members: {guild.total_members}/{guild.max_members}</p>
+            <p>Karma: {guild.guild_karma}</p>
+            <p>Reputation: {guild.reputation}</p>
+            <p>Territories: {guild.controlled_territories.length}</p>
+          </div>
+          <p className="mt-4">{guild.description}</p>
+        </Card>
 
-        
-          Guild Bank
-          
-            Credits: {guild.guild_bank.credits}
-          
-           {
-            const amount = prompt('Enter amount to contribute);
+        <Card className="p-6">
+          <h2 className="text-xl font-bold mb-4">Guild Bank</h2>
+          <div className="space-y-4">
+            <p>Credits: {guild.guild_bank.credits}</p>
+          </div>
+          <Button onClick={() => {
+            const amount = prompt('Enter amount to contribute');
             if (amount) {
               guildsService.contributeToBank(parseInt(amount))
                 .then(() => loadGuildData())
@@ -81,25 +80,25 @@ const Guild: React.FC = () => {
             }
           }}>
             Contribute Credits
-          
-        
-      
+          </Button>
+        </Card>
+      </div>
 
-      
-        Members ({members.length})
-        
+      <Card className="p-6 mt-6">
+        <h2 className="text-xl font-bold mb-4">Members ({members.length})</h2>
+        <div className="space-y-2">
           {members.map((member) => (
-            
-              
-                {member.username}
-                Level {member.level}
-              
-              {member.guild_rank}
-            
+            <div key={member.player_id} className="flex justify-between items-center p-3 border rounded">
+              <div>
+                <p className="font-semibold">{member.username}</p>
+                <p className="text-sm text-muted-foreground">Level {member.level}</p>
+              </div>
+              <span className="text-sm">{member.guild_rank}</span>
+            </div>
           ))}
-        
-      
-    
+        </div>
+      </Card>
+    </div>
   );
 };
 
