@@ -2,71 +2,49 @@ import React from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '../../ui/button';
 
-
-
 export const ErrorFallback = ({ 
   error,
   resetErrorBoundary,
- }) => {
+}) => {
   const goHome = () => {
     window.location.href = '/';
   };
 
   return (
-    
-      
-        
-          
-        
+    <div className="error-fallback flex items-center justify-center min-h-screen p-4">
+      <div className="error-content max-w-2xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+        <div className="flex flex-col items-center text-center">
+          <AlertTriangle className="w-16 h-16 text-red-500 mb-4" />
+        </div>
 
-        Oops! Something went wrong
+        <h1 className="text-3xl font-bold mb-4 text-center">Oops! Something went wrong</h1>
 
-        
+        <p className="text-muted-foreground mb-6 text-center">
           We encountered an unexpected error. Don't worry, your progress is
           saved.
-        
+        </p>
 
         {process.env.NODE_ENV === 'development' && (
-          
-            Error Details (Development Only)
-            
+          <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded">
+            <h3 className="font-semibold mb-2">Error Details (Development Only)</h3>
+            <pre className="text-xs overflow-auto">
               {error.message}
               {error.stack && `\n\n${error.stack}`}
-            
-          
+            </pre>
+          </div>
         )}
 
-        
-          
-            
+        <div className="flex gap-4 justify-center">
+          <Button onClick={resetErrorBoundary}>
+            <RefreshCw className="mr-2" />
             Try Again
-          
-          
-            
+          </Button>
+          <Button onClick={goHome} variant="outline">
+            <Home className="mr-2" />
             Go Home
-          
-        
-      
-
-      {`
-        .error-fallback {
-          display, #1e1b4b 0%, #0f172a 100%);
-        }
-
-        .error-content {
-          max-width, 255, 255, 0.05);
-          padding);
-        }
-
-        .error-icon {
-          margin-bottom, 100% { transform); }
-          10%, 30%, 50%, 70%, 90% { transform); }
-          20%, 40%, 60%, 80% { transform); }
-        }
-
-        .error-title {
-          font-size, 255, 255, 0.7);
-          margin-bottom, 0, 0, 0.5);
-          padding, monospace;
-          font-size);
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 };
