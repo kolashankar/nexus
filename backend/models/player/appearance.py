@@ -35,3 +35,6 @@ class CosmeticItems(BaseModel):
     emotes: List[str] = Field(default_factory=list)
     victory_poses: List[str] = Field(default_factory=list)
     pets: List[str] = Field(default_factory=list)
+
+# Alias for backward compatibility
+PlayerAppearance = AppearanceCustomization
