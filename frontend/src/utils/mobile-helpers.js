@@ -213,33 +213,30 @@ export class TouchGestureDetector {
  * Pull to refresh handler
  */
 export class PullToRefresh {
-  private startY: number = 0;
-  private pulling: boolean = false;
-  private element;
-  private threshold: number = 80;
-
-  constructor(element, threshold: number = 80) {
+  constructor(element, threshold = 80) {
+    this.startY = 0;
+    this.pulling = false;
     this.element = element;
     this.threshold = threshold;
     this.setupListeners();
   }
 
-  private setupListeners() {
+  setupListeners() {
     this.element.addEventListener('touchstart', this.handleTouchStart, {
-      passive,
+      passive: true,
     });
     this.element.addEventListener('touchmove', this.handleTouchMove);
     this.element.addEventListener('touchend', this.handleTouchEnd);
   }
 
-  private handleTouchStart = (event) => {
+  handleTouchStart = (event) => {
     if (this.element.scrollTop === 0) {
       this.startY = event.touches[0].clientY;
       this.pulling = true;
     }
   };
 
-  private handleTouchMove = (event) => {
+  handleTouchMove = (event) => {
     if (!this.pulling) return;
 
     const currentY = event.touches[0].clientY;
@@ -255,18 +252,14 @@ export class PullToRefresh {
     }
   };
 
-  private handleTouchEnd = () => {
+  handleTouchEnd = () => {
     if (!this.pulling) return;
 
     this.pulling = false;
     this.onRelease?.();
   };
 
-  public onPull?: (distance) => void;
-  public onThresholdReached?: () => void;
-  public onRelease?: () => void;
-
-  public destroy() {
+  destroy() {
     this.element.removeEventListener('touchstart', this.handleTouchStart);
     this.element.removeEventListener('touchmove', this.handleTouchMove);
     this.element.removeEventListener('touchend', this.handleTouchEnd);
