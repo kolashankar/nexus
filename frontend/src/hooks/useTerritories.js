@@ -52,7 +52,7 @@ export const useTerritories = ()=> {
     contested,
     loading,
     error,
-    refetch,
+    refetch: fetchTerritories,
     getTerritoryById
   };
 };
