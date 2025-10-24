@@ -37,7 +37,7 @@ class PlayerProfileService:
         try:
             update_data["last_action"] = datetime.utcnow()
             result = await self.collection.update_one(
-                {"_id": ObjectId(player_id)},
+                {"_id": player_id},
                 {"$set": update_data}
             )
             return result.modified_count > 0
