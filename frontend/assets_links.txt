@@ -1,0 +1,96 @@
+# KARMA NEXUS 2.0 - ASSET LIST
+# Generated: Asset placeholder files created
+#
+# Format: FILENAME | TYPE | LINK/STATUS | DESCRIPTION
+#================================================================================
+
+/models/characters/male_base.glb                   | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for characters
+/models/characters/male_athletic.glb               | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for characters
+/models/characters/male_heavy.glb                  | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for characters
+/models/characters/female_base.glb                 | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for characters
+/models/characters/female_athletic.glb             | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for characters
+/models/characters/female_heavy.glb                | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for characters
+/models/animations/idle.glb                        | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations
+/models/animations/walk.glb                        | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations
+/models/animations/run.glb                         | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations
+/models/animations/jump.glb                        | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations
+/models/animations/attack.glb                      | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations
+/models/animations/defend.glb                      | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations
+/models/animations/victory.glb                     | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations
+/models/animations/defeat.glb                      | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations
+/models/animations/emotes/wave.glb                 | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations/emotes
+/models/animations/emotes/dance.glb                | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations/emotes
+/models/animations/emotes/laugh.glb                | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for animations/emotes
+/models/robots/combat.glb                          | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for robots
+/models/robots/scout.glb                           | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for robots
+/models/robots/guardian.glb                        | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for robots
+/models/robots/assault.glb                         | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for robots
+/models/robots/tactical.glb                        | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for robots
+/models/robots/hacker.glb                          | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for robots
+/models/robots/medic.glb                           | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for robots
+/models/robots/harvester.glb                       | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for robots
+/models/robots/trader.glb                          | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for robots
+/models/environment/buildings/warehouse.glb        | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for environment/buildings
+/models/environment/buildings/shop.glb             | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for environment/buildings
+/models/environment/buildings/headquarters.glb     | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for environment/buildings
+/models/environment/buildings/tower.glb            | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for environment/buildings
+/models/environment/props/container.glb            | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for environment/props
+/models/environment/props/vehicle.glb              | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for environment/props
+/models/environment/terrain/platform.glb           | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for environment/terrain
+/models/ui/hologram.glb                            | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for ui
+/models/ui/interface.glb                           | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for ui
+/models/placeholders/character_placeholder.glb     | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for placeholders
+/models/placeholders/robot_placeholder.glb         | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for placeholders
+/models/placeholders/building_placeholder.glb      | 3D Model (GLB)       | placeholder created - needs actual 3D model        | 3D model for placeholders
+/textures/characters/skin/default.png              | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/skin
+/textures/characters/skin/light.png                | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/skin
+/textures/characters/skin/medium.png               | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/skin
+/textures/characters/skin/dark.png                 | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/skin
+/textures/characters/hair/black.png                | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/hair
+/textures/characters/hair/brown.png                | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/hair
+/textures/characters/hair/blonde.png               | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/hair
+/textures/characters/hair/red.png                  | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/hair
+/textures/characters/clothing/casual.png           | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/clothing
+/textures/characters/clothing/formal.png           | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/clothing
+/textures/characters/clothing/tactical.png         | Texture (PNG)        | placeholder created - needs actual texture         | Texture for characters/clothing
+/textures/robots/metal/chrome.png                  | Texture (PNG)        | placeholder created - needs actual texture         | Texture for robots/metal
+/textures/robots/metal/steel.png                   | Texture (PNG)        | placeholder created - needs actual texture         | Texture for robots/metal
+/textures/robots/metal/gold.png                    | Texture (PNG)        | placeholder created - needs actual texture         | Texture for robots/metal
+/textures/robots/lights/blue.png                   | Texture (PNG)        | placeholder created - needs actual texture         | Texture for robots/lights
+/textures/robots/lights/red.png                    | Texture (PNG)        | placeholder created - needs actual texture         | Texture for robots/lights
+/textures/robots/lights/green.png                  | Texture (PNG)        | placeholder created - needs actual texture         | Texture for robots/lights
+/textures/environment/walls/concrete.png           | Texture (PNG)        | placeholder created - needs actual texture         | Texture for environment/walls
+/textures/environment/walls/metal.png              | Texture (PNG)        | placeholder created - needs actual texture         | Texture for environment/walls
+/textures/environment/walls/brick.png              | Texture (PNG)        | placeholder created - needs actual texture         | Texture for environment/walls
+/textures/environment/floor/tiles.png              | Texture (PNG)        | placeholder created - needs actual texture         | Texture for environment/floor
+/textures/environment/floor/metal.png              | Texture (PNG)        | placeholder created - needs actual texture         | Texture for environment/floor
+/textures/environment/floor/wood.png               | Texture (PNG)        | placeholder created - needs actual texture         | Texture for environment/floor
+/textures/environment/props/crate.png              | Texture (PNG)        | placeholder created - needs actual texture         | Texture for environment/props
+/textures/environment/props/barrel.png             | Texture (PNG)        | placeholder created - needs actual texture         | Texture for environment/props
+/textures/effects/particles/spark.png              | Texture (PNG)        | placeholder created - needs actual texture         | Texture for effects/particles
+/textures/effects/particles/smoke.png              | Texture (PNG)        | placeholder created - needs actual texture         | Texture for effects/particles
+/textures/effects/particles/fire.png               | Texture (PNG)        | placeholder created - needs actual texture         | Texture for effects/particles
+/textures/effects/glow/blue.png                    | Texture (PNG)        | placeholder created - needs actual texture         | Texture for effects/glow
+/textures/effects/glow/red.png                     | Texture (PNG)        | placeholder created - needs actual texture         | Texture for effects/glow
+/textures/effects/glow/green.png                   | Texture (PNG)        | placeholder created - needs actual texture         | Texture for effects/glow
+/sounds/background_music.mp3                       | Sound (MP3)          | placeholder created - needs actual sound file      | Game sound effect or music
+/sounds/menu_click.mp3                             | Sound (MP3)          | placeholder created - needs actual sound file      | Game sound effect or music
+/sounds/action_success.mp3                         | Sound (MP3)          | placeholder created - needs actual sound file      | Game sound effect or music
+/sounds/action_fail.mp3                            | Sound (MP3)          | placeholder created - needs actual sound file      | Game sound effect or music
+/sounds/level_up.mp3                               | Sound (MP3)          | placeholder created - needs actual sound file      | Game sound effect or music
+/sounds/combat_hit.mp3                             | Sound (MP3)          | placeholder created - needs actual sound file      | Game sound effect or music
+/sounds/combat_miss.mp3                            | Sound (MP3)          | placeholder created - needs actual sound file      | Game sound effect or music
+/sounds/notification.mp3                           | Sound (MP3)          | placeholder created - needs actual sound file      | Game sound effect or music
+/images/logo.png                                   | Image (PNG)          | placeholder created - needs actual image           | Game image asset
+/images/hero_background.jpg                        | Image (JPG)          | placeholder created - needs actual image           | Game image asset
+/images/placeholder_avatar.png                     | Image (PNG)          | placeholder created - needs actual image           | Game image asset
+/icons/karma.svg                                   | Icon (SVG)           | placeholder created - needs actual icon            | UI icon
+/icons/health.svg                                  | Icon (SVG)           | placeholder created - needs actual icon            | UI icon
+/icons/energy.svg                                  | Icon (SVG)           | placeholder created - needs actual icon            | UI icon
+/icons/coins.svg                                   | Icon (SVG)           | placeholder created - needs actual icon            | UI icon
+/fonts/game_font_regular.woff2                     | Font (WOFF2)         | placeholder created - needs actual font file       | Game font
+/fonts/game_font_bold.woff2                        | Font (WOFF2)         | placeholder created - needs actual font file       | Game font
+
+# Total assets: 86
+
+# NOTE: All files are placeholders. Replace with actual assets for production use.
