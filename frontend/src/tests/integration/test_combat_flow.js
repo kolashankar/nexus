@@ -75,12 +75,12 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.post(
         `${API_URL}/api/combat/action`,
         {
-          combat_id,
-          action_type,
-          target,
+          combat_id: combatId,
+          action_type: 'attack',
+          target: 'opponent'
         },
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken1}` }
         }
       );
 
@@ -93,11 +93,11 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.post(
         `${API_URL}/api/combat/action`,
         {
-          combat_id,
-          action_type,
+          combat_id: combatId,
+          action_type: 'defend'
         },
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken2}` }
         }
       );
 
@@ -109,13 +109,13 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.post(
         `${API_URL}/api/combat/action`,
         {
-          combat_id,
-          action_type,
-          power_name,
-          target,
+          combat_id: combatId,
+          action_type: 'use_power',
+          power_name: 'fireball',
+          target: 'opponent'
         },
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken1}` }
         }
       );
 
