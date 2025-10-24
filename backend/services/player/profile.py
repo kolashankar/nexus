@@ -15,9 +15,7 @@ class PlayerProfileService:
     async def get_player_by_id(self, player_id: str) -> Optional[Dict[str, Any]]:
         """Get player by ID."""
         try:
-            player = await self.collection.find_one({"_id": ObjectId(player_id)})
-            if player:
-                player["_id"] = str(player["_id"])
+            player = await self.collection.find_one({"_id": player_id})
             return player
         except Exception as e:
             print(f"Error getting player: {e}")
