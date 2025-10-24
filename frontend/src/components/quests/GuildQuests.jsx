@@ -30,7 +30,7 @@ export const GuildQuests = () => {
   const fetchGuildQuests = async () => {
     try {
       const response = await fetch('/api/quests/guild', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const data = await response.json();
@@ -47,23 +47,23 @@ export const GuildQuests = () => {
   const joinQuest = async (questId) => {
     try {
       const response = await fetch(`/api/quests/guild/${questId}/join`, {
-        method,
-        headers)}`
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
 
       if (response.ok) {
         toast({
-          title,
-          description,
+          title: "Action",
+          description: "Operation completed",
         });
         fetchGuildQuests();
       }
     } catch (error) {
       toast({
-        title,
-        description,
-        variant);
+        title: "Action",
+        description: "Operation completed",
+        variant: "default"
     }
   };
 

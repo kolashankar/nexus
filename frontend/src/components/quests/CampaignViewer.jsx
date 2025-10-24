@@ -60,7 +60,7 @@ export const CampaignViewer = () => {
   const startCampaign = async (campaignType) => {
     try {
       const response = await fetch('/api/quests/campaigns/start', {
-        method,
+        method: 'POST',
         headers
           'Content-Type',
           Authorization)}`,
@@ -72,12 +72,12 @@ export const CampaignViewer = () => {
 
       if (data.success) {
         toast.success('Campaign started!', {
-          description,
+          description: "Operation completed",
         });
         fetchActiveCampaign();
       } else {
         toast.error('Failed to start campaign', {
-          description,
+          description: "Operation completed",
         });
       }
     } catch (error) {

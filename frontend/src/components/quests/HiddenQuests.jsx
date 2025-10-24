@@ -48,7 +48,7 @@ export const HiddenQuests = () => {
   const acceptQuest = async (questId) => {
     try {
       const response = await fetch('/api/quests/accept', {
-        method,
+        method: 'POST',
         headers
           'Content-Type',
           Authorization)}`,
@@ -58,14 +58,14 @@ export const HiddenQuests = () => {
 
       if (response.ok) {
         toast.success('Quest Accepted', {
-          description,
+          description: "Operation completed",
         });
         fetchHiddenQuests();
       }
     } catch (error) {
       toast.error('Failed to accept', {
-        description,
-        variant,
+        description: "Operation completed",
+        variant: "default",
       });
     }
   };

@@ -8,8 +8,8 @@ global.fetch = jest.fn();
 
 const mockGuildQuests = {
   available,
-      title,
-      description,
+      title: "Action",
+      description: "Operation completed",
       guild_id,
       objectives,
       rewards, guild_reputation, guild_xp,
@@ -17,8 +17,8 @@ const mockGuildQuests = {
       required_members,
       status,
   active,
-      title,
-      description,
+      title: "Action",
+      description: "Operation completed",
       guild_id,
       objectives, current, required, completed,
       rewards, guild_reputation, guild_xp,

@@ -3,17 +3,17 @@ import { X } from 'lucide-react';
 import { Button } from './button';
 
 const shortcuts = [
-  { key, description, category,
-  { key, description, category,
-  { key, description, category,
-  { key, description, category,
-  { key, description, category,
-  { key, description, category,
-  { key, description, category,
-  { key, description, category,
-  { key, description, category,
-  { key, description, category,
-  { key, description, category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
+  { key, description: "Operation completed", category,
 ];
 
 export const KeyboardShortcutsModal = ({ isOpen, onClose }) => {

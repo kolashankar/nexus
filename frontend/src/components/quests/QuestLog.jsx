@@ -24,7 +24,7 @@ export const QuestLog = () => {
   const fetchActiveQuests = async () => {
     try {
       const response = await fetch('/api/quests/active', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const data = await response.json();
@@ -37,7 +37,7 @@ export const QuestLog = () => {
   const fetchAvailableQuests = async () => {
     try {
       const response = await fetch('/api/quests/available', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const data = await response.json();
@@ -50,7 +50,7 @@ export const QuestLog = () => {
   const fetchCompletedQuests = async () => {
     try {
       const response = await fetch('/api/quests/completed', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const data = await response.json();
@@ -63,7 +63,7 @@ export const QuestLog = () => {
   const acceptQuest = async (questId) => {
     try {
       const response = await fetch('/api/quests/accept', {
-        method,
+        method: 'POST',
         headers,
           'Authorization')}`
         },
@@ -74,12 +74,12 @@ export const QuestLog = () => {
 
       if (data.success) {
         toast.success('Quest accepted!', {
-          description);
+          description: "Operation completed"
         fetchActiveQuests();
         fetchAvailableQuests();
       } else {
         toast.error('Failed to accept quest', {
-          description);
+          description: "Operation completed"
       }
     } catch (error) {
       toast.error('Failed to accept quest');
@@ -89,7 +89,7 @@ export const QuestLog = () => {
   const completeQuest = async (questId) => {
     try {
       const response = await fetch('/api/quests/complete', {
-        method,
+        method: 'POST',
         headers,
           'Authorization')}`
         },
@@ -100,13 +100,13 @@ export const QuestLog = () => {
 
       if (data.success) {
         toast.success('Quest completed!', {
-          description, +${data.rewards.credits} credits`
+          description: "Operation completed", +${data.rewards.credits} credits`
         });
         fetchActiveQuests();
         fetchCompletedQuests();
       } else {
         toast.error('Failed to complete quest', {
-          description);
+          description: "Operation completed"
       }
     } catch (error) {
       toast.error('Failed to complete quest');

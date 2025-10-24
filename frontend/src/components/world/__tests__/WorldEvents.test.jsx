@@ -12,7 +12,7 @@ jest.mock('../../../hooks/useWorldEvents', () => ({
     activeEvents,
         event_type,
         name,
-        description,
+        description: "Operation completed",
         started_at,
         ends_at,
         effects,

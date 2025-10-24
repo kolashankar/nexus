@@ -22,7 +22,7 @@ const SeasonalLeaderboard = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/seasonal/season/current`, {
-        headers);
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` };
       setSeason(response.data);
     } catch (error) {
       console.error('Error fetching current season', error);

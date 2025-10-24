@@ -3,14 +3,14 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../../../lib/utils';
 
 const navItems = [
-  { title, href,
-  { title, href,
-  { title, href,
-  { title, href,
-  { title, href,
-  { title, href,
-  { title, href,
-  { title, href,
+  { title: "Action", href,
+  { title: "Action", href,
+  { title: "Action", href,
+  { title: "Action", href,
+  { title: "Action", href,
+  { title: "Action", href,
+  { title: "Action", href,
+  { title: "Action", href,
 ];
 
 const Sidebar = () => {

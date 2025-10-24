@@ -29,7 +29,7 @@ export const CraftingStation = () => {
   const fetchRecipes = async () => {
     try {
       const response = await fetch('/api/crafting/recipes', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const data = await response.json();
@@ -45,7 +45,7 @@ export const CraftingStation = () => {
 
     try {
       const response = await fetch('/api/crafting/craft', {
-        method,
+        method: 'POST',
         headers,
           'Authorization')}`
         },
@@ -61,7 +61,7 @@ export const CraftingStation = () => {
             if (prev >= 100) {
               clearInterval(interval);
               toast.success(`Crafted ${data.item_name}!`, {
-                description);
+                description: "Operation completed"
               setCrafting(false);
               fetchRecipes(); // Refresh recipes
               return 100;
@@ -71,7 +71,7 @@ export const CraftingStation = () => {
         }, 100);
       } else {
         toast.error('Crafting failed', {
-          description);
+          description: "Operation completed"
         setCrafting(false);
       }
     } catch (error) {

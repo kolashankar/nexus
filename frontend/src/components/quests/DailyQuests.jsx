@@ -33,7 +33,7 @@ export const DailyQuests = () => {
   const refreshQuests = async () => {
     try {
       const response = await fetch('/api/quests/daily/refresh', {
-        method,
+        method: 'POST',
         headers
           Authorization)}`,
         },
@@ -47,7 +47,7 @@ export const DailyQuests = () => {
         setCanRefresh(false);
       } else {
         toast.error('Cannot refresh', {
-          description,
+          description: "Operation completed",
         });
       }
     } catch (error) {

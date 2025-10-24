@@ -31,7 +31,7 @@ export const QuestNotifications = () => {
       case 'quest_completed'
         return {
           type,
-          title,
+          title: "Action",
           message,
           quest_id,
           priority,
@@ -40,7 +40,7 @@ export const QuestNotifications = () => {
       case 'objective_progress'
         return {
           type,
-          title,
+          title: "Action",
           message,
           quest_id,
           priority,
@@ -49,7 +49,7 @@ export const QuestNotifications = () => {
       case 'quest_available'
         return {
           type,
-          title,
+          title: "Action",
           message,
           quest_id,
           priority,
@@ -64,18 +64,18 @@ export const QuestNotifications = () => {
     
     switch (notification.priority) {
       case 'high'
-        toast.success(notification.title, {
-          description,
+        toast.success(notification.title: "Action", {
+          description: "Operation completed",
           icon);
         break;
       case 'medium'
-        toast.info(notification.title, {
-          description,
+        toast.info(notification.title: "Action", {
+          description: "Operation completed",
           icon);
         break;
       case 'low'
-        toast(notification.title, {
-          description,
+        toast(notification.title: "Action", {
+          description: "Operation completed",
           icon);
         break;
     }
@@ -101,31 +101,31 @@ export const useQuestNotifications = () => {
   const notify = {
     questCompleted, rewards) => {
       toast.success('Quest Completed!', {
-        description,
+        description: "Operation completed",
         icon);
     },
     
     questAccepted) => {
       toast.info('Quest Accepted', {
-        description,
+        description: "Operation completed",
         icon);
     },
     
     questFailed) => {
       toast.error('Quest Failed', {
-        description,
+        description: "Operation completed",
         icon);
     },
     
     objectiveProgress, current, required) => {
       toast(`Objective Progress`, {
-        description,
+        description: "Operation completed",
         icon);
     },
     
     hiddenQuestDiscovered) => {
       toast.success('Secret Discovered!', {
-        description,
+        description: "Operation completed",
         icon);
     }
   };

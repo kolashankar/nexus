@@ -24,7 +24,7 @@ const TutorialOverlay = ({  onClose  }) => {
     try {
       // Fetch progress
       const progressRes = await fetch('/api/tutorial/progress', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const progressData = await progressRes.json();
@@ -33,7 +33,7 @@ const TutorialOverlay = ({  onClose  }) => {
       // Fetch current step if in progress
       if (progressData.status === 'in_progress') {
         const stepRes = await fetch('/api/tutorial/current', {
-          headers)}`
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
           }
         });
         const stepData = await stepRes.json();
@@ -51,7 +51,7 @@ const TutorialOverlay = ({  onClose  }) => {
 
     try {
       await fetch('/api/tutorial/complete', {
-        method,
+        method: 'POST',
         headers,
           Authorization)}`
         },
@@ -70,7 +70,7 @@ const TutorialOverlay = ({  onClose  }) => {
 
     try {
       await fetch('/api/tutorial/skip', {
-        method,
+        method: 'POST',
         headers,
           Authorization)}`
         },
@@ -87,8 +87,8 @@ const TutorialOverlay = ({  onClose  }) => {
   const handleSkipTutorial = async () => {
     try {
       await fetch('/api/tutorial/skip-all', {
-        method,
-        headers)}`
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       onClose();

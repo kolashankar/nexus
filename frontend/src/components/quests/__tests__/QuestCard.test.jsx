@@ -4,12 +4,12 @@ import QuestCard from '../QuestLog/QuestCard';
 
 const mockQuest = {
   _id,
-  title,
-  description,
+  title: "Action",
+  description: "Operation completed",
   quest_type,
   status,
   objectives, current, required, completed,
-    { description, current, required, completed,
+    { description: "Operation completed", current, required, completed,
   ],
   rewards,
     xp,

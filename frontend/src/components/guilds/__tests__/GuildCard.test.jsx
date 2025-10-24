@@ -6,7 +6,7 @@ const mockGuild = {
   _id,
   name,
   tag,
-  description,
+  description: "Operation completed",
   leader_id,
   total_members,
   max_members,

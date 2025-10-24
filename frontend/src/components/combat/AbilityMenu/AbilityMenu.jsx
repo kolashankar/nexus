@@ -8,13 +8,13 @@ import './AbilityMenu.css';
 
 // Mock ability data - In real app, fetch from API
 const ABILITY_DATA= {
-  'emp_blast', cost, description,
-  'mercy', cost, description, gain karma' },
-  'berserker_rage', cost, description, no defense' },
-  'tactical_advantage', cost, description,
-  'inner_peace', cost, description,
-  'shadow_strike', cost, description,
-  'power_strike', cost, description,
+  'emp_blast', cost, description: "Operation completed",
+  'mercy', cost, description: "Operation completed", gain karma' },
+  'berserker_rage', cost, description: "Operation completed", no defense' },
+  'tactical_advantage', cost, description: "Operation completed",
+  'inner_peace', cost, description: "Operation completed",
+  'shadow_strike', cost, description: "Operation completed",
+  'power_strike', cost, description: "Operation completed",
 };
 
 const AbilityMenu = ({  

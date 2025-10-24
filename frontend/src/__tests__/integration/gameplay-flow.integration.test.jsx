@@ -38,7 +38,7 @@ const server = setupServer(
       ctx.json([
         {
           _id,
-          title,
+          title: "Action",
           status,
           rewards,
         },

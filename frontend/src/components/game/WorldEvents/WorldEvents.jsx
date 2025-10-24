@@ -64,8 +64,8 @@ export const WorldEvents = () => {
       
       if (result.success) {
         toast({
-          title,
-          description,
+          title: "Action",
+          description: "Operation completed",
         });
         
         // Refresh data
@@ -73,9 +73,9 @@ export const WorldEvents = () => {
       }
     } catch (error) {
       toast({
-        title,
-        description,
-        variant);
+        title: "Action",
+        description: "Operation completed",
+        variant: "default"
     }
   };
 

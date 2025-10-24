@@ -20,31 +20,31 @@ const PRIVACY_TIERS = [
   {
     value,
     label,
-    description,
+    description: "Operation completed",
     cost,
     icon,
   {
     value,
     label,
-    description,
+    description: "Operation completed",
     cost,
     icon,
   {
     value,
     label,
-    description,
+    description: "Operation completed",
     cost,
     icon,
   {
     value,
     label,
-    description,
+    description: "Operation completed",
     cost,
     icon,
   {
     value,
     label,
-    description,
+    description: "Operation completed",
     cost,
     icon
   }
@@ -100,7 +100,7 @@ export const PrivacySettings = () => {
       if (tier && tier.cost > 0) {
         // Deduct cost
         toast.success('Privacy settings updated!', {
-          description);
+          description: "Operation completed"
       } else {
         toast.success('Privacy settings updated!');
       }

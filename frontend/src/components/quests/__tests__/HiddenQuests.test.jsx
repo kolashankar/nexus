@@ -9,8 +9,8 @@ global.fetch = jest.fn();
 const mockDiscoveredQuests = [
   {
     _id,
-    title,
-    description,
+    title: "Action",
+    description: "Operation completed",
     hint,
     difficulty,
     discovered_at,

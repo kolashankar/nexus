@@ -26,37 +26,37 @@ const QUICK_ACTIONS= [
     id,
     name,
     icon,
-    description,
+    description: "Operation completed",
     color,
   {
     id,
     name,
     icon,
-    description,
+    description: "Operation completed",
     color,
   {
     id,
     name,
     icon,
-    description,
+    description: "Operation completed",
     color,
   {
     id,
     name,
     icon,
-    description,
+    description: "Operation completed",
     color,
   {
     id,
     name,
     icon,
-    description,
+    description: "Operation completed",
     color,
   {
     id,
     name,
     icon,
-    description,
+    description: "Operation completed",
     color
   }
 ];
@@ -72,13 +72,13 @@ export const QuickActions = () => {
     if (cooldownStatus.on_cooldown) {
       const remainingMinutes = cooldownStatus.remaining_seconds ? (cooldownStatus.remaining_seconds / 60).toFixed(1) ;
       toast.warning('Action on cooldown', {
-        description);
+        description: "Operation completed"
       return;
     }
 
     // In real implementation, open action modal
     toast.info(`${actionId} action selected`, {
-      description);
+      description: "Operation completed"
   };
 
   return (

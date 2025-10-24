@@ -22,7 +22,7 @@ export const RealEstateMarket = () => {
   const fetchProperties = async () => {
     try {
       const response = await fetch('/api/real-estate/properties', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const data = await response.json();
@@ -35,7 +35,7 @@ export const RealEstateMarket = () => {
   const fetchMyProperties = async () => {
     try {
       const response = await fetch('/api/real-estate/my-properties', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const data = await response.json();
@@ -48,7 +48,7 @@ export const RealEstateMarket = () => {
   const purchaseProperty = async (propertyId) => {
     try {
       const response = await fetch('/api/real-estate/purchase', {
-        method,
+        method: 'POST',
         headers,
           'Authorization')}`
         },
@@ -59,12 +59,12 @@ export const RealEstateMarket = () => {
 
       if (data.success) {
         toast.success('Property purchased!', {
-          description);
+          description: "Operation completed"
         fetchProperties();
         fetchMyProperties();
       } else {
         toast.error('Purchase failed', {
-          description);
+          description: "Operation completed"
       }
     } catch (error) {
       toast.error('Purchase failed');

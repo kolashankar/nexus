@@ -23,7 +23,7 @@ export const InvestmentPortfolio = () => {
   const fetchPortfolio = async () => {
     try {
       const response = await fetch('/api/investments/portfolio', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const data = await response.json();
@@ -36,7 +36,7 @@ export const InvestmentPortfolio = () => {
   const fetchOpportunities = async () => {
     try {
       const response = await fetch('/api/investments/opportunities', {
-        headers)}`
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }}`
         }
       });
       const data = await response.json();
@@ -49,7 +49,7 @@ export const InvestmentPortfolio = () => {
   const makeInvestment = async (investmentId, amount) => {
     try {
       const response = await fetch('/api/investments/invest', {
-        method,
+        method: 'POST',
         headers,
           'Authorization')}`
         },
@@ -60,11 +60,11 @@ export const InvestmentPortfolio = () => {
 
       if (data.success) {
         toast.success('Investment successful!', {
-          description);
+          description: "Operation completed"
         fetchPortfolio();
       } else {
         toast.error('Investment failed', {
-          description);
+          description: "Operation completed"
       }
     } catch (error) {
       toast.error('Investment failed');

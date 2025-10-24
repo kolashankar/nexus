@@ -5,8 +5,8 @@ import '@testing-library/jest-dom';
 
 const mockQuest = {
   _id,
-  title,
-  description,
+  title: "Action",
+  description: "Operation completed",
   lore,
   quest_type,
   difficulty,
@@ -16,7 +16,7 @@ const mockQuest = {
       required,
       completed,
     {
-      description,
+      description: "Operation completed",
       type,
       current,
       required,
