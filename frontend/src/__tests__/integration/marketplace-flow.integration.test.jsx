@@ -10,18 +10,18 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 const mockRobots = [
-  { _id, name, type, price, level,
-  { _id, name, type, price, level: 1,
+  { _id: '1', name: 'Worker Bot', type: 'worker', price: 500, level: 1 },
+  { _id: '2', name: 'Combat Bot', type: 'combat', price: 1500, level: 1 }
 ];
 
 const mockStocks = [
-  { ticker, name, price, change_24h,
-  { ticker, name, price, change_24h,
+  { ticker: 'ROBO', name: 'Robot Corp', price: 150.5, change_24h: 5.2 },
+  { ticker: 'TECH', name: 'Tech Industries', price: 89.3, change_24h: -2.1 }
 ];
 
 const mockPlayer = {
-  _id: "test-id",
-  currencies,
+  _id: 'test-id',
+  currencies: { coins: 5000 }
 };
 
 const server = setupServer(
@@ -32,9 +32,10 @@ const server = setupServer(
   rest.post('/api/robots/purchase', (req, res, ctx) => {
     return res(
       ctx.json({
-        success,
-        robot_id,
-        message)
+        success: true,
+        robot_id: '1',
+        message: 'Robot purchased'
+      })
     );
   }),
   
@@ -45,9 +46,9 @@ const server = setupServer(
   rest.post('/api/market/stocks/buy', (req, res, ctx) => {
     return res(
       ctx.json({
-        success,
-        shares,
-        total_cost,
+        success: true,
+        shares: 10,
+        total_cost: 1505
       })
     );
   }),
@@ -64,9 +65,9 @@ afterAll(() => server.close());
 describe('Marketplace Flow Integration Tests', () => {
   test('browse and purchase robot', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <MarketplacePage />
+      </BrowserRouter>
     );
     
     // Wait for robots to load
@@ -90,9 +91,9 @@ describe('Marketplace Flow Integration Tests', () => {
   
   test('filter robots by type', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <MarketplacePage />
+      </BrowserRouter>
     );
     
     await waitFor(() => {
@@ -110,9 +111,9 @@ describe('Marketplace Flow Integration Tests', () => {
   
   test('stock market purchase flow', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <MarketplacePage />
+      </BrowserRouter>
     );
     
     // Switch to stocks tab
@@ -130,7 +131,7 @@ describe('Marketplace Flow Integration Tests', () => {
     
     // Enter quantity
     const quantityInput = screen.getByPlaceholderText(/quantity/i);
-    fireEvent.change(quantityInput, { target);
+    fireEvent.change(quantityInput, { target: { value: '10' } });
     
     // Confirm purchase
     const confirmButton = screen.getByText(/confirm/i);
@@ -147,15 +148,15 @@ describe('Marketplace Flow Integration Tests', () => {
       rest.post('/api/robots/purchase', (req, res, ctx) => {
         return res(
           ctx.status(400),
-          ctx.json({ error)
+          ctx.json({ error: 'Insufficient funds' })
         );
       })
     );
     
     render(
-      
-        
-      
+      <BrowserRouter>
+        <MarketplacePage />
+      </BrowserRouter>
     );
     
     await waitFor(() => {
@@ -177,9 +178,9 @@ describe('Marketplace Flow Integration Tests', () => {
   
   test('view robot details', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <MarketplacePage />
+      </BrowserRouter>
     );
     
     await waitFor(() => {
@@ -193,15 +194,15 @@ describe('Marketplace Flow Integration Tests', () => {
     // Should show details modal
     await waitFor(() => {
       expect(screen.getByText(/details/i)).toBeInTheDocument();
-      expect(screen.getByText(/type)).toBeInTheDocument();
+      expect(screen.getByText(/type/)).toBeInTheDocument();
     });
   });
   
   test('sort items by price', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <MarketplacePage />
+      </BrowserRouter>
     );
     
     await waitFor(() => {

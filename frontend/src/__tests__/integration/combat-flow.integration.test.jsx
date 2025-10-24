@@ -10,32 +10,33 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 const mockCombatState = {
-  battle_id,
-  player1,
-    username: "testuser",
-    hp,
-    max_hp,
-    ap,
+  battle_id: 'battle-123',
+  player1: {
+    username: 'testuser',
+    hp: 100,
+    max_hp: 100,
+    ap: 10
   },
-  player2,
-    username,
-    hp,
-    max_hp,
-    ap,
+  player2: {
+    username: 'Opponent',
+    hp: 80,
+    max_hp: 100,
+    ap: 8
   },
-  current_turn,
-  turn_number,
-  status,
-  log,
+  current_turn: 'testuser',
+  turn_number: 1,
+  status: 'active',
+  log: []
 };
 
 const server = setupServer(
   rest.post('/api/combat/challenge', (req, res, ctx) => {
     return res(
       ctx.json({
-        success,
-        battle_id,
-        message)
+        success: true,
+        battle_id: 'battle-123',
+        message: 'Challenge sent'
+      })
     );
   }),
   
@@ -46,10 +47,10 @@ const server = setupServer(
   rest.post('/api/combat/action', (req, res, ctx) => {
     const updatedState = {
       ...mockCombatState,
-      player2, hp,
-      current_turn,
-      turn_number,
-      log,
+      player2: { ...mockCombatState.player2, hp: 55 },
+      current_turn: 'Opponent',
+      turn_number: 2,
+      log: ['TestPlayer attacks for 25 damage']
     };
     return res(ctx.json(updatedState));
   })
@@ -62,9 +63,9 @@ afterAll(() => server.close());
 describe('Combat Flow Integration Tests', () => {
   test('challenge another player flow', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <CombatPage />
+      </BrowserRouter>
     );
     
     // Click challenge button
@@ -73,7 +74,7 @@ describe('Combat Flow Integration Tests', () => {
     
     // Enter opponent name
     const opponentInput = screen.getByPlaceholderText(/player name/i);
-    fireEvent.change(opponentInput, { target);
+    fireEvent.change(opponentInput, { target: { value: 'Opponent' } });
     
     // Send challenge
     const sendButton = screen.getByText(/send challenge/i);
@@ -87,9 +88,9 @@ describe('Combat Flow Integration Tests', () => {
   
   test('complete combat turn flow', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <CombatPage />
+      </BrowserRouter>
     );
     
     // Wait for combat to load
@@ -113,13 +114,13 @@ describe('Combat Flow Integration Tests', () => {
   
   test('display action points correctly', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <CombatPage />
+      </BrowserRouter>
     );
     
     await waitFor(() => {
-      expect(screen.getByText(/AP)).toBeInTheDocument();
+      expect(screen.getByText(/AP/)).toBeInTheDocument();
     });
   });
   
@@ -129,17 +130,18 @@ describe('Combat Flow Integration Tests', () => {
         return res(
           ctx.json({
             ...mockCombatState,
-            player1, ap,
-            player2, hp,
-            log)
+            player1: { ...mockCombatState.player1, ap: 5 },
+            player2: { ...mockCombatState.player2, hp: 45 },
+            log: ['TestPlayer uses Heavy Attack for 35 damage!']
+          })
         );
       })
     );
     
     render(
-      
-        
-      
+      <BrowserRouter>
+        <CombatPage />
+      </BrowserRouter>
     );
     
     await waitFor(() => {
@@ -156,7 +158,7 @@ describe('Combat Flow Integration Tests', () => {
     
     // Should consume AP and deal damage
     await waitFor(() => {
-      expect(screen.getByText(/AP)).toBeInTheDocument();
+      expect(screen.getByText(/AP/)).toBeInTheDocument();
       expect(screen.getByText(/Heavy Attack/i)).toBeInTheDocument();
     });
   });
@@ -167,18 +169,18 @@ describe('Combat Flow Integration Tests', () => {
         return res(
           ctx.json({
             ...mockCombatState,
-            status,
-            winner,
-            player2, hp,
+            status: 'completed',
+            winner: 'testuser',
+            player2: { ...mockCombatState.player2, hp: 0 }
           })
         );
       })
     );
     
     render(
-      
-        
-      
+      <BrowserRouter>
+        <CombatPage />
+      </BrowserRouter>
     );
     
     // Should show victory screen
@@ -195,16 +197,17 @@ describe('Combat Flow Integration Tests', () => {
       rest.post('/api/combat/flee', (req, res, ctx) => {
         return res(
           ctx.json({
-            success,
-            message)
+            success: true,
+            message: 'Fled from combat'
+          })
         );
       })
     );
     
     render(
-      
-        
-      
+      <BrowserRouter>
+        <CombatPage />
+      </BrowserRouter>
     );
     
     await waitFor(() => {

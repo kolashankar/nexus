@@ -10,12 +10,12 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 const mockPlayer = {
-  _id: "test-id",
-  username: "testuser",
+  _id: 'test-id',
+  username: 'testuser',
   level: 1,
-  karma_points,
-  currencies,
-  traits, hacking,
+  karma_points: 500,
+  currencies: { coins: 1000 },
+  traits: { hacking: 75 }
 };
 
 const server = setupServer(
@@ -26,26 +26,27 @@ const server = setupServer(
   rest.post('/api/actions/help', (req, res, ctx) => {
     return res(
       ctx.json({
-        success,
-        karma_change,
-        message)
+        success: true,
+        karma_change: 10,
+        message: 'Helped another player'
+      })
     );
   }),
   
   rest.get('/api/quests/available', (req, res, ctx) => {
     return res(
-      ctx.json([
-        {
-          _id: "test-id",
-          title,
-          status,
-          rewards, xp)
+      ctx.json([{
+        _id: 'test-id',
+        title: 'Help the Merchant',
+        status: 'available',
+        rewards: { xp: 100 }
+      }])
     );
   }),
   
   rest.post('/api/quests/accept', (req, res, ctx) => {
     return res(
-      ctx.json({ success, quest_id)
+      ctx.json({ success: true, quest_id: 'test-id' })
     );
   })
 );
@@ -57,9 +58,9 @@ afterAll(() => server.close());
 describe('Gameplay Flow Integration Tests', () => {
   test('complete action flow (help another player)', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <Dashboard />
+      </BrowserRouter>
     );
     
     // Wait for dashboard to load
@@ -77,7 +78,7 @@ describe('Gameplay Flow Integration Tests', () => {
     
     // Fill target player
     const targetInput = screen.getByPlaceholderText(/player name/i);
-    fireEvent.change(targetInput, { target);
+    fireEvent.change(targetInput, { target: { value: 'helper' } });
     
     // Submit action
     const submitButton = screen.getByText(/confirm/i);
@@ -91,9 +92,9 @@ describe('Gameplay Flow Integration Tests', () => {
   
   test('quest acceptance and tracking', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <Dashboard />
+      </BrowserRouter>
     );
     
     // Navigate to quests
@@ -117,9 +118,9 @@ describe('Gameplay Flow Integration Tests', () => {
   
   test('trait progression visualization', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <Dashboard />
+      </BrowserRouter>
     );
     
     // Navigate to profile
@@ -139,9 +140,9 @@ describe('Gameplay Flow Integration Tests', () => {
   
   test('karma system update flow', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <Dashboard />
+      </BrowserRouter>
     );
     
     // Initial karma
@@ -160,9 +161,9 @@ describe('Gameplay Flow Integration Tests', () => {
   
   test('navigation between game sections', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <Dashboard />
+      </BrowserRouter>
     );
     
     // Dashboard -> Profile
