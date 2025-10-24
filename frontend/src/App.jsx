@@ -10,19 +10,6 @@ import Landing from './pages/Landing/Landing';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
-import Combat from './pages/Combat/Combat';
-import Actions from './pages/Actions/Actions';
-import Guild from './pages/Guild/Guild';
-import Karma from './pages/Karma/Karma';
-import Prestige from './pages/Prestige/Prestige';
-import Profile from './pages/Profile/Profile';
-import Progression from './pages/Progression/Progression';
-import Quests from './pages/Quests/QuestsDashboard';
-import Seasonal from './pages/Seasonal/SeasonalDashboard';
-import Skills from './pages/Skills/Skills';
-import SocialHub from './pages/SocialHub/SocialHub';
-import Territories from './pages/Territories/Territories';
-import World from './pages/World/WorldDashboard';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useStore();
@@ -51,97 +38,6 @@ function App() {
                   <Dashboard />
                 </ProtectedRoute>
               } />
-            <Route 
-              path="/combat" 
-              element={
-                <ProtectedRoute>
-                  <Combat />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/actions" 
-              element={
-                <ProtectedRoute>
-                  <Actions />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/guild" 
-              element={
-                <ProtectedRoute>
-                  <Guild />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/karma" 
-              element={
-                <ProtectedRoute>
-                  <Karma />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/prestige" 
-              element={
-                <ProtectedRoute>
-                  <Prestige />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/profile" 
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/progression" 
-              element={
-                <ProtectedRoute>
-                  <Progression />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/quests" 
-              element={
-                <ProtectedRoute>
-                  <Quests />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/seasonal" 
-              element={
-                <ProtectedRoute>
-                  <Seasonal />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/skills" 
-              element={
-                <ProtectedRoute>
-                  <Skills />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/social" 
-              element={
-                <ProtectedRoute>
-                  <SocialHub />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/territories" 
-              element={
-                <ProtectedRoute>
-                  <Territories />
-                </ProtectedRoute>
-              } />
-            <Route 
-              path="/world" 
-              element={
-                <ProtectedRoute>
-                  <World />
-                </ProtectedRoute>
-              } />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
@@ -150,5 +46,7 @@ function App() {
     </BrowserRouter>
   );
 }
+
+export default App;
 
 export default App;
