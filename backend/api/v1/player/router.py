@@ -15,7 +15,7 @@ async def get_my_profile(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """Get current player's full profile."""
-    profile_service = PlayerProfileService(db)
+    profile_service = PlayerProfileService()
     return await profile_service.get_full_profile(current_user.id)
 
 @router.put("/profile", response_model=PlayerProfileResponse)
@@ -25,7 +25,7 @@ async def update_profile(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """Update current player's profile."""
-    profile_service = PlayerProfileService(db)
+    profile_service = PlayerProfileService()
     return await profile_service.update_profile(current_user.id, update_data)
 
 @router.get("/profile/{player_id}", response_model=PlayerResponse)
@@ -48,7 +48,7 @@ async def get_player_stats(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """Get current player's statistics."""
-    profile_service = PlayerProfileService(db)
+    profile_service = PlayerProfileService()
     return await profile_service.get_player_stats(current_user.id)
 
 @router.get("/currencies")
