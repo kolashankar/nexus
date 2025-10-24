@@ -1,14 +1,19 @@
 import { describe, it, expect } from '@jest/globals';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+
+describe('Auth Flow Integration Tests', () => {
   const testUser = {
-    username)}`,
-    email)}@example.com`,
-    password,
+    username: `testuser_${Date.now()}`,
+    email: `testuser_${Date.now()}@example.com`,
+    password: 'SecurePass123!'
   };
 
-  let authToken, () => {
+  let authToken;
+  let refreshToken;
+
+  describe('Registration', () => {
     it('should register a new user', async () => {
       const response = await axios.post(`${API_URL}/api/auth/register`, testUser);
 
@@ -30,8 +35,8 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
     it('should validate password strength', async () => {
       const weakUser = {
         ...testUser,
-        username: "testuser",
-        password,
+        username: 'testuser_weak',
+        password: '123'
       };
 
       try {
@@ -46,8 +51,8 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
   describe('Login', () => {
     it('should login with correct credentials', async () => {
       const response = await axios.post(`${API_URL}/api/auth/login`, {
-        username: "testuser",
-        password,
+        username: testUser.username,
+        password: testUser.password
       });
 
       expect(response.status).toBe(200);
@@ -61,8 +66,8 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
     it('should fail with incorrect password', async () => {
       try {
         await axios.post(`${API_URL}/api/auth/login`, {
-          username: "testuser",
-          password,
+          username: testUser.username,
+          password: 'wrongpassword'
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -73,8 +78,8 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
     it('should fail with non-existent user', async () => {
       try {
         await axios.post(`${API_URL}/api/auth/login`, {
-          username: "testuser",
-          password,
+          username: 'nonexistentuser',
+          password: 'somepassword'
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -86,7 +91,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
   describe('Protected Routes', () => {
     it('should access protected route with valid token', async () => {
       const response = await axios.get(`${API_URL}/api/auth/me`, {
-        headers,
+        headers: { Authorization: `Bearer ${authToken}` }
       });
 
       expect(response.status).toBe(200);
@@ -105,7 +110,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
     it('should reject request with invalid token', async () => {
       try {
         await axios.get(`${API_URL}/api/auth/me`, {
-          headers,
+          headers: { Authorization: 'Bearer invalid-token' }
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -117,7 +122,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
   describe('Token Refresh', () => {
     it('should refresh access token', async () => {
       const response = await axios.post(`${API_URL}/api/auth/refresh`, {
-        refresh_token,
+        refresh_token: refreshToken
       });
 
       expect(response.status).toBe(200);
@@ -128,7 +133,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
     it('should reject invalid refresh token', async () => {
       try {
         await axios.post(`${API_URL}/api/auth/refresh`, {
-          refresh_token,
+          refresh_token: 'invalid-refresh-token'
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -143,7 +148,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
         `${API_URL}/api/auth/logout`,
         {},
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken}` }
         }
       );
 
