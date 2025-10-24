@@ -4,7 +4,7 @@ import { QuestDetails } from '../QuestDetails';
 import '@testing-library/jest-dom';
 
 const mockQuest = {
-  _id: "test-id",
+  _id,
   title,
   description,
   lore,

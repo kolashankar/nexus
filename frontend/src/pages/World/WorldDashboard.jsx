@@ -12,9 +12,7 @@ const WorldDashboard = () => {
     <div className="container mx-auto py-6">
       <div className="mb-6">
         <h1 className="text-3xl font-bold">World Events</h1>
-        <p className="text-muted-foreground">
-          Global and regional events affecting the game world
-        </p>
+        <p className="text-muted-foreground">Global and regional events affecting the game world</p>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -34,7 +32,7 @@ const WorldDashboard = () => {
         </TabsContent>
 
         <TabsContent value="regional">
-          <div className="grid md:grid-cols-[300px_1fr] gap-6">
+          <div className="grid md
             {/* Territory Selector */}
             <div>
               <h3 className="font-semibold mb-3">Select Territory</h3>
@@ -46,7 +44,7 @@ const WorldDashboard = () => {
                     className={`w-full p-3 rounded-lg border text-left transition-colors ${
                       selectedTerritory === id
                         ? 'border-primary bg-primary/10'
-                        : 'border-border hover:border-primary/50'
+                        
                     }`}
                   >
                     Territory {id}

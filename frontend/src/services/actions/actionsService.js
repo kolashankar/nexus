@@ -19,7 +19,7 @@ export const actionsService = {
   async donate(targetId, amount) {
     const response = await apiClient.post('/api/actions/donate', {
       target_id: targetId,
-      amount
+      amount,
     });
     return response.data;
   },
@@ -28,7 +28,7 @@ export const actionsService = {
     const response = await apiClient.post('/api/actions/trade', {
       target_id: targetId,
       offer,
-      request
+      request,
     });
     return response.data;
   },
@@ -41,5 +41,5 @@ export const actionsService = {
   async getRecent() {
     const response = await apiClient.get('/api/actions/recent');
     return response.data;
-  }
+  },
 };

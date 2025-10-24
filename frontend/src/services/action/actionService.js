@@ -7,13 +7,10 @@ import { apiClient } from '../api/client';
 /**
  * Perform a hack action on another player.
  */
-export const performHack = async (
-  targetPlayerId,
-  actionData
-) => {
+export const performHack = async (targetPlayerId, actionData) => {
   const response = await apiClient.post('/api/actions/hack', {
     target_player_id: targetPlayerId,
-    ...actionData
+    ...actionData,
   });
   return response.data;
 };
@@ -21,15 +18,11 @@ export const performHack = async (
 /**
  * Perform a help action on another player.
  */
-export const performHelp = async (
-  targetPlayerId,
-  helpType,
-  amount
-) => {
+export const performHelp = async (targetPlayerId, helpType, amount) => {
   const response = await apiClient.post('/api/actions/help', {
     target_player_id: targetPlayerId,
     help_type: helpType,
-    amount
+    amount,
   });
   return response.data;
 };
@@ -37,15 +30,11 @@ export const performHelp = async (
 /**
  * Perform a steal action on another player.
  */
-export const performSteal = async (
-  targetPlayerId,
-  stealType,
-  targetItemId
-) => {
+export const performSteal = async (targetPlayerId, stealType, targetItemId) => {
   const response = await apiClient.post('/api/actions/steal', {
     target_player_id: targetPlayerId,
     steal_type: stealType,
-    target_item_id: targetItemId
+    target_item_id: targetItemId,
   });
   return response.data;
 };
@@ -53,15 +42,11 @@ export const performSteal = async (
 /**
  * Perform a donate action to another player.
  */
-export const performDonate = async (
-  targetPlayerId,
-  amount,
-  message
-) => {
+export const performDonate = async (targetPlayerId, amount, message) => {
   const response = await apiClient.post('/api/actions/donate', {
     target_player_id: targetPlayerId,
     amount,
-    message
+    message,
   });
   return response.data;
 };
@@ -81,7 +66,7 @@ export const performTrade = async (
     offer_items: offerItems,
     request_items: requestItems,
     offer_credits: offerCredits,
-    request_credits: requestCredits
+    request_credits: requestCredits,
   });
   return response.data;
 };
@@ -89,12 +74,9 @@ export const performTrade = async (
 /**
  * Get action history for current player.
  */
-export const getActionHistory = async (
-  limit = 50,
-  offset = 0
-) => {
+export const getActionHistory = async (limit = 50, offset = 0) => {
   const response = await apiClient.get('/api/actions/history', {
-    params: { limit, offset }
+    params: { limit, offset },
   });
   return response.data;
 };
@@ -159,5 +141,5 @@ export const actionService = {
   checkCooldown,
   cancelTrade,
   acceptTrade,
-  declineTrade
+  declineTrade,
 };

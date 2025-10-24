@@ -44,9 +44,9 @@ export function throttle(func, limit) {
 export function memoize(func) {
   const cache = new Map();
 
-  return ((...args) => {
+  return (...args) => {
     const key = JSON.stringify(args);
-    
+
     if (cache.has(key)) {
       return cache.get(key);
     }
@@ -54,7 +54,7 @@ export function memoize(func) {
     const result = func(...args);
     cache.set(key, result);
     return result;
-  });
+  };
 }
 
 /**
@@ -76,7 +76,7 @@ export function requestIdleCallback(callback, options) {
     const start = Date.now();
     callback({
       didTimeout: false,
-      timeRemaining: () => Math.max(0, 50 - (Date.now() - start))
+      timeRemaining: () => Math.max(0, 50 - (Date.now() - start)),
     });
   }, 1);
 }
@@ -97,7 +97,7 @@ export function cancelIdleCallback(id) {
  */
 export function batchUpdates(updates) {
   // In React 18, batching is automatic, but this can be useful for older versions
-  updates.forEach(update => update());
+  updates.forEach((update) => update());
 }
 
 /**
@@ -118,7 +118,7 @@ export function createIntersectionObserver(callback, options) {
     root: null,
     rootMargin: '0px',
     threshold: 0.1,
-    ...options
+    ...options,
   });
 }
 
@@ -129,7 +129,7 @@ export async function prefetchData(url, options) {
   try {
     const response = await fetch(url, {
       ...options,
-      priority: 'low'
+      priority: 'low',
     });
     // Cache the response
     await response.json();

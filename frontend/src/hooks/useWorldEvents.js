@@ -13,7 +13,7 @@ export const useWorldEvents = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/world/state`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setWorldState(response.data);
     } catch (err) {
@@ -26,7 +26,7 @@ export const useWorldEvents = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/world/events`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setActiveEvents(response.data);
     } catch (err) {
@@ -48,10 +48,7 @@ export const useWorldEvents = () => {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      await Promise.all([
-        fetchWorldState(),
-        fetchActiveEvents()
-      ]);
+      await Promise.all([fetchWorldState(), fetchActiveEvents()]);
       setLoading(false);
     };
 
@@ -73,6 +70,6 @@ export const useWorldEvents = () => {
     loading,
     error,
     refreshWorldState,
-    refreshActiveEvents
+    refreshActiveEvents,
   };
 };

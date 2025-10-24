@@ -13,7 +13,7 @@ export const useBattlePass = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/seasonal/battle-pass/active`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setBattlePass(response.data);
     } catch (err) {
@@ -26,7 +26,7 @@ export const useBattlePass = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/seasonal/battle-pass/progress`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setProgress(response.data);
     } catch (err) {
@@ -47,7 +47,7 @@ export const useBattlePass = () => {
       `${API_URL}/api/seasonal/battle-pass/claim-rewards`,
       { tier },
       {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
@@ -59,7 +59,7 @@ export const useBattlePass = () => {
       `${API_URL}/api/seasonal/battle-pass/purchase-premium`,
       {},
       {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
@@ -77,6 +77,6 @@ export const useBattlePass = () => {
     error,
     claimRewards,
     purchasePremium,
-    refreshProgress
+    refreshProgress,
   };
 };

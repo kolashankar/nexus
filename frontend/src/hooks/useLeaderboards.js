@@ -15,12 +15,12 @@ export const useLeaderboards = () => {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/leaderboards/${type}`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { limit }
+        params: { limit },
       });
-      
-      setLeaderboards(prev => ({
+
+      setLeaderboards((prev) => ({
         ...prev,
-        [type]: response.data
+        [type]: response.data,
       }));
     } catch (err) {
       console.error(`Error fetching ${type} leaderboard`, err);
@@ -34,12 +34,12 @@ export const useLeaderboards = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/leaderboards/my-rank/${type}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      
-      setMyRanks(prev => ({
+
+      setMyRanks((prev) => ({
         ...prev,
-        [type]: response.data
+        [type]: response.data,
       }));
     } catch (err) {
       console.error(`Error fetching my rank for ${type}:`, err);
@@ -53,6 +53,6 @@ export const useLeaderboards = () => {
     loading,
     error,
     fetchLeaderboard,
-    fetchMyRank
+    fetchMyRank,
   };
 };

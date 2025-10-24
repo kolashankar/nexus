@@ -7,7 +7,7 @@ describe('Auth Flow Integration Tests', () => {
   const testUser = {
     username: `testuser_${Date.now()}`,
     email: `testuser_${Date.now()}@example.com`,
-    password: 'SecurePass123!'
+    password: 'SecurePass123!',
   };
 
   let authToken;
@@ -36,7 +36,7 @@ describe('Auth Flow Integration Tests', () => {
       const weakUser = {
         ...testUser,
         username: 'testuser_weak',
-        password: '123'
+        password: '123',
       };
 
       try {
@@ -52,7 +52,7 @@ describe('Auth Flow Integration Tests', () => {
     it('should login with correct credentials', async () => {
       const response = await axios.post(`${API_URL}/api/auth/login`, {
         username: testUser.username,
-        password: testUser.password
+        password: testUser.password,
       });
 
       expect(response.status).toBe(200);
@@ -67,7 +67,7 @@ describe('Auth Flow Integration Tests', () => {
       try {
         await axios.post(`${API_URL}/api/auth/login`, {
           username: testUser.username,
-          password: 'wrongpassword'
+          password: 'wrongpassword',
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -79,7 +79,7 @@ describe('Auth Flow Integration Tests', () => {
       try {
         await axios.post(`${API_URL}/api/auth/login`, {
           username: 'nonexistentuser',
-          password: 'somepassword'
+          password: 'somepassword',
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -91,7 +91,7 @@ describe('Auth Flow Integration Tests', () => {
   describe('Protected Routes', () => {
     it('should access protected route with valid token', async () => {
       const response = await axios.get(`${API_URL}/api/auth/me`, {
-        headers: { Authorization: `Bearer ${authToken}` }
+        headers: { Authorization: `Bearer ${authToken}` },
       });
 
       expect(response.status).toBe(200);
@@ -110,7 +110,7 @@ describe('Auth Flow Integration Tests', () => {
     it('should reject request with invalid token', async () => {
       try {
         await axios.get(`${API_URL}/api/auth/me`, {
-          headers: { Authorization: 'Bearer invalid-token' }
+          headers: { Authorization: 'Bearer invalid-token' },
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -122,7 +122,7 @@ describe('Auth Flow Integration Tests', () => {
   describe('Token Refresh', () => {
     it('should refresh access token', async () => {
       const response = await axios.post(`${API_URL}/api/auth/refresh`, {
-        refresh_token: refreshToken
+        refresh_token: refreshToken,
       });
 
       expect(response.status).toBe(200);
@@ -133,7 +133,7 @@ describe('Auth Flow Integration Tests', () => {
     it('should reject invalid refresh token', async () => {
       try {
         await axios.post(`${API_URL}/api/auth/refresh`, {
-          refresh_token: 'invalid-refresh-token'
+          refresh_token: 'invalid-refresh-token',
         });
         fail('Should have thrown an error');
       } catch (error) {
@@ -148,7 +148,7 @@ describe('Auth Flow Integration Tests', () => {
         `${API_URL}/api/auth/logout`,
         {},
         {
-          headers: { Authorization: `Bearer ${authToken}` }
+          headers: { Authorization: `Bearer ${authToken}` },
         }
       );
 

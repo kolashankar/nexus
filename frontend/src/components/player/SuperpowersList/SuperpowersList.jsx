@@ -99,7 +99,7 @@ const SuperpowersList= () => {
                       onUse={() => handleUsePower(power.power_id)} />
                   ))}
                 
-              ) : (
+              ) 
                 
                   No superpowers unlocked yet. Meet requirements to unlock powers!
                 
@@ -124,7 +124,7 @@ const SuperpowersList= () => {
                       
                         Requirements).map(([trait, value]) => (
                             
-                              {trait}: {value}%
+                              {trait}
                             
                           ))}
                         

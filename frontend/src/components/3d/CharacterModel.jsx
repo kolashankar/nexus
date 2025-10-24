@@ -6,7 +6,7 @@ import { MODEL_PATHS } from '../../services/3d/ModelPaths';
  * Character Model component
  * Specialized component for player characters
  */
-export const CharacterModel = ({ 
+export const CharacterModel = ({
   gender,
   bodyType = 'base',
   position,
@@ -14,7 +14,7 @@ export const CharacterModel = ({
   scale = [1, 1, 1],
   animation = 'idle',
   sceneManager,
-  onLoad
+  onLoad,
 }) => {
   const [modelUrl, setModelUrl] = useState('');
 

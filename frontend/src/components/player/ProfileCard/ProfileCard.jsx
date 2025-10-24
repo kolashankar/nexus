@@ -8,7 +8,7 @@ import { usePlayer } from '@/hooks/usePlayer';
 
 
 const ProfileCard = ({  showActions = true  }) => {
-  const { player, isLoading: loading } = usePlayer();
+  const { player, isLoading= usePlayer();
 
   if (loading || !player) {
     return (

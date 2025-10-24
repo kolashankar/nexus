@@ -19,18 +19,18 @@ export const CampaignViewer = () => {
   const fetchActiveCampaign = async () => {
     try {
       const response = await fetch('/api/quests/campaigns/active', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        headers
+          Authorization)}`,
+        },
       });
       if (response.ok) {
         const data = await response.json();
         if (data) {
           // Fetch progress
           const progressResponse = await fetch('/api/quests/campaigns/progress', {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+            headers
+              Authorization)}`,
+            },
           });
           const progressData = await progressResponse.json();
           setActiveCampaign(progressData);
@@ -46,9 +46,9 @@ export const CampaignViewer = () => {
   const fetchAvailableCampaigns = async () => {
     try {
       const response = await fetch('/api/quests/campaigns/available', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        headers
+          Authorization)}`,
+        },
       });
       const data = await response.json();
       setAvailableCampaigns(data.campaigns || []);
@@ -60,24 +60,24 @@ export const CampaignViewer = () => {
   const startCampaign = async (campaignType) => {
     try {
       const response = await fetch('/api/quests/campaigns/start', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        method,
+        headers
+          'Content-Type',
+          Authorization)}`,
         },
-        body: JSON.stringify({ campaign_type: campaignType })
+        body),
       });
 
       const data = await response.json();
 
       if (data.success) {
         toast.success('Campaign started!', {
-          description: data.message
+          description,
         });
         fetchActiveCampaign();
       } else {
         toast.error('Failed to start campaign', {
-          description: data.detail
+          description,
         });
       }
     } catch (error) {
@@ -96,9 +96,7 @@ export const CampaignViewer = () => {
           <BookOpen className="w-6 h-6" />
           <div>
             <h2 className="text-2xl font-bold">Story Campaigns</h2>
-            <p className="text-muted-foreground">
-              Epic storylines with lasting consequences
-            </p>
+            <p className="text-muted-foreground">Epic storylines with lasting consequences</p>
           </div>
         </div>
       </Card>
@@ -127,41 +125,33 @@ export const CampaignViewer = () => {
           <Card className="p-6">
             <h3 className="text-lg font-bold mb-4">Chapters</h3>
             <div className="space-y-3">
-              {activeCampaign.chapters.map(chapter => (
+              {activeCampaign.chapters.map((chapter) => (
                 <div key={chapter.chapter_number} className="border rounded-lg p-4">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         <h4 className="font-semibold">{chapter.title}</h4>
-                        <Badge variant="outline">
-                          Chapter {chapter.chapter_number}
-                        </Badge>
+                        <Badge variant="outline">Chapter {chapter.chapter_number}</Badge>
                       </div>
                       {chapter.completed ? (
                         <CheckCircle2 className="text-green-500" />
-                      ) : chapter.unlocked ? (
+                      ) 
                         <Play className="text-blue-500" />
-                      ) : (
+                      ) 
                         <Lock className="text-gray-400" />
                       )}
                     </div>
 
-                    <p className="text-sm text-muted-foreground mt-2">
-                      {chapter.description}
-                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">{chapter.description}</p>
 
-                    {chapter.unlocked && !chapter.completed && (
-                      <Button size="sm">
-                        Continue
-                      </Button>
-                    )}
+                    {chapter.unlocked && !chapter.completed && <Button size="sm">Continue</Button>}
                   </div>
                 </div>
               ))}
             </div>
           </Card>
         </div>
-      ) : (
+      ) 
         <div className="space-y-4">
           <Card className="p-8">
             <div className="text-center">
@@ -175,14 +165,12 @@ export const CampaignViewer = () => {
           <Card className="p-6">
             <h3 className="text-lg font-bold mb-4">Available Campaigns</h3>
             <div className="grid gap-4">
-              {availableCampaigns.map(campaign => (
+              {availableCampaigns.map((campaign) => (
                 <div key={campaign.campaign_type} className="border rounded-lg p-4">
                   <div className="flex justify-between items-start">
                     <div>
                       <h4 className="font-bold mb-2">{campaign.title}</h4>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        {campaign.description}
-                      </p>
+                      <p className="text-sm text-muted-foreground mb-3">{campaign.description}</p>
                     </div>
 
                     <Button onClick={() => startCampaign(campaign.campaign_type)}>

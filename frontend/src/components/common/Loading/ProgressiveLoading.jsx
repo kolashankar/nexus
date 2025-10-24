@@ -7,7 +7,7 @@ const defaultStages = [
   'Almost ready...',
 ];
 
-export const ProgressiveLoading = ({ 
+export const ProgressiveLoading = ({
   stages = defaultStages,
   currentStage = 0,
   progress = 0,
@@ -34,14 +34,7 @@ export const ProgressiveLoading = ({
         {/* Progress Circle */}
         <div className="relative w-32 h-32 mx-auto">
           <svg className="w-full h-full" viewBox="0 0 100 100">
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="#e5e7eb"
-              strokeWidth="8"
-            />
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" strokeWidth="8" />
             <circle
               cx="50"
               cy="50"
@@ -66,14 +59,12 @@ export const ProgressiveLoading = ({
               <div
                 key={index}
                 className={`stage-dot w-3 h-3 rounded-full ${
-                  index <= currentStage ? 'bg-blue-500' : 'bg-gray-300'
+                  index <= currentStage ? 'bg-blue-500' 
                 }`}
               />
             ))}
           </div>
-          <p className="text-center text-muted-foreground">
-            {message || stages[currentStage]}
-          </p>
+          <p className="text-center text-muted-foreground">{message || stages[currentStage]}</p>
         </div>
       </div>
     </div>

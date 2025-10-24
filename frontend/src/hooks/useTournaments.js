@@ -13,7 +13,7 @@ export const useTournaments = () => {
       setLoading(true);
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/tournaments/active`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setTournaments(response.data);
     } catch (err) {
@@ -28,7 +28,7 @@ export const useTournaments = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/tournaments/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (err) {
@@ -43,7 +43,7 @@ export const useTournaments = () => {
       `${API_URL}/api/tournaments/register`,
       { tournament_id: id },
       {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data;
@@ -53,7 +53,7 @@ export const useTournaments = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${API_URL}/api/tournaments/my/tournaments`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       return response.data;
     } catch (err) {
@@ -69,6 +69,6 @@ export const useTournaments = () => {
     fetchActiveTournaments,
     fetchTournament,
     registerForTournament,
-    getMyTournaments
+    getMyTournaments,
   };
 };

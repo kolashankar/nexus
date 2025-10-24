@@ -21,7 +21,7 @@ class Analytics {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('config', 'GA_MEASUREMENT_ID', {
         page_path: path,
-        page_title: title
+        page_title: title,
       });
     }
   }
@@ -42,7 +42,7 @@ class Analytics {
       window.gtag('event', event.action, {
         event_category: event.category,
         event_label: event.label,
-        value: event.value
+        value: event.value,
       });
     }
   }
@@ -61,7 +61,7 @@ class Analytics {
     this.trackEvent({
       category: 'Quest',
       action: action,
-      label: `${questId}-${questType || ''}`
+      label: `${questId}-${questType || ''}`,
     });
   }
 
@@ -72,7 +72,7 @@ class Analytics {
     this.trackEvent({
       category: 'Combat',
       action: action,
-      label: opponentId || ''
+      label: opponentId || '',
     });
   }
 
@@ -83,7 +83,7 @@ class Analytics {
     this.trackEvent({
       category: 'Guild',
       action: action,
-      label: guildId || ''
+      label: guildId || '',
     });
   }
 
@@ -95,7 +95,7 @@ class Analytics {
       category: 'Marketplace',
       action: action,
       label: itemType,
-      value: amount
+      value: amount,
     });
   }
 
@@ -106,7 +106,7 @@ class Analytics {
     this.trackEvent({
       category: category,
       action: fatal ? 'Fatal Error' : 'Error',
-      label: error.message || error.toString()
+      label: error.message || error.toString(),
     });
 
     // Send to error tracking service
@@ -127,7 +127,7 @@ class Analytics {
     this.trackEvent({
       category: 'Performance',
       action: metric,
-      value: Math.round(value)
+      value: Math.round(value),
     });
   }
 
@@ -145,7 +145,7 @@ class Analytics {
         name: variable,
         value: Math.round(time),
         event_category: category,
-        event_label: label
+        event_label: label,
       });
     }
   }
@@ -195,6 +195,6 @@ export function useAnalytics() {
     trackGuildEvent: analytics.trackGuildEvent.bind(analytics),
     trackTransaction: analytics.trackTransaction.bind(analytics),
     trackError: analytics.trackError.bind(analytics),
-    trackPerformance: analytics.trackPerformance.bind(analytics)
+    trackPerformance: analytics.trackPerformance.bind(analytics),
   };
 }

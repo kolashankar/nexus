@@ -1,10 +1,7 @@
 module.exports = {
   testEnvironment: 'jsdom',
   roots: ['<rootDir>/src'],
-  testMatch: [
-    '**/__tests__/**/*.+(js|jsx)',
-    '**/?(*.)+(spec|test).+(js|jsx)',
-  ],
+  testMatch: ['**/__tests__/**/*.+(js|jsx)', '**/?(*.)+(spec|test).+(js|jsx)'],
   transform: {
     '^.+\\.(js|jsx)$': ['babel-jest', { presets: ['@babel/preset-env', '@babel/preset-react'] }],
   },
@@ -13,11 +10,7 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|svg|webp)$': '<rootDir>/src/tests/__mocks__/fileMock.js',
   },
   setupFilesAfterEnv: ['<rootDir>/src/tests/setup.js'],
-  collectCoverageFrom: [
-    'src/**/*.{js,jsx}',
-    '!src/tests/**',
-    '!src/**/*.stories.jsx',
-  ],
+  collectCoverageFrom: ['src/**/*.{js,jsx}', '!src/tests/**', '!src/**/*.stories.jsx'],
   coverageThreshold: {
     global: {
       branches: 60,

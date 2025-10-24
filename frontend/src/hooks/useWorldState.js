@@ -1,14 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { worldService } from '@/services/api/worldService';
 
-
-
-
-
 /**
  * Custom hook for managing world state
  */
-export const useWorldState = ()=> {
+export const useWorldState = () => {
   const [worldState, setWorldState] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,6 +37,6 @@ export const useWorldState = ()=> {
     worldState,
     loading,
     error,
-    refetch: fetchWorldState
+    refetch: fetchWorldState,
   };
 };

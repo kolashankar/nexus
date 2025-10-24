@@ -14,24 +14,24 @@ describe('Combat Flow Integration Tests', () => {
     // Login two test users
     const login1 = await axios.post(`${API_URL}/api/auth/login`, {
       username: 'testuser1',
-      password: 'testpass123'
+      password: 'testpass123',
     });
     authToken1 = login1.data.access_token;
 
     const login2 = await axios.post(`${API_URL}/api/auth/login`, {
       username: 'testuser2',
-      password: 'testpass123'
+      password: 'testpass123',
     });
     authToken2 = login2.data.access_token;
 
     // Get player IDs
     const profile1 = await axios.get(`${API_URL}/api/player/profile`, {
-      headers: { Authorization: `Bearer ${authToken1}` }
+      headers: { Authorization: `Bearer ${authToken1}` },
     });
     player1Id = profile1.data.player_id;
 
     const profile2 = await axios.get(`${API_URL}/api/player/profile`, {
-      headers: { Authorization: `Bearer ${authToken2}` }
+      headers: { Authorization: `Bearer ${authToken2}` },
     });
     player2Id = profile2.data.player_id;
   });
@@ -41,10 +41,10 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.post(
         `${API_URL}/api/combat/challenge`,
         {
-          target_player_id: player2Id
+          target_player_id: player2Id,
         },
         {
-          headers: { Authorization: `Bearer ${authToken1}` }
+          headers: { Authorization: `Bearer ${authToken1}` },
         }
       );
 
@@ -58,10 +58,10 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.post(
         `${API_URL}/api/combat/accept`,
         {
-          combat_id: combatId
+          combat_id: combatId,
         },
         {
-          headers: { Authorization: `Bearer ${authToken2}` }
+          headers: { Authorization: `Bearer ${authToken2}` },
         }
       );
 
@@ -77,10 +77,10 @@ describe('Combat Flow Integration Tests', () => {
         {
           combat_id: combatId,
           action_type: 'attack',
-          target: 'opponent'
+          target: 'opponent',
         },
         {
-          headers: { Authorization: `Bearer ${authToken1}` }
+          headers: { Authorization: `Bearer ${authToken1}` },
         }
       );
 
@@ -94,10 +94,10 @@ describe('Combat Flow Integration Tests', () => {
         `${API_URL}/api/combat/action`,
         {
           combat_id: combatId,
-          action_type: 'defend'
+          action_type: 'defend',
         },
         {
-          headers: { Authorization: `Bearer ${authToken2}` }
+          headers: { Authorization: `Bearer ${authToken2}` },
         }
       );
 
@@ -112,10 +112,10 @@ describe('Combat Flow Integration Tests', () => {
           combat_id: combatId,
           action_type: 'use_power',
           power_name: 'fireball',
-          target: 'opponent'
+          target: 'opponent',
         },
         {
-          headers: { Authorization: `Bearer ${authToken1}` }
+          headers: { Authorization: `Bearer ${authToken1}` },
         }
       );
 
@@ -126,12 +126,9 @@ describe('Combat Flow Integration Tests', () => {
 
   describe('Combat State', () => {
     it('should fetch current combat state', async () => {
-      const response = await axios.get(
-        `${API_URL}/api/combat/state?combat_id=${combatId}`,
-        {
-          headers: { Authorization: `Bearer ${authToken1}` }
-        }
-      );
+      const response = await axios.get(`${API_URL}/api/combat/state?combat_id=${combatId}`, {
+        headers: { Authorization: `Bearer ${authToken1}` },
+      });
 
       expect(response.status).toBe(200);
       expect(response.data).toHaveProperty('combat_id', combatId);
@@ -141,12 +138,9 @@ describe('Combat Flow Integration Tests', () => {
     });
 
     it('should validate turn order', async () => {
-      const response = await axios.get(
-        `${API_URL}/api/combat/state?combat_id=${combatId}`,
-        {
-          headers: { Authorization: `Bearer ${authToken1}` }
-        }
-      );
+      const response = await axios.get(`${API_URL}/api/combat/state?combat_id=${combatId}`, {
+        headers: { Authorization: `Bearer ${authToken1}` },
+      });
 
       expect(response.data.current_turn).toBeDefined();
       expect(['player1', 'player2']).toContain(response.data.current_turn);
@@ -157,12 +151,9 @@ describe('Combat Flow Integration Tests', () => {
     it('should handle combat victory', async () => {
       // Simulate combat until one player wins
       // This would involve multiple attack actions
-      const response = await axios.get(
-        `${API_URL}/api/combat/state?combat_id=${combatId}`,
-        {
-          headers: { Authorization: `Bearer ${authToken1}` }
-        }
-      );
+      const response = await axios.get(`${API_URL}/api/combat/state?combat_id=${combatId}`, {
+        headers: { Authorization: `Bearer ${authToken1}` },
+      });
 
       if (response.data.status === 'completed') {
         expect(response.data).toHaveProperty('winner');
@@ -172,7 +163,7 @@ describe('Combat Flow Integration Tests', () => {
 
     it('should update player stats after combat', async () => {
       const statsResponse = await axios.get(`${API_URL}/api/combat/stats`, {
-        headers: { Authorization: `Bearer ${authToken1}` }
+        headers: { Authorization: `Bearer ${authToken1}` },
       });
 
       expect(statsResponse.status).toBe(200);
@@ -187,7 +178,7 @@ describe('Combat Flow Integration Tests', () => {
         `${API_URL}/api/combat/arena/join`,
         {},
         {
-          headers: { Authorization: `Bearer ${authToken1}` }
+          headers: { Authorization: `Bearer ${authToken1}` },
         }
       );
 
@@ -197,7 +188,7 @@ describe('Combat Flow Integration Tests', () => {
 
     it('should fetch arena queue status', async () => {
       const response = await axios.get(`${API_URL}/api/combat/arena/queue`, {
-        headers: { Authorization: `Bearer ${authToken1}` }
+        headers: { Authorization: `Bearer ${authToken1}` },
       });
 
       expect(response.status).toBe(200);

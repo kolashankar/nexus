@@ -6,9 +6,7 @@
  * Detect if device is mobile
  */
 export const isMobile = () => {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 };
 
 /**
@@ -29,11 +27,7 @@ export const isAndroid = () => {
  * Check if device supports touch
  */
 export const hasTouch = () => {
-  return (
-    'ontouchstart' in window ||
-    navigator.maxTouchPoints > 0 ||
-    navigator.msMaxTouchPoints > 0
-  );
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
 };
 
 /**
@@ -273,10 +267,7 @@ export class PullToRefresh {
  * Network information (if available)
  */
 export const getNetworkInfo = () => {
-  const connection =
-    navigator.connection ||
-    navigator.mozConnection ||
-    navigator.webkitConnection;
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
   if (connection) {
     return {

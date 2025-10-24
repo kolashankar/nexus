@@ -4,13 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
  * Virtual list component for rendering large lists efficiently
  * Only renders items that are currently visible in the viewport
  */
-export function VirtualList({
-  items,
-  itemHeight,
-  containerHeight,
-  renderItem,
-  overscan = 3
-}) {
+export function VirtualList({ items, itemHeight, containerHeight, renderItem, overscan = 3 }) {
   const containerRef = useRef(null);
   const [scrollTop, setScrollTop] = useState(0);
 
@@ -38,14 +32,11 @@ export function VirtualList({
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      style={{ height: containerHeight, overflow: 'auto' }}
-    >
-      <div style={{ height: totalHeight, position: 'relative' }}>
-        <div style={{ transform: `translateY(${offsetY}px)` }}>
+    <div ref={containerRef} style={{ height, overflow
+      <div style={{ height, position
+        <div style={{ transform)` }}>
           {visibleItems.map((item, idx) => (
-            <div key={startIndex + idx} style={{ height: itemHeight }}>
+            <div key={startIndex + idx} style={{ height
               {renderItem(item, startIndex + idx)}
             </div>
           ))}

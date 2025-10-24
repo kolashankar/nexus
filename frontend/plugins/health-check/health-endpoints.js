@@ -26,7 +26,7 @@ function setupHealthEndpoints(devServer, healthPlugin) {
   // ====================================================================
   // GET /health - Detailed health status (JSON)
   // ====================================================================
-  devServer.app.get("/health", (req, res) => {
+  devServer.app.get('/health', (req, res) => {
     const webpackStatus = healthPlugin.getStatus();
     const uptime = Date.now() - SERVER_START_TIME;
     const memUsage = process.memoryUsage();
@@ -82,7 +82,7 @@ function setupHealthEndpoints(devServer, healthPlugin) {
   // ====================================================================
   // GET /health/simple - Simple text response (OK/COMPILING/ERROR)
   // ====================================================================
-  devServer.app.get("/health/simple", (req, res) => {
+  devServer.app.get('/health/simple', (req, res) => {
     const webpackStatus = healthPlugin.getSimpleStatus();
 
     if (webpackStatus.state === 'success') {
@@ -99,7 +99,7 @@ function setupHealthEndpoints(devServer, healthPlugin) {
   // ====================================================================
   // GET /health/ready - Readiness check (Kubernetes/load balancer)
   // ====================================================================
-  devServer.app.get("/health/ready", (req, res) => {
+  devServer.app.get('/health/ready', (req, res) => {
     const webpackStatus = healthPlugin.getSimpleStatus();
 
     if (webpackStatus.state === 'success') {
@@ -111,9 +111,8 @@ function setupHealthEndpoints(devServer, healthPlugin) {
       res.status(503).json({
         ready: false,
         state: webpackStatus.state,
-        reason: webpackStatus.state === 'compiling'
-          ? 'Compilation in progress'
-          : 'Compilation failed',
+        reason:
+          webpackStatus.state === 'compiling' ? 'Compilation in progress' : 'Compilation failed',
       });
     }
   });
@@ -121,7 +120,7 @@ function setupHealthEndpoints(devServer, healthPlugin) {
   // ====================================================================
   // GET /health/live - Liveness check (Kubernetes)
   // ====================================================================
-  devServer.app.get("/health/live", (req, res) => {
+  devServer.app.get('/health/live', (req, res) => {
     res.status(200).json({
       alive: true,
       timestamp: new Date().toISOString(),
@@ -131,7 +130,7 @@ function setupHealthEndpoints(devServer, healthPlugin) {
   // ====================================================================
   // GET /health/errors - Get current errors and warnings
   // ====================================================================
-  devServer.app.get("/health/errors", (req, res) => {
+  devServer.app.get('/health/errors', (req, res) => {
     const webpackStatus = healthPlugin.getStatus();
 
     res.json({
@@ -146,15 +145,16 @@ function setupHealthEndpoints(devServer, healthPlugin) {
   // ====================================================================
   // GET /health/stats - Compilation statistics
   // ====================================================================
-  devServer.app.get("/health/stats", (req, res) => {
+  devServer.app.get('/health/stats', (req, res) => {
     const webpackStatus = healthPlugin.getStatus();
     const uptime = Date.now() - SERVER_START_TIME;
 
     res.json({
       totalCompiles: webpackStatus.totalCompiles,
-      averageCompileTime: webpackStatus.totalCompiles > 0
-        ? `${Math.round(uptime / webpackStatus.totalCompiles)}ms`
-        : null,
+      averageCompileTime:
+        webpackStatus.totalCompiles > 0
+          ? `${Math.round(uptime / webpackStatus.totalCompiles)}ms`
+          : null,
       lastCompileDuration: webpackStatus.compileDuration
         ? `${webpackStatus.compileDuration}ms`
         : null,
@@ -188,7 +188,7 @@ function formatBytes(bytes) {
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
 }
 
 /**

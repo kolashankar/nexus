@@ -113,7 +113,7 @@
   .action-buttons {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .action-button {
     min-height: 70px;
     padding: 15px;

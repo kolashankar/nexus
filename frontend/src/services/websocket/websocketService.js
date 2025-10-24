@@ -79,9 +79,9 @@ class WebSocketService {
   handleMessage(message) {
     const { type, data } = message;
     const handlers = this.handlers.get(type);
-    
+
     if (handlers) {
-      handlers.forEach(handler => handler(data));
+      handlers.forEach((handler) => handler(data));
     }
   }
 

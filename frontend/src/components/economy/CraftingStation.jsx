@@ -8,7 +8,7 @@ import { Hammer, Package, Clock, TrendingUp } from 'lucide-react';
 import { toast } from '../ui/sonner';
 
 >;
-  result_item: {
+  result_item
     name;
     type;
     rarity;
@@ -48,7 +48,7 @@ export const CraftingStation= () => {
       const response = await fetch('/api/crafting/craft', {
         method,
         headers,
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization')}`
         },
         body, quantity })
       });
@@ -62,7 +62,7 @@ export const CraftingStation= () => {
             if (prev >= 100) {
               clearInterval(interval);
               toast.success(`Crafted ${data.item_name}!`, {
-                description: 'Action completed'});
+                description);
               setCrafting(false);
               fetchRecipes(); // Refresh recipes
               return 100;
@@ -72,7 +72,7 @@ export const CraftingStation= () => {
         }, 100);
       } else {
         toast.error('Crafting failed', {
-          description: 'Action completed'});
+          description);
         setCrafting(false);
       }
     } catch (error) {
@@ -89,12 +89,12 @@ export const CraftingStation= () => {
   };
 
   const getRarityColor = (rarity) => {
-    const colors: Record = {
+    const colors= {
       common,
       uncommon,
       rare,
       epic,
-      legendary: 'bg-yellow-500'
+      legendary
     };
     return colors[rarity] || 'bg-gray-500';
   };
@@ -159,13 +159,13 @@ export const CraftingStation= () => {
                   
 
                   
-                    Materials Required:
+                    Materials Required
                     {recipe.materials_required.map(mat => (
                       
                         {mat.name}
                         = mat.quantity
                             ? 'text-green-600'
-                            : 'text-red-600'
+                            
                         }>
                           {mat.owned}/{mat.quantity}
                         
@@ -189,7 +189,7 @@ export const CraftingStation= () => {
                       craftItem(recipe.id);
                     }}
                   >
-                    {recipe.unlocked ? 'Craft' : `Unlock at Lv.${recipe.level_required}`}
+                    {recipe.unlocked ? 'Craft' 
                   
                 
               

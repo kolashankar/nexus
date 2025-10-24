@@ -50,12 +50,12 @@ const KarmaHistory= () => {
               
                 No karma history yet. Perform actions to start building your karma!
               
-            ) : (
+            ) 
               history.map((entry, index) => (
                 
                   
                     
-                       0 ? 'default' : 'destructive'}>
+                       0 ? 'default' 
                         {entry.action_type.toUpperCase()}
                       
                       
@@ -65,10 +65,10 @@ const KarmaHistory= () => {
                     {entry.message}
                   
                   
-                     0 ? 'text-green-600' : 'text-red-600'
+                     0 ? 'text-green-600' 
                       }`}
                     >
-                      {entry.karma_change > 0 ? '+' : ''}{entry.karma_change}
+                      {entry.karma_change > 0 ? '+' 
                     
                     karma
                   

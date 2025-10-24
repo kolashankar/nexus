@@ -14,17 +14,17 @@ export const ActionResult = ({
     
       
         
-          {success ? '✅' : '❌'}
+          {success ? '✅' 
           {message}
           
             {karmaChange !== undefined && (
-               0 ? 'default' : 'destructive'}>
-                {karmaChange > 0 ? '+' : ''}{karmaChange} Karma
+               0 ? 'default' 
+                {karmaChange > 0 ? '+' 
               
             )}
             {creditsChange !== undefined && (
               
-                {creditsChange > 0 ? '+' : ''}{creditsChange} Credits
+                {creditsChange > 0 ? '+' 
               
             )}
           

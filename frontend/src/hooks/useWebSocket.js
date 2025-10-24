@@ -5,8 +5,6 @@ import { useEffect, useCallback } from 'react';
 import websocketService from '../services/websocket/websocketService';
 import useStore from '../store';
 
-
-
 export const useWebSocket = () => {
   const { accessToken, isAuthenticated } = useStore();
 

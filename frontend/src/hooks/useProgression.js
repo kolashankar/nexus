@@ -26,21 +26,24 @@ export const useProgression = () => {
   const gainXP = useCallback(async (amount) => {
     try {
       const result = await progressionService.gainXP(amount);
-      setProgression(prev => prev ? { ...prev, xp: result.xp, level: result.level } : null);
+      setProgression((prev) => (prev ? { ...prev, xp: result.xp, level: result.level } : null));
       return result;
     } catch (err) {
       throw err;
     }
   }, []);
 
-  const unlockSkillNode = useCallback(async (trait, nodeId) => {
-    try {
-      await progressionService.unlockSkillNode(trait, nodeId);
-      await fetchProgression();
-    } catch (err) {
-      throw err;
-    }
-  }, [fetchProgression]);
+  const unlockSkillNode = useCallback(
+    async (trait, nodeId) => {
+      try {
+        await progressionService.unlockSkillNode(trait, nodeId);
+        await fetchProgression();
+      } catch (err) {
+        throw err;
+      }
+    },
+    [fetchProgression]
+  );
 
   const activateSuperpower = useCallback(async (powerId) => {
     try {
@@ -54,7 +57,9 @@ export const useProgression = () => {
   const unlockAchievement = useCallback(async (achievementId) => {
     try {
       const result = await progressionService.unlockAchievement(achievementId);
-      setProgression(prev => prev ? { ...prev, achievementsUnlocked: result.achievementsUnlocked } : null);
+      setProgression((prev) =>
+        prev ? { ...prev, achievementsUnlocked: result.achievementsUnlocked } : null
+      );
       return result;
     } catch (err) {
       throw err;
@@ -80,6 +85,6 @@ export const useProgression = () => {
     activateSuperpower,
     unlockAchievement,
     prestige,
-    refetch: fetchProgression
+    refetch: fetchProgression,
   };
 };

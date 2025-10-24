@@ -37,13 +37,13 @@ const TraitsList = () => {
 
   const getTraitsByCategory = (category) => {
     switch (category) {
-      case 'virtues':
+      case 'virtues'
         return virtues.map(name => ({ name, value));
-      case 'vices':
+      case 'vices'
         return vices.map(name => ({ name, value));
-      case 'skills':
+      case 'skills'
         return skills.map(name => ({ name, value));
-      case 'meta':
+      case 'meta'
         return Object.entries(metaTraits).map(([name, value]) => ({ name, value));
       default).map(([name, value]) => ({ name, value));
     }
@@ -64,17 +64,17 @@ const TraitsList = () => {
         Character Traits
         
            setFilter('all')}
-            className={`px-3 py-1 rounded ${filter === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-3 py-1 rounded ${filter === 'all' ? 'bg-blue-500 text-white' 
           >
             All
           
            setFilter('top')}
-            className={`px-3 py-1 rounded ${filter === 'top' ? 'bg-green-500 text-white' : 'bg-gray-200'}`}
+            className={`px-3 py-1 rounded ${filter === 'top' ? 'bg-green-500 text-white' 
           >
             Top 10
           
            setFilter('bottom')}
-            className={`px-3 py-1 rounded ${filter === 'bottom' ? 'bg-red-500 text-white' : 'bg-gray-200'}`}
+            className={`px-3 py-1 rounded ${filter === 'bottom' ? 'bg-red-500 text-white' 
           >
             Bottom 10
           

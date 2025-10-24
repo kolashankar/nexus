@@ -22,7 +22,7 @@ export const useKarma = () => {
       // In real implementation, call karma service
       // const history = await karmaService.getKarmaHistory(limit);
       // setKarmaHistory(history);
-      
+
       // Mock data for now
       setKarmaHistory([]);
     } catch (err) {
@@ -54,6 +54,6 @@ export const useKarma = () => {
     karmaHistory,
     karmaScore,
     loadKarmaHistory,
-    getKarmaScore
+    getKarmaScore,
   };
 };

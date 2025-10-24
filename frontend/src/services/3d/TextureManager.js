@@ -89,7 +89,7 @@ class TextureManager {
     const texture = await this.load(textureUrl);
     return new THREE.MeshStandardMaterial({
       map: texture,
-      ...materialOptions
+      ...materialOptions,
     });
   }
 

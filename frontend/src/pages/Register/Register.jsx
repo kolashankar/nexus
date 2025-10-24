@@ -1,11 +1,15 @@
-/**
- * Register page component
- */
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../../components/ui/card';
 import useStore from '../../store';
 
 const Register = () => {
@@ -23,13 +27,10 @@ const Register = () => {
     e.preventDefault();
     setLocalError(null);
 
-    // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
       setLocalError('Passwords do not match');
       return;
     }
-
-    // Validate password length
     if (formData.password.length < 6) {
       setLocalError('Password must be at least 6 characters');
       return;
@@ -39,7 +40,7 @@ const Register = () => {
       await register(formData);
       navigate('/dashboard');
     } catch (err) {
-      // Error is handled by the store
+      // handled in store
     }
   };
 
@@ -57,32 +58,19 @@ const Register = () => {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Create Account</CardTitle>
-          <CardDescription>
-            Join Karma Nexus and begin your journey
-          </CardDescription>
+          <CardDescription>Join Karma Nexus and begin your journey</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             {displayError && (
-              <div className="p-3 text-sm text-red-600 bg-red-50 rounded">
-                {displayError}
-              </div>
+              <div className="p-3 text-sm text-red-600 bg-red-50 rounded">{displayError}</div>
             )}
             <div>
-              <label className="text-sm font-medium">
-                Username
-              </label>
-              <Input
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-              />
+              <label className="text-sm font-medium">Username</label>
+              <Input name="username" value={formData.username} onChange={handleChange} required />
             </div>
             <div>
-              <label className="text-sm font-medium">
-                Email
-              </label>
+              <label className="text-sm font-medium">Email</label>
               <Input
                 type="email"
                 name="email"
@@ -92,9 +80,7 @@ const Register = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium">
-                Password
-              </label>
+              <label className="text-sm font-medium">Password</label>
               <Input
                 type="password"
                 name="password"
@@ -104,9 +90,7 @@ const Register = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium">
-                Confirm Password
-              </label>
+              <label className="text-sm font-medium">Confirm Password</label>
               <Input
                 type="password"
                 name="confirmPassword"
@@ -118,11 +102,11 @@ const Register = () => {
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Creating account...' : 'Create Account'}
+              {isLoading ? 'Creating account...' : 'Register'}
             </Button>
             <p className="text-sm text-center">
               Already have an account?{' '}
-              <Link to="/login" className="text-primary hover:underline">
+              <Link to="/login" className="text-primary hover:text-primary/80">
                 Login here
               </Link>
             </p>

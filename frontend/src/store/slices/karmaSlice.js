@@ -8,5 +8,5 @@ export const useKarmaStore = create((set) => ({
   setKarmaScore: (score) => set({ karmaScore: score }),
   setKarmaHistory: (history) => set({ karmaHistory: history }),
   setWorldKarma: (worldKarma) => set({ worldKarma }),
-  setLoading: (loading) => set({ loading })
+  setLoading: (loading) => set({ loading }),
 }));

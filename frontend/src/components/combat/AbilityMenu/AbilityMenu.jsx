@@ -7,14 +7,14 @@ import './AbilityMenu.css';
 
 
 // Mock ability data - In real app, fetch from API
-const ABILITY_DATA: Record = {
-  'emp_blast': { name, cost, description,
-  'mercy': { name, cost, description, gain karma' },
-  'berserker_rage': { name, cost, description, no defense' },
-  'tactical_advantage': { name, cost, description,
-  'inner_peace': { name, cost, description,
-  'shadow_strike': { name, cost, description,
-  'power_strike': { name, cost, description,
+const ABILITY_DATA= {
+  'emp_blast', cost, description,
+  'mercy', cost, description, gain karma' },
+  'berserker_rage', cost, description, no defense' },
+  'tactical_advantage', cost, description,
+  'inner_peace', cost, description,
+  'shadow_strike', cost, description,
+  'power_strike', cost, description,
 };
 
 const AbilityMenu = ({  
@@ -38,12 +38,12 @@ const AbilityMenu = ({
         
           {abilities.length === 0 ? (
             No abilities equipped
-          ) : (
+          ) 
             abilities.map((abilityId) => {
               const ability = ABILITY_DATA[abilityId] || {
                 name,
                 cost,
-                description: 'Unknown ability'
+                description
               };
               
               const canUse = availableAP >= ability.cost;

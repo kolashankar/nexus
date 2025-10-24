@@ -1,11 +1,15 @@
-/**
- * Login page component
- */
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../../components/ui/card';
 import useStore from '../../store';
 
 const Login = () => {
@@ -22,7 +26,7 @@ const Login = () => {
       await login(formData);
       navigate('/dashboard');
     } catch (err) {
-      // Error is handled by the store
+      // Error handled in store
     }
   };
 
@@ -38,21 +42,13 @@ const Login = () => {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Login</CardTitle>
-          <CardDescription>
-            Enter your credentials to access your account
-          </CardDescription>
+          <CardDescription>Enter your credentials to access your account</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            {error && (
-              <div className="p-3 text-sm text-red-600 bg-red-50 rounded">
-                {error}
-              </div>
-            )}
+            {error && <div className="p-3 text-sm text-red-600 bg-red-50 rounded">{error}</div>}
             <div>
-              <label className="text-sm font-medium">
-                Username
-              </label>
+              <label className="text-sm font-medium">Username</label>
               <Input
                 name="username"
                 value={formData.username}
@@ -61,9 +57,7 @@ const Login = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium">
-                Password
-              </label>
+              <label className="text-sm font-medium">Password</label>
               <Input
                 type="password"
                 name="password"
@@ -79,7 +73,7 @@ const Login = () => {
             </Button>
             <p className="text-sm text-center">
               Don't have an account?{' '}
-              <Link to="/register" className="text-primary hover:underline">
+              <Link to="/register" className="text-primary hover:text-primary/80">
                 Register here
               </Link>
             </p>

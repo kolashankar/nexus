@@ -34,10 +34,10 @@ describe('TraitsList Component', () => {
 
   test('filters traits by category', () => {
     render();
-    
+
     const virtuesButton = screen.getByText(/virtues/i);
     fireEvent.click(virtuesButton);
-    
+
     // Should show empathy and integrity (virtues)
     expect(screen.getByText('empathy')).toBeInTheDocument();
     expect(screen.getByText('integrity')).toBeInTheDocument();
@@ -45,10 +45,10 @@ describe('TraitsList Component', () => {
 
   test('sorts traits by value', () => {
     render();
-    
+
     const sortButton = screen.getByText(/sort/i);
     fireEvent.click(sortButton);
-    
+
     const traitElements = screen.getAllByTestId(/trait-item/i);
     expect(traitElements.length).toBeGreaterThan(0);
   });
@@ -63,7 +63,7 @@ describe('TraitsList Component', () => {
     render();
     const empathyElement = screen.getByText('empathy');
     fireEvent.mouseEnter(empathyElement);
-    
+
     // Tooltip should appear
     await screen.findByText(/Feel others' emotions/i);
   });

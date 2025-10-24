@@ -79,12 +79,7 @@ export const handleApiError = (error) => {
   }
 
   // Generic error
-  return new GameError(
-    data?.detail || 'An error occurred',
-    'UNKNOWN_ERROR',
-    status,
-    data
-  );
+  return new GameError(data?.detail || 'An error occurred', 'UNKNOWN_ERROR', status, data);
 };
 
 /**
@@ -125,11 +120,7 @@ export const logError = (error, context) => {
 /**
  * Retry helper for failed operations
  */
-export const retryOperation = async (
-  operation,
-  maxRetries = 3,
-  delayMs = 1000
-) => {
+export const retryOperation = async (operation, maxRetries = 3, delayMs = 1000) => {
   let lastError;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -139,7 +130,7 @@ export const retryOperation = async (
       lastError = error;
       if (attempt < maxRetries) {
         // Wait before retrying with exponential backoff
-        await new Promise(resolve => setTimeout(resolve, delayMs * attempt));
+        await new Promise((resolve) => setTimeout(resolve, delayMs * attempt));
       }
     }
   }
@@ -150,10 +141,7 @@ export const retryOperation = async (
 /**
  * Safe async wrapper that catches errors
  */
-export const safeAsync = async (
-  operation,
-  fallback
-) => {
+export const safeAsync = async (operation, fallback) => {
   try {
     return await operation();
   } catch (error) {

@@ -10,7 +10,7 @@ describe('API Integration Tests', () => {
     // Login to get auth token
     const response = await axios.post(`${API_URL}/api/auth/login`, {
       username: 'testuser',
-      password: 'testpass123'
+      password: 'testpass123',
     });
     authToken = response.data.access_token;
   });
@@ -18,7 +18,7 @@ describe('API Integration Tests', () => {
   describe('Player API', () => {
     it('should fetch player profile', async () => {
       const response = await axios.get(`${API_URL}/api/player/profile`, {
-        headers: { Authorization: `Bearer ${authToken}` }
+        headers: { Authorization: `Bearer ${authToken}` },
       });
 
       expect(response.status).toBe(200);
@@ -33,10 +33,10 @@ describe('API Integration Tests', () => {
         {
           privacy_tier: 'public',
           cash: true,
-          karma_score: true
+          karma_score: true,
         },
         {
-          headers: { Authorization: `Bearer ${authToken}` }
+          headers: { Authorization: `Bearer ${authToken}` },
         }
       );
 
@@ -46,7 +46,7 @@ describe('API Integration Tests', () => {
 
     it('should fetch player stats', async () => {
       const response = await axios.get(`${API_URL}/api/player/stats`, {
-        headers: { Authorization: `Bearer ${authToken}` }
+        headers: { Authorization: `Bearer ${authToken}` },
       });
 
       expect(response.status).toBe(200);
@@ -58,7 +58,7 @@ describe('API Integration Tests', () => {
   describe('Combat API', () => {
     it('should fetch active combat', async () => {
       const response = await axios.get(`${API_URL}/api/combat/active`, {
-        headers: { Authorization: `Bearer ${authToken}` }
+        headers: { Authorization: `Bearer ${authToken}` },
       });
 
       expect(response.status).toBe(200);
@@ -67,7 +67,7 @@ describe('API Integration Tests', () => {
 
     it('should fetch combat stats', async () => {
       const response = await axios.get(`${API_URL}/api/combat/stats`, {
-        headers: { Authorization: `Bearer ${authToken}` }
+        headers: { Authorization: `Bearer ${authToken}` },
       });
 
       expect(response.status).toBe(200);
@@ -78,7 +78,7 @@ describe('API Integration Tests', () => {
   describe('Quests API', () => {
     it('should fetch available quests', async () => {
       const response = await axios.get(`${API_URL}/api/quests/available`, {
-        headers: { Authorization: `Bearer ${authToken}` }
+        headers: { Authorization: `Bearer ${authToken}` },
       });
 
       expect(response.status).toBe(200);
@@ -87,7 +87,7 @@ describe('API Integration Tests', () => {
 
     it('should fetch active quests', async () => {
       const response = await axios.get(`${API_URL}/api/quests/active`, {
-        headers: { Authorization: `Bearer ${authToken}` }
+        headers: { Authorization: `Bearer ${authToken}` },
       });
 
       expect(response.status).toBe(200);

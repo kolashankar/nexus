@@ -8,13 +8,13 @@ export const MODEL_PATHS = {
     male: {
       base: '/models/characters/male_base.glb',
       athletic: '/models/characters/male_athletic.glb',
-      heavy: '/models/characters/male_heavy.glb'
+      heavy: '/models/characters/male_heavy.glb',
     },
     female: {
       base: '/models/characters/female_base.glb',
       athletic: '/models/characters/female_athletic.glb',
-      heavy: '/models/characters/female_heavy.glb'
-    }
+      heavy: '/models/characters/female_heavy.glb',
+    },
   },
 
   // Character Animations
@@ -30,8 +30,8 @@ export const MODEL_PATHS = {
     emotes: {
       wave: '/models/animations/emotes/wave.glb',
       dance: '/models/animations/emotes/dance.glb',
-      laugh: '/models/animations/emotes/laugh.glb'
-    }
+      laugh: '/models/animations/emotes/laugh.glb',
+    },
   },
 
   // Robot Models
@@ -44,7 +44,7 @@ export const MODEL_PATHS = {
     hacker: '/models/robots/hacker.glb',
     medic: '/models/robots/medic.glb',
     harvester: '/models/robots/harvester.glb',
-    trader: '/models/robots/trader.glb'
+    trader: '/models/robots/trader.glb',
   },
 
   // Environment
@@ -53,29 +53,29 @@ export const MODEL_PATHS = {
       warehouse: '/models/environment/warehouse.glb',
       shop: '/models/environment/shop.glb',
       headquarters: '/models/environment/headquarters.glb',
-      tower: '/models/environment/tower.glb'
+      tower: '/models/environment/tower.glb',
     },
     props: {
       container: '/models/environment/props/container.glb',
-      vehicle: '/models/environment/props/vehicle.glb'
+      vehicle: '/models/environment/props/vehicle.glb',
     },
     terrain: {
-      platform: '/models/environment/terrain/platform.glb'
-    }
+      platform: '/models/environment/terrain/platform.glb',
+    },
   },
 
   // UI Elements
   ui: {
     hologram: '/models/ui/hologram.glb',
-    interface: '/models/ui/interface.glb'
+    interface: '/models/ui/interface.glb',
   },
 
   // Placeholder Models (simple geometries)
   placeholders: {
     character: '/models/placeholders/character_placeholder.glb',
     robot: '/models/placeholders/robot_placeholder.glb',
-    building: '/models/placeholders/building_placeholder.glb'
-  }
+    building: '/models/placeholders/building_placeholder.glb',
+  },
 };
 
 // Texture Paths
@@ -83,21 +83,21 @@ export const TEXTURE_PATHS = {
   characters: {
     skin: '/textures/characters/skin/',
     hair: '/textures/characters/hair/',
-    clothing: '/textures/characters/clothing/'
+    clothing: '/textures/characters/clothing/',
   },
   robots: {
     metal: '/textures/robots/metal/',
-    lights: '/textures/robots/lights/'
+    lights: '/textures/robots/lights/',
   },
   environment: {
     walls: '/textures/environment/walls/',
     floor: '/textures/environment/floor/',
-    props: '/textures/environment/props/'
+    props: '/textures/environment/props/',
   },
   effects: {
     particles: '/textures/effects/particles/',
-    glow: '/textures/effects/glow/'
-  }
+    glow: '/textures/effects/glow/',
+  },
 };
 
 // Asset Collections for batch loading
@@ -107,7 +107,7 @@ export const ASSET_COLLECTIONS = {
     MODEL_PATHS.placeholders.character,
     MODEL_PATHS.placeholders.robot,
     MODEL_PATHS.animations.idle,
-    MODEL_PATHS.animations.walk
+    MODEL_PATHS.animations.walk,
   ],
 
   // Character creation assets
@@ -116,7 +116,7 @@ export const ASSET_COLLECTIONS = {
     MODEL_PATHS.characters.female.base,
     MODEL_PATHS.animations.idle,
     MODEL_PATHS.animations.walk,
-    MODEL_PATHS.animations.emotes.wave
+    MODEL_PATHS.animations.emotes.wave,
   ],
 
   // Combat assets
@@ -124,21 +124,21 @@ export const ASSET_COLLECTIONS = {
     MODEL_PATHS.animations.attack,
     MODEL_PATHS.animations.defend,
     MODEL_PATHS.animations.victory,
-    MODEL_PATHS.animations.defeat
+    MODEL_PATHS.animations.defeat,
   ],
 
   // Robot marketplace assets
   robotMarketplace: [
     MODEL_PATHS.robots.combat,
     MODEL_PATHS.robots.scout,
-    MODEL_PATHS.robots.guardian
+    MODEL_PATHS.robots.guardian,
   ],
 
   // Environment assets
   worldEnvironment: [
     MODEL_PATHS.environment.terrain.platform,
-    MODEL_PATHS.environment.buildings.tower
-  ]
+    MODEL_PATHS.environment.buildings.tower,
+  ],
 };
 
 /**
@@ -155,11 +155,11 @@ export function getModelPath(category, type) {
 export function getCategoryPaths(category) {
   const paths = MODEL_PATHS;
   const categoryData = paths[category];
-  
+
   if (!categoryData) return [];
 
   const result = [];
-  
+
   function extractPaths(obj) {
     for (const key in obj) {
       if (typeof obj[key] === 'string') {

@@ -7,7 +7,7 @@ import { Users, Trophy, Clock, CheckCircle } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
 
 >;
-  rewards: {
+  rewards
     credits;
     guild_reputation;
     guild_xp;
@@ -15,7 +15,7 @@ import { useToast } from '../../hooks/useToast';
   participants;
   required_members;
   status;
-  expires_at?;
+  expires_at
 }
 
 export const GuildQuests= () => {
@@ -180,7 +180,7 @@ export const GuildQuests= () => {
               
             
           
-        ) : (
+        ) 
           
             {quests.map((quest) => (
               

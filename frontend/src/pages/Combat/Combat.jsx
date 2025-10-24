@@ -18,7 +18,7 @@ const Combat = () => {
   const [loading, setLoading] = useState(true);
 
   // Get player ID from auth (mock for now)
-  const playerId = 'current-player-id'; // TODO: Get from auth context
+  const playerId = 'current-player-id'; // TODO
 
   useEffect(() => {
     loadData();
@@ -28,7 +28,7 @@ const Combat = () => {
     try {
       const [battlesData, tournamentsData] = await Promise.all([
         combatService.getActiveBattles(playerId),
-        tournamentsService.getActiveTournaments()
+        tournamentsService.getActiveTournaments(),
       ]);
       setActiveBattles(battlesData.battles || []);
       setTournaments(tournamentsData || []);
@@ -73,12 +73,8 @@ const Combat = () => {
 
   return (
     <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-2">
-        Combat Arena
-      </h1>
-      <p className="text-muted-foreground mb-6">
-        Test your skills in PvP battles and tournaments
-      </p>
+      <h1 className="text-3xl font-bold mb-2">Combat Arena</h1>
+      <p className="text-muted-foreground mb-6">Test your skills in PvP battles and tournaments</p>
 
       <Tabs defaultValue="arena">
         <TabsList>
@@ -101,18 +97,10 @@ const Combat = () => {
               Fight against players of similar skill level
             </p>
             <div className="flex gap-4">
-              <Button
-                onClick={() => handleJoinArena(false)}
-                size="lg"
-                className="casual-button"
-              >
+              <Button onClick={() => handleJoinArena(false)} size="lg" className="casual-button">
                 Join Casual Match
               </Button>
-              <Button
-                onClick={() => handleJoinArena(true)}
-                size="lg"
-                className="ranked-button"
-              >
+              <Button onClick={() => handleJoinArena(true)} size="lg" className="ranked-button">
                 Join Ranked Match
               </Button>
             </div>
@@ -122,13 +110,13 @@ const Combat = () => {
             <Card className="p-6 mt-4">
               <h3 className="text-lg font-bold mb-4">Active Battles</h3>
               <div className="space-y-2">
-                {activeBattles.map(battle => (
-                  <div key={battle.battle_id} className="flex justify-between items-center p-3 border rounded">
+                {activeBattles.map((battle) => (
+                  <div
+                    key={battle.battle_id}
+                    className="flex justify-between items-center p-3 border rounded"
+                  >
                     <span>{battle.battle_type}</span>
-                    <Button
-                      onClick={() => navigate(`/combat/${battle.battle_id}`)}
-                      size="sm"
-                    >
+                    <Button onClick={() => navigate(`/combat/${battle.battle_id}`)} size="sm">
                       Continue
                     </Button>
                   </div>
@@ -142,11 +130,9 @@ const Combat = () => {
         <TabsContent value="duels">
           <Card className="p-6">
             <h2 className="text-xl font-bold mb-2">Challenge Players</h2>
-            <p className="text-muted-foreground">
-              Send duel challenges to other players
-            </p>
+            <p className="text-muted-foreground">Send duel challenges to other players</p>
             <div className="mt-4">
-              {/* TODO: Add duel challenges UI */}
+              {/* TODO */}
               <p className="text-sm text-muted-foreground">Duel system coming soon...</p>
             </div>
           </Card>
@@ -160,7 +146,7 @@ const Combat = () => {
                 <p className="text-center text-muted-foreground">No active tournaments</p>
               </Card>
             ) : (
-              tournaments.map(tournament => (
+              tournaments.map((tournament) => (
                 <TournamentCard
                   key={tournament.tournament_id}
                   tournament={tournament}

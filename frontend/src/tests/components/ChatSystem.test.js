@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 describe('ChatSystem', () => {
-    it('renders chat interface', () => {
-        expect(true).toBe(true);
-    });
+  it('renders chat interface', () => {
+    expect(true).toBe(true);
+  });
 });

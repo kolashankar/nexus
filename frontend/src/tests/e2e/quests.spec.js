@@ -18,7 +18,7 @@ test.describe('Quests E2E Tests', () => {
 
   test('should view available quests', async ({ page }) => {
     await page.goto(`${BASE_URL}/quests`);
-    
+
     await page.click('button:text("Available")');
     const quests = await page.locator('[data-testid="quest-card"]').all();
     console.log(`Available quests: ${quests.length}`);
@@ -26,18 +26,18 @@ test.describe('Quests E2E Tests', () => {
 
   test('should view active quests', async ({ page }) => {
     await page.goto(`${BASE_URL}/quests`);
-    
+
     await page.click('button:text("Active")');
     await expect(page.locator('[data-testid="active-quests"]')).toBeVisible();
   });
 
   test('should view quest details', async ({ page }) => {
     await page.goto(`${BASE_URL}/quests`);
-    
+
     const firstQuest = page.locator('[data-testid="quest-card"]').first();
     if ((await firstQuest.count()) > 0) {
       await firstQuest.click();
-      
+
       await expect(page.locator('[data-testid="quest-title"]')).toBeVisible();
       await expect(page.locator('[data-testid="quest-description"]')).toBeVisible();
       await expect(page.locator('[data-testid="quest-objectives"]')).toBeVisible();
@@ -48,12 +48,12 @@ test.describe('Quests E2E Tests', () => {
   test('should accept a quest', async ({ page }) => {
     await page.goto(`${BASE_URL}/quests`);
     await page.click('button:text("Available")');
-    
+
     const firstQuest = page.locator('[data-testid="quest-card"]').first();
     if ((await firstQuest.count()) > 0) {
       await firstQuest.click();
       await page.click('button:text("Accept")');
-      
+
       const notification = await page.locator('[role="alert"]');
       await expect(notification).toBeVisible({ timeout: 5000 });
       await expect(notification).toContainText(/accepted|started/i);
@@ -63,11 +63,11 @@ test.describe('Quests E2E Tests', () => {
   test('should view quest objectives progress', async ({ page }) => {
     await page.goto(`${BASE_URL}/quests`);
     await page.click('button:text("Active")');
-    
+
     const activeQuest = page.locator('[data-testid="quest-card"]').first();
     if ((await activeQuest.count()) > 0) {
       await activeQuest.click();
-      
+
       const objectives = await page.locator('[data-testid="objective-item"]').all();
       for (const obj of objectives) {
         await expect(obj).toHaveAttribute('data-progress');
@@ -78,7 +78,7 @@ test.describe('Quests E2E Tests', () => {
   test('should view daily quests', async ({ page }) => {
     await page.goto(`${BASE_URL}/quests`);
     await page.click('button:text("Daily")');
-    
+
     await expect(page.locator('[data-testid="daily-quests"]')).toBeVisible();
     const dailyQuests = await page.locator('[data-testid="daily-quest-card"]').all();
     expect(dailyQuests.length).toBeLessThanOrEqual(3);
@@ -86,20 +86,20 @@ test.describe('Quests E2E Tests', () => {
 
   test('should view campaign', async ({ page }) => {
     await page.goto(`${BASE_URL}/quests/campaign`);
-    
+
     await expect(page.locator('[data-testid="campaign-viewer"]')).toBeVisible();
   });
 
   test('should abandon a quest', async ({ page }) => {
     await page.goto(`${BASE_URL}/quests`);
     await page.click('button:text("Active")');
-    
+
     const activeQuest = page.locator('[data-testid="quest-card"]').first();
     if ((await activeQuest.count()) > 0) {
       await activeQuest.click();
       await page.click('button:text("Abandon")');
       await page.click('button:text("Confirm")');
-      
+
       const notification = await page.locator('[role="alert"]');
       await expect(notification).toBeVisible({ timeout: 5000 });
     }

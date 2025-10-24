@@ -3,14 +3,14 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../../../lib/utils';
 
 const navItems = [
-  { title: 'Dashboard', href: '/dashboard' },
-  { title: 'Profile', href: '/profile' },
-  { title: 'Actions', href: '/actions' },
-  { title: 'Combat', href: '/combat' },
-  { title: 'Quests', href: '/quests' },
-  { title: 'Skills', href: '/skills' },
-  { title: 'Guild', href: '/guild' },
-  { title: 'Leaderboard', href: '/leaderboard' }
+  { title, href,
+  { title, href,
+  { title, href,
+  { title, href,
+  { title, href,
+  { title, href,
+  { title, href,
+  { title, href,
 ];
 
 const Sidebar = () => {
@@ -24,11 +24,11 @@ const Sidebar = () => {
             const isActive = location.pathname === item.href;
             return (
               <li key={item.href}>
-                <Link 
+                <Link
                   to={item.href}
                   className={cn(
-                    "block px-4 py-2 rounded hover:bg-gray-800",
-                    isActive && "bg-purple-600"
+                    'block px-4 py-2 rounded hover,
+                    isActive && 'bg-purple-600'
                   )}
                 >
                   {item.title}

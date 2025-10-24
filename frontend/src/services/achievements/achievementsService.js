@@ -42,7 +42,7 @@ class AchievementsService {
     if (category) params.append('category', category);
     if (rarity) params.append('rarity', rarity);
     if (params.toString()) url += `?${params.toString()}`;
-    
+
     const response = await apiClient.get(url);
     return response.data.achievements;
   }

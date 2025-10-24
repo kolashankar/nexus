@@ -21,7 +21,7 @@ import './QuickActions.css';
 
 
 
-const QUICK_ACTIONS: QuickAction[] = [
+const QUICK_ACTIONS= [
   {
     id,
     name,
@@ -57,7 +57,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     name,
     icon,
     description,
-    color: '#dc2626'
+    color
   }
 ];
 
@@ -70,15 +70,15 @@ export const QuickActions= () => {
     const cooldownStatus = await checkCooldown(actionId);
     
     if (cooldownStatus.on_cooldown) {
-      const remainingMinutes = cooldownStatus.remaining_seconds ? (cooldownStatus.remaining_seconds / 60).toFixed(1) : '0';
+      const remainingMinutes = cooldownStatus.remaining_seconds ? (cooldownStatus.remaining_seconds / 60).toFixed(1) ;
       toast.warning('Action on cooldown', {
-        description: 'Action completed'});
+        description);
       return;
     }
 
     // In real implementation, open action modal
     toast.info(`${actionId} action selected`, {
-      description: 'Action completed'});
+      description);
   };
 
   return (
@@ -95,7 +95,7 @@ export const QuickActions= () => {
              handleActionClick(action.id)}
               disabled={cooldowns[action.id]}
               style={{
-                '--action-color': action.color
+                '--action-color'
               }.CSSProperties}
             >
               

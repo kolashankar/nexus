@@ -34,7 +34,7 @@ class TraitsService {
   async allocateTraitPoints(traitName, points) {
     const response = await apiClient.put('/api/player/traits/allocate', {
       trait_name: traitName,
-      points
+      points,
     });
     return response.data;
   }

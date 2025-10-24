@@ -13,7 +13,7 @@ const SkillNode = ({  node, onUnlock, canUnlock  }) => {
       
         {isUnlocked ? (
           
-        ) : (
+        ) 
           
         )}
         Node {node.node_id}

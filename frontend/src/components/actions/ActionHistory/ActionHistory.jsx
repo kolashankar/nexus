@@ -25,18 +25,18 @@ export const ActionHistory= () => {
   };
 
   const getActionIcon = (type) => {
-    const icons: Record = {
+    const icons= {
       hack,
       help,
       steal,
       donate,
-      trade: '🤝'
+      trade
     };
     return icons[type] || '⚡';
   };
 
   const getActionColor = (type) => {
-    const colors: Record = {
+    const colors= {
       hack,
       help,
       steal,
@@ -54,7 +54,7 @@ export const ActionHistory= () => {
         
           {actions.length === 0 ? (
             No actions yet
-          ) : (
+          ) 
             actions.map((action) => (
               
                 
@@ -68,7 +68,7 @@ export const ActionHistory= () => {
                 
                 
                   
-                    {action.karma_changes?.actor_karma > 0 ? '+' : ''}
+                    {action.karma_changes?.actor_karma > 0 ? '+' 
                     {action.karma_changes?.actor_karma || 0} Karma
                   
                 

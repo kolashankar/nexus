@@ -17,8 +17,8 @@ import './WorldEvents.css';
   is_global;
   status;
   estimated_impact;
-  started_at?;
-  ends_at?;
+  started_at
+  ends_at
   requires_participation;
   total_participants;
 }
@@ -82,19 +82,19 @@ export const WorldEvents= () => {
 
   const getSeverityColor = (severity) => {
     switch (severity) {
-      case 'critical': return 'destructive';
-      case 'high': return 'orange';
-      case 'medium': return 'yellow';
-      case 'low': return 'green';
+      case 'critical';
+      case 'high';
+      case 'medium';
+      case 'low';
       default;
     }
   };
 
   const getImpactIcon = (impact) => {
     switch (impact) {
-      case 'world_changing': return null;
-      case 'high': return null;
-      case 'medium': return null;
+      case 'world_changing';
+      case 'high';
+      case 'medium';
       default;
     }
   };
@@ -260,7 +260,7 @@ export const WorldEvents= () => {
                 ))}
               
             
-          ) : (
+          ) 
             
               
                 No recent events

@@ -103,7 +103,7 @@ class SocialService {
 
   async getMyMentorship(asMentor = false) {
     const response = await apiClient.get('/social/mentorship/my-mentorship', {
-      params: { as_mentor: asMentor }
+      params: { as_mentor: asMentor },
     });
     return response.data;
   }

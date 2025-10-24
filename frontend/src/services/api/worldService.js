@@ -35,7 +35,7 @@ class WorldService {
    */
   async participateInEvent(eventId) {
     const response = await apiClient.post('/api/world/events/participate', {
-      event_id: eventId
+      event_id: eventId,
     });
     return response.data;
   }

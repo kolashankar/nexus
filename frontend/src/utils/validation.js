@@ -73,7 +73,7 @@ export function validatePasswordStrength(password) {
   return {
     isValid: score >= 3,
     strength,
-    feedback
+    feedback,
   };
 }
 
@@ -111,7 +111,7 @@ export function isValidUrl(url) {
  */
 export function isValidCreditCard(cardNumber) {
   const cleanNumber = cardNumber.replace(/\s/g, '');
-  
+
   if (!/^\d{13,19}$/.test(cleanNumber)) {
     return false;
   }
@@ -162,37 +162,37 @@ export function validateForm(values, rules) {
  * Common validation rules
  */
 export const validationRules = {
-  required: (message = 'This field is required') => (value) => {
-    return isRequired(value) ? null : message;
-  },
+  required:
+    (message = 'This field is required') =>
+    (value) => {
+      return isRequired(value) ? null : message;
+    },
 
-  email: (message = 'Invalid email address') => (value) => {
-    return isValidEmail(value) ? null : message;
-  },
+  email:
+    (message = 'Invalid email address') =>
+    (value) => {
+      return isValidEmail(value) ? null : message;
+    },
 
   minLength: (min, message) => (value) => {
-    return value.length >= min
-      ? null
-      : message || `Minimum ${min} characters required`;
+    return value.length >= min ? null : message || `Minimum ${min} characters required`;
   },
 
   maxLength: (max, message) => (value) => {
-    return value.length <= max
-      ? null
-      : message || `Maximum ${max} characters allowed`;
+    return value.length <= max ? null : message || `Maximum ${max} characters allowed`;
   },
 
   pattern: (regex, message) => (value) => {
     return regex.test(value) ? null : message;
   },
 
-  numeric: (message = 'Must be a number') => (value) => {
-    return !isNaN(Number(value)) ? null : message;
-  },
+  numeric:
+    (message = 'Must be a number') =>
+    (value) => {
+      return !isNaN(Number(value)) ? null : message;
+    },
 
   range: (min, max, message) => (value) => {
-    return isInRange(value, min, max)
-      ? null
-      : message || `Value must be between ${min} and ${max}`;
-  }
+    return isInRange(value, min, max) ? null : message || `Value must be between ${min} and ${max}`;
+  },
 };

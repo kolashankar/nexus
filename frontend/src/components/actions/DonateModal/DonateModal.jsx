@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../../ui/dialog';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { useToast } from '../../../hooks/useToast';
@@ -13,20 +19,20 @@ export const DonateModal = ({ open, onClose, onSuccess }) => {
 
   const handleDonate = async () => {
     if (!targetId || !amount) {
-      toast({ 
-        title: 'Error', 
-        description: 'Please enter target player ID and amount', 
-        variant: 'destructive' 
+      toast({
+        title,
+        description,
+        variant,
       });
       return;
     }
 
     const donationAmount = parseInt(amount);
     if (isNaN(donationAmount) || donationAmount <= 0) {
-      toast({ 
-        title: 'Invalid Amount', 
-        description: 'Please enter a valid positive number', 
-        variant: 'destructive' 
+      toast({
+        title,
+        description,
+        variant,
       });
       return;
     }
@@ -35,17 +41,17 @@ export const DonateModal = ({ open, onClose, onSuccess }) => {
     try {
       const result = await actionsService.donate(targetId, donationAmount);
       toast({
-        title: 'Donation Successful!',
-        description: `You donated ${donationAmount} credits to player ${targetId}`,
-        variant: 'success'
+        title,
+        description,
+        variant,
       });
       if (result.success && onSuccess) onSuccess();
       onClose();
     } catch (error) {
-      toast({ 
-        title: 'Donation Failed', 
-        description: error.message || 'Unable to complete donation', 
-        variant: 'destructive' 
+      toast({
+        title,
+        description,
+        variant,
       });
     } finally {
       setLoading(false);
@@ -62,11 +68,20 @@ export const DonateModal = ({ open, onClose, onSuccess }) => {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <Input placeholder="Target Player ID" value={targetId} onChange={(e) => setTargetId(e.target.value)} />
-          <Input type="number" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
+          <Input
+            placeholder="Target Player ID"
+            value={targetId}
+            onChange={(e) => setTargetId(e.target.value)}
+          />
+          <Input
+            type="number"
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
           <div className="flex gap-2">
             <Button onClick={handleDonate} disabled={loading}>
-              {loading ? 'Donating...' : 'Donate'}
+              {loading ? 'Donating...' 
             </Button>
             <Button variant="outline" onClick={onClose}>
               Cancel

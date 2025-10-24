@@ -49,9 +49,7 @@ class AssetLoader {
           const asset = {
             model: gltf.scene,
             animations: gltf.animations,
-            mixer: gltf.animations.length > 0
-              ? new THREE.AnimationMixer(gltf.scene)
-              : undefined
+            mixer: gltf.animations.length > 0 ? new THREE.AnimationMixer(gltf.scene) : undefined,
           };
 
           this.cache.set(url, asset);
@@ -63,7 +61,7 @@ class AssetLoader {
             onProgress({
               loaded: xhr.loaded,
               total: xhr.total,
-              percentage: (xhr.loaded / xhr.total) * 100
+              percentage: (xhr.loaded / xhr.total) * 100,
             });
           }
         },
@@ -100,9 +98,7 @@ class AssetLoader {
           const asset = {
             model: fbx,
             animations: fbx.animations,
-            mixer: fbx.animations.length > 0
-              ? new THREE.AnimationMixer(fbx)
-              : undefined
+            mixer: fbx.animations.length > 0 ? new THREE.AnimationMixer(fbx) : undefined,
           };
 
           this.cache.set(url, asset);
@@ -114,7 +110,7 @@ class AssetLoader {
             onProgress({
               loaded: xhr.loaded,
               total: xhr.total,
-              percentage: (xhr.loaded / xhr.total) * 100
+              percentage: (xhr.loaded / xhr.total) * 100,
             });
           }
         },
@@ -142,7 +138,7 @@ class AssetLoader {
             onProgress({
               loaded: xhr.loaded,
               total: xhr.total,
-              percentage: (xhr.loaded / xhr.total) * 100
+              percentage: (xhr.loaded / xhr.total) * 100,
             });
           }
         },
@@ -165,7 +161,7 @@ class AssetLoader {
           onProgress({
             loaded: totalLoaded,
             total: total,
-            percentage: (totalLoaded / total) * 100
+            percentage: (totalLoaded / total) * 100,
           });
         }
       });

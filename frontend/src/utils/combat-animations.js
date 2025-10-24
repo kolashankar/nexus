@@ -7,11 +7,7 @@ import { haptic } from './mobile-helpers';
 /**
  * Execute combat animation
  */
-export const playCombatAnimation = ({
-  type,
-  element,
-  duration = 500,
-}) => {
+export const playCombatAnimation = ({ type, element, duration = 500 }) => {
   return new Promise((resolve) => {
     const animations = {
       attack: 'animate-attack',
@@ -44,11 +40,7 @@ export const playCombatAnimation = ({
 /**
  * Create damage number popup
  */
-export const showDamageNumber = (
-  targetElement,
-  damage,
-  type = 'damage'
-) => {
+export const showDamageNumber = (targetElement, damage, type = 'damage') => {
   const damageEl = document.createElement('div');
   damageEl.className = `floating-text ${type}`;
   damageEl.textContent = type === 'heal' ? `+${damage}` : `-${damage}`;
@@ -76,11 +68,7 @@ export const showDamageNumber = (
 /**
  * Create combat effect particles
  */
-export const createCombatParticles = (
-  targetElement,
-  count = 10,
-  color = '#3b82f6'
-) => {
+export const createCombatParticles = (targetElement, count = 10, color = '#3b82f6') => {
   const rect = targetElement.getBoundingClientRect();
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
@@ -105,10 +93,7 @@ export const createCombatParticles = (
 /**
  * Create energy burst effect
  */
-export const createEnergyBurst = (
-  targetElement,
-  color = '#3b82f6'
-) => {
+export const createEnergyBurst = (targetElement, color = '#3b82f6') => {
   const burst = document.createElement('div');
   burst.className = 'energy-burst';
   burst.style.color = color;
@@ -189,10 +174,7 @@ export const flashScreen = (color = '#ff0000', duration = 200) => {
 /**
  * Lightning strike effect
  */
-export const createLightningStrike = (
-  startElement,
-  endElement
-) => {
+export const createLightningStrike = (startElement, endElement) => {
   const startRect = startElement.getBoundingClientRect();
   const endRect = endElement.getBoundingClientRect();
 
@@ -205,9 +187,7 @@ export const createLightningStrike = (
   const endY = endRect.top + endRect.height / 2;
 
   const angle = Math.atan2(endY - startY, endX - startX);
-  const length = Math.sqrt(
-    Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2)
-  );
+  const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
 
   lightning.style.left = `${startX}px`;
   lightning.style.top = `${startY}px`;
@@ -248,8 +228,7 @@ export const celebrateVictory = () => {
       confetti.className = 'confetti';
       confetti.style.left = `${Math.random() * 100}%`;
       confetti.style.top = '-10px';
-      confetti.style.backgroundColor =
-        colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
       confetti.style.animationDelay = `${Math.random() * 0.5}s`;
 
       document.body.appendChild(confetti);
@@ -266,10 +245,7 @@ export const celebrateVictory = () => {
 /**
  * Combo counter animation
  */
-export const showComboCounter = (
-  count,
-  targetElement
-) => {
+export const showComboCounter = (count, targetElement) => {
   const comboEl = document.createElement('div');
   comboEl.className = 'floating-text';
   comboEl.textContent = `${count}x COMBO!`;

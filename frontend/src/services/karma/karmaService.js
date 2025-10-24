@@ -17,7 +17,7 @@ export const getKarmaScore = async () => {
  */
 export const getKarmaHistory = async (limit = 50) => {
   const response = await apiClient.get('/api/karma/history', {
-    params: { limit }
+    params: { limit },
   });
   return response.data;
 };
@@ -33,12 +33,9 @@ export const getKarmaEvents = async () => {
 /**
  * Respond to a karma event.
  */
-export const respondToKarmaEvent = async (
-  eventId,
-  response
-) => {
+export const respondToKarmaEvent = async (eventId, response) => {
   const res = await apiClient.post(`/api/karma/events/${eventId}/respond`, {
-    response
+    response,
   });
   return res.data;
 };
@@ -65,5 +62,5 @@ export const karmaService = {
   getKarmaEvents,
   respondToKarmaEvent,
   getWorldKarmaState,
-  getCollectiveKarma
+  getCollectiveKarma,
 };

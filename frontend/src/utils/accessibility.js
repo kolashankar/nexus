@@ -41,9 +41,7 @@ export class FocusTrap {
       '[tabindex]:not([tabindex="-1"])',
     ];
 
-    return Array.from(
-      this.element.querySelectorAll(selectors.join(','))
-    ).filter((el) => {
+    return Array.from(this.element.querySelectorAll(selectors.join(','))).filter((el) => {
       return !el.hasAttribute('disabled') && el.offsetParent !== null;
     });
   }
@@ -273,9 +271,7 @@ export const focusManagement = {
 
   // Move focus to first error in form
   focusFirstError: (formElement) => {
-    const firstError = formElement.querySelector(
-      '[aria-invalid="true"]'
-    );
+    const firstError = formElement.querySelector('[aria-invalid="true"]');
     if (firstError) {
       firstError.focus();
     }
@@ -305,8 +301,7 @@ export class RovingTabIndex {
   }
 
   movePrevious() {
-    this.currentIndex =
-      (this.currentIndex - 1 + this.items.length) % this.items.length;
+    this.currentIndex = (this.currentIndex - 1 + this.items.length) % this.items.length;
     this.updateTabIndex();
     this.items[this.currentIndex].focus();
   }

@@ -24,14 +24,13 @@ import SocialHub from './pages/SocialHub/SocialHub';
 import Territories from './pages/Territories/Territories';
 import World from './pages/World/WorldDashboard';
 
-
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useStore();
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
-  
+
   return <>{children}</>;
 };
 
@@ -45,104 +44,118 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route 
-              path="/dashboard" 
+            <Route
+              path="/dashboard"
               element={
                 <ProtectedRoute>
                   <Dashboard />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/combat\" 
+              }
+            />
+            <Route
+              path="/combat"
               element={
                 <ProtectedRoute>
                   <Combat />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/actions\" 
+              }
+            />
+            <Route
+              path="/actions"
               element={
                 <ProtectedRoute>
                   <Actions />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/guild\" 
+              }
+            />
+            <Route
+              path="/guild"
               element={
                 <ProtectedRoute>
                   <Guild />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/karma\" 
+              }
+            />
+            <Route
+              path="/karma"
               element={
                 <ProtectedRoute>
                   <Karma />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/prestige\" 
+              }
+            />
+            <Route
+              path="/prestige"
               element={
                 <ProtectedRoute>
                   <Prestige />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/profile\" 
+              }
+            />
+            <Route
+              path="/profile"
               element={
                 <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/progression\" 
+              }
+            />
+            <Route
+              path="/progression"
               element={
                 <ProtectedRoute>
                   <Progression />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/quests\" 
+              }
+            />
+            <Route
+              path="/quests"
               element={
                 <ProtectedRoute>
                   <Quests />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/seasonal\" 
+              }
+            />
+            <Route
+              path="/seasonal"
               element={
                 <ProtectedRoute>
                   <Seasonal />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/skills\" 
+              }
+            />
+            <Route
+              path="/skills"
               element={
                 <ProtectedRoute>
                   <Skills />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/social\" 
+              }
+            />
+            <Route
+              path="/social"
               element={
                 <ProtectedRoute>
                   <SocialHub />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/territories\" 
+              }
+            />
+            <Route
+              path="/territories"
               element={
                 <ProtectedRoute>
                   <Territories />
                 </ProtectedRoute>
-              } />
-            <Route 
-              path=\"/world\" 
+              }
+            />
+            <Route
+              path="/world"
               element={
                 <ProtectedRoute>
                   <World />
                 </ProtectedRoute>
-              } />
+              }
+            />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
@@ -153,4 +166,3 @@ function App() {
 }
 
 export default App;
-

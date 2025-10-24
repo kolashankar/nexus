@@ -5,8 +5,6 @@ import { Button } from '../../ui/button';
 import { Trophy, Users, Calendar } from 'lucide-react';
 import './TournamentCard.css';
 
-
-
 const TournamentCard = ({ 
   tournament,
   onRegister,
@@ -15,22 +13,15 @@ const TournamentCard = ({
  }) => {
   const getStatusBadge = () => {
     switch (tournament.status) {
-      case 'registration':
-        return Open for Registration;
-      case 'in_progress':
+      case 'registration'
+        return 'Open for Registration';
+      case 'in_progress'
         return In Progress;
-      case 'completed':
+      case 'completed'
         return Completed;
       default)}
-        
-      
 
-      {tournament.description}
-
-      
-        
-          
-          
+      {tournament.description}          
             {tournament.participants.length} / {tournament.max_participants} Players
           
         

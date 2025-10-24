@@ -50,7 +50,7 @@ export const RealEstateMarket= () => {
       const response = await fetch('/api/real-estate/purchase', {
         method,
         headers,
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization')}`
         },
         body)
       });
@@ -59,12 +59,12 @@ export const RealEstateMarket= () => {
 
       if (data.success) {
         toast.success('Property purchased!', {
-          description: 'Action completed'});
+          description);
         fetchProperties();
         fetchMyProperties();
       } else {
         toast.error('Purchase failed', {
-          description: 'Action completed'});
+          description);
       }
     } catch (error) {
       toast.error('Purchase failed');
@@ -73,10 +73,10 @@ export const RealEstateMarket= () => {
 
   const getPropertyIcon = (type) => {
     switch (type) {
-      case 'apartment':
+      case 'apartment'
         return null;
-      case 'house':
-      case 'mansion':
+      case 'house'
+      case 'mansion'
         return null;
       default;
     }
@@ -193,7 +193,7 @@ export const RealEstateMarket= () => {
                 Browse Properties
               
             
-          ) : (
+          ) 
             
               {myProperties.map(property => (
                 

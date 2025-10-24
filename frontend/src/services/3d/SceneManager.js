@@ -22,7 +22,7 @@ export class SceneManager {
     this.renderer = new THREE.WebGLRenderer({
       canvas: canvas,
       antialias: true,
-      alpha: true
+      alpha: true,
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -56,11 +56,7 @@ export class SceneManager {
     }
 
     if (config.fog) {
-      this.scene.fog = new THREE.Fog(
-        config.fog.color,
-        config.fog.near,
-        config.fog.far
-      );
+      this.scene.fog = new THREE.Fog(config.fog.color, config.fog.near, config.fog.far);
     }
 
     if (config.ambient) {
@@ -85,12 +81,7 @@ export class SceneManager {
     this.addAmbientLight('ambient', new THREE.Color(0xffffff), 0.4);
 
     // Directional light (sun)
-    this.addDirectionalLight(
-      'sun',
-      new THREE.Color(0xffffff),
-      0.8,
-      new THREE.Vector3(5, 10, 5)
-    );
+    this.addDirectionalLight('sun', new THREE.Color(0xffffff), 0.8, new THREE.Vector3(5, 10, 5));
   }
 
   /**
@@ -206,7 +197,7 @@ export class SceneManager {
    */
   dispose() {
     window.removeEventListener('resize', this.handleResize.bind(this));
-    
+
     // Dispose renderer
     this.renderer.dispose();
 

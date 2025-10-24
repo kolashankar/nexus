@@ -6,11 +6,7 @@ const Spinner = () => (
   </div>
 );
 
-export const LazyLoadWrapper = ({ 
-  children,
-  fallback,
-  minLoadTime = 0,
-}) => {
+export const LazyLoadWrapper = ({ children, fallback, minLoadTime = 0 }) => {
   const [isReady, setIsReady] = React.useState(minLoadTime === 0);
 
   React.useEffect(() => {
@@ -33,9 +29,5 @@ export const LazyLoadWrapper = ({
     return fallback || defaultFallback;
   }
 
-  return (
-    <Suspense fallback={fallback || defaultFallback}>
-      {children}
-    </Suspense>
-  );
+  return <Suspense fallback={fallback || defaultFallback}>{children}</Suspense>;
 };

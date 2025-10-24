@@ -5,22 +5,22 @@ export class RetryBoundary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasError: false,
-      error: null,
-      retryCount: 0,
+      hasError,
+      error,
+      retryCount,
     };
   }
 
   static getDerivedStateFromError(error) {
     return {
-      hasError: true,
-      error: error,
-      retryCount: 0,
+      hasError,
+      error,
+      retryCount,
     };
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('Error caught by RetryBoundary:', error, errorInfo);
+    console.error('Error caught by RetryBoundary, error, errorInfo);
 
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
@@ -33,9 +33,9 @@ export class RetryBoundary extends Component {
 
     if (retryCount < maxRetries) {
       this.setState({
-        hasError: false,
-        error: null,
-        retryCount: retryCount + 1,
+        hasError,
+        error,
+        retryCount,
       });
     } else {
       console.error('Max retries reached');
@@ -51,12 +51,7 @@ export class RetryBoundary extends Component {
         return fallback;
       }
 
-      return (
-        <ErrorFallback
-          error={error}
-          resetErrorBoundary={this.handleRetry}
-        />
-      );
+      return <ErrorFallback error={error} resetErrorBoundary={this.handleRetry} />;
     }
 
     return children;

@@ -33,7 +33,7 @@ export const Progression = () => {
       </div>
 
       {/* Overview Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
@@ -118,15 +118,15 @@ export const Progression = () => {
                 <CardTitle>Select Trait</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 md
                   {Object.keys(progression.skillTreeProgress).map((trait) => (
                     <button
                       key={trait}
                       onClick={() => setSelectedTrait(trait)}
                       className={`p-3 rounded border-2 transition-all ${
                         selectedTrait === trait
-                          ? 'border-purple-500 bg-purple-50 dark:bg-purple-950'
-                          : 'border-border hover:border-purple-300'
+                          ? 'border-purple-500 bg-purple-50 dark
+                          
                       }`}
                     >
                       <span className="capitalize">{trait}</span>
@@ -139,7 +139,9 @@ export const Progression = () => {
             {/* Skill Tree Display - Would need actual data */}
             <Card className="p-6">
               <p>Skill Tree Visualizer for {selectedTrait}</p>
-              <p className="text-sm text-muted-foreground">Connect to API to load skill tree data</p>
+              <p className="text-sm text-muted-foreground">
+                Connect to API to load skill tree data
+              </p>
             </Card>
           </div>
         </TabsContent>

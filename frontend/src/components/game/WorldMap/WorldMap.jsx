@@ -34,20 +34,20 @@ export const WorldMap= () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'controlled': return 'bg-blue-500';
-      case 'contested': return 'bg-red-500';
-      case 'neutral': return 'bg-gray-500';
+      case 'controlled';
+      case 'contested';
+      case 'neutral';
       default;
     }
   };
 
   const getRegionColor = (region) => {
     switch (region) {
-      case 'north': return 'from-blue-400 to-blue-600';
-      case 'south': return 'from-green-400 to-green-600';
-      case 'east': return 'from-yellow-400 to-yellow-600';
-      case 'west': return 'from-purple-400 to-purple-600';
-      case 'central': return 'from-red-400 to-red-600';
+      case 'north';
+      case 'south';
+      case 'east';
+      case 'west';
+      case 'central';
       default) {
     return (
       
@@ -233,7 +233,7 @@ export const WorldMap= () => {
                 )}
               
             
-          ) : (
+          ) 
             
               
                 

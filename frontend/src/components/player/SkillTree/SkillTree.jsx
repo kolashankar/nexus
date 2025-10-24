@@ -141,7 +141,7 @@ const SkillTree = ({  traitName  }) => {
                     
                   )}
                 
-              ) : (
+              ) 
                 
                   Select a trait to view its skill tree
                 

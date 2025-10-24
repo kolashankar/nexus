@@ -10,47 +10,47 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
 const mockCombatState = {
-  battle_id: 'battle-123',
-  player1: {
-    username: 'testuser',
-    hp: 100,
-    max_hp: 100,
-    ap: 10
+  battle_id,
+  player1
+    username,
+    hp,
+    max_hp,
+    ap,
   },
-  player2: {
-    username: 'Opponent',
-    hp: 80,
-    max_hp: 100,
-    ap: 8
+  player2
+    username,
+    hp,
+    max_hp,
+    ap,
   },
-  current_turn: 'testuser',
-  turn_number: 1,
-  status: 'active',
-  log: []
+  current_turn,
+  turn_number,
+  status,
+  log,
 };
 
 const server = setupServer(
   rest.post('/api/combat/challenge', (req, res, ctx) => {
     return res(
       ctx.json({
-        success: true,
-        battle_id: 'battle-123',
-        message: 'Challenge sent'
+        success,
+        battle_id,
+        message,
       })
     );
   }),
-  
+
   rest.get('/api/combat/state', (req, res, ctx) => {
     return res(ctx.json(mockCombatState));
   }),
-  
+
   rest.post('/api/combat/action', (req, res, ctx) => {
     const updatedState = {
       ...mockCombatState,
-      player2: { ...mockCombatState.player2, hp: 55 },
-      current_turn: 'Opponent',
-      turn_number: 2,
-      log: ['TestPlayer attacks for 25 damage']
+      player2, hp,
+      current_turn,
+      turn_number,
+      log,
     };
     return res(ctx.json(updatedState));
   })
@@ -67,160 +67,160 @@ describe('Combat Flow Integration Tests', () => {
         <CombatPage />
       </BrowserRouter>
     );
-    
+
     // Click challenge button
     const challengeButton = screen.getByText(/challenge player/i);
     fireEvent.click(challengeButton);
-    
+
     // Enter opponent name
     const opponentInput = screen.getByPlaceholderText(/player name/i);
-    fireEvent.change(opponentInput, { target: { value: 'Opponent' } });
-    
+    fireEvent.change(opponentInput, { target);
+
     // Send challenge
     const sendButton = screen.getByText(/send challenge/i);
     fireEvent.click(sendButton);
-    
+
     // Should show success
     await waitFor(() => {
       expect(screen.getByText(/challenge sent/i)).toBeInTheDocument();
     });
   });
-  
+
   test('complete combat turn flow', async () => {
     render(
       <BrowserRouter>
         <CombatPage />
       </BrowserRouter>
     );
-    
+
     // Wait for combat to load
     await waitFor(() => {
       expect(screen.getByText('TestPlayer')).toBeInTheDocument();
       expect(screen.getByText('Opponent')).toBeInTheDocument();
     });
-    
+
     // Player's turn - attack
     const attackButton = screen.getByText(/attack/i);
     fireEvent.click(attackButton);
-    
+
     // Should update combat state
     await waitFor(() => {
       expect(screen.getByText(/attacks for 25 damage/i)).toBeInTheDocument();
     });
-    
+
     // Turn should change
     expect(screen.getByText(/Opponent's turn/i)).toBeInTheDocument();
   });
-  
+
   test('display action points correctly', async () => {
     render(
       <BrowserRouter>
         <CombatPage />
       </BrowserRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText(/AP/)).toBeInTheDocument();
     });
   });
-  
+
   test('use special ability', async () => {
     server.use(
       rest.post('/api/combat/action', (req, res, ctx) => {
         return res(
           ctx.json({
             ...mockCombatState,
-            player1: { ...mockCombatState.player1, ap: 5 },
-            player2: { ...mockCombatState.player2, hp: 45 },
-            log: ['TestPlayer uses Heavy Attack for 35 damage!']
+            player1, ap,
+            player2, hp,
+            log,
           })
         );
       })
     );
-    
+
     render(
       <BrowserRouter>
         <CombatPage />
       </BrowserRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText(/attack/i)).toBeInTheDocument();
     });
-    
+
     // Open abilities menu
     const abilitiesButton = screen.getByText(/abilities/i);
     fireEvent.click(abilitiesButton);
-    
+
     // Use heavy attack
     const heavyAttack = screen.getByText(/heavy attack/i);
     fireEvent.click(heavyAttack);
-    
+
     // Should consume AP and deal damage
     await waitFor(() => {
       expect(screen.getByText(/AP/)).toBeInTheDocument();
       expect(screen.getByText(/Heavy Attack/i)).toBeInTheDocument();
     });
   });
-  
+
   test('combat victory flow', async () => {
     server.use(
       rest.get('/api/combat/state', (req, res, ctx) => {
         return res(
           ctx.json({
             ...mockCombatState,
-            status: 'completed',
-            winner: 'testuser',
-            player2: { ...mockCombatState.player2, hp: 0 }
+            status,
+            winner,
+            player2, hp,
           })
         );
       })
     );
-    
+
     render(
       <BrowserRouter>
         <CombatPage />
       </BrowserRouter>
     );
-    
+
     // Should show victory screen
     await waitFor(() => {
       expect(screen.getByText(/victory/i)).toBeInTheDocument();
     });
-    
+
     // Should display rewards
     expect(screen.getByText(/rewards/i)).toBeInTheDocument();
   });
-  
+
   test('flee from combat', async () => {
     server.use(
       rest.post('/api/combat/flee', (req, res, ctx) => {
         return res(
           ctx.json({
-            success: true,
-            message: 'Fled from combat'
+            success,
+            message,
           })
         );
       })
     );
-    
+
     render(
       <BrowserRouter>
         <CombatPage />
       </BrowserRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText(/flee/i)).toBeInTheDocument();
     });
-    
+
     const fleeButton = screen.getByText(/flee/i);
     fireEvent.click(fleeButton);
-    
+
     // Confirm flee
     const confirmButton = screen.getByText(/confirm/i);
     fireEvent.click(confirmButton);
-    
+
     await waitFor(() => {
       expect(screen.getByText(/fled from combat/i)).toBeInTheDocument();
     });

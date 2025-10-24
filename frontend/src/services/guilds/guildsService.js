@@ -39,7 +39,7 @@ class GuildsService {
   async promoteMember(playerId, newRank) {
     const response = await apiClient.post('/guilds/management/promote', {
       player_id: playerId,
-      new_rank: newRank
+      new_rank: newRank,
     });
     return response.data;
   }
@@ -84,7 +84,7 @@ class GuildsService {
   async declareWar(defenderGuildId, targetTerritory) {
     const response = await apiClient.post('/guilds/wars/declare', {
       defender_guild_id: defenderGuildId,
-      target_territory: targetTerritory
+      target_territory: targetTerritory,
     });
     return response.data;
   }

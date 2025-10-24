@@ -8,15 +8,7 @@ import websocketService from '../services/websocket/websocketService';
 
 export const useAuth = () => {
   const navigate = useNavigate();
-  const { 
-    isAuthenticated, 
-    accessToken,
-    login, 
-    register, 
-    logout,
-    isLoading,
-    error 
-  } = useStore();
+  const { isAuthenticated, accessToken, login, register, logout, isLoading, error } = useStore();
 
   useEffect(() => {
     // Connect WebSocket when authenticated
@@ -34,7 +26,7 @@ export const useAuth = () => {
 
   const handleLogin = async (username, password) => {
     try {
-      await login({ username: "testuser", password });
+      await login({ username: 'testuser', password });
       navigate('/dashboard');
     } catch (err) {
       console.error('Login failed', err);
@@ -44,7 +36,7 @@ export const useAuth = () => {
 
   const handleRegister = async (username, email, password) => {
     try {
-      await register({ username: "testuser", email, password });
+      await register({ username: 'testuser', email, password });
       navigate('/dashboard');
     } catch (err) {
       console.error('Registration failed', err);

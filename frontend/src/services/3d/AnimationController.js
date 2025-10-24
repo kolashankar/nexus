@@ -28,12 +28,7 @@ export class AnimationController {
       return false;
     }
 
-    const {
-      loop = true,
-      fadeIn = 0.2,
-      fadeOut = 0.2,
-      weight = 1
-    } = options;
+    const { loop = true, fadeIn = 0.2, fadeOut = 0.2, weight = 1 } = options;
 
     // Stop previous action with fade out
     if (this.currentAction && this.currentAction !== action) {
@@ -43,10 +38,7 @@ export class AnimationController {
 
     // Configure and play new action
     action.reset();
-    action.setLoop(
-      loop ? THREE.LoopRepeat : THREE.LoopOnce,
-      loop ? Infinity : 1
-    );
+    action.setLoop(loop ? THREE.LoopRepeat : THREE.LoopOnce, loop ? Infinity : 1);
     action.setEffectiveWeight(weight);
     action.fadeIn(fadeIn);
     action.play();

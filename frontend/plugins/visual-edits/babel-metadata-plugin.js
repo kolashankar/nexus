@@ -1,13 +1,13 @@
 // babel-metadata-plugin.js
 // Babel plugin for JSX transformation - adds metadata to all elements
-const path = require("path");
-const fs = require("fs");
+const path = require('path');
+const fs = require('fs');
 
 // ───────────────────────────────────────────────────────────────────────────────
 // ===== Dynamic composite detection (auto-exclude) =====
-const EXTENSIONS = [".tsx", ".ts", ".jsx", ".js"];
+const EXTENSIONS = ['.tsx', '.ts', '.jsx', '.js'];
 const PROJECT_ROOT = path.resolve(__dirname, '../..'); // frontend root (../../ from plugins/visual-edits/)
-const SRC_ALIAS = path.resolve(PROJECT_ROOT, "src");
+const SRC_ALIAS = path.resolve(PROJECT_ROOT, 'src');
 
 const RESOLVE_CACHE = new Map(); // key: fromFile::source -> absPath | null
 const FILE_AST_CACHE = new Map(); // absPath -> { ast, mtimeMs }
@@ -20,9 +20,9 @@ function resolveImportPath(source, fromFile) {
   if (RESOLVE_CACHE.has(cacheKey)) return RESOLVE_CACHE.get(cacheKey);
 
   let base;
-  if (source.startsWith("@/")) {
+  if (source.startsWith('@/')) {
     base = path.join(SRC_ALIAS, source.slice(2));
-  } else if (source.startsWith("./") || source.startsWith("../")) {
+  } else if (source.startsWith('./') || source.startsWith('../')) {
     base = path.resolve(path.dirname(fromFile), source);
   } else {
     // bare specifier (node_modules) — skip analysis
@@ -41,7 +41,7 @@ function resolveImportPath(source, fromFile) {
   // try index.* in directory
   if (fs.existsSync(base) && fs.statSync(base).isDirectory()) {
     for (const ext of EXTENSIONS) {
-      const idx = path.join(base, "index" + ext);
+      const idx = path.join(base, 'index' + ext);
       if (fs.existsSync(idx)) {
         RESOLVE_CACHE.set(cacheKey, idx);
         return idx;
@@ -59,10 +59,10 @@ function parseFileAst(absPath, parser) {
     const cached = FILE_AST_CACHE.get(absPath);
     if (cached && cached.mtimeMs === stat.mtimeMs) return cached.ast;
 
-    const code = fs.readFileSync(absPath, "utf8");
+    const code = fs.readFileSync(absPath, 'utf8');
     const ast = parser.parse(code, {
-      sourceType: "module",
-      plugins: ["jsx", "typescript"],
+      sourceType: 'module',
+      plugins: ['jsx', 'typescript'],
     });
     FILE_AST_CACHE.set(absPath, { ast, mtimeMs: stat.mtimeMs });
     return ast;
@@ -78,8 +78,7 @@ function jsxNameOf(openingEl, t) {
   return null;
 }
 
-const PORTAL_SUFFIX_RE =
-  /(Trigger|Portal|Content|Overlay|Viewport|Anchor|Arrow)$/;
+const PORTAL_SUFFIX_RE = /(Trigger|Portal|Content|Overlay|Viewport|Anchor|Arrow)$/;
 
 function isPortalishName(name, RADIX_ROOTS) {
   if (!name) return false;
@@ -123,7 +122,7 @@ function fileExportHasPortals({
         } else if (t.isImportDefaultSpecifier(s)) {
           importMap.set(s.local.name, {
             absPath: target,
-            importName: "default",
+            importName: 'default',
           });
         }
       });
@@ -135,25 +134,25 @@ function fileExportHasPortals({
 
   traverse(ast, {
     ExportDefaultDeclaration(p) {
-      if (exportName !== "default") return;
+      if (exportName !== 'default') return;
       const decl = p.node.declaration;
       if (
         t.isFunctionDeclaration(decl) ||
         t.isArrowFunctionExpression(decl) ||
         t.isFunctionExpression(decl)
       ) {
-        compPaths.push(p.get("declaration"));
+        compPaths.push(p.get('declaration'));
       } else if (t.isIdentifier(decl)) {
         const bind = p.scope.getBinding(decl.name);
         if (bind) compPaths.push(bind.path);
       }
     },
     ExportNamedDeclaration(p) {
-      if (exportName === "default") return;
+      if (exportName === 'default') return;
       if (p.node.declaration) {
         const d = p.node.declaration;
         if (t.isFunctionDeclaration(d) && d.id?.name === exportName) {
-          compPaths.push(p.get("declaration"));
+          compPaths.push(p.get('declaration'));
         }
         if (t.isVariableDeclaration(d)) {
           d.declarations.forEach((vd, i) => {
@@ -195,7 +194,7 @@ function fileExportHasPortals({
           hit = true;
           return;
         }
-        if (/^[A-Z]/.test(name || "")) {
+        if (/^[A-Z]/.test(name || '')) {
           // capitalized child: may itself be portalish
           const binding = op.scope.getBinding(name);
           if (binding && binding.path) {
@@ -239,15 +238,7 @@ function fileExportHasPortals({
 }
 
 // Decide at a usage site whether <ElementName /> is a composite that should be excluded
-function usageIsCompositePortal({
-  elementName,
-  jsxPath,
-  state,
-  t,
-  traverse,
-  parser,
-  RADIX_ROOTS,
-}) {
+function usageIsCompositePortal({ elementName, jsxPath, state, t, traverse, parser, RADIX_ROOTS }) {
   // Same-file binding?
   const binding = jsxPath.scope.getBinding(elementName);
   if (binding && binding.path) {
@@ -261,7 +252,7 @@ function usageIsCompositePortal({
           hit = true;
           return;
         }
-        if (/^[A-Z]/.test(name || "")) {
+        if (/^[A-Z]/.test(name || '')) {
           const innerBinding = op.scope.getBinding(name);
           if (innerBinding && innerBinding.path) {
             innerBinding.path.traverse(this.visitors);
@@ -276,10 +267,7 @@ function usageIsCompositePortal({
   if (binding && binding.path && binding.path.isImportSpecifier()) {
     const from = binding.path.parent.source.value;
     const fileFrom =
-      state.filename ||
-      state.file?.opts?.filename ||
-      state.file?.sourceFileName ||
-      __filename;
+      state.filename || state.file?.opts?.filename || state.file?.sourceFileName || __filename;
     const absPath = resolveImportPath(from, fileFrom);
     if (!absPath) return false;
     const exportName = binding.path.node.imported.name;
@@ -297,15 +285,12 @@ function usageIsCompositePortal({
   if (binding && binding.path && binding.path.isImportDefaultSpecifier()) {
     const from = binding.path.parent.source.value;
     const fileFrom =
-      state.filename ||
-      state.file?.opts?.filename ||
-      state.file?.sourceFileName ||
-      __filename;
+      state.filename || state.file?.opts?.filename || state.file?.sourceFileName || __filename;
     const absPath = resolveImportPath(from, fileFrom);
     if (!absPath) return false;
     return fileExportHasPortals({
       absPath,
-      exportName: "default",
+      exportName: 'default',
       t,
       traverse,
       parser,
@@ -323,16 +308,16 @@ const babelMetadataPlugin = ({ types: t }) => {
   const processedNodes = new WeakSet(); // Track processed nodes to prevent infinite loops
 
   const ARRAY_METHODS = new Set([
-    "map",
-    "forEach",
-    "filter",
-    "reduce",
-    "reduceRight",
-    "flatMap",
-    "find",
-    "findIndex",
-    "some",
-    "every",
+    'map',
+    'forEach',
+    'filter',
+    'reduce',
+    'reduceRight',
+    'flatMap',
+    'find',
+    'findIndex',
+    'some',
+    'every',
   ]);
 
   // ---------- helpers ----------
@@ -343,30 +328,27 @@ const babelMetadataPlugin = ({ types: t }) => {
 
   const hasProp = (openingEl, name) =>
     openingEl?.attributes?.some(
-      (a) =>
-        t.isJSXAttribute(a) &&
-        t.isJSXIdentifier(a.name) &&
-        a.name.name === name,
+      (a) => t.isJSXAttribute(a) && t.isJSXIdentifier(a.name) && a.name.name === name
     );
 
   const isPortalPrimitive = (name) =>
     /(Trigger|Portal|Content|Overlay|Viewport|Anchor|Arrow)$/.test(name);
 
   const RADIX_ROOTS = new Set([
-    "Dialog",
-    "Popover",
-    "Tooltip",
-    "DropdownMenu",
-    "ContextMenu",
-    "AlertDialog",
-    "HoverCard",
-    "Select",
-    "Menubar",
-    "NavigationMenu",
-    "Sheet",
-    "Drawer",
-    "Toast",
-    "Command",
+    'Dialog',
+    'Popover',
+    'Tooltip',
+    'DropdownMenu',
+    'ContextMenu',
+    'AlertDialog',
+    'HoverCard',
+    'Select',
+    'Menubar',
+    'NavigationMenu',
+    'Sheet',
+    'Drawer',
+    'Toast',
+    'Command',
   ]);
 
   // direct child of a Trigger / asChild / Slot parent?
@@ -374,24 +356,19 @@ const babelMetadataPlugin = ({ types: t }) => {
     const p = jsxPath.parentPath;
     if (!p || !p.isJSXElement || !p.isJSXElement()) return false;
     const open = p.node.openingElement;
-    const name = getName(open) || "";
-    return hasProp(open, "asChild") || /Trigger$/.test(name) || name === "Slot";
+    const name = getName(open) || '';
+    return hasProp(open, 'asChild') || /Trigger$/.test(name) || name === 'Slot';
   };
 
   const alreadyHasXMeta = (openingEl) =>
     openingEl.attributes?.some(
-      (a) =>
-        t.isJSXAttribute(a) &&
-        t.isJSXIdentifier(a.name) &&
-        a.name.name.startsWith("x-"),
+      (a) => t.isJSXAttribute(a) && t.isJSXIdentifier(a.name) && a.name.name.startsWith('x-')
     );
 
   // ⬇️ Add { markExcluded } option: when true, include x-excluded="true"
   const insertMetaAttributes = (openingEl, attrsToAdd) => {
     if (!openingEl.attributes) openingEl.attributes = [];
-    const spreadIndex = openingEl.attributes.findIndex((attr) =>
-      t.isJSXSpreadAttribute(attr),
-    );
+    const spreadIndex = openingEl.attributes.findIndex((attr) => t.isJSXSpreadAttribute(attr));
     if (spreadIndex === -1) {
       openingEl.attributes.push(...attrsToAdd);
     } else {
@@ -402,35 +379,18 @@ const babelMetadataPlugin = ({ types: t }) => {
   const pushMetaAttrs = (
     openingEl,
     { normalizedPath, lineNumber, elementName, isDynamic },
-    { markExcluded = false } = {},
+    { markExcluded = false } = {}
   ) => {
     if (alreadyHasXMeta(openingEl)) return;
     const metaAttrs = [
-      t.jsxAttribute(
-        t.jsxIdentifier("x-file-name"),
-        t.stringLiteral(normalizedPath),
-      ),
-      t.jsxAttribute(
-        t.jsxIdentifier("x-line-number"),
-        t.stringLiteral(String(lineNumber)),
-      ),
-      t.jsxAttribute(
-        t.jsxIdentifier("x-component"),
-        t.stringLiteral(elementName),
-      ),
-      t.jsxAttribute(
-        t.jsxIdentifier("x-id"),
-        t.stringLiteral(`${normalizedPath}_${lineNumber}`),
-      ),
-      t.jsxAttribute(
-        t.jsxIdentifier("x-dynamic"),
-        t.stringLiteral(isDynamic ? "true" : "false"),
-      ),
+      t.jsxAttribute(t.jsxIdentifier('x-file-name'), t.stringLiteral(normalizedPath)),
+      t.jsxAttribute(t.jsxIdentifier('x-line-number'), t.stringLiteral(String(lineNumber))),
+      t.jsxAttribute(t.jsxIdentifier('x-component'), t.stringLiteral(elementName)),
+      t.jsxAttribute(t.jsxIdentifier('x-id'), t.stringLiteral(`${normalizedPath}_${lineNumber}`)),
+      t.jsxAttribute(t.jsxIdentifier('x-dynamic'), t.stringLiteral(isDynamic ? 'true' : 'false')),
     ];
     if (markExcluded) {
-      metaAttrs.push(
-        t.jsxAttribute(t.jsxIdentifier("x-excluded"), t.stringLiteral("true")),
-      );
+      metaAttrs.push(t.jsxAttribute(t.jsxIdentifier('x-excluded'), t.stringLiteral('true')));
     }
     insertMetaAttributes(openingEl, metaAttrs);
   };
@@ -457,10 +417,7 @@ const babelMetadataPlugin = ({ types: t }) => {
       return true;
     }
     for (const child of jsxElement.children) {
-      if (
-        t.isJSXExpressionContainer(child) &&
-        !t.isJSXEmptyExpression(child.expression)
-      ) {
+      if (t.isJSXExpressionContainer(child) && !t.isJSXEmptyExpression(child.expression)) {
         return true;
       }
       if (t.isJSXSpreadChild(child)) {
@@ -471,8 +428,8 @@ const babelMetadataPlugin = ({ types: t }) => {
   }
 
   // bring in parser/traverse for dynamic analysis
-  const parser = require("@babel/parser");
-  const traverse = require("@babel/traverse").default;
+  const parser = require('@babel/parser');
+  const traverse = require('@babel/traverse').default;
 
   function pathHasDynamicJSX(targetPath) {
     if (!targetPath || !targetPath.node) return false;
@@ -513,7 +470,7 @@ const babelMetadataPlugin = ({ types: t }) => {
     }
 
     if (path.isVariableDeclarator()) {
-      const init = path.get("init");
+      const init = path.get('init');
       return init && init.node ? pathIsDynamicComponent(init, visited) : false;
     }
 
@@ -526,7 +483,7 @@ const babelMetadataPlugin = ({ types: t }) => {
     }
 
     if (path.isCallExpression()) {
-      const args = path.get("arguments") || [];
+      const args = path.get('arguments') || [];
       if (args.length === 0) {
         return true;
       }
@@ -539,14 +496,12 @@ const babelMetadataPlugin = ({ types: t }) => {
     }
 
     if (path.isReturnStatement()) {
-      const argument = path.get("argument");
-      return argument && argument.node
-        ? pathIsDynamicComponent(argument, visited)
-        : false;
+      const argument = path.get('argument');
+      return argument && argument.node ? pathIsDynamicComponent(argument, visited) : false;
     }
 
     if (path.isExpressionStatement()) {
-      const expr = path.get("expression");
+      const expr = path.get('expression');
       return expr && expr.node ? pathIsDynamicComponent(expr, visited) : false;
     }
 
@@ -594,7 +549,7 @@ const babelMetadataPlugin = ({ types: t }) => {
       }
 
       if (nodePath.isVariableDeclarator()) {
-        evaluatePath(nodePath.get("init"));
+        evaluatePath(nodePath.get('init'));
         return;
       }
 
@@ -607,7 +562,7 @@ const babelMetadataPlugin = ({ types: t }) => {
       }
 
       if (nodePath.isCallExpression()) {
-        const args = nodePath.get("arguments") || [];
+        const args = nodePath.get('arguments') || [];
         if (args.length === 0) {
           dynamic = true;
           return;
@@ -620,12 +575,12 @@ const babelMetadataPlugin = ({ types: t }) => {
       }
 
       if (nodePath.isReturnStatement()) {
-        evaluatePath(nodePath.get("argument"));
+        evaluatePath(nodePath.get('argument'));
         return;
       }
 
       if (nodePath.isExpressionStatement()) {
-        evaluatePath(nodePath.get("expression"));
+        evaluatePath(nodePath.get('expression'));
         return;
       }
 
@@ -643,16 +598,16 @@ const babelMetadataPlugin = ({ types: t }) => {
 
     traverse(ast, {
       ExportDefaultDeclaration(p) {
-        if (dynamic || exportName !== "default") return;
-        evaluatePath(p.get("declaration"));
+        if (dynamic || exportName !== 'default') return;
+        evaluatePath(p.get('declaration'));
       },
       ExportNamedDeclaration(p) {
-        if (dynamic || exportName === "default") return;
+        if (dynamic || exportName === 'default') return;
 
         if (p.node.declaration) {
           const decl = p.node.declaration;
           if (t.isFunctionDeclaration(decl) && decl.id?.name === exportName) {
-            evaluatePath(p.get("declaration"));
+            evaluatePath(p.get('declaration'));
             return;
           }
           if (t.isVariableDeclaration(decl)) {
@@ -681,9 +636,7 @@ const babelMetadataPlugin = ({ types: t }) => {
               if (
                 fileExportIsDynamic({
                   absPath: resolved,
-                  exportName: t.isIdentifier(s.local)
-                    ? s.local.name
-                    : exportName,
+                  exportName: t.isIdentifier(s.local) ? s.local.name : exportName,
                 })
               ) {
                 dynamic = true;
@@ -719,10 +672,7 @@ const babelMetadataPlugin = ({ types: t }) => {
     if (bindingPath.isImportSpecifier()) {
       const from = bindingPath.parent.source.value;
       const fileFrom =
-        state.filename ||
-        state.file?.opts?.filename ||
-        state.file?.sourceFileName ||
-        __filename;
+        state.filename || state.file?.opts?.filename || state.file?.sourceFileName || __filename;
       const absPath = resolveImportPath(from, fileFrom);
       const exportName = bindingPath.node.imported.name;
       result = !!absPath ? fileExportIsDynamic({ absPath, exportName }) : false;
@@ -733,14 +683,9 @@ const babelMetadataPlugin = ({ types: t }) => {
     if (bindingPath.isImportDefaultSpecifier()) {
       const from = bindingPath.parent.source.value;
       const fileFrom =
-        state.filename ||
-        state.file?.opts?.filename ||
-        state.file?.sourceFileName ||
-        __filename;
+        state.filename || state.file?.opts?.filename || state.file?.sourceFileName || __filename;
       const absPath = resolveImportPath(from, fileFrom);
-      result = !!absPath
-        ? fileExportIsDynamic({ absPath, exportName: "default" })
-        : false;
+      result = !!absPath ? fileExportIsDynamic({ absPath, exportName: 'default' }) : false;
       BINDING_DYNAMIC_CACHE.set(bindingPath.node, result);
       return result;
     }
@@ -756,7 +701,7 @@ const babelMetadataPlugin = ({ types: t }) => {
   }
 
   return {
-    name: "element-metadata-plugin",
+    name: 'element-metadata-plugin',
     visitor: {
       // Wrap React components (capitalized JSX) with metadata divs,
       // or stamp attributes when wrapping would break Radix/Floating-UI.
@@ -773,100 +718,95 @@ const babelMetadataPlugin = ({ types: t }) => {
 
         // Exclude components that have strict child requirements or break when wrapped
         const excludedComponents = new Set([
-          "Route",
-          "Routes",
-          "Switch",
-          "Redirect",
-          "Navigate", // React Router
-          "Fragment",
-          "Suspense",
-          "StrictMode", // React built-ins
-          "ErrorBoundary",
-          "Provider",
-          "Consumer",
-          "Outlet",
-          "Link",
-          "NavLink",
+          'Route',
+          'Routes',
+          'Switch',
+          'Redirect',
+          'Navigate', // React Router
+          'Fragment',
+          'Suspense',
+          'StrictMode', // React built-ins
+          'ErrorBoundary',
+          'Provider',
+          'Consumer',
+          'Outlet',
+          'Link',
+          'NavLink',
           // Portal-based primitives/triggers (Radix/Floating-UI)
-          "Sheet",
-          "SheetContent",
-          "SheetOverlay",
-          "SheetPortal",
-          "Popover",
-          "PopoverContent",
-          "Tooltip",
-          "TooltipContent",
-          "DropdownMenu",
-          "DropdownMenuContent",
-          "DropdownMenuSubContent",
-          "ContextMenu",
-          "ContextMenuContent",
-          "ContextMenuSubContent",
-          "HoverCard",
-          "HoverCardContent",
-          "Select",
-          "SelectContent",
-          "Menubar",
-          "MenubarContent",
-          "MenubarSubContent",
-          "MenubarPortal",
-          "Drawer",
-          "DrawerContent",
-          "DrawerOverlay",
-          "DrawerPortal",
-          "Toast",
-          "ToastViewport",
-          "NavigationMenu",
-          "NavigationMenuContent",
-          "DropdownMenuPortal",
-          "ContextMenuPortal",
-          "Command",
-          "CommandDialog",
+          'Sheet',
+          'SheetContent',
+          'SheetOverlay',
+          'SheetPortal',
+          'Popover',
+          'PopoverContent',
+          'Tooltip',
+          'TooltipContent',
+          'DropdownMenu',
+          'DropdownMenuContent',
+          'DropdownMenuSubContent',
+          'ContextMenu',
+          'ContextMenuContent',
+          'ContextMenuSubContent',
+          'HoverCard',
+          'HoverCardContent',
+          'Select',
+          'SelectContent',
+          'Menubar',
+          'MenubarContent',
+          'MenubarSubContent',
+          'MenubarPortal',
+          'Drawer',
+          'DrawerContent',
+          'DrawerOverlay',
+          'DrawerPortal',
+          'Toast',
+          'ToastViewport',
+          'NavigationMenu',
+          'NavigationMenuContent',
+          'DropdownMenuPortal',
+          'ContextMenuPortal',
+          'Command',
+          'CommandDialog',
           // Triggers & measured bits
-          "PopoverTrigger",
-          "TooltipTrigger",
-          "DropdownMenuTrigger",
-          "ContextMenuTrigger",
-          "HoverCardTrigger",
-          "SelectTrigger",
-          "MenubarTrigger",
-          "NavigationMenuTrigger",
-          "SheetTrigger",
-          "DrawerTrigger",
-          "CommandInput",
-          "Slot",
+          'PopoverTrigger',
+          'TooltipTrigger',
+          'DropdownMenuTrigger',
+          'ContextMenuTrigger',
+          'HoverCardTrigger',
+          'SelectTrigger',
+          'MenubarTrigger',
+          'NavigationMenuTrigger',
+          'SheetTrigger',
+          'DrawerTrigger',
+          'CommandInput',
+          'Slot',
           // icons (avoid wrapping)
-          "X",
-          "ChevronRight",
-          "ChevronLeft",
-          "ChevronUp",
-          "ChevronDown",
-          "Check",
-          "Plus",
-          "Minus",
-          "Search",
-          "Menu",
-          "Settings",
-          "User",
-          "Home",
-          "ArrowRight",
-          "ArrowLeft",
+          'X',
+          'ChevronRight',
+          'ChevronLeft',
+          'ChevronUp',
+          'ChevronDown',
+          'Check',
+          'Plus',
+          'Minus',
+          'Search',
+          'Menu',
+          'Settings',
+          'User',
+          'Home',
+          'ArrowRight',
+          'ArrowLeft',
         ]);
         if (excludedComponents.has(elementName)) return;
 
         // Check if parent is a component that strictly validates children
         const parent = jsxPath.parentPath;
         if (parent?.isJSXElement?.()) {
-          const parentName = getName(parent.node.openingElement) || "";
+          const parentName = getName(parent.node.openingElement) || '';
           if (
-            [
-              "Routes",
-              "Switch",
-              "BrowserRouter",
-              "Router",
-              "MemoryRouter",
-              "HashRouter",
-            ].includes(parentName) ||
+            ['Routes', 'Switch', 'BrowserRouter', 'Router', 'MemoryRouter', 'HashRouter'].includes(
+              parentName
+            ) ||
             RADIX_ROOTS.has(parentName)
           ) {
             // Don't wrap if direct child of strict parent (e.g., Route inside Routes, or Radix roots)
@@ -876,17 +816,14 @@ const babelMetadataPlugin = ({ types: t }) => {
 
         // Get source location
         const filename =
-          state.filename ||
-          state.file?.opts?.filename ||
-          state.file?.sourceFileName ||
-          "unknown";
+          state.filename || state.file?.opts?.filename || state.file?.sourceFileName || 'unknown';
         const lineNumber = openingElement.loc?.start.line || 0;
 
         if (!fileNameCache.has(filename)) {
-          const base = path.basename(filename).replace(/\.[jt]sx?$/, "");
+          const base = path.basename(filename).replace(/\.[jt]sx?$/, '');
           fileNameCache.set(filename, base);
         }
-        const normalizedPath = fileNameCache.get(filename) || "unknown";
+        const normalizedPath = fileNameCache.get(filename) || 'unknown';
 
         // Detect dynamic
         let isDynamic = isJSXDynamic(jsxPath) || hasAnyExpression(jsxPath.node);
@@ -921,7 +858,7 @@ const babelMetadataPlugin = ({ types: t }) => {
         // or itself a primitive/root, DO NOT WRAP — stamp x-* on the element itself
         // and mark it with x-excluded="true".
         if (
-          hasProp(openingElement, "asChild") ||
+          hasProp(openingElement, 'asChild') ||
           isPortalPrimitive(elementName) ||
           RADIX_ROOTS.has(elementName) ||
           isDirectChildOfAsChildOrTrigger(jsxPath) ||
@@ -930,7 +867,7 @@ const babelMetadataPlugin = ({ types: t }) => {
           pushMetaAttrs(
             openingElement,
             { normalizedPath, lineNumber, elementName, isDynamic },
-            { markExcluded: true },
+            { markExcluded: true }
           );
           return;
         }
@@ -951,7 +888,7 @@ const babelMetadataPlugin = ({ types: t }) => {
           pushMetaAttrs(
             openingElement,
             { normalizedPath, lineNumber, elementName, isDynamic },
-            { markExcluded: true },
+            { markExcluded: true }
           );
           return;
         }
@@ -960,60 +897,40 @@ const babelMetadataPlugin = ({ types: t }) => {
         processedNodes.add(jsxPath.node);
 
         const keyAttr = openingElement.attributes?.find(
-          (a) =>
-            t.isJSXAttribute(a) &&
-            t.isJSXIdentifier(a.name) &&
-            a.name.name === "key",
+          (a) => t.isJSXAttribute(a) && t.isJSXIdentifier(a.name) && a.name.name === 'key'
         );
 
         const wrapperAttrs = [
+          t.jsxAttribute(t.jsxIdentifier('x-file-name'), t.stringLiteral(normalizedPath)),
+          t.jsxAttribute(t.jsxIdentifier('x-line-number'), t.stringLiteral(String(lineNumber))),
+          t.jsxAttribute(t.jsxIdentifier('x-component'), t.stringLiteral(elementName)),
           t.jsxAttribute(
-            t.jsxIdentifier("x-file-name"),
-            t.stringLiteral(normalizedPath),
+            t.jsxIdentifier('x-id'),
+            t.stringLiteral(`${normalizedPath}_${lineNumber}`)
           ),
           t.jsxAttribute(
-            t.jsxIdentifier("x-line-number"),
-            t.stringLiteral(String(lineNumber)),
+            t.jsxIdentifier('x-dynamic'),
+            t.stringLiteral(isDynamic ? 'true' : 'false')
           ),
+          t.jsxAttribute(t.jsxIdentifier('data-debug-wrapper'), t.stringLiteral('true')),
           t.jsxAttribute(
-            t.jsxIdentifier("x-component"),
-            t.stringLiteral(elementName),
-          ),
-          t.jsxAttribute(
-            t.jsxIdentifier("x-id"),
-            t.stringLiteral(`${normalizedPath}_${lineNumber}`),
-          ),
-          t.jsxAttribute(
-            t.jsxIdentifier("x-dynamic"),
-            t.stringLiteral(isDynamic ? "true" : "false"),
-          ),
-          t.jsxAttribute(
-            t.jsxIdentifier("data-debug-wrapper"),
-            t.stringLiteral("true"),
-          ),
-          t.jsxAttribute(
-            t.jsxIdentifier("style"),
+            t.jsxIdentifier('style'),
             t.jsxExpressionContainer(
               t.objectExpression([
-                t.objectProperty(
-                  t.identifier("display"),
-                  t.stringLiteral("contents"),
-                ),
-              ]),
-            ),
+                t.objectProperty(t.identifier('display'), t.stringLiteral('contents')),
+              ])
+            )
           ),
         ];
         if (keyAttr?.value) {
-          wrapperAttrs.push(
-            t.jsxAttribute(t.jsxIdentifier("key"), t.cloneNode(keyAttr.value)),
-          );
+          wrapperAttrs.push(t.jsxAttribute(t.jsxIdentifier('key'), t.cloneNode(keyAttr.value)));
         }
 
         const wrapper = t.jsxElement(
-          t.jsxOpeningElement(t.jsxIdentifier("div"), wrapperAttrs, false),
-          t.jsxClosingElement(t.jsxIdentifier("div")),
+          t.jsxOpeningElement(t.jsxIdentifier('div'), wrapperAttrs, false),
+          t.jsxClosingElement(t.jsxIdentifier('div')),
           [jsxPath.node],
-          false,
+          false
         );
 
         jsxPath.replaceWith(wrapper);
@@ -1028,7 +945,7 @@ const babelMetadataPlugin = ({ types: t }) => {
         const elementName = jsxPath.node.name.name;
 
         // Skip fragments
-        if (elementName === "Fragment") {
+        if (elementName === 'Fragment') {
           return;
         }
 
@@ -1040,56 +957,40 @@ const babelMetadataPlugin = ({ types: t }) => {
         // Skip if already has metadata
         const hasDebugAttr = jsxPath.node.attributes.some(
           (attr) =>
-            t.isJSXAttribute(attr) &&
-            attr.name &&
-            attr.name.name &&
-            attr.name.name.startsWith("x-"),
+            t.isJSXAttribute(attr) && attr.name && attr.name.name && attr.name.name.startsWith('x-')
         );
         if (hasDebugAttr) return;
 
         // Get source location
         const filename =
-          state.filename ||
-          state.file?.opts?.filename ||
-          state.file?.sourceFileName ||
-          "unknown";
+          state.filename || state.file?.opts?.filename || state.file?.sourceFileName || 'unknown';
 
         const lineNumber = jsxPath.node.loc?.start.line || 0;
 
         if (!fileNameCache.has(filename)) {
-          const base = path.basename(filename).replace(/\.[jt]sx?$/, "");
+          const base = path.basename(filename).replace(/\.[jt]sx?$/, '');
           fileNameCache.set(filename, base);
         }
-        const normalizedPath = fileNameCache.get(filename) || "unknown";
+        const normalizedPath = fileNameCache.get(filename) || 'unknown';
 
         // Detect if native element is inside an array iteration or has expressions
         const parentJSXElement = jsxPath.findParent((p) => p.isJSXElement());
         const isDynamic = parentJSXElement
-          ? isJSXDynamic(parentJSXElement) ||
-            hasAnyExpression(parentJSXElement.node)
+          ? isJSXDynamic(parentJSXElement) || hasAnyExpression(parentJSXElement.node)
           : false;
 
         // Add metadata attributes
         insertMetaAttributes(jsxPath.node, [
+          t.jsxAttribute(t.jsxIdentifier('x-file-name'), t.stringLiteral(normalizedPath)),
+          t.jsxAttribute(t.jsxIdentifier('x-line-number'), t.stringLiteral(String(lineNumber))),
+          t.jsxAttribute(t.jsxIdentifier('x-component'), t.stringLiteral(elementName)),
           t.jsxAttribute(
-            t.jsxIdentifier("x-file-name"),
-            t.stringLiteral(normalizedPath),
+            t.jsxIdentifier('x-id'),
+            t.stringLiteral(`${normalizedPath}_${lineNumber}`)
           ),
           t.jsxAttribute(
-            t.jsxIdentifier("x-line-number"),
-            t.stringLiteral(String(lineNumber)),
-          ),
-          t.jsxAttribute(
-            t.jsxIdentifier("x-component"),
-            t.stringLiteral(elementName),
-          ),
-          t.jsxAttribute(
-            t.jsxIdentifier("x-id"),
-            t.stringLiteral(`${normalizedPath}_${lineNumber}`),
-          ),
-          t.jsxAttribute(
-            t.jsxIdentifier("x-dynamic"),
-            t.stringLiteral(isDynamic ? "true" : "false"),
+            t.jsxIdentifier('x-dynamic'),
+            t.stringLiteral(isDynamic ? 'true' : 'false')
           ),
         ]);
       },

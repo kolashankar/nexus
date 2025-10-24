@@ -17,9 +17,9 @@ export const WorldQuests = () => {
   const fetchWorldQuests = async () => {
     try {
       const response = await fetch('/api/quests/world', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        headers
+          Authorization)}`,
+        },
       });
       const data = await response.json();
       setQuests(data.quests || []);
@@ -31,9 +31,9 @@ export const WorldQuests = () => {
   const participate = async (questId) => {
     try {
       const response = await fetch(`/api/quests/world/participate/${questId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        headers
+          Authorization)}`,
+        },
       });
 
       const data = await response.json();
@@ -56,23 +56,19 @@ export const WorldQuests = () => {
           <Globe className="w-5 h-5" />
           <h2 className="text-xl font-bold">World Quests</h2>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Limited-time events open to all players
-        </p>
+        <p className="text-sm text-muted-foreground">Limited-time events open to all players</p>
       </Card>
 
       {quests.length === 0 ? (
         <Card className="p-8">
           <div className="text-center">
             <Globe className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <p className="text-muted-foreground">
-              No active world quests at the moment
-            </p>
+            <p className="text-muted-foreground">No active world quests at the moment</p>
           </div>
         </Card>
-      ) : (
+      ) 
         <div className="grid gap-4">
-          {quests.map(quest => (
+          {quests.map((quest) => (
             <Card key={quest.id} className="p-6">
               <div className="space-y-4">
                 <div>
@@ -86,14 +82,14 @@ export const WorldQuests = () => {
                   <Globe className="w-5 h-5 text-blue-500" />
                 </div>
 
-                <p className="text-sm text-muted-foreground">
-                  {quest.description}
-                </p>
+                <p className="text-sm text-muted-foreground">{quest.description}</p>
 
                 <div className="text-sm space-y-1">
-                  <p className="font-semibold">Objectives:</p>
+                  <p className="font-semibold">Objectives
                   {quest.objectives?.slice(0, 2).map((obj, idx) => (
-                    <p key={idx} className="text-muted-foreground">• {obj.description}</p>
+                    <p key={idx} className="text-muted-foreground">
+                      • {obj.description}
+                    </p>
                   ))}
                 </div>
 
@@ -104,14 +100,12 @@ export const WorldQuests = () => {
                   </div>
                   {quest.expires_at && (
                     <span className="text-xs text-muted-foreground">
-                      Expires: {new Date(quest.expires_at).toLocaleDateString()}
+                      Expires).toLocaleDateString()}
                     </span>
                   )}
                 </div>
 
-                <Button onClick={() => participate(quest.id)}>
-                  Participate
-                </Button>
+                <Button onClick={() => participate(quest.id)}>Participate</Button>
               </div>
             </Card>
           ))}

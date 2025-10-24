@@ -50,7 +50,7 @@ export const AchievementGrid = ({
   const stats = useMemo(() => {
     const total = achievements.filter(a => !a.hidden).length;
     const unlocked = achievements.filter(a => a.unlocked).length;
-    const percentage = total > 0 ? (unlocked / total) * 100 : 0;
+    const percentage = total > 0 ? (unlocked / total) * 100 ;
     return { total, unlocked, percentage };
   }, [achievements]);
 
@@ -123,7 +123,7 @@ export const AchievementGrid = ({
                   
                     {achievement.unlocked ? (
                       
-                    ) : (
+                    ) 
                       
                     )}
                   

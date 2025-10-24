@@ -1,13 +1,7 @@
 import React from 'react';
 import { Button } from '../../ui/button';
 
-export const ActionButton = ({ 
-  icon,
-  label,
-  description,
-  onClick,
-  variant = 'default'
-}) => {
+export const ActionButton = ({ icon, label, description, onClick, variant = 'default' }) => {
   return (
     <Button
       onClick={onClick}

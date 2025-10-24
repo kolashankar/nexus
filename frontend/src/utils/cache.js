@@ -3,7 +3,8 @@
  */
 
 class Cache {
-  constructor(defaultTTL = 5 * 60 * 1000) { // 5 minutes default
+  constructor(defaultTTL = 5 * 60 * 1000) {
+    // 5 minutes default
     this.cache = new Map();
     this.defaultTTL = defaultTTL;
   }
@@ -15,7 +16,7 @@ class Cache {
     this.cache.set(key, {
       data: data,
       timestamp: now,
-      expiresAt: expiresAt
+      expiresAt: expiresAt,
     });
   }
 
@@ -37,7 +38,7 @@ class Cache {
 
   has(key) {
     const item = this.cache.get(key);
-    
+
     if (!item) {
       return false;
     }
@@ -70,7 +71,7 @@ class Cache {
       }
     });
 
-    keysToDelete.forEach(key => this.cache.delete(key));
+    keysToDelete.forEach((key) => this.cache.delete(key));
   }
 
   size() {
@@ -94,7 +95,7 @@ export class LocalStorageCache {
     const item = {
       data: data,
       timestamp: Date.now(),
-      expiresAt: Date.now() + ttl
+      expiresAt: Date.now() + ttl,
     };
 
     try {
@@ -107,7 +108,7 @@ export class LocalStorageCache {
   get(key) {
     try {
       const itemStr = localStorage.getItem(this.prefix + key);
-      
+
       if (!itemStr) {
         return null;
       }
@@ -144,7 +145,7 @@ export class LocalStorageCache {
           keys.push(key);
         }
       }
-      keys.forEach(key => localStorage.removeItem(key));
+      keys.forEach((key) => localStorage.removeItem(key));
     } catch (error) {
       console.warn('LocalStorage cache clear failed:', error);
     }
@@ -161,7 +162,7 @@ export class SessionStorageCache extends LocalStorageCache {
     const item = {
       data: data,
       timestamp: Date.now(),
-      expiresAt: Date.now() + ttl
+      expiresAt: Date.now() + ttl,
     };
 
     try {
@@ -174,7 +175,7 @@ export class SessionStorageCache extends LocalStorageCache {
   get(key) {
     try {
       const itemStr = sessionStorage.getItem(this.prefix + key);
-      
+
       if (!itemStr) {
         return null;
       }

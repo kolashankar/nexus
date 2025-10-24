@@ -24,20 +24,18 @@ const Header = () => {
           <nav className="flex items-center space-x-4">
             {isAuthenticated ? (
               <>
-                <Link to="/dashboard" className="hover:text-purple-400">
+                <Link to="/dashboard" className="hover:text-purple-300">
                   Dashboard
                 </Link>
-                <Link to="/profile" className="hover:text-purple-400">
+                <Link to="/profile" className="hover:text-purple-300">
                   Profile
                 </Link>
-                <Link to="/play" className="hover:text-purple-400">
+                <Link to="/play" className="hover:text-purple-300">
                   Play
                 </Link>
                 <div className="flex items-center space-x-2">
                   {player && (
-                    <span className="text-sm text-gray-400">
-                      {player.username}
-                    </span>
+                    <span className="text-sm text-gray-400">{player.username}</span>
                   )}
                   <Button onClick={handleLogout} variant="outline" size="sm">
                     Logout

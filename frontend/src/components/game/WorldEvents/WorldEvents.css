@@ -9,7 +9,8 @@
 }
 
 @keyframes glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(var(--primary), 0.2);
   }
   50% {

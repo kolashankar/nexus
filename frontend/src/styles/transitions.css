@@ -52,7 +52,9 @@
 .page-transition-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 300ms, transform 300ms;
+  transition:
+    opacity 300ms,
+    transform 300ms;
 }
 
 .page-transition-exit {
@@ -63,7 +65,9 @@
 .page-transition-exit-active {
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 200ms, transform 200ms;
+  transition:
+    opacity 200ms,
+    transform 200ms;
 }
 
 /* Modal transitions */
@@ -75,7 +79,9 @@
 .modal-transition-enter-active {
   opacity: 1;
   transform: scale(1);
-  transition: opacity 200ms, transform 200ms cubic-bezier(0, 0, 0.2, 1);
+  transition:
+    opacity 200ms,
+    transform 200ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .modal-transition-exit {
@@ -86,7 +92,9 @@
 .modal-transition-exit-active {
   opacity: 0;
   transform: scale(0.95);
-  transition: opacity 150ms, transform 150ms ease-in;
+  transition:
+    opacity 150ms,
+    transform 150ms ease-in;
 }
 
 /* Sidebar transitions */
@@ -117,7 +125,9 @@
 .dropdown-transition-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 150ms, transform 150ms ease-out;
+  transition:
+    opacity 150ms,
+    transform 150ms ease-out;
 }
 
 .dropdown-transition-exit {
@@ -128,7 +138,9 @@
 .dropdown-transition-exit-active {
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity 100ms, transform 100ms ease-in;
+  transition:
+    opacity 100ms,
+    transform 100ms ease-in;
 }
 
 /* Tooltip transitions */
@@ -140,7 +152,9 @@
 .tooltip-transition-enter-active {
   opacity: 1;
   transform: scale(1);
-  transition: opacity 100ms, transform 100ms ease-out;
+  transition:
+    opacity 100ms,
+    transform 100ms ease-out;
 }
 
 .tooltip-transition-exit {
@@ -151,7 +165,9 @@
 .tooltip-transition-exit-active {
   opacity: 0;
   transform: scale(0.8);
-  transition: opacity 75ms, transform 75ms ease-in;
+  transition:
+    opacity 75ms,
+    transform 75ms ease-in;
 }
 
 /* List item transitions */
@@ -163,7 +179,9 @@
 .list-item-enter-active {
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 200ms, transform 200ms ease-out;
+  transition:
+    opacity 200ms,
+    transform 200ms ease-out;
 }
 
 .list-item-exit {
@@ -174,7 +192,9 @@
 .list-item-exit-active {
   opacity: 0;
   transform: translateX(20px);
-  transition: opacity 150ms, transform 150ms ease-in;
+  transition:
+    opacity 150ms,
+    transform 150ms ease-in;
 }
 
 /* Tab transitions */
@@ -186,7 +206,9 @@
 .tab-transition-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 200ms, transform 200ms ease-out;
+  transition:
+    opacity 200ms,
+    transform 200ms ease-out;
 }
 
 .tab-transition-exit {
@@ -198,7 +220,9 @@
 .tab-transition-exit-active {
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity 150ms, transform 150ms ease-in;
+  transition:
+    opacity 150ms,
+    transform 150ms ease-in;
 }
 
 /* Card flip transition */
@@ -235,7 +259,9 @@
 .collapse-enter-active {
   max-height: 1000px;
   opacity: 1;
-  transition: max-height 400ms ease-out, opacity 300ms ease-out;
+  transition:
+    max-height 400ms ease-out,
+    opacity 300ms ease-out;
 }
 
 .collapse-exit {
@@ -247,7 +273,9 @@
 .collapse-exit-active {
   max-height: 0;
   opacity: 0;
-  transition: max-height 300ms ease-in, opacity 200ms ease-in;
+  transition:
+    max-height 300ms ease-in,
+    opacity 200ms ease-in;
 }
 
 /* Stagger children animation */
@@ -256,12 +284,24 @@
   animation-fill-mode: both;
 }
 
-.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
-.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
-.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
-.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
-.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
-.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.stagger-children > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.stagger-children > *:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.stagger-children > *:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.stagger-children > *:nth-child(5) {
+  animation-delay: 0.25s;
+}
+.stagger-children > *:nth-child(6) {
+  animation-delay: 0.3s;
+}
 
 @keyframes fadeInUp {
   from {
@@ -276,7 +316,9 @@
 
 /* Hover transitions */
 .hover-lift {
-  transition: transform 200ms ease, box-shadow 200ms ease;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
 }
 
 .hover-lift:hover {
@@ -310,7 +352,9 @@
 
 /* Focus transitions */
 .focus-ring {
-  transition: box-shadow 150ms ease, outline 150ms ease;
+  transition:
+    box-shadow 150ms ease,
+    outline 150ms ease;
 }
 
 .focus-ring:focus {
@@ -330,7 +374,9 @@
 
 /* Loading state transition */
 .loading-state {
-  transition: opacity 200ms ease, filter 200ms ease;
+  transition:
+    opacity 200ms ease,
+    filter 200ms ease;
 }
 
 .loading-state.loading {

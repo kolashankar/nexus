@@ -7,8 +7,8 @@ import * as THREE from 'three';
 
 const Scene = ({ className = '' }) => {
   const { containerRef, scene, camera, isReady } = use3DScene({
-    antialias: true,
-    alpha: true
+    antialias,
+    alpha,
   });
 
   useEffect(() => {
@@ -17,9 +17,9 @@ const Scene = ({ className = '' }) => {
     // Add a simple cube
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshStandardMaterial({
-      color: 0x00ff00,
-      metalness: 0.5,
-      roughness: 0.5
+      color,
+      metalness,
+      roughness,
     });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
@@ -40,9 +40,7 @@ const Scene = ({ className = '' }) => {
     };
   }, [scene, isReady]);
 
-  return (
-    <div ref={containerRef} className={`w-full h-full ${className}`} />
-  );
+  return <div ref={containerRef} className={`w-full h-full ${className}`} />;
 };
 
 export default Scene;

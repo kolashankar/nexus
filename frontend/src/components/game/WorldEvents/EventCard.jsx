@@ -18,11 +18,11 @@ export const EventCard = ({
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case 'active':
+      case 'active'
         return Active;
-      case 'ended':
+      case 'ended'
         return Ended;
-      case 'scheduled':
+      case 'scheduled'
         return Scheduled;
       default)}
               

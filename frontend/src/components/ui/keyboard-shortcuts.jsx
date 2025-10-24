@@ -3,23 +3,20 @@ import { X } from 'lucide-react';
 import { Button } from './button';
 
 const shortcuts = [
-  { key: '?', description: 'Show keyboard shortcuts', category: 'General' },
-  { key: 'Esc', description: 'Close modal/dialog', category: 'General' },
-  { key: 'Ctrl+K', description: 'Open command palette', category: 'Navigation' },
-  { key: 'G H', description: 'Go to home', category: 'Navigation' },
-  { key: 'G P', description: 'Go to profile', category: 'Navigation' },
-  { key: 'G C', description: 'Go to combat', category: 'Navigation' },
-  { key: 'G G', description: 'Go to guilds', category: 'Navigation' },
-  { key: 'G M', description: 'Go to marketplace', category: 'Navigation' },
-  { key: 'G Q', description: 'Go to quests', category: 'Navigation' },
-  { key: 'Space', description: 'Perform primary action', category: 'Actions' },
-  { key: 'Enter', description: 'Confirm action', category: 'Actions' },
+  { key, description, category,
+  { key, description, category,
+  { key, description, category,
+  { key, description, category,
+  { key, description, category,
+  { key, description, category,
+  { key, description, category,
+  { key, description, category,
+  { key, description, category,
+  { key, description, category,
+  { key, description, category,
 ];
 
-export const KeyboardShortcutsModal = ({ 
-  isOpen,
-  onClose,
-}) => {
+export const KeyboardShortcutsModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const groupedShortcuts = shortcuts.reduce((acc, shortcut) => {
@@ -31,11 +28,11 @@ export const KeyboardShortcutsModal = ({
   }, {});
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
       onClick={onClose}
     >
-      <div 
+      <div
         className="relative max-w-2xl w-full mx-4 bg-gray-900/95 border border-cyan-500/30 rounded-lg p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
@@ -45,7 +42,7 @@ export const KeyboardShortcutsModal = ({
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="text-white hover:text-cyan-400"
+            className="text-white hover
           >
             <X className="h-6 w-6" />
           </Button>
@@ -54,12 +51,10 @@ export const KeyboardShortcutsModal = ({
         <div className="space-y-6">
           {Object.entries(groupedShortcuts).map(([category, items]) => (
             <div key={category} className="space-y-2">
-              <h3 className="text-lg font-semibold text-cyan-400 mb-3">
-                {category}
-              </h3>
+              <h3 className="text-lg font-semibold text-cyan-400 mb-3">{category}</h3>
               <div className="space-y-2">
                 {items.map((shortcut, index) => (
-                  <div 
+                  <div
                     key={index}
                     className="flex items-center justify-between py-2 px-3 rounded bg-white/5"
                   >
@@ -86,19 +81,16 @@ export const useKeyboardShortcuts = () => {
   useEffect(() => {
     const handleKeyPress = (event) => {
       // Ignore if user is typing in an input
-      if (
-        event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLTextAreaElement
-      ) {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
         return;
       }
 
       switch (event.key) {
-        case '?':
+        case '?'
           event.preventDefault();
           setIsOpen(true);
           break;
-        case 'Escape':
+        case 'Escape'
           if (isOpen) {
             event.preventDefault();
             setIsOpen(false);
@@ -113,7 +105,7 @@ export const useKeyboardShortcuts = () => {
 
   return {
     isOpen,
-    open: () => setIsOpen(true),
-    close: () => setIsOpen(false),
+    open) => setIsOpen(true),
+    close) => setIsOpen(false),
   };
 };

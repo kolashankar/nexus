@@ -36,17 +36,17 @@ export const ActionCooldowns= () => {
   const formatTime = (seconds)=> {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}).padStart(2, '0')}`;
   };
 
   const getCooldownPercentage = (cooldown)=> {
     // Calculate based on typical durations
     const typicalDuration = {
-      'hack': 300,
-      'steal': 600,
-      'help': 60,
-      'donate': 120,
-      'trade': 180
+      'hack',
+      'steal',
+      'help',
+      'donate',
+      'trade'
     };
 
     const duration = typicalDuration[cooldown.action_type typeof typicalDuration] || 300;

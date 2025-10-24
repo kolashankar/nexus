@@ -5,7 +5,7 @@ import CombatArena from '../CombatArena/CombatArena';
 const mockCombatState = {
   battle_id,
   player1,
-    username: "testuser",
+    username,
     hp,
     max_hp,
     ap,

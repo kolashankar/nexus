@@ -1,8 +1,11 @@
-/**
- * Dashboard page component
- */
 import React, { useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../../components/ui/card';
 import useStore from '../../store';
 import Scene from '../../components/3d/Scene/Scene';
 
@@ -25,25 +28,17 @@ const Dashboard = () => {
 
   return (
     <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-6">
-        Dashboard
-      </h1>
+      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
       <div className="grid gap-6">
         {/* Player Info */}
         {player && (
           <Card>
             <CardHeader>
-              <CardTitle>
-                Player Info
-              </CardTitle>
-              <CardDescription>
-                Your character details
-              </CardDescription>
+              <CardTitle>Player Info</CardTitle>
+              <CardDescription>Your character details</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-lg">
-                Username: {player.username}
-              </p>
+              <p className="text-lg">{player.username}</p>
             </CardContent>
           </Card>
         )}
@@ -52,9 +47,7 @@ const Dashboard = () => {
         <Card>
           <CardHeader>
             <CardTitle>3D World Preview</CardTitle>
-            <CardDescription>
-              Your character in Karma Nexus
-            </CardDescription>
+            <CardDescription>Your character in Karma Nexus</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-96 bg-gray-100 rounded-lg">

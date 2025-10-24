@@ -5,13 +5,7 @@ import { useEffect } from 'react';
 import useStore from '../store';
 
 export const usePlayer = () => {
-  const { 
-    player, 
-    fetchPlayer, 
-    updatePlayer,
-    isLoadingPlayer,
-    playerError 
-  } = useStore();
+  const { player, fetchPlayer, updatePlayer, isLoadingPlayer, playerError } = useStore();
 
   useEffect(() => {
     if (!player && !isLoadingPlayer) {

@@ -28,7 +28,7 @@ export const QuestNotifications= () => {
 
   const createNotificationFromEvent = (event)=> {
     switch (event.type) {
-      case 'quest_completed':
+      case 'quest_completed'
         return {
           type,
           title,
@@ -37,7 +37,7 @@ export const QuestNotifications= () => {
           priority,
           timestamp).toISOString()
         };
-      case 'objective_progress':
+      case 'objective_progress'
         return {
           type,
           title,
@@ -46,7 +46,7 @@ export const QuestNotifications= () => {
           priority,
           timestamp).toISOString()
         };
-      case 'quest_available':
+      case 'quest_available'
         return {
           type,
           title,
@@ -63,17 +63,17 @@ export const QuestNotifications= () => {
     const icon = getNotificationIcon(notification.type);
     
     switch (notification.priority) {
-      case 'high':
+      case 'high'
         toast.success(notification.title, {
           description,
           icon);
         break;
-      case 'medium':
+      case 'medium'
         toast.info(notification.title, {
           description,
           icon);
         break;
-      case 'low':
+      case 'low'
         toast(notification.title, {
           description,
           icon);
@@ -83,12 +83,12 @@ export const QuestNotifications= () => {
 
   const getNotificationIcon = (type) => {
     switch (type) {
-      case 'quest_completed':
+      case 'quest_completed'
         return null;
-      case 'quest_failed':
+      case 'quest_failed'
         return null;
-      case 'quest_available':
-      case 'objective_progress':
+      case 'quest_available'
+      case 'objective_progress'
         return null;
       default;
     }

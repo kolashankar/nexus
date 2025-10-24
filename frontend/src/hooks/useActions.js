@@ -14,24 +14,21 @@ export const useActions = () => {
   /**
    * Perform hack action.
    */
-  const performHack = useCallback(async (
-    targetPlayerId,
-    onSuccess
-  ) => {
+  const performHack = useCallback(async (targetPlayerId, onSuccess) => {
     setLoading(true);
     setError(null);
 
     try {
       const result = await actionService.performHack(targetPlayerId);
-      
+
       if (result.success) {
         toast.success('Hack successful!', {
-          description: result.message || 'You successfully hacked the target'
+          description: result.message || 'You successfully hacked the target',
         });
         onSuccess?.(result);
       } else {
         toast.error('Hack failed', {
-          description: result.message || 'The hack attempt failed'
+          description: result.message || 'The hack attempt failed',
         });
       }
 
@@ -49,21 +46,16 @@ export const useActions = () => {
   /**
    * Perform help action.
    */
-  const performHelp = useCallback(async (
-    targetPlayerId,
-    helpType,
-    amount,
-    onSuccess
-  ) => {
+  const performHelp = useCallback(async (targetPlayerId, helpType, amount, onSuccess) => {
     setLoading(true);
     setError(null);
 
     try {
       const result = await actionService.performHelp(targetPlayerId, helpType, amount);
-      
+
       if (result.success) {
         toast.success('Help provided!', {
-          description: result.message || 'You successfully helped the player'
+          description: result.message || 'You successfully helped the player',
         });
         onSuccess?.(result);
       }
@@ -82,26 +74,21 @@ export const useActions = () => {
   /**
    * Perform steal action.
    */
-  const performSteal = useCallback(async (
-    targetPlayerId,
-    stealType,
-    targetItemId,
-    onSuccess
-  ) => {
+  const performSteal = useCallback(async (targetPlayerId, stealType, targetItemId, onSuccess) => {
     setLoading(true);
     setError(null);
 
     try {
       const result = await actionService.performSteal(targetPlayerId, stealType, targetItemId);
-      
+
       if (result.success) {
         toast.success('Steal successful!', {
-          description: result.message || 'You successfully stole from the target'
+          description: result.message || 'You successfully stole from the target',
         });
         onSuccess?.(result);
       } else {
         toast.warning('Steal failed', {
-          description: result.message || 'The steal attempt failed'
+          description: result.message || 'The steal attempt failed',
         });
       }
 
@@ -119,21 +106,16 @@ export const useActions = () => {
   /**
    * Perform donate action.
    */
-  const performDonate = useCallback(async (
-    targetPlayerId,
-    amount,
-    message,
-    onSuccess
-  ) => {
+  const performDonate = useCallback(async (targetPlayerId, amount, message, onSuccess) => {
     setLoading(true);
     setError(null);
 
     try {
       const result = await actionService.performDonate(targetPlayerId, amount, message);
-      
+
       if (result.success) {
         toast.success('Donation sent!', {
-          description: result.message || `You donated ${amount} to the player`
+          description: result.message || `You donated ${amount} to the player`,
         });
         onSuccess?.(result);
       }
@@ -190,6 +172,6 @@ export const useActions = () => {
     performSteal,
     performDonate,
     loadHistory,
-    checkCooldown
+    checkCooldown,
   };
 };

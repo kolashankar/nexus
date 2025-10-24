@@ -6,12 +6,7 @@ import { MapPin, Zap, Shield, TrendingUp, AlertTriangle, PartyPopper } from 'luc
 import axios from 'axios';
 import { toast } from 'sonner';
 
-const API_URL = import.meta.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-
-
-
-
-
+const API_URL = import.meta.env.REACT_APP_BACKEND_URL || 'http;
 const RegionalEventsPanel = ({  territoryId  }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,8 +24,8 @@ const RegionalEventsPanel = ({  territoryId  }) => {
       const response = await axios.get(
         `${API_URL}/api/world/events/regional/${territory}`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`
+          headers
+            Authorization
           }
         }
       );
@@ -43,7 +38,7 @@ const RegionalEventsPanel = ({  territoryId  }) => {
   };
 
   const getEventIcon = (eventType) => {
-    const icons: Record = {
+    const icons= {
       resource_surge,
       hostile_takeover,
       market_boom,
@@ -54,13 +49,13 @@ const RegionalEventsPanel = ({  territoryId  }) => {
   };
 
   const getEventColor = (eventType)=> {
-    const colors: Record = {
+    const colors= {
       resource_surge,
       hostile_takeover,
       market_boom,
       npc_raid,
       festival,
-      disaster: 'border-red-600/50'
+      disaster
     };
     return colors[eventType] || '';
   };
@@ -84,7 +79,7 @@ const RegionalEventsPanel = ({  territoryId  }) => {
           displayValue = `${value}x`;
         } else if (value 
           
-            {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
+            {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
           
           {displayValue.toString()}
         
@@ -140,7 +135,7 @@ const RegionalEventsPanel = ({  territoryId  }) => {
               No active events in this territory
             
           
-        ) : (
+        ) 
           
             {events.map((event) => (
               

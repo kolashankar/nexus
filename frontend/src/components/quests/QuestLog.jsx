@@ -11,7 +11,7 @@ import { toast } from '../ui/sonner';
 
 ;
   status;
-  expires_at?;
+  expires_at
 }
 
 export const QuestLog= () => {
@@ -71,7 +71,7 @@ export const QuestLog= () => {
       const response = await fetch('/api/quests/accept', {
         method,
         headers,
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization')}`
         },
         body)
       });
@@ -80,12 +80,12 @@ export const QuestLog= () => {
 
       if (data.success) {
         toast.success('Quest accepted!', {
-          description: 'Action completed'});
+          description);
         fetchActiveQuests();
         fetchAvailableQuests();
       } else {
         toast.error('Failed to accept quest', {
-          description: 'Action completed'});
+          description);
       }
     } catch (error) {
       toast.error('Failed to accept quest');
@@ -97,7 +97,7 @@ export const QuestLog= () => {
       const response = await fetch('/api/quests/complete', {
         method,
         headers,
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization')}`
         },
         body)
       });
@@ -112,7 +112,7 @@ export const QuestLog= () => {
         fetchCompletedQuests();
       } else {
         toast.error('Failed to complete quest', {
-          description: 'Action completed'});
+          description);
       }
     } catch (error) {
       toast.error('Failed to complete quest');
@@ -120,11 +120,11 @@ export const QuestLog= () => {
   };
 
   const getDifficultyColor = (difficulty) => {
-    const colors: Record = {
+    const colors= {
       easy,
       medium,
       hard,
-      legendary: 'bg-purple-500'
+      legendary
     };
     return colors[difficulty] || 'bg-gray-500';
   };
@@ -139,7 +139,7 @@ export const QuestLog= () => {
     return quest.objectives.every(obj => obj.completed);
   };
 
-  const QuestCard = ({ quest, showAccept = false, showComplete = false }: any) => (
+  const QuestCard = ({ quest, showAccept = false, showComplete = false }) => (
      setSelectedQuest(quest)}
     >
       
@@ -173,7 +173,7 @@ export const QuestLog= () => {
             
               {obj.completed ? (
                 
-              ) : (
+              ) 
                 
               )}
               
@@ -188,7 +188,7 @@ export const QuestLog= () => {
             💰 {quest.rewards.credits}
             ⭐ {quest.rewards.xp} XP
             {quest.rewards.karma !== 0 && (
-              ✨ {quest.rewards.karma > 0 ? '+' : ''}{quest.rewards.karma}
+              ✨ {quest.rewards.karma > 0 ? '+' 
             )}
           
         
@@ -254,7 +254,7 @@ export const QuestLog= () => {
                 Browse Quests
               
             
-          ) : (
+          ) 
             
               {activeQuests.map(quest => (
                 

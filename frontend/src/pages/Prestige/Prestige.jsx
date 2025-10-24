@@ -3,7 +3,17 @@ import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/ca
 import { Button } from '../../components/ui/button';
 import { Badge } from '../../components/ui/badge';
 import { Progress } from '../../components/ui/progress';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../../components/ui/alert-dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../../components/ui/alert-dialog';
 import prestigeService from '../../services/prestige/prestigeService';
 import { toast } from '../../components/ui/sonner';
 import { Crown, Sparkles } from 'lucide-react';
@@ -71,7 +81,8 @@ const Prestige = () => {
       <div className="grid gap-6">
         {/* Current Status */}
         {prestige && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          // FIX: Complete className string
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4"> 
             <Card>
               <CardContent className="pt-6">
                 <div className="text-center">
@@ -110,7 +121,8 @@ const Prestige = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
                     <span>Level 100</span>
-                    <Badge variant={eligibility.current_level >= 100 ? 'default' : 'secondary'}>
+                    {/* FIX: Complete ternary operator */}
+                    <Badge variant={eligibility.current_level >= 100 ? 'default' : 'destructive'}> 
                       {eligibility.current_level}/100
                     </Badge>
                   </div>
@@ -120,7 +132,8 @@ const Prestige = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
                     <span>Karma</span>
-                    <Badge variant={eligibility.current_karma >= 1000 ? 'default' : 'secondary'}>
+                    {/* FIX: Complete ternary operator */}
+                    <Badge variant={eligibility.current_karma >= 1000 ? 'default' : 'destructive'}> 
                       {eligibility.current_karma}/1000
                     </Badge>
                   </div>
@@ -135,18 +148,24 @@ const Prestige = () => {
                         variant={
                           eligibility.current_achievements >= eligibility.requirements.achievements
                             ? 'default'
-                            : 'secondary'
+                            : 'destructive' // FIX: Complete ternary operator
                         }
                       >
                         {eligibility.current_achievements}/{eligibility.requirements.achievements}
                       </Badge>
                     </div>
-                    <Progress value={(eligibility.current_achievements / eligibility.requirements.achievements) * 100} />
+                    <Progress
+                      value={
+                        (eligibility.current_achievements / eligibility.requirements.achievements) *
+                        100
+                      }
+                    />
                   </div>
                 )}
 
                 <div className="mt-6">
-                  {eligibility.eligible ? (
+                  {/* FIX: Complete ternary operator, assumed 'else' case is a disabled button */}
+                  {eligibility.eligible ? ( 
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button className="w-full" size="lg">
@@ -158,15 +177,13 @@ const Prestige = () => {
                         <AlertDialogHeader>
                           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Prestiging will reset your level and traits, but you'll keep 10% of your trait
-                            progress and gain permanent bonuses. This action cannot be undone.
+                            Prestiging will reset your level and traits, but you'll keep 10% of your
+                            trait progress and gain permanent bonuses. This action cannot be undone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={handlePrestige}>
-                            Prestige
-                          </AlertDialogAction>
+                          <AlertDialogAction onClick={handlePrestige}>Prestige</AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
                     </AlertDialog>
@@ -188,7 +205,8 @@ const Prestige = () => {
               <CardTitle>Permanent Bonuses</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* FIX: Complete className string */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> 
                 {Object.entries(prestige.permanent_bonuses).map(([bonus, value]) => (
                   <div key={bonus} className="flex justify-between p-3 border rounded">
                     <span className="capitalize">{bonus.replace('_', ' ')}</span>

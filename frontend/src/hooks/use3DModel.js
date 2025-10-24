@@ -37,10 +37,7 @@ export function use3DModel(modelUrl) {
 
         // Create animation controller if animations exist
         if (loadedAsset.animations && loadedAsset.animations.length > 0) {
-          const controller = new AnimationController(
-            loadedAsset.model,
-            loadedAsset.animations
-          );
+          const controller = new AnimationController(loadedAsset.model, loadedAsset.animations);
           setAnimationController(controller);
         }
 
@@ -64,6 +61,6 @@ export function use3DModel(modelUrl) {
     loading,
     error,
     progress,
-    animationController
+    animationController,
   };
 }

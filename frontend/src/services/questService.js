@@ -74,7 +74,9 @@ class QuestService {
   }
 
   async startCampaign(campaignId) {
-    const response = await apiClient.post('/api/quests/campaigns/start', { campaign_id: campaignId });
+    const response = await apiClient.post('/api/quests/campaigns/start', {
+      campaign_id: campaignId,
+    });
     return response.data;
   }
 
@@ -86,7 +88,7 @@ class QuestService {
   async makeCampaignChoice(campaignId, choiceId) {
     const response = await apiClient.post('/api/quests/campaigns/choice', {
       campaign_id: campaignId,
-      choice_id: choiceId
+      choice_id: choiceId,
     });
     return response.data;
   }

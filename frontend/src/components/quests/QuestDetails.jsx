@@ -6,15 +6,15 @@ import { Progress } from '../ui/progress';
 import { CheckCircle, Circle, Trophy, Star, Coins } from 'lucide-react';
 
 >;
-  rewards: {
+  rewards
     credits;
     xp;
     karma;
-    items?: string[];
-    trait_boosts?: Record;
+    items
+    trait_boosts
   };
   status;
-  expires_at?;
+  expires_at
 }
 
 
@@ -22,13 +22,13 @@ import { CheckCircle, Circle, Trophy, Star, Coins } from 'lucide-react';
 export const QuestDetails = ({  quest, onAccept, onAbandon  }) => {
   const getDifficultyColor = (difficulty) => {
     switch (difficulty.toLowerCase()) {
-      case 'easy':
+      case 'easy'
         return 'text-green-500 border-green-500';
-      case 'medium':
+      case 'medium'
         return 'text-yellow-500 border-yellow-500';
-      case 'hard':
+      case 'hard'
         return 'text-red-500 border-red-500';
-      case 'legendary':
+      case 'legendary'
         return 'text-purple-500 border-purple-500';
       default;
     }
@@ -36,15 +36,15 @@ export const QuestDetails = ({  quest, onAccept, onAbandon  }) => {
 
   const getTypeColor = (type) => {
     switch (type.toLowerCase()) {
-      case 'daily':
+      case 'daily'
         return 'bg-blue-500/20 text-blue-400';
-      case 'weekly':
+      case 'weekly'
         return 'bg-purple-500/20 text-purple-400';
-      case 'guild':
+      case 'guild'
         return 'bg-green-500/20 text-green-400';
-      case 'world':
+      case 'world'
         return 'bg-orange-500/20 text-orange-400';
-      case 'hidden':
+      case 'hidden'
         return 'bg-pink-500/20 text-pink-400';
       default;
     }
@@ -95,7 +95,7 @@ export const QuestDetails = ({  quest, onAccept, onAbandon  }) => {
                 
                   {objective.completed ? (
                     
-                  ) : (
+                  ) 
                     
                   )}
                   
@@ -155,8 +155,8 @@ export const QuestDetails = ({  quest, onAccept, onAbandon  }) => {
                 
                 
                   Karma
-                   0 ? 'text-green-500' : 'text-red-500'}`}>
-                    {quest.rewards.karma > 0 ? '+' : ''}{quest.rewards.karma}
+                   0 ? 'text-green-500' 
+                    {quest.rewards.karma > 0 ? '+' 
                   
                 
               
@@ -180,7 +180,7 @@ export const QuestDetails = ({  quest, onAccept, onAbandon  }) => {
               
                 {Object.entries(quest.rewards.trait_boosts).map(([trait, boost]) => (
                   
-                    {trait}: +{boost}
+                    {trait}
                   
                 ))}
               

@@ -56,6 +56,6 @@ export const usePrivacy = () => {
     error,
     updateSettings,
     changeTier,
-    refreshSettings: fetchSettings
+    refreshSettings: fetchSettings,
   };
 };

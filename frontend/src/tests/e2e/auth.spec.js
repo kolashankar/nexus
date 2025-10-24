@@ -86,9 +86,7 @@ test.describe('Authentication E2E Tests', () => {
     await expect(page).toHaveURL(`${BASE_URL}/dashboard`);
   });
 
-  test('should redirect to login when accessing protected route', async ({
-    page,
-  }) => {
+  test('should redirect to login when accessing protected route', async ({ page }) => {
     await page.goto(`${BASE_URL}/profile`);
 
     // Should redirect to login

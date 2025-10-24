@@ -18,9 +18,9 @@ export const DailyQuests = () => {
   const fetchDailyQuests = async () => {
     try {
       const response = await fetch('/api/quests/daily', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        headers
+          Authorization)}`,
+        },
       });
       const data = await response.json();
       setQuests(data.quests || []);
@@ -33,10 +33,10 @@ export const DailyQuests = () => {
   const refreshQuests = async () => {
     try {
       const response = await fetch('/api/quests/daily/refresh', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        method,
+        headers
+          Authorization)}`,
+        },
       });
 
       const data = await response.json();
@@ -47,7 +47,7 @@ export const DailyQuests = () => {
         setCanRefresh(false);
       } else {
         toast.error('Cannot refresh', {
-          description: data.detail
+          description,
         });
       }
     } catch (error) {
@@ -66,7 +66,7 @@ export const DailyQuests = () => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Clock className="w-4 h-4" />
-              Resets in: {resetTime}
+              Resets in
             </div>
             <Button size="sm" onClick={refreshQuests} disabled={!canRefresh}>
               <RefreshCw className="mr-2" />
@@ -77,14 +77,12 @@ export const DailyQuests = () => {
       </Card>
 
       <div className="grid gap-4">
-        {quests.map(quest => (
+        {quests.map((quest) => (
           <Card key={quest.id} className="p-6">
             <div className="space-y-4">
               <div>
                 <h3 className="font-bold mb-2">{quest.title}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {quest.description}
-                </p>
+                <p className="text-sm text-muted-foreground">{quest.description}</p>
               </div>
 
               <div className="space-y-2">
@@ -92,7 +90,9 @@ export const DailyQuests = () => {
                   <div key={idx} className="space-y-1">
                     <div className="flex justify-between text-sm">
                       <span>{obj.description}</span>
-                      <span>{obj.current}/{obj.required}</span>
+                      <span>
+                        {obj.current}/{obj.required}
+                      </span>
                     </div>
                     <Progress value={(obj.current / obj.required) * 100} />
                   </div>
@@ -104,9 +104,7 @@ export const DailyQuests = () => {
                 <span>⭐ {quest.rewards.xp} XP</span>
               </div>
 
-              {quest.status === 'available' && (
-                <Button size="sm">Accept</Button>
-              )}
+              {quest.status === 'available' && <Button size="sm">Accept</Button>}
             </div>
           </Card>
         ))}

@@ -25,7 +25,7 @@ const LeaderboardPanel= () => {
   }, []);
 
   const getLeaderboardIcon = (type) => {
-    const icons: Record = {
+    const icons= {
       karma,
       wealth,
       combat,
@@ -97,10 +97,10 @@ const LeaderboardPanel= () => {
             
               {entry.change_24h > 0 ? (
                 
-              ) : (
+              ) 
                 
               )}
-               0 ? 'text-green-500' : 'text-red-500'}>
+               0 ? 'text-green-500' 
                 {Math.abs(entry.change_24h)}
               
             

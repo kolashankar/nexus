@@ -9,7 +9,7 @@ class TournamentsService {
   async registerForTournament(tournamentId, playerId) {
     const response = await apiClient.post('/api/tournaments/register', {
       tournament_id: tournamentId,
-      player_id: playerId
+      player_id: playerId,
     });
     return response.data;
   }
@@ -26,7 +26,7 @@ class TournamentsService {
 
   async getMyMatch(tournamentId, playerId) {
     const response = await apiClient.get(`/api/tournaments/${tournamentId}/my-match`, {
-      params: { player_id: playerId }
+      params: { player_id: playerId },
     });
     return response.data;
   }
@@ -34,7 +34,7 @@ class TournamentsService {
   async getTournamentHistory(playerId, limit = 10) {
     const params = playerId ? { player_id: playerId, limit } : { limit };
     const response = await apiClient.get('/api/tournaments/history', {
-      params
+      params,
     });
     return response.data;
   }

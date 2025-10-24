@@ -6,7 +6,7 @@ import { usePlayer } from '@/hooks/usePlayer';
 
 const Profile = () => {
   const { playerId } = useParams();
-  const { player, isLoading: loading } = usePlayer();
+  const { player, isLoading= usePlayer();
 
   if (loading) {
     return (
@@ -33,12 +33,8 @@ const Profile = () => {
       <div className="space-y-6">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">
-            {playerId ? 'Player Profile' : 'My Profile'}
-          </h1>
-          <p className="text-muted-foreground">
-            View and manage your character information
-          </p>
+          <h1 className="text-3xl font-bold">{playerId ? 'Player Profile' 
+          <p className="text-muted-foreground">View and manage your character information</p>
         </div>
 
         {/* Profile Card */}

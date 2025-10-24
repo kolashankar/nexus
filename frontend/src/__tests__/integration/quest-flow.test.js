@@ -8,8 +8,8 @@ import { questService } from '../../services/questService';
 jest.mock('../../services/api/client', () => ({
   apiClient: {
     get: jest.fn(),
-    post: jest.fn()
-  }
+    post: jest.fn(),
+  },
 }));
 
 import { apiClient } from '../../services/api/client';
@@ -20,17 +20,19 @@ const mockQuest = {
   description: 'Test description',
   quest_type: 'daily',
   status: 'available',
-  objectives: [{
-    type: 'defeat',
-    current: 0,
-    required: 5,
-    completed: false
-  }],
+  objectives: [
+    {
+      type: 'defeat',
+      current: 0,
+      required: 5,
+      completed: false,
+    },
+  ],
   rewards: {
     xp: 100,
-    karma: 10
+    karma: 10,
   },
-  difficulty: 'medium'
+  difficulty: 'medium',
 };
 
 describe('Quest Flow Integration Tests', () => {
@@ -41,7 +43,7 @@ describe('Quest Flow Integration Tests', () => {
   it('completes full quest lifecycle', async () => {
     // 1. Get available quests
     apiClient.get.mockResolvedValueOnce({
-      data: [mockQuest]
+      data: [mockQuest],
     });
 
     const availableQuests = await questService.getAvailableQuests();
@@ -50,19 +52,16 @@ describe('Quest Flow Integration Tests', () => {
 
     // 2. Accept quest
     apiClient.post.mockResolvedValueOnce({
-      data: { success: true, quest: { ...mockQuest, status: 'active' } }
+      data: { success: true, quest: { ...mockQuest, status: 'active' } },
     });
 
     const acceptResult = await questService.acceptQuest('quest123');
     expect(acceptResult.success).toBe(true);
-    expect(apiClient.post).toHaveBeenCalledWith(
-      '/api/quests/accept',
-      { quest_id: 'quest123' }
-    );
+    expect(apiClient.post).toHaveBeenCalledWith('/api/quests/accept', { quest_id: 'quest123' });
 
     // 3. Get active quests
     apiClient.get.mockResolvedValueOnce({
-      data: [{ ...mockQuest, status: 'active' }]
+      data: [{ ...mockQuest, status: 'active' }],
     });
 
     const activeQuests = await questService.getActiveQuests();
@@ -74,7 +73,7 @@ describe('Quest Flow Integration Tests', () => {
 
     // 5. Get completed quests
     apiClient.get.mockResolvedValueOnce({
-      data: [{ ...mockQuest, status: 'completed' }]
+      data: [{ ...mockQuest, status: 'completed' }],
     });
 
     const completedQuests = await questService.getCompletedQuests();
@@ -85,27 +84,24 @@ describe('Quest Flow Integration Tests', () => {
   it('handles quest abandonment', async () => {
     // Accept quest
     apiClient.post.mockResolvedValueOnce({
-      data: { success: true }
+      data: { success: true },
     });
 
     await questService.acceptQuest('quest123');
 
     // Abandon quest
     apiClient.post.mockResolvedValueOnce({
-      data: { success: true }
+      data: { success: true },
     });
 
     const result = await questService.abandonQuest('quest123');
     expect(result).toBe(true);
-    expect(apiClient.post).toHaveBeenCalledWith(
-      '/api/quests/abandon',
-      { quest_id: 'quest123' }
-    );
+    expect(apiClient.post).toHaveBeenCalledWith('/api/quests/abandon', { quest_id: 'quest123' });
   });
 
   it('fetches quest details', async () => {
     apiClient.get.mockResolvedValueOnce({
-      data: mockQuest
+      data: mockQuest,
     });
 
     const quest = await questService.getQuestDetails('quest123');
@@ -115,7 +111,7 @@ describe('Quest Flow Integration Tests', () => {
 
   it('handles daily quests', async () => {
     apiClient.get.mockResolvedValueOnce({
-      data: [{ ...mockQuest, quest_type: 'daily' }]
+      data: [{ ...mockQuest, quest_type: 'daily' }],
     });
 
     const dailyQuests = await questService.getDailyQuests();
@@ -125,7 +121,7 @@ describe('Quest Flow Integration Tests', () => {
 
   it('handles weekly quests', async () => {
     apiClient.get.mockResolvedValueOnce({
-      data: [{ ...mockQuest, quest_type: 'weekly' }]
+      data: [{ ...mockQuest, quest_type: 'weekly' }],
     });
 
     const weeklyQuests = await questService.getWeeklyQuests();
@@ -137,8 +133,8 @@ describe('Quest Flow Integration Tests', () => {
     apiClient.get.mockResolvedValueOnce({
       data: {
         available: [mockQuest],
-        active: []
-      }
+        active: [],
+      },
     });
 
     const guildQuests = await questService.getGuildQuests();
@@ -153,11 +149,11 @@ describe('Quest Flow Integration Tests', () => {
       description: 'Campaign description',
       total_chapters: 5,
       difficulty: 'hard',
-      category: 'main'
+      category: 'main',
     };
 
     apiClient.get.mockResolvedValueOnce({
-      data: [mockCampaign]
+      data: [mockCampaign],
     });
 
     const campaigns = await questService.getCampaigns();
@@ -165,7 +161,7 @@ describe('Quest Flow Integration Tests', () => {
 
     // Start campaign
     apiClient.post.mockResolvedValueOnce({
-      data: { success: true, progress: { chapter: 1 } }
+      data: { success: true, progress: { chapter: 1 } },
     });
 
     const startResult = await questService.startCampaign('campaign123');
@@ -179,8 +175,8 @@ describe('Quest Flow Integration Tests', () => {
         description: 'First chapter',
         story_text: 'Story...',
         objectives: [],
-        choices: []
-      }
+        choices: [],
+      },
     });
 
     const chapter = await questService.getCurrentChapter('campaign123');

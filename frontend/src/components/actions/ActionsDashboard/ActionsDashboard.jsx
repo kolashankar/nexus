@@ -46,21 +46,21 @@ const ActionsDashboard= () => {
       description,
       icon,
       color,
-      karmaEffect: 'Neutral'
+      karmaEffect
     }
   ];
 
   const renderActionModal = () => {
     switch (selectedAction) {
-      case 'hack':
+      case 'hack'
         return  setSelectedAction(null)} />;
-      case 'help':
+      case 'help'
         return  setSelectedAction(null)} />;
-      case 'steal':
+      case 'steal'
         return  setSelectedAction(null)} />;
-      case 'donate':
+      case 'donate'
         return  setSelectedAction(null)} />;
-      case 'trade':
+      case 'trade'
         return  setSelectedAction(null)} />;
       default, traits, and reputation
         

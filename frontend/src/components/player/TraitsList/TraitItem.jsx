@@ -15,13 +15,13 @@ const TraitItem = ({  name, value, category  }) => {
   // Get color based on category
   const getCategoryColor = () => {
     switch (category) {
-      case 'virtue':
+      case 'virtue'
         return 'text-green-600';
-      case 'vice':
+      case 'vice'
         return 'text-red-600';
-      case 'skill':
+      case 'skill'
         return 'text-blue-600';
-      case 'meta':
+      case 'meta'
         return 'text-purple-600';
       default)}
           

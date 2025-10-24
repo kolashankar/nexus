@@ -34,7 +34,7 @@ export const KarmaFeed= () => {
     }
   }, [karmaHistory]);
 
-  const getKarmaIcon = (karmaChange, eventType?: string) => {
+  const getKarmaIcon = (karmaChange, eventType?) => {
     if (eventType === 'divine_blessing') return null;
     if (eventType === 'punishment') return null;
     if (karmaChange > 50) return null;
@@ -46,9 +46,9 @@ export const KarmaFeed= () => {
 
   const getKarmaBadge = (karmaChange) => {
     const value = Math.abs(karmaChange);
-    const sign = karmaChange >= 0 ? '+' : '-';
+    const sign = karmaChange >= 0 ? '+' ;
     
-    let variant: 'default' | 'secondary' | 'destructive' | 'outline' = 'default';
+    let variant= 'default';
     if (karmaChange > 50) variant = 'default';
     else if (karmaChange > 0) variant = 'secondary';
     else if (karmaChange 

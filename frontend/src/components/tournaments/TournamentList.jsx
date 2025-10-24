@@ -21,12 +21,12 @@ const TournamentList = () => {
     try {
       await registerForTournament(tournamentId);
       toast.success('Registered successfully!', {
-        description: 'You have been registered for the tournament'
+        description
       });
       await fetchActiveTournaments();
     } catch (error) {
       toast.error('Registration failed', {
-        description: 'Failed to register for the tournament'
+        description
       });
     } finally {
       setRegistering(null);
@@ -35,16 +35,16 @@ const TournamentList = () => {
 
   const getStatusColor = (status) => {
     const colors = {
-      registration: 'bg-blue-500',
-      active: 'bg-green-500',
-      completed: 'bg-gray-500',
-      upcoming: 'bg-yellow-500'
+      registration,
+      active,
+      completed,
+      upcoming
     };
     return colors[status] || 'bg-gray-500';
   };
 
   const getTournamentTypeIcon = (type) => {
-    const icons: Record = {
+    const icons= {
       pvp_combat,
       robot_battle,
       trading_competition,
@@ -91,7 +91,7 @@ const TournamentList = () => {
             
           
         
-      ) : (
+      ) 
         
           {tournaments.map((tournament) => (
             
@@ -141,7 +141,7 @@ const TournamentList = () => {
                     disabled={registering === tournament.tournament_id}
                     className="w-full"
                   >
-                    {registering === tournament.tournament_id ? 'Registering...' : 'Register'}
+                    {registering === tournament.tournament_id ? 'Registering...' 
                   
                 )}
                 {tournament.status === 'active' && (

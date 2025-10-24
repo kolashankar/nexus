@@ -46,12 +46,12 @@ const PRIVACY_TIERS = [
     label,
     description,
     cost,
-    icon: 
+    icon
   }
 ];
 
 export const PrivacySettings= () => {
-  const { player, updatePlayer, isLoading: loading } = usePlayer();
+  const { player, updatePlayer, isLoading= usePlayer();
   const [settings, setSettings] = useState({
     privacy_tier,
     cash,
@@ -85,7 +85,7 @@ export const PrivacySettings= () => {
   const handleToggle = (field) => {
     setSettings(prev => ({
       ...prev,
-      [field]: !prev[field]
+      [field]
     }));
     setHasChanges(true);
   };
@@ -100,7 +100,7 @@ export const PrivacySettings= () => {
       if (tier && tier.cost > 0) {
         // Deduct cost
         toast.success('Privacy settings updated!', {
-          description: 'Action completed'});
+          description);
       } else {
         toast.success('Privacy settings updated!');
       }
@@ -223,7 +223,7 @@ export const PrivacySettings= () => {
         
           
             
-            {saving ? 'Saving...' : 'Save Settings'}
+            {saving ? 'Saving...' 
           
           
           {currentTier.cost > 0 && (

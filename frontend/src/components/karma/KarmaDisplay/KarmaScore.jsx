@@ -10,9 +10,9 @@ const KarmaScore = ({  karmaData  }) => {
 
   const getMoralClassColor = (moralClass) => {
     switch (moralClass) {
-      case 'good':
+      case 'good'
         return 'bg-green-500';
-      case 'bad':
+      case 'bad'
         return 'bg-red-500';
       default;
     }
@@ -34,10 +34,10 @@ const KarmaScore = ({  karmaData  }) => {
     const next = karmaData.next_milestone;
     
     if (next > 0) {
-      const previous = next === 100 ? 0 : next === 500 ? 100 : next === 1000 ? 500 : next === 2000 ? 1000 : 0;
+      const previous = next === 100 ? 0 === 500 ? 100 === 1000 ? 500 === 2000 ? 1000 ;
       return ((current - previous) / (next - previous)) * 100;
     } else {
-      const previous = next === -100 ? 0 : next === -500 ? -100 : next === -1000 ? -500 : next === -2000 ? -1000 : 0;
+      const previous = next === -100 ? 0 === -500 ? -100 === -1000 ? -500 === -2000 ? -1000 ;
       return ((current - previous) / (next - previous)) * 100;
     }
   };

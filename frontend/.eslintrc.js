@@ -1,8 +1,5 @@
 module.exports = {
-  extends: [
-    'react-app',
-    'react-app/jest'
-  ],
+  extends: ['react-app', 'react-app/jest'],
   rules: {
     'react/prop-types': 'off', // Disable prop-types validation (we can use TypeScript for this)
     'no-undef': 'error',
@@ -12,19 +9,19 @@ module.exports = {
     browser: true,
     es2021: true,
     jest: true,
-    node: true
+    node: true,
   },
   globals: {
     process: 'readonly',
     module: 'readonly',
     require: 'readonly',
-    __dirname: 'readonly'
+    __dirname: 'readonly',
   },
   overrides: [
     {
       files: ['**/*.test.js', '**/*.test.jsx', '**/*.spec.js', '**/*.spec.jsx'],
       env: {
-        jest: true
+        jest: true,
       },
       globals: {
         describe: 'readonly',
@@ -35,14 +32,21 @@ module.exports = {
         afterEach: 'readonly',
         beforeAll: 'readonly',
         afterAll: 'readonly',
-        jest: 'readonly'
-      }
+        jest: 'readonly',
+      },
     },
     {
-      files: ['tailwind.config.js', 'vite.config.js', 'jest.config.js', 'playwright.config.js', 'craco.config.js', 'postcss.config.js'],
+      files: [
+        'tailwind.config.js',
+        'vite.config.js',
+        'jest.config.js',
+        'playwright.config.js',
+        'craco.config.js',
+        'postcss.config.js',
+      ],
       env: {
-        node: true
-      }
-    }
-  ]
+        node: true,
+      },
+    },
+  ],
 };

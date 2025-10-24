@@ -74,11 +74,7 @@ const CombatArena = ({  battleId, playerId  }) => {
   };
 
   if (loading) {
-    return (
-      
-        Loading battle...
-      
-    );
+      return <div>Loading battle...</div>;
   }
 
   if (error) {
@@ -114,11 +110,11 @@ const CombatArena = ({  battleId, playerId  }) => {
         
           {isBattleOver ? (
             
-              {isWinner ? '🏆 VICTORY!' : '💀 DEFEATED'}
+              {isWinner ? '🏆 VICTORY!' 
             
-          ) : (
+          ) 
             
-              {isMyTurn ? '⚡ YOUR TURN' : '⏳ OPPONENT\'S TURN'}
+              {isMyTurn ? '⚡ YOUR TURN' 
             
           )}
         
@@ -133,12 +129,7 @@ const CombatArena = ({  battleId, playerId  }) => {
               {player.username}
               
                  {player.action_points}/{player.max_action_points} AP
-              
-            
-            
-            
-              
-                
+  
                 ATK, i) => (
                   
                     {effect.type}
@@ -184,7 +175,7 @@ const CombatArena = ({  battleId, playerId  }) => {
         
           {combatLog.length === 0 ? (
             Battle start! Prepare for combat...
-          ) : (
+          ) 
             combatLog.map((entry, i) => (
               
                 {entry}
@@ -202,12 +193,12 @@ const CombatArena = ({  battleId, playerId  }) => {
       {/* Battle Results */}
       {isBattleOver && (
         
-          {isWinner ? '🏆 Victory!' : '💀 Defeat'}
+          {isWinner ? '🏆 Victory!' 
           {battle.rewards && (
             
               Rewards).map(([key, value]) => (
                   
-                    {key}: {value}
+                    {key}
                   
                 ))}
               

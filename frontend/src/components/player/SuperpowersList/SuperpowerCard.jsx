@@ -15,7 +15,7 @@ const SuperpowerCard = ({
  }) => {
   const isOnCooldown = power.cooldown_until
     ? new Date(power.cooldown_until) > new Date()
-    : false;
+    ;
 
   return (
     

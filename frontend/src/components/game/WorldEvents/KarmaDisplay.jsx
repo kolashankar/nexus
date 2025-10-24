@@ -33,9 +33,9 @@ export const KarmaDisplay = ({  worldState  }) => {
 
   const getTrendIcon = (trend) => {
     switch (trend) {
-      case 'rising':
+      case 'rising'
         return null;
-      case 'falling':
+      case 'falling'
         return null;
       default;
     }
@@ -164,7 +164,7 @@ export const KarmaDisplay = ({  worldState  }) => {
           
           
             
-              {Object.entries(karmaStats.distribution).map(([level: 1, count]) => (
+              {Object.entries(karmaStats.distribution).map(([level, count]) => (
                 
                   {level.replace('_', ' ')}
                   {count} players

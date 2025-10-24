@@ -51,7 +51,7 @@ export const InvestmentPortfolio= () => {
       const response = await fetch('/api/investments/invest', {
         method,
         headers,
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization')}`
         },
         body, amount })
       });
@@ -60,11 +60,11 @@ export const InvestmentPortfolio= () => {
 
       if (data.success) {
         toast.success('Investment successful!', {
-          description: 'Action completed'});
+          description);
         fetchPortfolio();
       } else {
         toast.error('Investment failed', {
-          description: 'Action completed'});
+          description);
       }
     } catch (error) {
       toast.error('Investment failed');
@@ -72,11 +72,11 @@ export const InvestmentPortfolio= () => {
   };
 
   const getRiskColor = (risk) => {
-    const colors: Record = {
+    const colors= {
       low,
       medium,
       high,
-      very_high: 'bg-red-500'
+      very_high
     };
     return colors[risk] || 'bg-gray-500';
   };
@@ -118,9 +118,9 @@ export const InvestmentPortfolio= () => {
           
             
               Profit/Loss
-              = 0 ? 'text-green-600' : 'text-red-600'
+              = 0 ? 'text-green-600' 
               }`}>
-                {portfolio.total_profit_loss >= 0 ? '+' : ''}{formatCurrency(portfolio.total_profit_loss)}
+                {portfolio.total_profit_loss >= 0 ? '+' )}
               
             
           
@@ -128,9 +128,9 @@ export const InvestmentPortfolio= () => {
           
             
               ROI
-              = 0 ? 'text-green-600' : 'text-red-600'
+              = 0 ? 'text-green-600' 
               }`}>
-                {portfolio.roi_percentage >= 0 ? '+' : ''}{portfolio.roi_percentage.toFixed(2)}%
+                {portfolio.roi_percentage >= 0 ? '+' )}%
               
             
           
@@ -170,16 +170,16 @@ export const InvestmentPortfolio= () => {
                       
                       
                         P/L
-                        = 0 ? 'text-green-600' : 'text-red-600'
+                        = 0 ? 'text-green-600' 
                         }`}>
-                          {investment.profit_loss >= 0 ? '+' : ''}{formatCurrency(investment.profit_loss)}
+                          {investment.profit_loss >= 0 ? '+' )}
                         
                       
                       
                         Return
-                        = 0 ? 'text-green-600' : 'text-red-600'
+                        = 0 ? 'text-green-600' 
                         }`}>
-                          {investment.profit_loss_percentage >= 0 ? '+' : ''}{investment.profit_loss_percentage.toFixed(2)}%
+                          {investment.profit_loss_percentage >= 0 ? '+' )}%
                         
                       
                     
@@ -191,7 +191,7 @@ export const InvestmentPortfolio= () => {
                 
               ))}
             
-          ) : (
+          ) 
             
               
               

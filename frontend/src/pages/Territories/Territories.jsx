@@ -5,7 +5,7 @@ import guildsService from '../../services/guilds/guildsService';
 import { usePlayer } from '../../hooks/usePlayer';
 
 const Territories = () => {
-  const { player: user } = usePlayer();
+  const { player= usePlayer();
   const [territories, setTerritories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,7 +45,9 @@ const Territories = () => {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading territories...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">Loading territories...</div>
+    );
   }
 
   return (
@@ -60,8 +62,8 @@ const Territories = () => {
             <div className="flex justify-between items-center">
               <div>
                 {territory.controlling_guild_id ? (
-                  <span>Controlled by Guild | Income: {territory.income_per_day}</span>
-                ) : (
+                  <span>Controlled by Guild | Income
+                ) 
                   <span>Unclaimed</span>
                 )}
                 {territory.contested && (
@@ -70,11 +72,7 @@ const Territories = () => {
               </div>
 
               {territory.controlling_guild_id !== user?.guild_id && (
-                <Button
-                  onClick={() => handleAttack(territory.territory_id)}
-                >
-                  Attack
-                </Button>
+                <Button onClick={() => handleAttack(territory.territory_id)}>Attack</Button>
               )}
             </div>
           </Card>

@@ -106,14 +106,27 @@ const Achievements = () => {
         <CardContent>
           {/* Search and Filters */}
           <div className="mb-6 space-y-4">
-            <Input placeholder="Search achievements..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <Input
+              placeholder="Search achievements..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
 
             <div className="flex gap-2 flex-wrap">
-              <Badge variant={selectedCategory === null ? 'default' : 'outline'} className="cursor-pointer" onClick={() => setSelectedCategory(null)}>
+              <Badge
+                variant={selectedCategory === null ? 'default' 
+                className="cursor-pointer"
+                onClick={() => setSelectedCategory(null)}
+              >
                 All
               </Badge>
               {categories.map((category) => (
-                <Badge key={category} variant={selectedCategory === category ? 'default' : 'outline'} className="cursor-pointer" onClick={() => setSelectedCategory(category)}>
+                <Badge
+                  key={category}
+                  variant={selectedCategory === category ? 'default' 
+                  className="cursor-pointer"
+                  onClick={() => setSelectedCategory(category)}
+                >
                   {category.replace('_', ' ')}
                 </Badge>
               ))}
@@ -121,9 +134,14 @@ const Achievements = () => {
           </div>
 
           {/* Achievement Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md
             {filteredAchievements.map((achievement) => (
-              <AchievementCard key={achievement._id} achievement={achievement} unlocked={isUnlocked(achievement._id)} progress={getProgress(achievement._id)} />
+              <AchievementCard
+                key={achievement._id}
+                achievement={achievement}
+                unlocked={isUnlocked(achievement._id)}
+                progress={getProgress(achievement._id)}
+              />
             ))}
           </div>
 

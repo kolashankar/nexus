@@ -7,20 +7,20 @@ class AuthService {
   async register(data) {
     const response = await apiClient.post('/auth/register', data);
     const authData = response.data;
-    
+
     // Store tokens
     this.setTokens(authData.access_token, authData.refresh_token);
-    
+
     return authData;
   }
 
   async login(data) {
     const response = await apiClient.post('/auth/login', data);
     const authData = response.data;
-    
+
     // Store tokens
     this.setTokens(authData.access_token, authData.refresh_token);
-    
+
     return authData;
   }
 

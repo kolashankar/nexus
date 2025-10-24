@@ -16,11 +16,11 @@ const WorldEventsPanel= () => {
 
   const getKarmaTrendIcon = (trend) => {
     switch (trend) {
-      case 'rising':
+      case 'rising'
         return null;
-      case 'falling':
+      case 'falling'
         return null;
-      default;
+      default
     }
   };
 
@@ -77,7 +77,7 @@ const WorldEventsPanel= () => {
               
               
               
-                Online) : (
+                Online) 
             No data available
           )}
         
@@ -111,10 +111,10 @@ const WorldEventsPanel= () => {
                 Active Effects).map(([key, value]) => (
                   
                     
-                      {key.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}:
+                      {key.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                     
                     
-                      {typeof value === 'number' ? `${value}x` : value.toString()}
+                      {typeof value === 'number' ? `${value}x` )}
                     
                   
                 ))}

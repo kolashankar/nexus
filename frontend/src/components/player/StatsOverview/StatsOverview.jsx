@@ -20,7 +20,7 @@ import { usePlayer } from '../../../hooks/usePlayer';
 import './StatsOverview.css';
 
 ;
-  derived_traits: {
+  derived_traits
     reputation;
     influence;
     trustworthiness;
@@ -29,7 +29,7 @@ import './StatsOverview.css';
     enlightenment;
     karmic_balance;
   };
-  level_progress: {
+  level_progress
     level;
     xp;
     xp_needed_for_next;
@@ -40,7 +40,7 @@ import './StatsOverview.css';
 }
 
 export const StatsOverview= () => {
-  const { player, isLoading: loading } = usePlayer();
+  const { player, isLoading= usePlayer();
   const [stats, setStats] = useState(null);
   const [activeTab, setActiveTab] = useState('combat');
 
@@ -49,10 +49,10 @@ export const StatsOverview= () => {
     // For now, calculate from player data
     if (player) {
       // Mock stats calculation
-      const calculatedStats: PlayerStats = {
+      const calculatedStats= {
         player_id,
-        username: "testuser",
-        level: 1,
+        username,
+        level,
         combat_stats,
           max_hp,
           attack) + (player.traits?.dexterity || 50)) / 2,
@@ -238,8 +238,8 @@ const StatItem = ({
   showProgress = false,
   color = '#3b82f6'
  }) => {
-  const displayValue = max ? `${value}/${max}` : `${value}${suffix}`;
-  const percentage = max ? (value / max) * 100 : 0;
+  const displayValue = max ? `${value}/${max}` ;
+  const percentage = max ? (value / max) * 100 ;
 
   return (
     

@@ -5,7 +5,7 @@ import ChatSystem from '../Chat/Chat';
 const mockMessages = [
   { id, username, message, timestamp,
   { id, username, message, timestamp,
-  { id, username: "testuser", message, timestamp,
+  { id, username, message, timestamp,
 ];
 
 describe('ChatSystem Component', () => {

@@ -6,7 +6,7 @@ import { use3DModel } from '../../hooks/use3DModel';
  * 3D Model component
  * Loads and displays a 3D model in the scene
  */
-export const Model3D = ({ 
+export const Model3D = ({
   modelUrl,
   position = [0, 0, 0],
   rotation = [0, 0, 0],
@@ -15,7 +15,7 @@ export const Model3D = ({
   onError,
   sceneManager,
   autoPlay = true,
-  initialAnimation
+  initialAnimation,
 }) => {
   const { asset, loading, error, animationController } = use3DModel(modelUrl);
 
@@ -47,7 +47,18 @@ export const Model3D = ({
     return () => {
       sceneManager.removeObject(modelUrl);
     };
-  }, [asset, sceneManager, position, rotation, scale, modelUrl, autoPlay, initialAnimation, animationController, onLoad]);
+  }, [
+    asset,
+    sceneManager,
+    position,
+    rotation,
+    scale,
+    modelUrl,
+    autoPlay,
+    initialAnimation,
+    animationController,
+    onLoad,
+  ]);
 
   // Handle errors
   useEffect(() => {

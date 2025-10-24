@@ -1,14 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { worldService } from '@/services/api/worldService';
 
-
-
-
-
 /**
  * Custom hook for managing territories
  */
-export const useTerritories = ()=> {
+export const useTerritories = () => {
   const [territories, setTerritories] = useState([]);
   const [contested, setContested] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +17,7 @@ export const useTerritories = ()=> {
 
       const [allTerritories, contestedTerritories] = await Promise.all([
         worldService.getAllTerritories(),
-        worldService.getContestedTerritories()
+        worldService.getContestedTerritories(),
       ]);
 
       setTerritories(allTerritories.territories);
@@ -43,9 +39,12 @@ export const useTerritories = ()=> {
     return () => clearInterval(interval);
   }, [fetchTerritories]);
 
-  const getTerritoryById = useCallback((id) => {
-    return territories.find(t => t.territory_id === id);
-  }, [territories]);
+  const getTerritoryById = useCallback(
+    (id) => {
+      return territories.find((t) => t.territory_id === id);
+    },
+    [territories]
+  );
 
   return {
     territories,
@@ -53,6 +52,6 @@ export const useTerritories = ()=> {
     loading,
     error,
     refetch: fetchTerritories,
-    getTerritoryById
+    getTerritoryById,
   };
 };

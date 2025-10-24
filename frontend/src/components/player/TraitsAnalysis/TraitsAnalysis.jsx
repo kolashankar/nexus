@@ -11,7 +11,7 @@ import { TrendingUp, TrendingDown, AlertCircle, Award, Target } from 'lucide-rea
 import './TraitsAnalysis.css';
 
 ;
-  balance: {
+  balance
     balance_score;
     spread;
     specialization;
@@ -148,7 +148,7 @@ export const TraitsAnalysis= () => {
                     
                   ))}
                 
-              ) : (
+              ) 
                 
                   
                   No active synergies

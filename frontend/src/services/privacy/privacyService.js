@@ -14,5 +14,5 @@ export const privacyService = {
   async changePrivacyTier(tier) {
     const response = await apiClient.post('/api/player/privacy/tier', { tier });
     return response.data;
-  }
+  },
 };

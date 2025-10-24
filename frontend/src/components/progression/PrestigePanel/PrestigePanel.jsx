@@ -30,7 +30,7 @@ export const PrestigePanel = ({
   const meetsAchievementReq = achievementsUnlocked >= requirements.achievements_required;
   const canPrestige = meetsLevelReq && meetsKarmaReq && meetsAchievementReq;
 
-  const getRequirementColor = (met) => met ? 'text-green-500' : 'text-red-500';
+  const getRequirementColor = (met) => met ? 'text-green-500' ;
 
   return (
     
@@ -89,7 +89,7 @@ export const PrestigePanel = ({
               
                 
                 
-                  {key.replace(/_/g, ' ')}: +{(value * 100).toFixed(0)}%
+                  {key.replace(/_/g, ' ')}).toFixed(0)}%
                 
               
             ))}
@@ -129,9 +129,9 @@ export const PrestigePanel = ({
         {!confirmOpen ? (
            setConfirmOpen(true)}
           >
-            {canPrestige ? 'Prestige Now' : 'Requirements Not Met'}
+            {canPrestige ? 'Prestige Now' 
           
-        ) : (
+        ) 
           
              {
                 onPrestige();

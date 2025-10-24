@@ -27,9 +27,9 @@ const TournamentBracket = ({  bracket, currentRound  }) => {
     return (
       
         
-          {roundNumber === Math.ceil(Math.log2(32)) ? 'Finals' :
-           roundNumber === Math.ceil(Math.log2(32)) - 1 ? 'Semi-Finals' :
-           roundNumber === Math.ceil(Math.log2(32)) - 2 ? 'Quarter-Finals' :
+          {roundNumber === Math.ceil(Math.log2(32)) ? 'Finals' 
+           roundNumber === Math.ceil(Math.log2(32)) - 1 ? 'Semi-Finals' 
+           roundNumber === Math.ceil(Math.log2(32)) - 2 ? 'Quarter-Finals' 
            `Round ${roundNumber}`}
         
         

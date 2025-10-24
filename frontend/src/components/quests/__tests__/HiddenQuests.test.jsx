@@ -8,13 +8,13 @@ global.fetch = jest.fn();
 
 const mockDiscoveredQuests = [
   {
-    _id: "test-id",
+    _id,
     title,
     description,
     hint,
     difficulty,
     discovered_at,
-    status: 'available'
+    status
   }
 ];
 

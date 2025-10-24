@@ -60,6 +60,6 @@ export function use3DScene(canvasRef) {
     sceneManager: sceneManagerRef.current,
     isReady,
     startAnimationLoop,
-    stopAnimationLoop
+    stopAnimationLoop,
   };
 }

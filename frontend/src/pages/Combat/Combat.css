@@ -111,16 +111,16 @@
   .combat-header h1 {
     font-size: 2rem;
   }
-  
+
   .arena-buttons {
     flex-direction: column;
   }
-  
+
   .casual-button,
   .ranked-button {
     width: 100%;
   }
-  
+
   .tournaments-grid {
     grid-template-columns: 1fr;
   }

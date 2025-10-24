@@ -16,9 +16,9 @@ export const WeeklyQuests = () => {
   const fetchWeeklyQuests = async () => {
     try {
       const response = await fetch('/api/quests/weekly', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        headers
+          Authorization)}`,
+        },
       });
       const data = await response.json();
       setQuests(data.quests || []);
@@ -30,10 +30,10 @@ export const WeeklyQuests = () => {
 
   const getDifficultyColor = (difficulty) => {
     const colors = {
-      easy: 'bg-green-500',
-      medium: 'bg-yellow-500',
-      hard: 'bg-red-500',
-      legendary: 'bg-purple-500'
+      easy,
+      medium,
+      hard,
+      legendary,
     };
     return colors[difficulty] || 'bg-gray-500';
   };
@@ -48,28 +48,24 @@ export const WeeklyQuests = () => {
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="w-4 h-4" />
-            Resets: {resetTime}
+            Resets
           </div>
         </div>
       </Card>
 
       <div className="grid gap-4">
-        {quests.map(quest => (
+        {quests.map((quest) => (
           <Card key={quest.id} className="p-6">
             <div className="space-y-4">
               <div>
                 <div className="flex items-start justify-between mb-2">
                   <h3 className="font-bold">{quest.title}</h3>
-                  <Badge className={getDifficultyColor(quest.difficulty)}>
-                    {quest.difficulty}
-                  </Badge>
+                  <Badge className={getDifficultyColor(quest.difficulty)}>{quest.difficulty}</Badge>
                 </div>
                 <Trophy className="w-5 h-5 text-yellow-500" />
               </div>
 
-              <p className="text-sm text-muted-foreground">
-                {quest.description}
-              </p>
+              <p className="text-sm text-muted-foreground">{quest.description}</p>
 
               <div className="space-y-2">
                 {quest.objectives.map((obj, idx) => (
@@ -90,14 +86,13 @@ export const WeeklyQuests = () => {
                 <span>⭐ {quest.rewards.xp} XP</span>
                 {quest.rewards.karma !== 0 && (
                   <span>
-                    ✨ {quest.rewards.karma > 0 ? '+' : ''}{quest.rewards.karma}
+                    ✨ {quest.rewards.karma > 0 ? '+' 
+                    {quest.rewards.karma}
                   </span>
                 )}
               </div>
 
-              {quest.status === 'available' && (
-                <Button size="sm">Accept Challenge</Button>
-              )}
+              {quest.status === 'available' && <Button size="sm">Accept Challenge</Button>}
             </div>
           </Card>
         ))}

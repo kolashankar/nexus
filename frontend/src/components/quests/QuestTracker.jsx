@@ -19,9 +19,9 @@ export const QuestTracker = () => {
   const fetchTrackedQuests = async () => {
     try {
       const response = await fetch('/api/quests/active', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        headers
+          Authorization)}`,
+        },
       });
       const data = await response.json();
       setTrackedQuests((data.quests || []).slice(0, 5)); // Track max 5 quests
@@ -31,27 +31,21 @@ export const QuestTracker = () => {
   };
 
   const toggleExpanded = (questId) => {
-    setExpanded(prev => 
-      prev.includes(questId)
-        ? prev.filter(id => id !== questId)
-        : [...prev, questId]
+    setExpanded((prev) =>
+      prev.includes(questId) ? prev.filter((id) => id !== questId) , questId]
     );
   };
 
   const calculateProgress = (objectives) => {
     if (objectives.length === 0) return 0;
-    const completed = objectives.filter(obj => obj.completed).length;
+    const completed = objectives.filter((obj) => obj.completed).length;
     return (completed / objectives.length) * 100;
   };
 
   if (minimized) {
     return (
       <div className="fixed bottom-4 right-4 z-50">
-        <Button
-          onClick={() => setMinimized(false)}
-          variant="default"
-          size="sm"
-        >
+        <Button onClick={() => setMinimized(false)} variant="default" size="sm">
           <Target className="mr-2" />
           Quests ({trackedQuests.length})
         </Button>
@@ -73,7 +67,7 @@ export const QuestTracker = () => {
         </div>
 
         <div className="space-y-3 max-h-96 overflow-y-auto">
-          {trackedQuests.map(quest => {
+          {trackedQuests.map((quest) => {
             const isExpanded = expanded.includes(quest.id);
             const progress = calculateProgress(quest.objectives);
 
@@ -87,14 +81,12 @@ export const QuestTracker = () => {
                     <p className="font-semibold text-sm">{quest.title}</p>
                     <div className="flex items-center gap-2 mt-1">
                       <Progress value={progress} className="flex-1" />
-                      <span className="text-xs text-muted-foreground">
-                        {Math.round(progress)}%
-                      </span>
+                      <span className="text-xs text-muted-foreground">{Math.round(progress)}%</span>
                     </div>
                   </div>
                   {isExpanded ? (
                     <ChevronUp className="w-4 h-4" />
-                  ) : (
+                  ) 
                     <ChevronDown className="w-4 h-4" />
                   )}
                 </div>
@@ -105,7 +97,7 @@ export const QuestTracker = () => {
                       <div key={idx} className="flex items-start gap-2 text-sm">
                         {obj.completed ? (
                           <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
-                        ) : (
+                        ) 
                           <div className="w-4 h-4 border rounded-full mt-0.5" />
                         )}
                         <div className="flex-1">

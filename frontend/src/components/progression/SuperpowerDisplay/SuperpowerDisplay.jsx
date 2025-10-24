@@ -23,7 +23,7 @@ export const SuperpowerDisplay = ({
       2,
       3,
       4,
-      5: 'bg-yellow-500'
+      5
     };
     return colors[tier typeof colors] || 'bg-gray-500';
   };
@@ -34,7 +34,7 @@ export const SuperpowerDisplay = ({
       2,
       3,
       4,
-      5: 'Legendary'
+      5
     };
     return names[tier typeof names] || 'Unknown';
   };
@@ -85,7 +85,7 @@ export const SuperpowerDisplay = ({
         
           {[1, 2, 3, 4, 5].map((tier) => (
             
-               p.tier === tier && p.unlocked) ? 'text-yellow-500' : ''}`} />
+               p.tier === tier && p.unlocked) ? 'text-yellow-500' 
               Tier {tier}
             
           ))}
@@ -101,7 +101,7 @@ export const SuperpowerDisplay = ({
                     
                       {power.unlocked ? (
                         
-                      ) : (
+                      ) 
                         
                       )}
                       {power.name}
@@ -129,7 +129,7 @@ export const SuperpowerDisplay = ({
                         
                         
                       
-                    ) : (
+                    ) 
                       
                         
                         Ready to Use
@@ -146,7 +146,7 @@ export const SuperpowerDisplay = ({
                     
                       Effects).slice(0, 3).map(([key, value]) => (
                           
-                            {key}: {typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value}
+                            {key}=== 'boolean' ? (value ? 'Yes' ) 
                           
                         ))}
                       
@@ -166,7 +166,7 @@ export const SuperpowerDisplay = ({
                       
                     
                   
-                ) : (
+                ) 
                   
                     {/* Unlock Requirements */}
                     

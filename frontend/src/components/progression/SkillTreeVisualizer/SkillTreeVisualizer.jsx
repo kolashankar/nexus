@@ -157,7 +157,7 @@ export const SkillTreeVisualizer = ({
                     disabled={!canUnlockNode(node) || node.unlocked}
                   >
                     
-                      {node.node_id === 20 ?  : getNodeIcon(node)}
+                      {node.node_id === 20 ?  )}
                       Node {node.node_id}
                       Lv.{node.level_required}
                       {node.node_id === 20 && MASTERY}
@@ -166,7 +166,7 @@ export const SkillTreeVisualizer = ({
                   
                   {hoveredNode === node.node_id && (
                     
-                      {node.node_id === 20 ? 'MASTERY' : 'Node'} {node.node_id}
+                      {node.node_id === 20 ? 'MASTERY' 
                       Required Level)}
                     
                   )}

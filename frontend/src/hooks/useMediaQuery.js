@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 /**
  * Hook to detect media query matches
  */
-export function useMediaQuery(query){
+export function useMediaQuery(query) {
   const [matches, setMatches] = useState(false);
 
   useEffect(() => {
@@ -32,14 +32,14 @@ export function useMediaQuery(query){
 /**
  * Common media query hooks
  */
-export function useIsMobile(){
+export function useIsMobile() {
   return useMediaQuery('(max-width)');
 }
 
-export function useIsTablet(){
+export function useIsTablet() {
   return useMediaQuery('(min-width) and (max-width)');
 }
 
-export function useIsDesktop(){
+export function useIsDesktop() {
   return useMediaQuery('(min-width)');
 }

@@ -19,11 +19,7 @@ const TIER_COLORS = {
 /**
  * Main power activation effect
  */
-export const activatePower = async ({
-  powerName,
-  element,
-  tier = 1,
-}) => {
+export const activatePower = async ({ powerName, element, tier = 1 }) => {
   const color = TIER_COLORS[tier];
 
   // Add glow effect
@@ -54,11 +50,7 @@ export const activatePower = async ({
 /**
  * Power-specific visual effects
  */
-const playPowerSpecificEffect = async (
-  powerName,
-  element,
-  color
-) => {
+const playPowerSpecificEffect = async (powerName, element, color) => {
   const effects = {
     // Tier 1
     mind_reading: () => createMindReadingEffect(element),
@@ -284,7 +276,7 @@ const createShadowWalkEffect = (element) => {
   element.style.transition = 'all 0.3s';
   element.style.opacity = '0';
   element.style.transform = 'scale(0.5)';
-  
+
   setTimeout(() => {
     element.style.opacity = '1';
     element.style.transform = 'scale(1)';
@@ -378,7 +370,7 @@ const createTemporalEchoEffect = (element) => {
       echo.style.position = 'absolute';
       echo.style.opacity = '0.3';
       echo.style.pointerEvents = 'none';
-      
+
       const rect = element.getBoundingClientRect();
       echo.style.left = `${rect.left}px`;
       echo.style.top = `${rect.top}px`;
