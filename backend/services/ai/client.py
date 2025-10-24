@@ -95,3 +95,8 @@ class AIClient:
 
 # Global AI client instance
 ai_client = AIClient()
+
+
+def get_ai_client() -> AIClient:
+    """Get the global AI client instance"""
+    return ai_client
