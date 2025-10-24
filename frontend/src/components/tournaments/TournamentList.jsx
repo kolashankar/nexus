@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 
 
 
-const TournamentList: React.FC = () => {
+const TournamentList = () => {
   const { tournaments, loading, registerForTournament, fetchActiveTournaments } = useTournaments();
   const [registering, setRegistering] = useState(null);
 
