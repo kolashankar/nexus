@@ -187,7 +187,7 @@ describe('Combat Flow Integration Tests', () => {
         `${API_URL}/api/combat/arena/join`,
         {},
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken1}` }
         }
       );
 
@@ -197,7 +197,7 @@ describe('Combat Flow Integration Tests', () => {
 
     it('should fetch arena queue status', async () => {
       const response = await axios.get(`${API_URL}/api/combat/arena/queue`, {
-        headers,
+        headers: { Authorization: `Bearer ${authToken1}` }
       });
 
       expect(response.status).toBe(200);
