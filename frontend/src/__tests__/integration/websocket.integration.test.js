@@ -5,8 +5,10 @@
 import websocketService from '../../services/websocket/websocketService';
 import WS from 'jest-websocket-mock';
 
-let server) => {
-  server = new WS('ws);
+let server;
+
+beforeEach(() => {
+  server = new WS('ws://localhost:8001/ws');
 });
 
 afterEach(() => {
@@ -20,8 +22,9 @@ describe('WebSocket Integration Tests', () => {
       await server.connected;
       
       expect(server).toHaveReceivedMessages([{
-        type,
-        token);
+        type: 'auth',
+        token: 'test-token'
+      }]);
     });
     
     test('reconnects on disconnect', async () => {
@@ -44,10 +47,11 @@ describe('WebSocket Integration Tests', () => {
       await server.connected;
       
       server.send(JSON.stringify({
-        type,
-        data));
+        type: 'player_joined',
+        data: { username: 'newplayer' }
+      }));
       
-      expect(handler).toHaveBeenCalledWith({ username);
+      expect(handler).toHaveBeenCalledWith({ username: 'newplayer' });
     });
     
     test('receives karma_changed event', async () => {
@@ -58,10 +62,11 @@ describe('WebSocket Integration Tests', () => {
       await server.connected;
       
       server.send(JSON.stringify({
-        type,
-        data, new_karma));
+        type: 'karma_changed',
+        data: { old_karma: 100, new_karma: 110 }
+      }));
       
-      expect(handler).toHaveBeenCalledWith({ old_karma, new_karma);
+      expect(handler).toHaveBeenCalledWith({ old_karma: 100, new_karma: 110 });
     });
   });
   
@@ -71,12 +76,14 @@ describe('WebSocket Integration Tests', () => {
       await server.connected;
       
       websocketService.sendMessage('chat_message', {
-        message,
-        room);
+        message: 'Hello',
+        room: 'global'
+      });
       
       await expect(server).toReceiveMessage(JSON.stringify({
-        type,
-        data, room));
+        type: 'chat_message',
+        data: { message: 'Hello', room: 'global' }
+      }));
     });
     
     test('sends location update', async () => {
@@ -84,13 +91,15 @@ describe('WebSocket Integration Tests', () => {
       await server.connected;
       
       websocketService.sendMessage('location_update', {
-        x,
-        y,
-        z);
+        x: 100,
+        y: 200,
+        z: 0
+      });
       
       await expect(server).toReceiveMessage(JSON.stringify({
-        type,
-        data, y, z));
+        type: 'location_update',
+        data: { x: 100, y: 200, z: 0 }
+      }));
     });
   });
   
@@ -102,8 +111,9 @@ describe('WebSocket Integration Tests', () => {
       websocketService.joinRoom('guild-123');
       
       await expect(server).toReceiveMessage(JSON.stringify({
-        type,
-        data));
+        type: 'join_room',
+        data: { room: 'guild-123' }
+      }));
     });
     
     test('leaves room', async () => {
@@ -113,8 +123,9 @@ describe('WebSocket Integration Tests', () => {
       websocketService.leaveRoom('guild-123');
       
       await expect(server).toReceiveMessage(JSON.stringify({
-        type,
-        data));
+        type: 'leave_room',
+        data: { room: 'guild-123' }
+      }));
     });
   });
   

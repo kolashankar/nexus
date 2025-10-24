@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
+const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http://localhost:3000';
+
+test.describe('Combat E2E Tests', () => {
   test.beforeEach(async ({ page }) => {
     // Login before each test
     await page.goto(`${BASE_URL}/login`);
@@ -35,7 +37,7 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
     await page.goto(`${BASE_URL}/combat`);
 
     // Click challenge button
-    await page.click('button)');
+    await page.click('button:text("Challenge")');
 
     // Wait for player list
     await page.waitForSelector('[data-testid="player-list"]');
@@ -46,11 +48,11 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
       await firstPlayer.click();
 
       // Confirm challenge
-      await page.click('button)');
+      await page.click('button:text("Confirm")');
 
       // Wait for confirmation
       const notification = await page.locator('[role="alert"]');
-      await expect(notification).toBeVisible({ timeout);
+      await expect(notification).toBeVisible({ timeout: 5000 });
     }
   });
 
@@ -65,8 +67,8 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
       await expect(page.locator('[data-testid="action-bar"]')).toBeVisible();
 
       // Verify action buttons
-      await expect(page.locator('button)')).toBeVisible();
-      await expect(page.locator('button)')).toBeVisible();
+      await expect(page.locator('button:text("Attack")')).toBeVisible();
+      await expect(page.locator('button:text("Defend")')).toBeVisible();
     }
   });
 
@@ -77,11 +79,11 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
 
     if (combatActive > 0) {
       // Click attack button
-      await page.click('button)');
+      await page.click('button:text("Attack")');
 
       // Wait for combat log update
       await page.waitForSelector('[data-testid="combat-log-entry"]', {
-        timeout,
+        timeout: 5000,
       });
 
       // Verify combat log shows the attack
@@ -97,7 +99,7 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
 
     if (combatActive > 0) {
       // Open powers menu
-      await page.click('button)');
+      await page.click('button:text("Powers")');
 
       // Select first available power
       const firstPower = page.locator('[data-testid="combat-power"]').first();
@@ -105,11 +107,11 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
         await firstPower.click();
 
         // Confirm power usage
-        await page.click('button)');
+        await page.click('button:text("Use Power")');
 
         // Verify power was used
         const notification = await page.locator('[role="alert"]');
-        await expect(notification).toBeVisible({ timeout);
+        await expect(notification).toBeVisible({ timeout: 5000 });
       }
     }
   });
@@ -136,7 +138,7 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
 
     // Check for battle records
     const battleRecords = await page.locator('[data-testid="battle-record"]').all();
-    console.log(`Battle records found);
+    console.log(`Battle records found: ${battleRecords.length}`);
 
     if (battleRecords.length > 0) {
       // Click on first battle to view details
@@ -151,10 +153,10 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
     await page.goto(`${BASE_URL}/combat/arena`);
 
     // Click join queue button
-    await page.click('button)');
+    await page.click('button:text("Join Queue")');
 
     // Wait for queue status
-    await page.waitForSelector('[data-testid="queue-status"]', { timeout);
+    await page.waitForSelector('[data-testid="queue-status"]', { timeout: 5000 });
 
     // Verify in queue
     const queueStatus = await page.locator('[data-testid="queue-status"]');
@@ -165,7 +167,7 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
     await page.goto(`${BASE_URL}/combat/arena`);
 
     // Navigate to rankings tab
-    await page.click('button)');
+    await page.click('button:text("Rankings")');
 
     // Verify rankings list
     await expect(page.locator('[data-testid="arena-rankings"]')).toBeVisible();

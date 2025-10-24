@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
+const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http://localhost:3000';
+
+test.describe('Authentication E2E Tests', () => {
   test('should complete full registration flow', async ({ page }) => {
     await page.goto(`${BASE_URL}/register`);
 
@@ -62,7 +64,7 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
 
     // Then logout
     await page.click('[data-testid="user-menu"]');
-    await page.click('button)');
+    await page.click('button:text("Logout")');
 
     // Verify redirect to landing/login page
     await page.waitForURL(/\/(login|\/)$/);
