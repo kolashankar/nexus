@@ -18,7 +18,7 @@ from .schemas import (
     EventEffect
 )
 from ..client import get_ai_client
-from ..cache_manager import CacheManager
+from ..cache_manager import AICacheManager
 
 logger = logging.getLogger(__name__)
 
