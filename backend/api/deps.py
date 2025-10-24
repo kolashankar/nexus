@@ -40,3 +40,6 @@ async def get_current_active_user(current_user: dict = Depends(get_current_user)
     if current_user.get("disabled"):
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+
+# Alias for backward compatibility
+get_current_player = get_current_user
