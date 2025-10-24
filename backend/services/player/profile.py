@@ -120,7 +120,7 @@ class PlayerProfileService:
                 status_code=400, detail="No valid updates provided")
 
         await self.collection.update_one(
-            {"_id": ObjectId(player_id)},
+            {"_id": player_id},
             {"$set": update_dict}
         )
 
