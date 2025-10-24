@@ -129,7 +129,7 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.get(
         `${API_URL}/api/combat/state?combat_id=${combatId}`,
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken1}` }
         }
       );
 
@@ -144,7 +144,7 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.get(
         `${API_URL}/api/combat/state?combat_id=${combatId}`,
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken1}` }
         }
       );
 
