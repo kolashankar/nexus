@@ -204,7 +204,7 @@ These files contain incomplete/malformed JSX from code generation:
 
 **Issue Type:** Most errors are due to incomplete JSX elements, missing closing tags, malformed object literals in JSX props, and incomplete string literals. These are artifacts from code generation that would need manual reconstruction of each component.
 
-#### 5. Warnings (~91 instances) - LOW PRIORITY
+#### 5. Warnings (~113 instances) - LOW PRIORITY
 - Unused variables
 - Missing default cases in switch statements
 - Import/no-anonymous-default-export warnings
