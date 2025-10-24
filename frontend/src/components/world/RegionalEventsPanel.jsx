@@ -29,7 +29,11 @@ const RegionalEventsPanel = ({  territoryId  }) => {
       const response = await axios.get(
         `${API_URL}/api/world/events/regional/${territory}`,
         {
-          headers);
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
       setEvents(response.data);
     } catch (error) {
       console.error('Error fetching regional events', error);
