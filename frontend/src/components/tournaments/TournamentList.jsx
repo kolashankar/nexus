@@ -21,21 +21,23 @@ const TournamentList = () => {
     try {
       await registerForTournament(tournamentId);
       toast.success('Registered successfully!', {
-        description);
+        description: 'You have been registered for the tournament'
+      });
       await fetchActiveTournaments();
     } catch (error) {
       toast.error('Registration failed', {
-        description);
+        description: 'Failed to register for the tournament'
+      });
     } finally {
       setRegistering(null);
     }
   };
 
-  const getStatusColor = (status)=> {
-    const colors: Record = {
-      registration,
-      active,
-      completed,
+  const getStatusColor = (status) => {
+    const colors = {
+      registration: 'bg-blue-500',
+      active: 'bg-green-500',
+      completed: 'bg-gray-500',
       upcoming: 'bg-yellow-500'
     };
     return colors[status] || 'bg-gray-500';
