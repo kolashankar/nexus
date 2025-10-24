@@ -68,7 +68,7 @@ class PlayerProfileService:
         """Set player online status."""
         try:
             result = await self.collection.update_one(
-                {"_id": ObjectId(player_id)},
+                {"_id": player_id},
                 {
                     "$set": {
                         "online": online,
