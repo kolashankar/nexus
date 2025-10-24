@@ -160,7 +160,7 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.get(
         `${API_URL}/api/combat/state?combat_id=${combatId}`,
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken1}` }
         }
       );
 
@@ -172,7 +172,7 @@ describe('Combat Flow Integration Tests', () => {
 
     it('should update player stats after combat', async () => {
       const statsResponse = await axios.get(`${API_URL}/api/combat/stats`, {
-        headers,
+        headers: { Authorization: `Bearer ${authToken1}` }
       });
 
       expect(statsResponse.status).toBe(200);
