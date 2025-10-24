@@ -6,7 +6,7 @@ import socialService from '../../services/social/socialService';
 import { usePlayer } from '../../hooks/usePlayer';
 
 const SocialHub = () => {
-  const { player= usePlayer();
+  const { player } = usePlayer();
   const [onlinePlayers, setOnlinePlayers] = useState([]);
   const [alliance, setAlliance] = useState(null);
   const [marriage, setMarriage] = useState(null);
@@ -105,7 +105,7 @@ const SocialHub = () => {
             {alliance ? (
               <div>
                 <h2 className="text-xl font-bold mb-4">Your Alliance</h2>
-                <p className="mb-4">Name
+                <p className="mb-4">Name: {alliance.name}</p>
                 <Button
                   onClick={async () => {
                     await socialService.leaveAlliance();
@@ -115,7 +115,7 @@ const SocialHub = () => {
                   Leave Alliance
                 </Button>
               </div>
-            ) 
+            ) : (
               <div>
                 <h2 className="text-xl font-bold mb-4">No Alliance</h2>
                 <p className="mb-4">You are not in an alliance yet.</p>
@@ -138,10 +138,8 @@ const SocialHub = () => {
             {marriage ? (
               <div>
                 <h2 className="text-xl font-bold mb-4">Marriage</h2>
-                <p className="mb-2">
-                  Married Since).toLocaleDateString()}
-                </p>
-                <p className="mb-4">Joint Karma
+                <p className="mb-2">Married Since: {new Date(marriage.married_at).toLocaleDateString()}</p>
+                <p className="mb-4">Joint Karma: {marriage.joint_karma}</p>
                 <Button
                   onClick={async () => {
                     if (confirm('Are you sure you want to divorce?')) {
@@ -153,7 +151,7 @@ const SocialHub = () => {
                   Divorce
                 </Button>
               </div>
-            ) 
+            ) : (
               <div>
                 <h2 className="text-xl font-bold mb-4">Not Married</h2>
                 {proposals.length > 0 && (
@@ -200,7 +198,7 @@ const SocialHub = () => {
             {mentorship ? (
               <div>
                 <h2 className="text-xl font-bold mb-4">Mentorship</h2>
-                <p className="mb-4">Lessons Completed
+                <p className="mb-4">Lessons Completed: {mentorship.lessons_completed}</p>
                 <Button
                   onClick={async () => {
                     await socialService.completeLesson();
@@ -210,7 +208,7 @@ const SocialHub = () => {
                   Complete Lesson
                 </Button>
               </div>
-            ) 
+            ) : (
               <div>
                 <h2 className="text-xl font-bold mb-4">No Mentorship</h2>
                 {mentorshipRequests.length > 0 && (

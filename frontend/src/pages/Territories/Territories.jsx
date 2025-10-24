@@ -5,7 +5,7 @@ import guildsService from '../../services/guilds/guildsService';
 import { usePlayer } from '../../hooks/usePlayer';
 
 const Territories = () => {
-  const { player= usePlayer();
+  const { player } = usePlayer();
   const [territories, setTerritories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,12 +25,12 @@ const Territories = () => {
   };
 
   const handleAttack = async (territoryId) => {
-    if (!user?.guild_id) {
+    if (!player?.guild_id) {
       alert('You must be in a guild to attack territories');
       return;
     }
 
-    if (!['leader', 'officer'].includes(user?.guild_rank || '')) {
+    if (!['leader', 'officer'].includes(player?.guild_rank || '')) {
       alert('Only guild leaders and officers can attack territories');
       return;
     }
@@ -45,9 +45,7 @@ const Territories = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">Loading territories...</div>
-    );
+    return <div className="flex items-center justify-center min-h-screen">Loading territories...</div>;
   }
 
   return (
@@ -62,16 +60,16 @@ const Territories = () => {
             <div className="flex justify-between items-center">
               <div>
                 {territory.controlling_guild_id ? (
-                  <span>Controlled by Guild | Income
-                ) 
+                  <span>
+                    Controlled by Guild {territory.controlling_guild_id} | Income: {territory.income_per_hour}
+                  </span>
+                ) : (
                   <span>Unclaimed</span>
                 )}
-                {territory.contested && (
-                  <span className="ml-2 text-red-600 font-bold">CONTESTED!</span>
-                )}
+                {territory.contested && <span className="ml-2 text-red-600 font-bold">CONTESTED!</span>}
               </div>
 
-              {territory.controlling_guild_id !== user?.guild_id && (
+              {territory.controlling_guild_id !== player?.guild_id && (
                 <Button onClick={() => handleAttack(territory.territory_id)}>Attack</Button>
               )}
             </div>

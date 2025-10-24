@@ -32,7 +32,7 @@ const WorldDashboard = () => {
         </TabsContent>
 
         <TabsContent value="regional">
-          <div className="grid md
+          <div className="grid md:grid-cols-[250px_1fr] gap-4">
             {/* Territory Selector */}
             <div>
               <h3 className="font-semibold mb-3">Select Territory</h3>
@@ -44,7 +44,7 @@ const WorldDashboard = () => {
                     className={`w-full p-3 rounded-lg border text-left transition-colors ${
                       selectedTerritory === id
                         ? 'border-primary bg-primary/10'
-                        
+                        : 'border-border hover:bg-accent'
                     }`}
                   >
                     Territory {id}
