@@ -1,5 +1,4 @@
-"""Tournaments API endpoints."""
-
+"""API module for tournaments."""
 from .router import router
 
-__all__ = ['router']
+__all__ = ["router"]

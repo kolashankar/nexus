@@ -1,5 +1,4 @@
-"""World & Events API endpoints."""
-
+"""API module for world."""
 from .router import router
 
-__all__ = ['router']
+__all__ = ["router"]
