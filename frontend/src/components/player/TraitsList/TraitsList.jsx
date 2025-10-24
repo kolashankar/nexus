@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import TraitItem from './TraitItem';
 import { usePlayer } from '@/hooks/usePlayer';
 
-const TraitsList= () => {
+const TraitsList = () => {
   const { player } = usePlayer();
   const [filter, setFilter] = useState('all');
 
