@@ -4,7 +4,7 @@ from ..player.traits import TraitsService
 from ..karma.calculator import KarmaCalculator
 from .validator import ActionValidator
 from .processor import ActionProcessor
-from ...core.database import get_database
+from backend.core.database import get_database
 import uuid
 
 class ActionHandler:

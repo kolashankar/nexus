@@ -1,6 +1,6 @@
 from typing import Dict, Any, List
 from datetime import datetime
-from ...core.database import get_database
+from backend.core.database import get_database
 import uuid
 
 class KarmaEventManager:
