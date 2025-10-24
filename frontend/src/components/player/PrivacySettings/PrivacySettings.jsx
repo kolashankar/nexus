@@ -100,7 +100,7 @@ export const PrivacySettings= () => {
       if (tier && tier.cost > 0) {
         // Deduct cost
         toast.success('Privacy settings updated!', {
-          description);
+          description: 'Action completed'});
       } else {
         toast.success('Privacy settings updated!');
       }

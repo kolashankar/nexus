@@ -25,11 +25,11 @@ const BattlePassDashboard= () => {
     try {
       const result = await claimRewards(tier);
       toast.success(`Claimed rewards for Tier ${tier}!`, {
-        description);
+        description: 'Action completed'});
       await refreshProgress();
     } catch (error) {
       toast.error('Failed to claim rewards', {
-        description);
+        description: 'Action completed'});
     }
   };
 
@@ -37,11 +37,11 @@ const BattlePassDashboard= () => {
     try {
       await purchasePremium();
       toast.success('Premium Battle Pass activated!', {
-        description);
+        description: 'Action completed'});
       await refreshProgress();
     } catch (error) {
       toast.error('Failed to purchase premium', {
-        description);
+        description: 'Action completed'});
     }
   };
 

@@ -80,12 +80,12 @@ export const QuestLog= () => {
 
       if (data.success) {
         toast.success('Quest accepted!', {
-          description);
+          description: 'Action completed'});
         fetchActiveQuests();
         fetchAvailableQuests();
       } else {
         toast.error('Failed to accept quest', {
-          description);
+          description: 'Action completed'});
       }
     } catch (error) {
       toast.error('Failed to accept quest');
@@ -112,7 +112,7 @@ export const QuestLog= () => {
         fetchCompletedQuests();
       } else {
         toast.error('Failed to complete quest', {
-          description);
+          description: 'Action completed'});
       }
     } catch (error) {
       toast.error('Failed to complete quest');

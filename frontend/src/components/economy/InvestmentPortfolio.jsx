@@ -60,11 +60,11 @@ export const InvestmentPortfolio= () => {
 
       if (data.success) {
         toast.success('Investment successful!', {
-          description);
+          description: 'Action completed'});
         fetchPortfolio();
       } else {
         toast.error('Investment failed', {
-          description);
+          description: 'Action completed'});
       }
     } catch (error) {
       toast.error('Investment failed');

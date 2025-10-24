@@ -62,7 +62,7 @@ export const CraftingStation= () => {
             if (prev >= 100) {
               clearInterval(interval);
               toast.success(`Crafted ${data.item_name}!`, {
-                description);
+                description: 'Action completed'});
               setCrafting(false);
               fetchRecipes(); // Refresh recipes
               return 100;
@@ -72,7 +72,7 @@ export const CraftingStation= () => {
         }, 100);
       } else {
         toast.error('Crafting failed', {
-          description);
+          description: 'Action completed'});
         setCrafting(false);
       }
     } catch (error) {

@@ -59,12 +59,12 @@ export const RealEstateMarket= () => {
 
       if (data.success) {
         toast.success('Property purchased!', {
-          description);
+          description: 'Action completed'});
         fetchProperties();
         fetchMyProperties();
       } else {
         toast.error('Purchase failed', {
-          description);
+          description: 'Action completed'});
       }
     } catch (error) {
       toast.error('Purchase failed');
