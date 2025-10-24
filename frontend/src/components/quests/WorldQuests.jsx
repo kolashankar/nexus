@@ -17,8 +17,9 @@ export const WorldQuests = () => {
   const fetchWorldQuests = async () => {
     try {
       const response = await fetch('/api/quests/world', {
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
       const data = await response.json();
@@ -31,8 +32,9 @@ export const WorldQuests = () => {
   const participate = async (questId) => {
     try {
       const response = await fetch(`/api/quests/world/participate/${questId}`, {
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
 

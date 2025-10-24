@@ -18,8 +18,9 @@ export const HiddenQuests = () => {
   const fetchHiddenQuests = async () => {
     try {
       const response = await fetch('/api/quests/hidden/discovered', {
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
       const data = await response.json();
@@ -34,8 +35,9 @@ export const HiddenQuests = () => {
   const fetchHints = async () => {
     try {
       const response = await fetch('/api/quests/hidden/hints', {
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
       const data = await response.json();
@@ -49,11 +51,11 @@ export const HiddenQuests = () => {
     try {
       const response = await fetch('/api/quests/accept', {
         method: 'POST',
-        headers
-          'Content-Type',
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body),
+        },
+        body: JSON.stringify({ quest_id: questId }),
       });
 
       if (response.ok) {

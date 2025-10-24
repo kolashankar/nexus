@@ -67,7 +67,7 @@ export const QuestLog = () => {
         headers,
           'Authorization')}`
         },
-        body)
+        body: JSON.stringify({ quest_id: questId })
       });
 
       const data = await response.json();
@@ -93,7 +93,7 @@ export const QuestLog = () => {
         headers,
           'Authorization')}`
         },
-        body)
+        body: JSON.stringify({ quest_id: questId })
       });
 
       const data = await response.json();

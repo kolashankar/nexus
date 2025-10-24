@@ -18,8 +18,9 @@ export const DailyQuests = () => {
   const fetchDailyQuests = async () => {
     try {
       const response = await fetch('/api/quests/daily', {
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
       const data = await response.json();
@@ -34,8 +35,9 @@ export const DailyQuests = () => {
     try {
       const response = await fetch('/api/quests/daily/refresh', {
         method: 'POST',
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
 

@@ -24,8 +24,9 @@ const RegionalEventsPanel = ({  territoryId  }) => {
       const response = await axios.get(
         `${API_URL}/api/world/events/regional/${territory}`,
         {
-          headers
-            Authorization
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
           }
         }
       );

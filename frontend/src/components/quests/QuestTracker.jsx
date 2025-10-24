@@ -19,8 +19,9 @@ export const QuestTracker = () => {
   const fetchTrackedQuests = async () => {
     try {
       const response = await fetch('/api/quests/active', {
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
       const data = await response.json();

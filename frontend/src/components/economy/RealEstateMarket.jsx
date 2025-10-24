@@ -52,7 +52,7 @@ export const RealEstateMarket = () => {
         headers,
           'Authorization')}`
         },
-        body)
+        body: JSON.stringify({ quest_id: questId })
       });
 
       const data = await response.json();

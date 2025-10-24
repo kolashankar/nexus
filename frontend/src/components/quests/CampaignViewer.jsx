@@ -19,8 +19,9 @@ export const CampaignViewer = () => {
   const fetchActiveCampaign = async () => {
     try {
       const response = await fetch('/api/quests/campaigns/active', {
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
       if (response.ok) {
@@ -28,8 +29,9 @@ export const CampaignViewer = () => {
         if (data) {
           // Fetch progress
           const progressResponse = await fetch('/api/quests/campaigns/progress', {
-            headers
-              Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
             },
           });
           const progressData = await progressResponse.json();
@@ -46,8 +48,9 @@ export const CampaignViewer = () => {
   const fetchAvailableCampaigns = async () => {
     try {
       const response = await fetch('/api/quests/campaigns/available', {
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
       const data = await response.json();
@@ -61,11 +64,11 @@ export const CampaignViewer = () => {
     try {
       const response = await fetch('/api/quests/campaigns/start', {
         method: 'POST',
-        headers
-          'Content-Type',
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body),
+        },
+        body: JSON.stringify({ quest_id: questId }),
       });
 
       const data = await response.json();

@@ -16,8 +16,9 @@ export const WeeklyQuests = () => {
   const fetchWeeklyQuests = async () => {
     try {
       const response = await fetch('/api/quests/weekly', {
-        headers
-          Authorization)}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
         },
       });
       const data = await response.json();

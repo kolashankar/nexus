@@ -100,7 +100,7 @@ const FormMessage = React.forwardRef(({ className, children, ...props }, ref) =>
   const { error, formMessageId } = useFormField();
   const body = error ? String(error?.message ?? '') ;
 
-  if (!body) {
+  if (!body: JSON.stringify({ quest_id: questId }) {
     return null;
   }
 

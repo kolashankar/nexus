@@ -55,7 +55,7 @@ const TutorialOverlay = ({  onClose  }) => {
         headers,
           Authorization)}`
         },
-        body)
+        body: JSON.stringify({ quest_id: questId })
       });
 
       // Refresh tutorial data
@@ -74,7 +74,7 @@ const TutorialOverlay = ({  onClose  }) => {
         headers,
           Authorization)}`
         },
-        body)
+        body: JSON.stringify({ quest_id: questId })
       });
 
       // Refresh tutorial data
