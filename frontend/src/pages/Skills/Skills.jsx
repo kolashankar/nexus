@@ -8,9 +8,9 @@ export const Skills = () => {
   const [selectedTrait, setSelectedTrait] = useState('hacking');
 
   const traitCategories = {
-    skills, 'negotiation', 'stealth', 'leadership', 'technical_knowledge'],
-    virtues, 'integrity', 'discipline', 'creativity', 'resilience'],
-    vices, 'arrogance', 'deceit', 'cruelty', 'selfishness'],
+    skills: ['hacking', 'negotiation', 'stealth', 'leadership', 'technical_knowledge'],
+    virtues: ['empathy', 'integrity', 'discipline', 'creativity', 'resilience'],
+    vices: ['greed', 'arrogance', 'deceit', 'cruelty', 'selfishness'],
   };
 
   return (
@@ -46,7 +46,7 @@ export const Skills = () => {
                             className={`px-3 py-1 rounded text-sm ${
                               selectedTrait === trait
                                 ? 'bg-blue-500 text-white'
-                                
+                                : 'bg-gray-200 dark:bg-gray-700'
                             }`}
                           >
                             {trait.replace('_', ' ')}
