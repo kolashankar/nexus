@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from backend.core.database import get_database
 from backend.services.guilds.management import GuildManagementService
-from backend.api.v1.auth.utils import get_current_user
+from backend.api.deps import get_current_user
 from backend.models.guilds.guild import GuildRank
 from pydantic import BaseModel
 

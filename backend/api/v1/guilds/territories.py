@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from backend.core.database import get_database
 from backend.services.guilds.territories import TerritoryService
-from backend.api.v1.auth.utils import get_current_user
+from backend.api.deps import get_current_user
 from typing import List
 
 router = APIRouter()
