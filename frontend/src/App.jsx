@@ -22,7 +22,7 @@ import Seasonal from './pages/Seasonal/SeasonalDashboard';
 import Skills from './pages/Skills/Skills';
 import SocialHub from './pages/SocialHub/SocialHub';
 import Territories from './pages/Territories/Territories';
-import World from './pages/World/World';
+import World from './pages/World/WorldDashboard';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useStore();
