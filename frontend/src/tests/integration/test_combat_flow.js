@@ -1,29 +1,37 @@
 import { describe, it, expect, beforeAll } from '@jest/globals';
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL || 'http, () => {
-  let authToken1) => {
+const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+
+describe('Combat Flow Integration Tests', () => {
+  let authToken1;
+  let authToken2;
+  let player1Id;
+  let player2Id;
+  let combatId;
+
+  beforeAll(async () => {
     // Login two test users
     const login1 = await axios.post(`${API_URL}/api/auth/login`, {
-      username: "testuser",
-      password,
+      username: 'testuser1',
+      password: 'testpass123'
     });
     authToken1 = login1.data.access_token;
 
     const login2 = await axios.post(`${API_URL}/api/auth/login`, {
-      username: "testuser",
-      password,
+      username: 'testuser2',
+      password: 'testpass123'
     });
     authToken2 = login2.data.access_token;
 
     // Get player IDs
     const profile1 = await axios.get(`${API_URL}/api/player/profile`, {
-      headers,
+      headers: { Authorization: `Bearer ${authToken1}` }
     });
     player1Id = profile1.data.player_id;
 
     const profile2 = await axios.get(`${API_URL}/api/player/profile`, {
-      headers,
+      headers: { Authorization: `Bearer ${authToken2}` }
     });
     player2Id = profile2.data.player_id;
   });
