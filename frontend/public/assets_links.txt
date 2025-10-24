@@ -92,7 +92,7 @@
 /textures/robots/metal/gold.png               | Texture/Image (PNG)  | 29.3 KB    | Real Asset ✓    | /app/frontend/public/textures/robots/metal/gold.png
 /textures/robots/metal/steel.png              | Texture/Image (PNG)  | 232.3 KB   | Real Asset ✓    | /app/frontend/public/textures/robots/metal/steel.png
 
-## SOUNDS (16 files)
+## SOUNDS (8 files)
 ----------------------------------------------------------------------------------------------------
 /sounds/action_fail.wav                       | Sound (WAV)          | 30.2 KB    | Real Asset ✓    | /app/frontend/public/sounds/action_fail.wav
 /sounds/action_success.wav                    | Sound (WAV)          | 30.2 KB    | Real Asset ✓    | /app/frontend/public/sounds/action_success.wav
@@ -102,14 +102,6 @@
 /sounds/level_up.wav                          | Sound (WAV)          | 48.3 KB    | Real Asset ✓    | /app/frontend/public/sounds/level_up.wav
 /sounds/menu_click.wav                        | Sound (WAV)          | 4.3 KB     | Real Asset ✓    | /app/frontend/public/sounds/menu_click.wav
 /sounds/notification.wav                      | Sound (WAV)          | 19.0 KB    | Real Asset ✓    | /app/frontend/public/sounds/notification.wav
-/sounds/action_fail.mp3                       | Sound (MP3)          | 0.0 KB     | Real Asset ✓    | /app/frontend/public/sounds/action_fail.mp3
-/sounds/action_success.mp3                    | Sound (MP3)          | 0.0 KB     | Real Asset ✓    | /app/frontend/public/sounds/action_success.mp3
-/sounds/background_music.mp3                  | Sound (MP3)          | 0.0 KB     | Real Asset ✓    | /app/frontend/public/sounds/background_music.mp3
-/sounds/combat_hit.mp3                        | Sound (MP3)          | 0.0 KB     | Real Asset ✓    | /app/frontend/public/sounds/combat_hit.mp3
-/sounds/combat_miss.mp3                       | Sound (MP3)          | 0.0 KB     | Real Asset ✓    | /app/frontend/public/sounds/combat_miss.mp3
-/sounds/level_up.mp3                          | Sound (MP3)          | 0.0 KB     | Real Asset ✓    | /app/frontend/public/sounds/level_up.mp3
-/sounds/menu_click.mp3                        | Sound (MP3)          | 0.0 KB     | Real Asset ✓    | /app/frontend/public/sounds/menu_click.mp3
-/sounds/notification.mp3                      | Sound (MP3)          | 0.0 KB     | Real Asset ✓    | /app/frontend/public/sounds/notification.mp3
 
 ## IMAGES (5 files)
 ----------------------------------------------------------------------------------------------------
@@ -134,14 +126,14 @@
 
 ====================================================================================================
 ## SUMMARY
-Total Assets: 97 files
+Total Assets: 89 files
   - Characters: 6 files
   - Animations: 11 files
   - Robots: 9 files
   - Environment: 7 files
   - UI & Placeholders: 5 files
   - Textures: 31 files
-  - Sounds: 16 files
+  - Sounds: 8 files
   - Images: 5 files
   - Icons: 5 files
   - Fonts: 2 files
