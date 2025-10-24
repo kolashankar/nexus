@@ -8,11 +8,6 @@ import { Scroll, CheckCircle2, Clock, Star, Target } from 'lucide-react';
 import { toast } from '../ui/sonner';
 
 
-
-  status;
-  expires_at
-}
-
 export const QuestLog = () => {
   const [activeQuests, setActiveQuests] = useState([]);
   const [availableQuests, setAvailableQuests] = useState([]);
