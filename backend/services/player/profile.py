@@ -83,12 +83,9 @@ class PlayerProfileService:
 
     async def get_full_profile(self, player_id: str) -> Dict:
         """Get player's complete profile."""
-        player_dict = await self.collection.find_one({"_id": ObjectId(player_id)})
+        player_dict = await self.collection.find_one({"_id": player_id})
         if not player_dict:
             raise HTTPException(status_code=404, detail="Player not found")
-
-        # Convert ObjectId to string
-        player_dict["_id"] = str(player_dict["_id"])
 
         return {
             "id": player_dict["_id"],
