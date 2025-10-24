@@ -38,34 +38,34 @@ class AIPantheonState(BaseModel):
 
 class WorldState(BaseModel):
     """World state model for global game state."""
-    
+
     # Global Karma
     collective_karma: float = Field(default=0.0)
     karma_trend: KarmaTrend = KarmaTrend.STABLE
-    
+
     # Active Global Event
     active_event: Optional[ActiveEvent] = None
-    
+
     # Season Info
     current_season: int = 1
     season_start: datetime = Field(default_factory=datetime.utcnow)
     season_end: datetime = Field(default_factory=lambda: datetime.utcnow())
-    
+
     # Territories
     territories: List[Territory] = Field(default_factory=list)
-    
+
     # World Stats
     total_players: int = 0
     online_players: int = 0
     total_karma_generated: float = 0.0
     total_wealth: float = 0.0
-    
+
     # AI State
     ai_pantheon_state: AIPantheonState = Field(default_factory=AIPantheonState)
-    
+
     # Last update
     last_updated: datetime = Field(default_factory=datetime.utcnow)
-    
+
     class Config:
         json_encoders = {
             datetime: lambda v: v.isoformat()

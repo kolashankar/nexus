@@ -25,7 +25,7 @@ async def create_alliance(
 ):
     """Create a new alliance"""
     service = AllianceService(db)
-    
+
     try:
         alliance = await service.create_alliance(
             creator_id=current_user["_id"],
@@ -44,10 +44,10 @@ async def get_my_alliance(
     """Get my current alliance"""
     service = AllianceService(db)
     alliance = await service.get_player_alliance(current_user["_id"])
-    
+
     if not alliance:
         raise HTTPException(status_code=404, detail="Not in an alliance")
-    
+
     return alliance
 
 
@@ -59,12 +59,12 @@ async def add_alliance_member(
 ):
     """Add a member to alliance"""
     service = AllianceService(db)
-    
+
     # Get current alliance
     alliance = await service.get_player_alliance(current_user["_id"])
     if not alliance:
         raise HTTPException(status_code=400, detail="Not in an alliance")
-    
+
     try:
         success = await service.add_member(alliance.get("id"), request.player_id)
         return {"success": success, "message": "Member added to alliance"}
@@ -79,11 +79,11 @@ async def leave_alliance(
 ):
     """Leave current alliance"""
     service = AllianceService(db)
-    
+
     alliance = await service.get_player_alliance(current_user["_id"])
     if not alliance:
         raise HTTPException(status_code=400, detail="Not in an alliance")
-    
+
     try:
         success = await service.remove_member(alliance.get("id"), current_user["_id"])
         return {"success": success, "message": "Left alliance"}
@@ -98,15 +98,16 @@ async def disband_alliance(
 ):
     """Disband alliance (creator only)"""
     service = AllianceService(db)
-    
+
     alliance = await service.get_player_alliance(current_user["_id"])
     if not alliance:
         raise HTTPException(status_code=400, detail="Not in an alliance")
-    
+
     # Check if creator
     if alliance.get("members", [])[0] != current_user["_id"]:
-        raise HTTPException(status_code=403, detail="Only alliance creator can disband")
-    
+        raise HTTPException(
+            status_code=403, detail="Only alliance creator can disband")
+
     try:
         success = await service.disband_alliance(alliance.get("id"))
         return {"success": success, "message": "Alliance disbanded"}

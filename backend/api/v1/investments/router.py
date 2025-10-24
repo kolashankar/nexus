@@ -44,19 +44,19 @@ async def make_investment(
 ):
     """Make an investment."""
     investment_service = InvestmentService()
-    
+
     result = await investment_service.make_investment(
         current_user["_id"],
         request.investment_id,
         request.amount
     )
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=result.get("error", "Unable to make investment")
         )
-    
+
     return result
 
 
@@ -67,18 +67,18 @@ async def withdraw_investment(
 ):
     """Withdraw from an investment."""
     investment_service = InvestmentService()
-    
+
     result = await investment_service.withdraw_investment(
         current_user["_id"],
         investment_id
     )
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=result.get("error", "Unable to withdraw investment")
         )
-    
+
     return result
 
 

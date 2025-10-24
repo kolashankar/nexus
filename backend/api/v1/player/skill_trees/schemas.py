@@ -15,11 +15,13 @@ class SkillTreeResponse(BaseModel):
 
 class UnlockNodeRequest(BaseModel):
     trait_name: str = Field(..., description="Name of the trait")
-    node_id: int = Field(..., ge=1, le=20, description="Node ID to unlock (1-20)")
+    node_id: int = Field(..., ge=1, le=20,
+                         description="Node ID to unlock (1-20)")
 
 class ChooseBranchRequest(BaseModel):
     trait_name: str = Field(..., description="Name of the trait")
-    branch: str = Field(..., pattern="^[AB]$", description="Branch to choose (A or B)")
+    branch: str = Field(..., pattern="^[AB]$",
+                        description="Branch to choose (A or B)")
 
 class SkillTreeSummary(BaseModel):
     total_points: int

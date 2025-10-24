@@ -19,34 +19,35 @@ class UpdateProgressRequest(BaseModel):
 async def get_achievements(current_player: Dict = Depends(get_current_player)):
     """Get all achievements for the current player"""
     achievements_data = current_player.get("achievements")
-    
+
     if not achievements_data:
-        achievements = AchievementService.initialize_achievements(str(current_player["_id"]))
+        achievements = AchievementService.initialize_achievements(
+            str(current_player["_id"]))
         return achievements.dict()
-    
+
     return achievements_data
 
 @router.get("/summary")
 async def get_achievement_summary(current_player: Dict = Depends(get_current_player)):
     """Get achievement summary"""
     achievements_data = current_player.get("achievements")
-    
+
     if not achievements_data:
         return {"message": "No achievements initialized"}
-    
+
     achievements = PlayerAchievements(**achievements_data)
     summary = AchievementService.get_achievement_summary(achievements)
-    
+
     return summary
 
 @router.get("/unlocked")
 async def get_unlocked_achievements(current_player: Dict = Depends(get_current_player)):
     """Get unlocked achievements"""
     achievements_data = current_player.get("achievements", {})
-    
+
     if not achievements_data:
         return {"unlocked": []}
-    
+
     achievements = PlayerAchievements(**achievements_data)
     return {"unlocked": achievements.unlocked_achievements}
 
@@ -54,10 +55,10 @@ async def get_unlocked_achievements(current_player: Dict = Depends(get_current_p
 async def get_achievement_progress(current_player: Dict = Depends(get_current_player)):
     """Get achievement progress"""
     achievements_data = current_player.get("achievements", {})
-    
+
     if not achievements_data:
         return {"progress": {}}
-    
+
     achievements = PlayerAchievements(**achievements_data)
     return {"progress": achievements.achievement_progress}
 
@@ -68,16 +69,16 @@ async def get_achievement_definitions(
 ):
     """Get achievement definitions with optional filters"""
     definitions = list(ACHIEVEMENT_DEFINITIONS.values())
-    
+
     if category:
         definitions = [d for d in definitions if d.category == category]
-    
+
     if rarity:
         definitions = [d for d in definitions if d.rarity == rarity]
-    
+
     # Don't show hidden achievements
     visible_definitions = [d for d in definitions if not d.hidden]
-    
+
     return {
         "total": len(visible_definitions),
         "achievements": [d.dict() for d in visible_definitions]
@@ -88,9 +89,9 @@ async def get_achievement_definition(achievement_id: str):
     """Get a specific achievement definition"""
     if achievement_id not in ACHIEVEMENT_DEFINITIONS:
         raise HTTPException(status_code=404, detail="Achievement not found")
-    
+
     definition = ACHIEVEMENT_DEFINITIONS[achievement_id]
-    
+
     # Don't reveal hidden achievement details
     if definition.hidden:
         return {
@@ -101,7 +102,7 @@ async def get_achievement_definition(achievement_id: str):
             "rarity": definition.rarity,
             "hidden": True
         }
-    
+
     return definition.dict()
 
 @router.get("/category/{category}")
@@ -110,22 +111,24 @@ async def get_achievements_by_category(
     current_player: Dict = Depends(get_current_player)
 ):
     """Get achievements by category"""
-    category_achievements = AchievementService.get_category_achievements(category)
-    
+    category_achievements = AchievementService.get_category_achievements(
+        category)
+
     # Get player's unlocked achievements
     achievements_data = current_player.get("achievements", {})
     unlocked_ids = []
     if achievements_data:
         achievements = PlayerAchievements(**achievements_data)
-        unlocked_ids = [a.achievement_id for a in achievements.unlocked_achievements]
-    
+        unlocked_ids = [
+            a.achievement_id for a in achievements.unlocked_achievements]
+
     result = []
     for achievement in category_achievements:
         result.append({
             "definition": achievement.dict(),
             "unlocked": achievement.achievement_id in unlocked_ids
         })
-    
+
     return {
         "category": category,
         "total": len(result),
@@ -139,20 +142,21 @@ async def unlock_achievement(
 ):
     """Unlock an achievement (usually called by system)"""
     achievements_data = current_player.get("achievements")
-    
+
     if not achievements_data:
-        achievements = AchievementService.initialize_achievements(str(current_player["_id"]))
+        achievements = AchievementService.initialize_achievements(
+            str(current_player["_id"]))
     else:
         achievements = PlayerAchievements(**achievements_data)
-    
+
     success, message = AchievementService.unlock_achievement(
         achievements,
         achievement_id
     )
-    
+
     if not success:
         raise HTTPException(status_code=400, detail=message)
-    
+
     return {
         "success": True,
         "message": message,
@@ -167,20 +171,21 @@ async def update_achievement_progress(
 ):
     """Update progress towards an achievement"""
     achievements_data = current_player.get("achievements")
-    
+
     if not achievements_data:
-        achievements = AchievementService.initialize_achievements(str(current_player["_id"]))
+        achievements = AchievementService.initialize_achievements(
+            str(current_player["_id"]))
     else:
         achievements = PlayerAchievements(**achievements_data)
-    
+
     AchievementService.update_progress(
         achievements,
         request.achievement_id,
         request.progress_amount
     )
-    
+
     progress = achievements.achievement_progress.get(request.achievement_id)
-    
+
     return {
         "success": True,
         "achievement_id": request.achievement_id,
@@ -191,13 +196,13 @@ async def update_achievement_progress(
 async def get_recent_unlocks(current_player: Dict = Depends(get_current_player)):
     """Get recently unlocked achievements"""
     achievements_data = current_player.get("achievements", {})
-    
+
     if not achievements_data:
         return {"recent": []}
-    
+
     achievements = PlayerAchievements(**achievements_data)
     recent_ids = achievements.recent_unlocks[:10]
-    
+
     recent_achievements = []
     for achievement_id in recent_ids:
         if achievement_id in ACHIEVEMENT_DEFINITIONS:
@@ -210,5 +215,5 @@ async def get_recent_unlocks(current_player: Dict = Depends(get_current_player))
                 "definition": definition.dict(),
                 "unlocked_at": unlocked.unlocked_at if unlocked else None
             })
-    
+
     return {"recent": recent_achievements}

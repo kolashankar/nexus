@@ -7,8 +7,9 @@ from pydantic import BaseModel, Field
 
 class KarmaEvent(BaseModel):
     """Karma event triggered by actions"""
-    
-    event_id: str = Field(default_factory=lambda: str(datetime.utcnow().timestamp()))
+
+    event_id: str = Field(default_factory=lambda: str(
+        datetime.utcnow().timestamp()))
     event_type: str
     triggered_by: str  # player_id
     description: str
@@ -17,7 +18,7 @@ class KarmaEvent(BaseModel):
     active: bool = True
     duration_hours: Optional[int] = None
     affected_players: list[str] = Field(default_factory=list)
-    
+
     class Config:
         json_schema_extra = {
             "example": {

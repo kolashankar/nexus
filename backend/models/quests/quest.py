@@ -36,47 +36,47 @@ class Quest(BaseModel):
     title: str
     description: str
     lore: Optional[str] = None
-    
+
     # Assignment
     player_id: Optional[str] = None
     guild_id: Optional[str] = None
-    
+
     # Generation
     generated_by: str = "system"  # oracle, system
     generated_at: datetime = Field(default_factory=datetime.utcnow)
     seed: Optional[str] = None
-    
+
     # Progress
     status: str = "available"  # available, active, completed, failed, expired
     objectives: List[QuestObjective] = Field(default_factory=list)
-    
+
     # Rewards
     rewards: QuestRewards = Field(default_factory=QuestRewards)
-    
+
     # Requirements
     requirements: QuestRequirements = Field(default_factory=QuestRequirements)
-    
+
     # Story
     story_data: Optional[Dict] = None
-    
+
     # Expiry
     expires_at: Optional[datetime] = None
-    
+
     # Completion
     completed_at: Optional[datetime] = None
     completion_time: Optional[int] = None  # seconds
-    
+
     # Hidden quest specific
     is_hidden: bool = False
     discovery_conditions: Optional[Dict] = None
     hint: Optional[str] = None
     discovery_count: int = 0
-    
+
     # Metadata
     difficulty: str = "medium"  # easy, medium, hard, legendary
     category: Optional[str] = None
     tags: List[str] = Field(default_factory=list)
-    
+
     class Config:
         json_schema_extra = {
             "example": {

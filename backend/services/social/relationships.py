@@ -20,7 +20,7 @@ class RelationshipService:
         """Create a new relationship"""
         if player1_id == player2_id:
             raise ValueError("Cannot create relationship with yourself")
-        
+
         # Check if relationship already exists
         existing = await self.relationships.find_one({
             "type": type.value,
@@ -30,17 +30,17 @@ class RelationshipService:
             ],
             "active": True
         })
-        
+
         if existing:
             raise ValueError(f"{type.value} relationship already exists")
-        
+
         relationship = Relationship(
             type=type,
             player1_id=player1_id,
             player2_id=player2_id,
             metadata=metadata or {}
         )
-        
+
         await self.relationships.insert_one(relationship.model_dump())
         return relationship
 
@@ -74,13 +74,13 @@ class RelationshipService:
                 {"player2_id": player_id}
             ]
         }
-        
+
         if type:
             query["type"] = type.value
-        
+
         if active_only:
             query["active"] = True
-        
+
         cursor = self.relationships.find(query)
         return await cursor.to_list(length=100)
 
@@ -98,9 +98,9 @@ class RelationshipService:
             ],
             "active": True
         }
-        
+
         if type:
             query["type"] = type.value
-        
+
         result = await self.relationships.find_one(query)
         return result is not None

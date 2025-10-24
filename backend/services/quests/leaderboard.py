@@ -6,12 +6,12 @@ from datetime import datetime, timedelta
 
 class QuestLeaderboardService:
     """Manages quest leaderboards"""
-    
+
     def __init__(self, db):
         self.db = db
         self.quests = db.quests
         self.players = db.players
-    
+
     async def get_completion_leaderboard(
         self,
         timeframe: str = "all_time",
@@ -31,7 +31,7 @@ class QuestLeaderboardService:
         elif timeframe == "monthly":
             start = datetime.utcnow() - timedelta(days=30)
             time_filter = {"completed_at": {"$gte": start}}
-        
+
         # Aggregate completions by player
         pipeline = [
             {"$match": {"status": "completed", **time_filter}},
@@ -45,13 +45,13 @@ class QuestLeaderboardService:
             {"$sort": {"quests_completed": -1}},
             {"$limit": limit}
         ]
-        
+
         leaderboard = []
         rank = 1
         async for entry in self.quests.aggregate(pipeline):
             # Get player info
             player = await self.players.find_one({"_id": entry["_id"]})
-            
+
             leaderboard.append({
                 "rank": rank,
                 "player_id": entry["_id"],
@@ -60,9 +60,9 @@ class QuestLeaderboardService:
                 "total_xp_earned": entry.get("total_xp_earned", 0),
             })
             rank += 1
-        
+
         return leaderboard
-    
+
     async def get_speedrun_leaderboard(
         self,
         quest_type: str = None,
@@ -73,21 +73,21 @@ class QuestLeaderboardService:
             "status": "completed",
             "completion_time": {"$exists": True, "$gt": 0}
         }
-        
+
         if quest_type:
             match_filter["quest_type"] = quest_type
-        
+
         pipeline = [
             {"$match": match_filter},
             {"$sort": {"completion_time": 1}},
             {"$limit": limit}
         ]
-        
+
         speedruns = []
         rank = 1
         async for quest in self.quests.aggregate(pipeline):
             player = await self.players.find_one({"_id": quest["player_id"]})
-            
+
             speedruns.append({
                 "rank": rank,
                 "player_id": quest["player_id"],
@@ -97,9 +97,9 @@ class QuestLeaderboardService:
                 "quest_type": quest.get("quest_type"),
             })
             rank += 1
-        
+
         return speedruns
-    
+
     async def get_player_rank(
         self,
         player_id: str,
@@ -107,11 +107,11 @@ class QuestLeaderboardService:
     ) -> Dict[str, Any]:
         """Get player's rank on leaderboard"""
         leaderboard = await self.get_completion_leaderboard(timeframe, limit=10000)
-        
+
         for entry in leaderboard:
             if entry["player_id"] == player_id:
                 return entry
-        
+
         return {
             "rank": None,
             "player_id": player_id,

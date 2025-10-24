@@ -41,7 +41,7 @@ class QuestSchema(BaseModel):
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
     generated_at: datetime
-    
+
     class Config:
         populate_by_name = True
 

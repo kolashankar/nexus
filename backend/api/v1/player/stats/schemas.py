@@ -6,14 +6,19 @@ from typing import List, Dict, Any
 
 class TraitAnalysis(BaseModel):
     """Trait analysis response."""
-    
-    moral_alignment: Dict[str, Any] = Field(..., description='Moral alignment data')
+
+    moral_alignment: Dict[str,
+        Any] = Field(..., description='Moral alignment data')
     balance: Dict[str, float] = Field(..., description='Trait balance metrics')
-    dominant_traits: List[Dict[str, Any]] = Field(..., description='Top traits')
-    weakest_traits: List[Dict[str, Any]] = Field(..., description='Weakest traits')
-    improvement_suggestions: List[Dict[str, Any]] = Field(..., description='Improvement suggestions')
-    active_synergies: List[Dict[str, Any]] = Field(..., description='Active trait synergies')
-    
+    dominant_traits: List[Dict[str, Any]
+        ] = Field(..., description='Top traits')
+    weakest_traits: List[Dict[str, Any]
+        ] = Field(..., description='Weakest traits')
+    improvement_suggestions: List[Dict[str, Any]
+        ] = Field(..., description='Improvement suggestions')
+    active_synergies: List[Dict[str, Any]
+        ] = Field(..., description='Active trait synergies')
+
     class Config:
         json_schema_extra = {
             'example': {
@@ -54,12 +59,12 @@ class TraitAnalysis(BaseModel):
 
 class CategoryTraits(BaseModel):
     """Traits by category response."""
-    
+
     category: str = Field(..., description='Category name')
     traits: Dict[str, int] = Field(..., description='Trait values')
     average: float = Field(..., description='Average value')
     count: int = Field(..., description='Number of traits')
-    
+
     class Config:
         json_schema_extra = {
             'example': {

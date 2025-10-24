@@ -8,8 +8,10 @@ from datetime import datetime
 class StartTrainingRequest(BaseModel):
     """Request to start robot training."""
     robot_id: str = Field(..., description="ID of robot to train")
-    training_type: str = Field(..., description="Type of training (combat, efficiency, intelligence)")
-    duration_hours: int = Field(default=1, ge=1, le=24, description="Training duration in hours")
+    training_type: str = Field(
+        ..., description="Type of training (combat, efficiency, intelligence)")
+    duration_hours: int = Field(
+        default=1, ge=1, le=24, description="Training duration in hours")
 
 
 class TrainingStatusResponse(BaseModel):

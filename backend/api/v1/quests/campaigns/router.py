@@ -38,18 +38,18 @@ async def start_campaign(
 ):
     """Start a new campaign."""
     campaign_service = CampaignService()
-    
+
     result = await campaign_service.start_campaign(
         current_user["_id"],
         request.campaign_type
     )
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=result.get("error", "Unable to start campaign")
         )
-    
+
     return result
 
 
@@ -60,13 +60,13 @@ async def get_campaign_progress(
     """Get progress on active campaign."""
     campaign_service = CampaignService()
     progress = await campaign_service.get_campaign_progress(current_user["_id"])
-    
+
     if not progress:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No active campaign"
         )
-    
+
     return progress
 
 
@@ -77,17 +77,17 @@ async def make_campaign_choice(
 ):
     """Make a choice in campaign storyline."""
     campaign_service = CampaignService()
-    
+
     result = await campaign_service.make_choice(
         current_user["_id"],
         request.chapter_number,
         request.choice
     )
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=result.get("error", "Unable to make choice")
         )
-    
+
     return result

@@ -18,7 +18,7 @@ class KarmaArbiter(BaseAIService):
         super().__init__("KarmaArbiter", model="gpt-4o")
         self.evaluator = ActionEvaluator()
         logger.info("Karma Arbiter initialized")
-    
+
     async def evaluate_action(
         self,
         action_type: str,
@@ -28,7 +28,7 @@ class KarmaArbiter(BaseAIService):
         additional_context: Optional[str] = None
     ) -> EvaluationResponse:
         """Evaluate a player action and return consequences"""
-        
+
         # Create evaluation request
         request = EvaluationRequest(
             context=ActionContext(
@@ -57,24 +57,24 @@ class KarmaArbiter(BaseAIService):
             ) if target else None,
             additional_context=additional_context
         )
-        
+
         # Evaluate
         result = await self.evaluator.evaluate(request, use_cache=True)
-        
+
         logger.info(
             f"Karma Arbiter evaluated {action_type}: "
             f"karma_change={result.karma_change}, "
             f"traits={len(result.trait_changes)}, "
             f"cached={result.cached}"
         )
-        
+
         return result
-    
+
     async def process(self, *args, **kwargs) -> Dict[str, Any]:
         """Process action evaluation (base class requirement)"""
         result = await self.evaluate_action(*args, **kwargs)
         return result.dict()
-    
+
     async def batch_evaluate(
         self,
         actions: list[Dict[str, Any]]
@@ -102,10 +102,11 @@ class KarmaArbiter(BaseAIService):
                             timestamp=datetime.utcnow().isoformat()
                         ),
                         actor=PlayerProfile(**action_data["actor"]),
-                        target=PlayerProfile(**action_data["target"]) if action_data.get("target") else None
+                        target=PlayerProfile(
+                            **action_data["target"]) if action_data.get("target") else None
                     )
                 ))
-        
+
         return results
 
 

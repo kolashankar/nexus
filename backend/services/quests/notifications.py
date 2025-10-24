@@ -4,7 +4,7 @@ from datetime import datetime
 
 class QuestNotificationService:
     """Service for quest-related notifications."""
-    
+
     def create_quest_available_notification(self, quest: Dict) -> Dict:
         """Create notification for new quest availability."""
         return {
@@ -15,7 +15,7 @@ class QuestNotificationService:
             "priority": "medium",
             "timestamp": datetime.utcnow()
         }
-    
+
     def create_quest_completed_notification(self, quest: Dict, rewards: Dict) -> Dict:
         """Create notification for quest completion."""
         reward_text = []
@@ -25,7 +25,7 @@ class QuestNotificationService:
             reward_text.append(f"+{rewards['xp']} XP")
         if rewards.get("karma"):
             reward_text.append(f"+{rewards['karma']} karma")
-        
+
         return {
             "type": "quest_completed",
             "title": "Quest Completed!",
@@ -34,7 +34,7 @@ class QuestNotificationService:
             "priority": "high",
             "timestamp": datetime.utcnow()
         }
-    
+
     def create_quest_failed_notification(self, quest: Dict) -> Dict:
         """Create notification for quest failure."""
         return {
@@ -45,7 +45,7 @@ class QuestNotificationService:
             "priority": "medium",
             "timestamp": datetime.utcnow()
         }
-    
+
     def create_objective_progress_notification(self, quest: Dict, objective: Dict) -> Dict:
         """Create notification for objective progress."""
         return {
@@ -56,7 +56,7 @@ class QuestNotificationService:
             "priority": "low",
             "timestamp": datetime.utcnow()
         }
-    
+
     def create_daily_reset_notification(self) -> Dict:
         """Create notification for daily quest reset."""
         return {
@@ -66,7 +66,7 @@ class QuestNotificationService:
             "priority": "medium",
             "timestamp": datetime.utcnow()
         }
-    
+
     def create_hidden_quest_discovered_notification(self, quest: Dict) -> Dict:
         """Create notification for hidden quest discovery."""
         return {

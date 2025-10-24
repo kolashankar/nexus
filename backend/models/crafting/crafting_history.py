@@ -8,21 +8,24 @@ class CraftingHistory(BaseModel):
     player_id: str = Field(..., description="Player ID")
     recipe_id: str = Field(..., description="Recipe ID used")
     recipe_name: str = Field(..., description="Recipe name")
-    
+
     item_crafted: str = Field(..., description="Name of item crafted")
     quantity: int = Field(default=1, ge=1, description="Quantity crafted")
-    success: bool = Field(default=True, description="Whether craft was successful")
-    
+    success: bool = Field(
+        default=True, description="Whether craft was successful")
+
     materials_used: List[Dict[str, Any]] = Field(
         default_factory=list,
         description="Materials consumed"
     )
-    
+
     xp_gained: int = Field(default=0, ge=0, description="XP gained")
-    bonus_received: Optional[str] = Field(default=None, description="Bonus effect received")
-    
-    timestamp: datetime = Field(default_factory=datetime.utcnow, description="Craft timestamp")
-    
+    bonus_received: Optional[str] = Field(
+        default=None, description="Bonus effect received")
+
+    timestamp: datetime = Field(
+        default_factory=datetime.utcnow, description="Craft timestamp")
+
     class Config:
         json_schema_extra = {
             "example": {

@@ -17,7 +17,7 @@ async def get_karma_score(
     """Get current player's karma score."""
     calculator = KarmaCalculator()
     moral_class = calculator.determine_moral_class(current_user.karma_points)
-    
+
     return KarmaScoreResponse(
         player_id=current_user.id,
         username=current_user.username,
@@ -38,7 +38,7 @@ async def get_karma_history(
     actions = await db.actions.find(
         {"actor_id": current_user.id, "karma_change": {"$ne": 0}}
     ).sort("timestamp", -1).limit(limit).to_list(limit)
-    
+
     history = [
         KarmaHistoryResponse(
             action_type=action["action_type"],
@@ -48,7 +48,7 @@ async def get_karma_history(
         )
         for action in actions
     ]
-    
+
     return history
 
 @router.get("/world-state")
@@ -58,7 +58,7 @@ async def get_world_karma_state(
     """Get global karma state."""
     # Get world state
     world_state = await db.world_state.find_one()
-    
+
     if not world_state:
         # Initialize world state if not exists
         world_state = {
@@ -68,7 +68,7 @@ async def get_world_karma_state(
             "online_players": 0
         }
         await db.world_state.insert_one(world_state)
-    
+
     return {
         "collective_karma": world_state.get("collective_karma", 0),
         "karma_trend": world_state.get("karma_trend", "stable"),
@@ -84,11 +84,11 @@ async def get_karma_leaderboard(
 ):
     """Get karma leaderboard."""
     sort_order = -1 if order == "highest" else 1
-    
+
     players = await db.players.find(
         {}
     ).sort("karma_points", sort_order).limit(limit).to_list(limit)
-    
+
     leaderboard = [
         {
             "rank": idx + 1,
@@ -99,7 +99,7 @@ async def get_karma_leaderboard(
         }
         for idx, player in enumerate(players)
     ]
-    
+
     return {
         "leaderboard": leaderboard,
         "order": order

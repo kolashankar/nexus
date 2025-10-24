@@ -20,7 +20,7 @@ class GlobalKarmaTracker:
 
         # Calculate 24h action stats
         twenty_four_hours_ago = datetime.utcnow() - timedelta(hours=24)
-        
+
         # Count actions by type in last 24h
         actions_pipeline = [
             {
@@ -35,13 +35,13 @@ class GlobalKarmaTracker:
                 }
             }
         ]
-        
+
         actions_stats = await self.db.actions.aggregate(actions_pipeline).to_list(length=None)
-        
+
         positive_actions = 0
         negative_actions = 0
         neutral_actions = 0
-        
+
         for stat in actions_stats:
             karma_change = stat["_id"]
             count = stat["count"]
@@ -91,22 +91,22 @@ class GlobalKarmaTracker:
             },
             upsert=True
         )
-        
+
         # Get updated collective karma
         world_state = await self.db.world_state.find_one()
         collective_karma = world_state.get("collective_karma", 0)
-        
+
         # Check if this triggers any world events
         from backend.services.world.events import WorldEventsService
         events_service = WorldEventsService()
         await events_service.check_and_trigger_karma_events(collective_karma)
-        
+
         return collective_karma
 
     async def _get_top_karma_contributors(self, limit: int = 10) -> List[Dict[str, Any]]:
         """Get top karma contributors in the last 7 days."""
         seven_days_ago = datetime.utcnow() - timedelta(days=7)
-        
+
         pipeline = [
             {
                 "$match": {
@@ -127,9 +127,9 @@ class GlobalKarmaTracker:
                 "$limit": limit
             }
         ]
-        
+
         contributors = await self.db.actions.aggregate(pipeline).to_list(length=limit)
-        
+
         # Enrich with player data
         result = []
         for contributor in contributors:
@@ -141,7 +141,7 @@ class GlobalKarmaTracker:
                     "karma_generated": contributor["total_karma_generated"],
                     "action_count": contributor["action_count"]
                 })
-        
+
         return result
 
     async def _get_karma_distribution(self) -> Dict[str, int]:
@@ -158,9 +158,9 @@ class GlobalKarmaTracker:
                 }
             }
         ]
-        
+
         distribution = await self.db.players.aggregate(pipeline).to_list(length=None)
-        
+
         # Format results
         labels = {
             -10000: "very_evil",
@@ -171,12 +171,12 @@ class GlobalKarmaTracker:
             5000: "good",
             10000: "very_good"
         }
-        
+
         result = {}
         for bucket in distribution:
             key = labels.get(bucket["_id"], "other")
             result[key] = bucket["count"]
-        
+
         return result
 
     async def _calculate_karma_trend(self) -> str:
@@ -185,7 +185,7 @@ class GlobalKarmaTracker:
         now = datetime.utcnow()
         last_24h_start = now - timedelta(hours=24)
         previous_24h_start = now - timedelta(hours=48)
-        
+
         # Last 24 hours
         last_24h_pipeline = [
             {
@@ -200,10 +200,10 @@ class GlobalKarmaTracker:
                 }
             }
         ]
-        
+
         last_24h_result = await self.db.actions.aggregate(last_24h_pipeline).to_list(length=1)
         last_24h_karma = last_24h_result[0]["total"] if last_24h_result else 0
-        
+
         # Previous 24 hours
         previous_24h_pipeline = [
             {
@@ -221,10 +221,10 @@ class GlobalKarmaTracker:
                 }
             }
         ]
-        
+
         previous_24h_result = await self.db.actions.aggregate(previous_24h_pipeline).to_list(length=1)
         previous_24h_karma = previous_24h_result[0]["total"] if previous_24h_result else 0
-        
+
         # Calculate trend
         if abs(last_24h_karma - previous_24h_karma) < 100:
             return "stable"
@@ -237,17 +237,17 @@ class GlobalKarmaTracker:
         """Predict the next event based on current karma."""
         from backend.services.world.events import WorldEventsService
         events_service = WorldEventsService()
-        
+
         # Find closest threshold
         closest_threshold = None
         closest_event = None
         min_distance = float('inf')
-        
+
         for event_type, config in events_service.event_types.items():
             threshold = config.get("karma_threshold")
             if threshold is None:
                 continue
-            
+
             distance = abs(current_karma - threshold)
             if distance < min_distance and (
                 (threshold > current_karma and current_karma >= 0) or
@@ -256,7 +256,7 @@ class GlobalKarmaTracker:
                 min_distance = distance
                 closest_threshold = threshold
                 closest_event = event_type
-        
+
         return {
             "threshold": closest_threshold,
             "event_type": closest_event

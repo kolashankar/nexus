@@ -7,19 +7,19 @@ logger = logging.getLogger(__name__)
 
 class Database:
     client: Optional[AsyncIOMotorClient] = None
-    
+
     @classmethod
     def get_client(cls) -> AsyncIOMotorClient:
         if cls.client is None:
             cls.client = AsyncIOMotorClient(settings.MONGO_URL)
             logger.info("Connected to MongoDB")
         return cls.client
-    
+
     @classmethod
     def get_db(cls):
         client = cls.get_client()
         return client[settings.DB_NAME]
-    
+
     @classmethod
     async def close(cls):
         if cls.client:

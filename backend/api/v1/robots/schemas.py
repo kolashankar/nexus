@@ -8,7 +8,8 @@ from datetime import datetime
 class PurchaseRobotRequest(BaseModel):
     """Request to purchase a robot."""
     robot_type: str = Field(..., description="Type of robot to purchase")
-    custom_name: Optional[str] = Field(None, description="Custom name for the robot")
+    custom_name: Optional[str] = Field(
+        None, description="Custom name for the robot")
 
 
 class RobotResponse(BaseModel):

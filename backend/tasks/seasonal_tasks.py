@@ -33,9 +33,10 @@ class SeasonalTasksManager:
 
             # Check if season should end
             if now >= end_date:
-                logger.info(f"Season {current_season['season_number']} has ended. Processing...")
+                logger.info(
+                    f"Season {current_season['season_number']} has ended. Processing...")
                 await self.season_service.end_season(current_season["season_id"])
-                
+
                 # Create new season
                 new_season_number = current_season["season_number"] + 1
                 await self.season_service.create_season(
@@ -47,7 +48,8 @@ class SeasonalTasksManager:
 
             # Warn if season is ending soon (7 days)
             elif (end_date - now).days <= 7:
-                logger.info(f"Season {current_season['season_number']} ending in {(end_date - now).days} days")
+                logger.info(
+                    f"Season {current_season['season_number']} ending in {(end_date - now).days} days")
 
         except Exception as e:
             logger.error(f"Error checking season end: {e}")
@@ -64,7 +66,8 @@ class SeasonalTasksManager:
             end_date = battle_pass["end_date"]
 
             if now >= end_date:
-                logger.info(f"Battle Pass for Season {battle_pass['season']} has ended")
+                logger.info(
+                    f"Battle Pass for Season {battle_pass['season']} has ended")
                 await self.db.battle_passes.update_one(
                     {"pass_id": battle_pass["pass_id"]},
                     {"$set": {"is_active": False}}
@@ -103,7 +106,7 @@ class SeasonalTasksManager:
     async def run_periodic_tasks(self):
         """Run all periodic tasks."""
         logger.info("Running seasonal periodic tasks...")
-        
+
         await asyncio.gather(
             self.check_season_end(),
             self.check_battle_pass_end(),
@@ -111,20 +114,20 @@ class SeasonalTasksManager:
             self.update_leaderboards(),
             return_exceptions=True
         )
-        
+
         logger.info("Seasonal periodic tasks completed")
 
 
 async def run_seasonal_tasks_loop():
     """Run seasonal tasks in a loop (every hour)."""
     manager = SeasonalTasksManager()
-    
+
     while True:
         try:
             await manager.run_periodic_tasks()
         except Exception as e:
             logger.error(f"Error in seasonal tasks loop: {e}")
-        
+
         # Wait 1 hour before next run
         await asyncio.sleep(3600)
 

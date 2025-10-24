@@ -6,11 +6,11 @@ from datetime import datetime
 
 class QuestBatchOperations:
     """Handles batch operations on quests"""
-    
+
     def __init__(self, db):
         self.db = db
         self.quests = db.quests
-    
+
     async def batch_accept_quests(
         self,
         quest_ids: List[str],
@@ -34,12 +34,12 @@ class QuestBatchOperations:
                 }
             }
         )
-        
+
         return {
             "accepted": result.modified_count,
             "requested": len(quest_ids),
         }
-    
+
     async def batch_abandon_quests(
         self,
         quest_ids: List[str],
@@ -59,12 +59,12 @@ class QuestBatchOperations:
                 }
             }
         )
-        
+
         return {
             "abandoned": result.modified_count,
             "requested": len(quest_ids),
         }
-    
+
     async def batch_delete_quests(
         self,
         quest_ids: List[str],
@@ -74,6 +74,6 @@ class QuestBatchOperations:
         query = {"_id": {"$in": quest_ids}}
         if player_id:
             query["player_id"] = player_id
-        
+
         result = await self.quests.delete_many(query)
         return result.deleted_count

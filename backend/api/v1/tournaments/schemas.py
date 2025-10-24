@@ -15,7 +15,7 @@ class TournamentMatchResponse(BaseModel):
     winner_id: Optional[str]
     score: Optional[Dict[str, int]]
     status: str
-    
+
     class Config:
         from_attributes = True
 
@@ -41,7 +41,7 @@ class TournamentResponse(BaseModel):
     prize_pool: int
     current_round: int
     total_rounds: int
-    
+
     class Config:
         from_attributes = True
 

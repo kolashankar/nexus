@@ -7,10 +7,10 @@ from ...models.player.player import Player
 
 class HiddenQuestService:
     """Service for managing hidden quests."""
-    
+
     def __init__(self):
         self.hidden_quest_locations = self._initialize_locations()
-    
+
     def _initialize_locations(self) -> Dict:
         """Initialize hidden quest spawn locations."""
         return {
@@ -35,7 +35,7 @@ class HiddenQuestService:
                 "min_value": 80
             }
         }
-    
+
     async def attempt_discovery(
         self,
         player_id: str,
@@ -45,20 +45,22 @@ class HiddenQuestService:
         player = await Player.find_one({"_id": player_id})
         if not player:
             return {"success": False, "error": "Player not found"}
-        
+
         player_x = location.get("x", 0)
         player_y = location.get("y", 0)
-        
+
         # Check if player is near a hidden quest location
         for location_name, loc_data in self.hidden_quest_locations.items():
-            distance = ((player_x - loc_data["x"]) ** 2 + (player_y - loc_data["y"]) ** 2) ** 0.5
-            
+            distance = (
+                (player_x - loc_data["x"]) ** 2 + (player_y - loc_data["y"]) ** 2) ** 0.5
+
             if distance < 50:  # Within 50 units
                 # Check if player has required trait
                 required_trait = loc_data["required_trait"]
                 min_value = loc_data["min_value"]
-                player_trait_value = player.get("traits", {}).get(required_trait, 0)
-                
+                player_trait_value = player.get(
+                    "traits", {}).get(required_trait, 0)
+
                 if player_trait_value >= min_value:
                     # Discovery success!
                     quest = await self._generate_hidden_quest(player_id, location_name)
@@ -74,13 +76,13 @@ class HiddenQuestService:
                         "discovered": False,
                         "message": f"You sense something here, but need more {required_trait}..."
                     }
-        
+
         return {
             "success": True,
             "discovered": False,
             "message": "Nothing of interest here."
         }
-    
+
     async def _generate_hidden_quest(
         self,
         player_id: str,
@@ -88,7 +90,7 @@ class HiddenQuestService:
     ) -> Dict:
         """Generate a hidden quest."""
         quest_id = str(uuid.uuid4())
-        
+
         quest = {
             "_id": quest_id,
             "player_id": player_id,
@@ -128,27 +130,27 @@ class HiddenQuestService:
             "generated_at": datetime.utcnow(),
             "expires_at": datetime.utcnow() + timedelta(days=7)
         }
-        
+
         await Quest.insert_one(quest)
         return quest
-    
+
     async def get_hints(self, player_id: str) -> List[str]:
         """Get cryptic hints about hidden quests."""
         player = await Player.find_one({"_id": player_id})
         if not player:
             return []
-        
+
         hints = [
             "Whispers speak of an abandoned place, where rust meets concrete...",
             "Those who move unseen may find passages below the city...",
             "High above, where few dare to climb, secrets bloom in unexpected places...",
             "Knowledge seekers find treasures in forgotten halls of learning..."
         ]
-        
+
         # Only show relevant hints based on player traits
         relevant_hints = []
         player_traits = player.get("traits", {})
-        
+
         if player_traits.get("perception", 0) >= 60:
             relevant_hints.append(hints[0])
         if player_traits.get("stealth", 0) >= 65:
@@ -157,5 +159,5 @@ class HiddenQuestService:
             relevant_hints.append(hints[2])
         if player_traits.get("intelligence", 0) >= 70:
             relevant_hints.append(hints[3])
-        
+
         return relevant_hints if relevant_hints else ["Develop your abilities to uncover secrets..."]

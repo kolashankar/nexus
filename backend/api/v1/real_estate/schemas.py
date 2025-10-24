@@ -17,7 +17,7 @@ class PropertyListItem(PropertyBase):
     price: int
     passive_income: int  # credits per day
     status: str  # available, owned, rented
-    
+
 
 class PropertyDetailResponse(PropertyBase):
     price: int
@@ -28,7 +28,7 @@ class PropertyDetailResponse(PropertyBase):
     tenant_id: Optional[str]
     status: str
     purchase_date: Optional[datetime]
-    
+
 
 class PropertyListResponse(BaseModel):
     properties: List[PropertyListItem]
@@ -57,4 +57,5 @@ class RentPropertyRequest(BaseModel):
     property_id: str = Field(..., description="Property ID to rent")
     tenant_id: str = Field(..., description="Tenant player ID")
     rent_amount: int = Field(..., ge=1, description="Monthly rent amount")
-    duration_days: int = Field(default=30, ge=1, le=365, description="Rental duration")
+    duration_days: int = Field(
+        default=30, ge=1, le=365, description="Rental duration")

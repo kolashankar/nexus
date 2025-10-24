@@ -25,12 +25,12 @@ async def start_tutorial(
 ):
     """Start the tutorial for a new player."""
     manager = TutorialManager(player['_id'], db)
-    
+
     # Check if tutorial already started
     progress = await manager.get_progress()
     if progress['status'] != 'not_started':
         raise HTTPException(status_code=400, detail="Tutorial already started")
-    
+
     return await manager.start_tutorial()
 
 
@@ -52,10 +52,10 @@ async def get_current_step(
     """Get the current tutorial step."""
     manager = TutorialManager(player['_id'], db)
     step = await manager.get_current_step()
-    
+
     if not step:
         raise HTTPException(status_code=404, detail="No active tutorial step")
-    
+
     return step
 
 
@@ -67,7 +67,7 @@ async def complete_step(
 ):
     """Complete a tutorial step."""
     manager = TutorialManager(player['_id'], db)
-    
+
     try:
         result = await manager.complete_step(request.step_id)
         return result
@@ -83,7 +83,7 @@ async def skip_step(
 ):
     """Skip a tutorial step."""
     manager = TutorialManager(player['_id'], db)
-    
+
     try:
         result = await manager.skip_step(request.step_id)
         return result

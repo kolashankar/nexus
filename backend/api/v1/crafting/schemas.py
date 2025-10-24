@@ -5,7 +5,8 @@ from datetime import datetime
 
 class CraftItemRequest(BaseModel):
     recipe_id: str = Field(..., description="Recipe ID")
-    quantity: int = Field(default=1, ge=1, le=100, description="Quantity to craft")
+    quantity: int = Field(default=1, ge=1, le=100,
+                          description="Quantity to craft")
 
 
 class MaterialRequirement(BaseModel):

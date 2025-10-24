@@ -136,7 +136,7 @@ class WorldEventsService:
         query = {"is_active": True, "ends_at": {"$gt": datetime.utcnow()}}
         if event_type:
             query["event_type"] = event_type
-        
+
         events = await self.db.world_events.find(query).to_list(length=100)
         return events
 

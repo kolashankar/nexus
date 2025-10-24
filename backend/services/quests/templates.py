@@ -6,7 +6,7 @@ import random
 
 class QuestTemplates:
     """Provides quest templates for quick generation"""
-    
+
     COMBAT_TEMPLATES = [
         {
             "title": "Warrior's Challenge",
@@ -31,7 +31,7 @@ class QuestTemplates:
             ],
         },
     ]
-    
+
     HACKING_TEMPLATES = [
         {
             "title": "Digital Infiltrator",
@@ -45,7 +45,7 @@ class QuestTemplates:
             ],
         },
     ]
-    
+
     KARMA_TEMPLATES = [
         {
             "title": "Path to Enlightenment",
@@ -70,7 +70,7 @@ class QuestTemplates:
             ],
         },
     ]
-    
+
     ECONOMIC_TEMPLATES = [
         {
             "title": "Master Trader",
@@ -84,7 +84,7 @@ class QuestTemplates:
             ],
         },
     ]
-    
+
     @classmethod
     def get_random_template(
         cls,
@@ -108,9 +108,9 @@ class QuestTemplates:
                 cls.ECONOMIC_TEMPLATES
             )
             return random.choice(all_templates).copy()
-        
+
         return random.choice(templates).copy()
-    
+
     @classmethod
     def get_template_by_traits(
         cls,
@@ -120,10 +120,10 @@ class QuestTemplates:
         # Find strongest trait
         if not player_traits:
             return cls.get_random_template()
-        
+
         strongest = max(player_traits.items(), key=lambda x: x[1])
         trait_name, trait_value = strongest
-        
+
         # Map traits to categories
         if trait_name in ["strength", "dexterity", "courage"]:
             return cls.get_random_template("combat")

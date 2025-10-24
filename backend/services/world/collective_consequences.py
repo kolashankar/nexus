@@ -52,7 +52,7 @@ class CollectiveConsequencesService:
         """Analyze collective karma trends."""
         # Get karma changes in last 24 hours
         twenty_four_hours_ago = datetime.utcnow() - timedelta(hours=24)
-        
+
         pipeline = [
             {
                 "$match": {
@@ -73,20 +73,21 @@ class CollectiveConsequencesService:
                 }
             }
         ]
-        
+
         result = await self.db.actions.aggregate(pipeline).to_list(length=1)
-        
+
         if not result:
             return {
                 "trend": "neutral",
                 "total_change": 0,
                 "positive_ratio": 0.5
             }
-        
+
         data = result[0]
         total_actions = data["positive_actions"] + data["negative_actions"]
-        positive_ratio = data["positive_actions"] / total_actions if total_actions > 0 else 0.5
-        
+        positive_ratio = data["positive_actions"] / \
+            total_actions if total_actions > 0 else 0.5
+
         # Determine trend
         if positive_ratio > 0.7:
             trend = "very_positive"
@@ -98,7 +99,7 @@ class CollectiveConsequencesService:
             trend = "negative"
         else:
             trend = "neutral"
-        
+
         return {
             "trend": trend,
             "total_change": data["total_karma_change"],
@@ -119,14 +120,14 @@ class CollectiveConsequencesService:
                 }
             }
         ]
-        
+
         result = await self.db.players.aggregate(pipeline).to_list(length=1)
-        
+
         if not result:
             return {"trend": "stable", "avg_wealth": 0}
-        
+
         data = result[0]
-        
+
         return {
             "trend": "stable",  # Would need historical data for real trend
             "avg_wealth": data["avg_wealth"],
@@ -140,7 +141,7 @@ class CollectiveConsequencesService:
         active_wars = await self.db.guilds.count_documents({
             "active_wars": {"$exists": True, "$ne": []}
         })
-        
+
         return {
             "total_guilds": total_guilds,
             "active_wars": active_wars,
@@ -150,11 +151,11 @@ class CollectiveConsequencesService:
     async def _analyze_combat_behavior(self) -> Dict[str, Any]:
         """Analyze combat activity."""
         twenty_four_hours_ago = datetime.utcnow() - timedelta(hours=24)
-        
+
         total_combats = await self.db.combat_sessions.count_documents({
             "created_at": {"$gte": twenty_four_hours_ago}
         })
-        
+
         return {
             "combat_frequency": "high" if total_combats > 100 else "moderate" if total_combats > 20 else "low",
             "total_combats_24h": total_combats
@@ -163,9 +164,9 @@ class CollectiveConsequencesService:
     async def _determine_karma_consequences(self, analysis: Dict[str, Any]) -> List[str]:
         """Determine karma-based consequences."""
         consequences = []
-        
+
         trend = analysis["trend"]
-        
+
         if trend == "very_positive":
             consequences.append("trigger_golden_age")
         elif trend == "positive":
@@ -174,51 +175,51 @@ class CollectiveConsequencesService:
             consequences.append("trigger_purge")
         elif trend == "negative":
             consequences.append("trigger_dark_eclipse")
-        
+
         return consequences
 
     async def _determine_economic_consequences(self, analysis: Dict[str, Any]) -> List[str]:
         """Determine economic-based consequences."""
         consequences = []
-        
+
         # Simple example - would be more complex in real implementation
         avg_wealth = analysis.get("avg_wealth", 0)
-        
+
         if avg_wealth > 100000:
             consequences.append("economic_inflation")
         elif avg_wealth < 1000:
             consequences.append("economic_depression")
-        
+
         return consequences
 
     async def _determine_social_consequences(self, analysis: Dict[str, Any]) -> List[str]:
         """Determine social-based consequences."""
         consequences = []
-        
+
         active_wars = analysis.get("active_wars", 0)
-        
+
         if active_wars > 5:
             consequences.append("world_conflict")
         elif active_wars == 0:
             consequences.append("peace_era")
-        
+
         return consequences
 
     async def _determine_combat_consequences(self, analysis: Dict[str, Any]) -> List[str]:
         """Determine combat-based consequences."""
         consequences = []
-        
+
         frequency = analysis.get("combat_frequency", "moderate")
-        
+
         if frequency == "high":
             consequences.append("combat_fatigue")
-        
+
         return consequences
 
     async def _apply_consequences(self, consequences: Dict[str, List[str]]) -> Dict[str, Any]:
         """Apply the determined consequences."""
         applied = {}
-        
+
         # Apply karma-based consequences
         for consequence in consequences["karma_based"]:
             if consequence.startswith("trigger_"):
@@ -230,13 +231,13 @@ class CollectiveConsequencesService:
                     applied[consequence] = "success"
                 except Exception as e:
                     applied[consequence] = f"failed: {str(e)}"
-        
+
         # Apply other consequences (simplified for now)
         for category, consequence_list in consequences.items():
             if category != "karma_based":
                 for consequence in consequence_list:
                     applied[consequence] = "logged"
-        
+
         return applied
 
     async def get_consequence_history(self, limit: int = 50) -> List[Dict[str, Any]]:

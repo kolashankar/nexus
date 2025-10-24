@@ -29,7 +29,7 @@ class CooldownManager:
         self.db = db
         self.players = db.players
         self.cooldowns = db.action_cooldowns
-    
+
     async def set_cooldown(
         self,
         player_id: str,
@@ -48,7 +48,7 @@ class CooldownManager:
         """
         duration = duration_seconds or self.COOLDOWNS.get(action_type, 60)
         expires_at = datetime.utcnow() + timedelta(seconds=duration)
-        
+
         await self.cooldowns.update_one(
             {
                 'player_id': player_id,
@@ -64,9 +64,9 @@ class CooldownManager:
             },
             upsert=True
         )
-        
+
         return expires_at
-    
+
     async def check_cooldown(self, player_id: str, action_type: str) -> Dict[str, Any]:
         """Check if action is on cooldown.
         
@@ -81,7 +81,7 @@ class CooldownManager:
             'player_id': player_id,
             'action_type': action_type
         })
-        
+
         if not cooldown:
             return {
                 'on_cooldown': False,
@@ -89,10 +89,10 @@ class CooldownManager:
                 'expires_at': None,
                 'remaining_seconds': 0
             }
-        
+
         expires_at = cooldown['expires_at']
         now = datetime.utcnow()
-        
+
         if now >= expires_at:
             # Cooldown expired, clean up
             await self.cooldowns.delete_one({'_id': cooldown['_id']})
@@ -102,9 +102,9 @@ class CooldownManager:
                 'expires_at': None,
                 'remaining_seconds': 0
             }
-        
+
         remaining = (expires_at - now).total_seconds()
-        
+
         return {
             'on_cooldown': True,
             'can_perform': False,
@@ -112,7 +112,7 @@ class CooldownManager:
             'remaining_seconds': int(remaining),
             'remaining_minutes': round(remaining / 60, 1)
         }
-    
+
     async def clear_cooldown(self, player_id: str, action_type: str) -> bool:
         """Clear a cooldown (admin use or special items).
         
@@ -127,9 +127,9 @@ class CooldownManager:
             'player_id': player_id,
             'action_type': action_type
         })
-        
+
         return result.deleted_count > 0
-    
+
     async def get_all_cooldowns(self, player_id: str) -> Dict[str, Dict[str, Any]]:
         """Get all active cooldowns for a player.
         
@@ -142,10 +142,10 @@ class CooldownManager:
         cursor = self.cooldowns.find({'player_id': player_id})
         cooldowns = {}
         now = datetime.utcnow()
-        
+
         async for cooldown in cursor:
             expires_at = cooldown['expires_at']
-            
+
             if now < expires_at:
                 remaining = (expires_at - now).total_seconds()
                 cooldowns[cooldown['action_type']] = {
@@ -156,9 +156,9 @@ class CooldownManager:
             else:
                 # Clean up expired cooldown
                 await self.cooldowns.delete_one({'_id': cooldown['_id']})
-        
+
         return cooldowns
-    
+
     async def reduce_cooldown(
         self,
         player_id: str,
@@ -179,13 +179,14 @@ class CooldownManager:
             'player_id': player_id,
             'action_type': action_type
         })
-        
+
         if not cooldown:
             return {'on_cooldown': False}
-        
-        new_expires_at = cooldown['expires_at'] - timedelta(seconds=reduction_seconds)
+
+        new_expires_at = cooldown['expires_at'] - \
+            timedelta(seconds=reduction_seconds)
         now = datetime.utcnow()
-        
+
         if new_expires_at <= now:
             # Cooldown completely removed
             await self.cooldowns.delete_one({'_id': cooldown['_id']})
@@ -194,15 +195,15 @@ class CooldownManager:
                 'can_perform': True,
                 'removed': True
             }
-        
+
         # Update cooldown
         await self.cooldowns.update_one(
             {'_id': cooldown['_id']},
             {'$set': {'expires_at': new_expires_at}}
         )
-        
+
         remaining = (new_expires_at - now).total_seconds()
-        
+
         return {
             'on_cooldown': True,
             'can_perform': False,
@@ -210,7 +211,7 @@ class CooldownManager:
             'remaining_seconds': int(remaining),
             'reduced_by': reduction_seconds
         }
-    
+
     async def cleanup_expired_cooldowns(self) -> int:
         """Clean up all expired cooldowns (maintenance task).
         
@@ -220,5 +221,5 @@ class CooldownManager:
         result = await self.cooldowns.delete_many({
             'expires_at': {'$lt': datetime.utcnow()}
         })
-        
+
         return result.deleted_count

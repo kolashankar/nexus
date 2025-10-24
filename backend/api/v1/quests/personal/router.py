@@ -23,9 +23,9 @@ async def get_personal_quests(
             player_id=current_user["_id"],
             quest_type="personal"
         )
-        
+
         return {"quests": quests}
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -37,22 +37,22 @@ async def generate_personal_quest(
     """Generate a new AI-powered personal quest."""
     try:
         from services.ai.oracle.oracle import Oracle
-        
+
         oracle = Oracle()
         quest_data = await oracle.generate_quest(
             player=current_user,
             quest_type="personal"
         )
-        
+
         # Save quest to database
         quest_data["player_id"] = current_user["_id"]
         quest_data["quest_type"] = "personal"
         quest_data["generated_by"] = "oracle"
-        
+
         result = await db.quests.insert_one(quest_data)
         quest_data["_id"] = str(result.inserted_id)
-        
+
         return {"quest": quest_data}
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

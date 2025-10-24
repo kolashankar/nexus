@@ -14,7 +14,7 @@ class MarriageService:
         """Propose marriage (creates a pending proposal)"""
         if proposer_id == proposed_to_id:
             raise ValueError("Cannot marry yourself")
-        
+
         # Check if already married
         existing = await self.marriages.find_one({
             "$or": [
@@ -22,10 +22,10 @@ class MarriageService:
                 {"player2_id": proposer_id, "active": True}
             ]
         })
-        
+
         if existing:
             raise ValueError("Already married")
-        
+
         # Check if partner is married
         partner_married = await self.marriages.find_one({
             "$or": [
@@ -33,10 +33,10 @@ class MarriageService:
                 {"player2_id": proposed_to_id, "active": True}
             ]
         })
-        
+
         if partner_married:
             raise ValueError("Partner is already married")
-        
+
         # Create pending proposal
         proposal = {
             "proposer_id": proposer_id,
@@ -44,9 +44,9 @@ class MarriageService:
             "proposed_at": datetime.utcnow(),
             "status": "pending"
         }
-        
+
         await self.db.marriage_proposals.insert_one(proposal)
-        
+
         return proposal
 
     async def accept_proposal(self, proposal_id: str) -> Marriage:
@@ -54,35 +54,35 @@ class MarriageService:
         proposal = await self.db.marriage_proposals.find_one({"_id": proposal_id})
         if not proposal:
             raise ValueError("Proposal not found")
-        
+
         if proposal.get("status") != "pending":
             raise ValueError("Proposal is not pending")
-        
+
         # Create marriage
         marriage = Marriage(
             player1_id=proposal.get("proposer_id"),
             player2_id=proposal.get("proposed_to_id")
         )
-        
+
         await self.marriages.insert_one(marriage.model_dump())
-        
+
         # Update players
         await self.players.update_one(
             {"_id": marriage.player1_id},
             {"$set": {"spouse_id": marriage.player2_id}}
         )
-        
+
         await self.players.update_one(
             {"_id": marriage.player2_id},
             {"$set": {"spouse_id": marriage.player1_id}}
         )
-        
+
         # Mark proposal as accepted
         await self.db.marriage_proposals.update_one(
             {"_id": proposal_id},
             {"$set": {"status": "accepted"}}
         )
-        
+
         return marriage
 
     async def reject_proposal(self, proposal_id: str) -> bool:
@@ -98,10 +98,10 @@ class MarriageService:
         marriage = await self.marriages.find_one({"id": marriage_id})
         if not marriage:
             raise ValueError("Marriage not found")
-        
+
         if not marriage.get("active"):
             raise ValueError("Marriage is not active")
-        
+
         # End marriage
         await self.marriages.update_one(
             {"id": marriage_id},
@@ -112,24 +112,24 @@ class MarriageService:
                 }
             }
         )
-        
+
         # Update players
         await self.players.update_one(
             {"_id": marriage.get("player1_id")},
             {"$unset": {"spouse_id": ""}}
         )
-        
+
         await self.players.update_one(
             {"_id": marriage.get("player2_id")},
             {"$unset": {"spouse_id": ""}}
         )
-        
+
         # Apply karma penalty to initiator
         await self.players.update_one(
             {"_id": initiator_id},
             {"$inc": {"karma_points": -50}}  # Divorce penalty
         )
-        
+
         return True
 
     async def get_marriage(self, marriage_id: str) -> Optional[dict]:

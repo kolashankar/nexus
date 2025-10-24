@@ -24,7 +24,7 @@ async def get_nearby_players(
         },
         {"password_hash": 0}
     ).limit(limit)
-    
+
     players = await cursor.to_list(length=limit)
     return players
 
@@ -40,7 +40,7 @@ async def get_online_players(
         {"online": True},
         {"password_hash": 0}
     ).skip(skip).limit(limit)
-    
+
     players = await cursor.to_list(length=limit)
     return players
 
@@ -53,19 +53,20 @@ async def get_my_relationships(
 ):
     """Get my relationships"""
     service = RelationshipService(db)
-    
+
     relationship_type = None
     if type:
         try:
             relationship_type = RelationshipType(type)
         except ValueError:
-            raise HTTPException(status_code=400, detail="Invalid relationship type")
-    
+            raise HTTPException(
+                status_code=400, detail="Invalid relationship type")
+
     relationships = await service.get_player_relationships(
         player_id=current_user["_id"],
         type=relationship_type
     )
-    
+
     return relationships
 
 
@@ -79,10 +80,10 @@ async def get_player_profile(
         {"_id": player_id},
         {"password_hash": 0}
     )
-    
+
     if not player:
         raise HTTPException(status_code=404, detail="Player not found")
-    
+
     # Respect privacy settings
     visibility = player.get("visibility", {})
     if visibility.get("privacy_tier") in ["ghost", "phantom"]:
@@ -91,5 +92,5 @@ async def get_player_profile(
             "_id": player["_id"],
             "username": player.get("username", "Hidden")
         }
-    
+
     return player

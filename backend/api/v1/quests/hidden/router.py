@@ -18,14 +18,14 @@ async def discover_hidden_quest(
 ):
     """Try to discover a hidden quest"""
     service = HiddenQuestService(db)
-    
+
     result = await service.check_discovery(
         player_id=current_player["_id"],
         location=location,
         action=action,
         player=current_player,
     )
-    
+
     return result
 
 
@@ -39,5 +39,5 @@ async def get_discovered_hidden_quests(
     quests = await service.get_player_hidden_quests(
         player_id=current_player["_id"],
     )
-    
+
     return {"quests": quests, "total": len(quests)}

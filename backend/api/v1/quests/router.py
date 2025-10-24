@@ -30,13 +30,14 @@ async def get_available_quests(
 ):
     """Get available quests for player"""
     manager = QuestManager(db)
-    
+
     # Get player's current traits and items
     player_level = current_player.get("level", 1)
     player_karma = current_player.get("karma_points", 0)
     player_traits = current_player.get("traits", {})
-    player_items = [item["item_id"] for item in current_player.get("items", [])]
-    
+    player_items = [item["item_id"]
+        for item in current_player.get("items", [])]
+
     quests = await manager.get_available_quests(
         player_id=current_player["_id"],
         quest_type=quest_type,
@@ -45,7 +46,7 @@ async def get_available_quests(
         player_traits=player_traits,
         player_items=player_items,
     )
-    
+
     return {"quests": quests, "total": len(quests)}
 
 
@@ -88,13 +89,13 @@ async def get_quest(
     """Get quest details"""
     manager = QuestManager(db)
     quest = await manager.get_quest(quest_id)
-    
+
     if not quest:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Quest not found"
         )
-    
+
     # Check if player can view this quest
     if quest.get("player_id") and quest["player_id"] != current_player["_id"]:
         if quest.get("quest_type") not in ["world", "guild"]:
@@ -102,7 +103,7 @@ async def get_quest(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Cannot view this quest"
             )
-    
+
     return {"quest": quest}
 
 
@@ -114,7 +115,7 @@ async def accept_quest(
 ):
     """Accept a quest"""
     manager = QuestManager(db)
-    
+
     # Check if quest exists
     quest = await manager.get_quest(request.quest_id)
     if not quest:
@@ -122,7 +123,7 @@ async def accept_quest(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Quest not found"
         )
-    
+
     # Accept quest
     try:
         updated_quest = await manager.accept_quest(
@@ -145,7 +146,7 @@ async def abandon_quest(
 ):
     """Abandon a quest"""
     manager = QuestManager(db)
-    
+
     try:
         success = await manager.abandon_quest(
             quest_id=request.quest_id,
@@ -167,7 +168,7 @@ async def update_quest_progress(
 ):
     """Update quest objective progress"""
     manager = QuestManager(db)
-    
+
     try:
         updated_quest = await manager.update_objective_progress(
             quest_id=request.quest_id,
@@ -191,7 +192,7 @@ async def complete_quest(
 ):
     """Complete a quest and claim rewards"""
     manager = QuestManager(db)
-    
+
     try:
         result = await manager.complete_quest(
             quest_id=request.quest_id,
@@ -213,21 +214,21 @@ async def get_daily_quests(
     """Get daily quests"""
     manager = QuestManager(db)
     generator = QuestGenerator(db)
-    
+
     # Check if daily quests exist for today
     daily_quests = await manager.get_player_quests(
         player_id=current_player["_id"],
         quest_type=QuestType.DAILY,
         status=None,  # Any status
     )
-    
+
     # Filter to today's quests
     today = datetime.utcnow().date()
     today_quests = [
         q for q in daily_quests
         if datetime.fromisoformat(q["generated_at"].replace("Z", "+00:00")).date() == today
     ]
-    
+
     # Generate new daily quests if needed (should be 3)
     if len(today_quests) < 3:
         new_quests = await generator.generate_daily_quests(
@@ -236,7 +237,7 @@ async def get_daily_quests(
             count=3 - len(today_quests),
         )
         today_quests.extend(new_quests)
-    
+
     return {"quests": today_quests, "total": len(today_quests)}
 
 
@@ -248,14 +249,14 @@ async def get_weekly_quests(
     """Get weekly quests"""
     manager = QuestManager(db)
     generator = QuestGenerator(db)
-    
+
     # Check if weekly quests exist
     weekly_quests = await manager.get_player_quests(
         player_id=current_player["_id"],
         quest_type=QuestType.WEEKLY,
         status=None,
     )
-    
+
     # Generate if needed (should be 5)
     if len(weekly_quests) < 5:
         new_quests = await generator.generate_weekly_quests(
@@ -264,7 +265,7 @@ async def get_weekly_quests(
             count=5 - len(weekly_quests),
         )
         weekly_quests.extend(new_quests)
-    
+
     return {"quests": weekly_quests, "total": len(weekly_quests)}
 
 
@@ -276,7 +277,7 @@ async def generate_quest(
 ):
     """Generate a new quest using AI (Oracle)"""
     generator = QuestGenerator(db)
-    
+
     try:
         quest = await generator.generate_personal_quest(
             player_id=current_player["_id"],

@@ -14,14 +14,14 @@ class KarmaCache:
         # Don't cache extreme karma values (need fresh evaluation)
         if abs(karma_value) > 500:
             return False
-        
+
         # Cache common actions
         common_actions = ["help", "trade", "donate"]
         if action_type in common_actions:
             return True
-        
+
         return True
-    
+
     @staticmethod
     def get_cache_ttl(action_type: str) -> int:
         """Get cache TTL based on action type"""
@@ -29,10 +29,10 @@ class KarmaCache:
         critical_actions = ["betray", "save_life", "murder"]
         if action_type in critical_actions:
             return 600  # 10 minutes
-        
+
         # Standard TTL for most actions
         return 3600  # 1 hour
-    
+
     @staticmethod
     def normalize_for_cache(value: float, bucket_size: float = 100) -> float:
         """Normalize values into buckets for better cache hits"""

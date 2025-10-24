@@ -20,7 +20,7 @@ async def request_mentorship(
 ):
     """Request mentorship from a player"""
     service = MentorshipService(db)
-    
+
     try:
         mentorship_request = await service.request_mentorship(
             apprentice_id=current_user["_id"],
@@ -50,7 +50,7 @@ async def accept_mentorship(
 ):
     """Accept mentorship request"""
     service = MentorshipService(db)
-    
+
     try:
         mentorship = await service.accept_mentorship(request_id)
         return {"success": True, "mentorship": mentorship.model_dump()}
@@ -66,7 +66,7 @@ async def reject_mentorship(
 ):
     """Reject mentorship request"""
     service = MentorshipService(db)
-    
+
     try:
         success = await service.reject_mentorship(request_id)
         return {"success": success, "message": "Mentorship request rejected"}
@@ -83,11 +83,11 @@ async def get_my_mentorship(
     """Get my current mentorship"""
     service = MentorshipService(db)
     mentorship = await service.get_player_mentorship(current_user["_id"], as_mentor=as_mentor)
-    
+
     if not mentorship:
         role = "mentor" if as_mentor else "apprentice"
         raise HTTPException(status_code=404, detail=f"Not a {role}")
-    
+
     return mentorship
 
 
@@ -98,12 +98,12 @@ async def graduate_apprentice(
 ):
     """Graduate apprentice (they reached level 50)"""
     service = MentorshipService(db)
-    
+
     # Get mentorship where current user is apprentice
     mentorship = await service.get_player_mentorship(current_user["_id"], as_mentor=False)
     if not mentorship:
         raise HTTPException(status_code=400, detail="Not an apprentice")
-    
+
     try:
         success = await service.graduate_apprentice(mentorship.get("id"))
         return {"success": success, "message": "Graduated! Congratulations!"}
@@ -118,11 +118,11 @@ async def complete_lesson(
 ):
     """Complete a lesson (as apprentice)"""
     service = MentorshipService(db)
-    
+
     mentorship = await service.get_player_mentorship(current_user["_id"], as_mentor=False)
     if not mentorship:
         raise HTTPException(status_code=400, detail="Not an apprentice")
-    
+
     try:
         success = await service.complete_lesson(mentorship.get("id"))
         return {"success": success, "message": "Lesson completed! XP and rewards granted."}

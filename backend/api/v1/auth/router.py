@@ -23,7 +23,7 @@ async def register(request: RegisterRequest, db: AsyncIOMotorDatabase = Depends(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username already registered"
         )
-    
+
     # Check if email exists
     existing_email = await db.players.find_one({"email": request.email})
     if existing_email:
@@ -31,7 +31,7 @@ async def register(request: RegisterRequest, db: AsyncIOMotorDatabase = Depends(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered"
         )
-    
+
     # Create player
     player_data = PlayerCreate(
         username=request.username,
@@ -40,10 +40,10 @@ async def register(request: RegisterRequest, db: AsyncIOMotorDatabase = Depends(
         economic_class=request.economic_class,
         moral_class=request.moral_class
     )
-    
+
     # Hash password
     password_hash = get_password_hash(player_data.password)
-    
+
     # Create player object
     player = Player(
         username=player_data.username,
@@ -53,17 +53,19 @@ async def register(request: RegisterRequest, db: AsyncIOMotorDatabase = Depends(
         moral_class=player_data.moral_class,
         last_login=datetime.utcnow()
     )
-    
+
     # Insert into database
     player_dict = player.model_dump(by_alias=True)
     await db.players.insert_one(player_dict)
-    
+
     # Create access token
-    access_token = create_access_token(data={"sub": player.id, "username": player.username})
-    
+    access_token = create_access_token(
+        data={"sub": player.id, "username": player.username})
+
     # Create response
-    player_response = PlayerResponse.from_player(player, requester_id=player.id)
-    
+    player_response = PlayerResponse.from_player(
+        player, requester_id=player.id)
+
     return TokenResponse(
         access_token=access_token,
         player=player_response.model_dump()
@@ -81,17 +83,17 @@ async def login(request: LoginRequest, db: AsyncIOMotorDatabase = Depends(get_da
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password"
         )
-    
+
     # Verify password
     if not verify_password(request.password, user_dict["password_hash"]):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password"
         )
-    
+
     # Create player object
     player = Player(**user_dict)
-    
+
     # Update last login
     await db.players.update_one(
         {"_id": player.id},
@@ -99,13 +101,15 @@ async def login(request: LoginRequest, db: AsyncIOMotorDatabase = Depends(get_da
     )
     player.last_login = datetime.utcnow()
     player.online = True
-    
+
     # Create access token
-    access_token = create_access_token(data={"sub": player.id, "username": player.username})
-    
+    access_token = create_access_token(
+        data={"sub": player.id, "username": player.username})
+
     # Create response
-    player_response = PlayerResponse.from_player(player, requester_id=player.id)
-    
+    player_response = PlayerResponse.from_player(
+        player, requester_id=player.id)
+
     return TokenResponse(
         access_token=access_token,
         player=player_response.model_dump()
@@ -122,19 +126,19 @@ async def logout(
     # Decode token
     token = credentials.credentials
     payload = decode_access_token(token)
-    
+
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication credentials"
         )
-    
+
     # Update online status
     await db.players.update_one(
         {"_id": payload.get("sub")},
         {"$set": {"online": False}}
     )
-    
+
     return {"message": "Successfully logged out"}
 
 @router.get("/me", response_model=PlayerResponse)
@@ -148,13 +152,13 @@ async def get_current_user(
     # Decode token
     token = credentials.credentials
     payload = decode_access_token(token)
-    
+
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication credentials"
         )
-    
+
     # Get user from database
     user_dict = await db.players.find_one({"_id": payload.get("sub")})
     if not user_dict:
@@ -162,7 +166,7 @@ async def get_current_user(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found"
         )
-    
+
     player = Player(**user_dict)
     return PlayerResponse.from_player(player, requester_id=player.id)
 
@@ -174,18 +178,18 @@ async def get_current_user_dep(
     """Dependency to get current authenticated player."""
     token = credentials.credentials
     payload = decode_access_token(token)
-    
+
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication credentials"
         )
-    
+
     user_dict = await db.players.find_one({"_id": payload.get("sub")})
     if not user_dict:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found"
         )
-    
+
     return Player(**user_dict)

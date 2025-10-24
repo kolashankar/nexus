@@ -110,13 +110,13 @@ class CombatAbilitiesService:
         """Get all available combat abilities for a player."""
         db = await get_database()
         player = await db.players.find_one({"_id": ObjectId(player_id)})
-        
+
         if not player:
             raise ValueError("Player not found")
-        
+
         traits = player.get("traits", {})
         available_abilities = []
-        
+
         # Check each trait for ability unlock (80% threshold)
         for trait_name, ability_data in self.TRAIT_ABILITIES.items():
             trait_value = traits.get(trait_name, 0)
@@ -129,7 +129,7 @@ class CombatAbilitiesService:
                     **ability_data
                 }
                 available_abilities.append(ability)
-        
+
         return available_abilities
 
     async def use_ability(
@@ -143,21 +143,22 @@ class CombatAbilitiesService:
         # Check if ability exists
         if ability_id not in self.TRAIT_ABILITIES:
             raise ValueError(f"Unknown ability: {ability_id}")
-        
+
         ability = self.TRAIT_ABILITIES[ability_id]
-        
+
         # Check if player has high enough trait
         trait_value = player_data.get("traits", {}).get(ability_id, 0)
         if trait_value < 80:
-            raise ValueError(f"Trait {ability_id} not high enough to use this ability")
-        
+            raise ValueError(
+                f"Trait {ability_id} not high enough to use this ability")
+
         # Check action points
         if attacker.action_points < ability.get("cost", 2):
             raise ValueError("Not enough action points")
-        
+
         # Execute ability effect
         result = await self._execute_ability_effect(ability, attacker, defender)
-        
+
         return result
 
     async def _execute_ability_effect(
@@ -172,7 +173,7 @@ class CombatAbilitiesService:
             "ability_name": ability["name"],
             "effects": []
         }
-        
+
         # Damage abilities
         if "damage_multiplier" in ability:
             base_damage = attacker.attack
@@ -180,7 +181,7 @@ class CombatAbilitiesService:
             defender.hp = max(0, defender.hp - damage)
             result["damage"] = damage
             result["effects"].append(f"Dealt {damage} damage")
-        
+
         # Healing abilities
         if "healing" in ability:
             healing = ability["healing"]
@@ -189,25 +190,25 @@ class CombatAbilitiesService:
             actual_healing = attacker.hp - old_hp
             result["healing"] = actual_healing
             result["effects"].append(f"Healed {actual_healing} HP")
-        
+
         # Status effect abilities
         if "effect" in ability:
             effect_type = ability["effect"]
-            
+
             if effect_type == "disable_robots":
                 defender.status_effects.append({
                     "type": "disabled",
                     "duration": 2
                 })
                 result["effects"].append("Robots disabled")
-            
+
             elif effect_type == "last_stand":
                 attacker.status_effects.append({
                     "type": "last_stand",
                     "duration": 1
                 })
                 result["effects"].append("Protected from death")
-        
+
         # Damage reduction
         if "damage_reduction" in ability:
             attacker.status_effects.append({
@@ -216,7 +217,7 @@ class CombatAbilitiesService:
                 "duration": ability.get("duration", 1)
             })
             result["effects"].append("Damage reduction active")
-        
+
         # Attack reduction
         if "attack_reduction" in ability:
             defender.status_effects.append({
@@ -224,13 +225,15 @@ class CombatAbilitiesService:
                 "value": ability["attack_reduction"],
                 "duration": ability.get("duration", 1)
             })
-            result["effects"].append(f"Opponent attack reduced by {ability['attack_reduction']}")
-        
+            result["effects"].append(
+                f"Opponent attack reduced by {ability['attack_reduction']}")
+
         # Bonus action points
         if "bonus_ap" in ability:
             attacker.action_points += ability["bonus_ap"]
-            result["effects"].append(f"Gained {ability['bonus_ap']} action points")
-        
+            result["effects"].append(
+                f"Gained {ability['bonus_ap']} action points")
+
         # Multiple hits
         if "hits" in ability:
             total_damage = 0
@@ -239,8 +242,9 @@ class CombatAbilitiesService:
                 total_damage += damage
             defender.hp = max(0, defender.hp - total_damage)
             result["damage"] = total_damage
-            result["effects"].append(f"{ability['hits']} hits for {total_damage} total damage")
-        
+            result["effects"].append(
+                f"{ability['hits']} hits for {total_damage} total damage")
+
         # Stun effect
         if "stun_chance" in ability:
             import random
@@ -250,7 +254,7 @@ class CombatAbilitiesService:
                     "duration": 1
                 })
                 result["effects"].append("Target stunned!")
-        
+
         return result
 
     async def check_ability_cooldown(
@@ -260,24 +264,24 @@ class CombatAbilitiesService:
     ) -> bool:
         """Check if ability is on cooldown."""
         db = await get_database()
-        
+
         cooldowns = await db.ability_cooldowns.find_one({"player_id": player_id})
-        
+
         if not cooldowns:
             return True  # Not on cooldown
-        
+
         ability_cooldowns = cooldowns.get("abilities", {})
-        
+
         if ability_id not in ability_cooldowns:
             return True
-        
+
         # Check if cooldown expired
         from datetime import datetime
         cooldown_until = ability_cooldowns[ability_id]
-        
+
         if isinstance(cooldown_until, str):
             cooldown_until = datetime.fromisoformat(cooldown_until)
-        
+
         return datetime.utcnow() > cooldown_until
 
     async def set_ability_cooldown(
@@ -287,19 +291,19 @@ class CombatAbilitiesService:
     ):
         """Set cooldown for an ability."""
         db = await get_database()
-        
+
         if ability_id not in self.TRAIT_ABILITIES:
             return
-        
+
         ability = self.TRAIT_ABILITIES[ability_id]
         cooldown_turns = ability.get("cooldown", 0)
-        
+
         if cooldown_turns == 0:
             return
-        
+
         from datetime import datetime, timedelta
         cooldown_until = datetime.utcnow() + timedelta(minutes=cooldown_turns)
-        
+
         await db.ability_cooldowns.update_one(
             {"player_id": player_id},
             {

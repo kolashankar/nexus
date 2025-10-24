@@ -20,7 +20,7 @@ async def evaluate_action(
     current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Evaluate an action using Karma Arbiter AI"""
-    
+
     try:
         result = await karma_arbiter.evaluate_action(
             action_type=request.action_type,
@@ -29,7 +29,7 @@ async def evaluate_action(
             target=request.target,
             additional_context=request.additional_context
         )
-        
+
         return EvaluationResponseAPI(
             karma_change=result.karma_change,
             trait_changes=result.trait_changes,
@@ -39,7 +39,7 @@ async def evaluate_action(
             severity=result.severity,
             cached=result.cached
         )
-    
+
     except Exception as e:
         logger.error(f"Karma evaluation error: {e}")
         raise HTTPException(status_code=500, detail=str(e))

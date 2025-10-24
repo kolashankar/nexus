@@ -87,19 +87,32 @@ except ImportError:
 auth = type('AuthModule', (), {'router': auth_router})()
 player = type('PlayerModule', (), {'router': player_router})()
 actions = type('ActionsModule', (), {'router': actions_router})()
-combat = type('CombatModule', (), {'router': combat_router})() if combat_router else None
-robots = type('RobotsModule', (), {'router': robots_router})() if robots_router else None
-guilds = type('GuildsModule', (), {'router': guilds_router})() if guilds_router else None
-quests = type('QuestsModule', (), {'router': quests_router})() if quests_router else None
-market = type('MarketModule', (), {'router': market_router})() if market_router else None
-social = type('SocialModule', (), {'router': social_router})() if social_router else None
-karma = type('KarmaModule', (), {'router': karma_router})() if karma_router else None
-leaderboards = type('LeaderboardsModule', (), {'router': leaderboards_router})() if leaderboards_router else None
-tournaments = type('TournamentsModule', (), {'router': tournaments_router})() if tournaments_router else None
-achievements = type('AchievementsModule', (), {'router': achievements_router})() if achievements_router else None
-ai_companion = type('AICompanionModule', (), {'router': ai_companion_router})() if ai_companion_router else None
-world = type('WorldModule', (), {'router': world_router})() if world_router else None
-seasonal = type('SeasonalModule', (), {'router': seasonal_router})() if seasonal_router else None
+combat = type('CombatModule', (), {
+              'router': combat_router})() if combat_router else None
+robots = type('RobotsModule', (), {
+              'router': robots_router})() if robots_router else None
+guilds = type('GuildsModule', (), {
+              'router': guilds_router})() if guilds_router else None
+quests = type('QuestsModule', (), {
+              'router': quests_router})() if quests_router else None
+market = type('MarketModule', (), {
+              'router': market_router})() if market_router else None
+social = type('SocialModule', (), {
+              'router': social_router})() if social_router else None
+karma = type('KarmaModule', (), {'router': karma_router})(
+) if karma_router else None
+leaderboards = type('LeaderboardsModule', (), {
+                    'router': leaderboards_router})() if leaderboards_router else None
+tournaments = type('TournamentsModule', (), {
+                   'router': tournaments_router})() if tournaments_router else None
+achievements = type('AchievementsModule', (), {
+                    'router': achievements_router})() if achievements_router else None
+ai_companion = type('AICompanionModule', (), {
+                    'router': ai_companion_router})() if ai_companion_router else None
+world = type('WorldModule', (), {'router': world_router})(
+) if world_router else None
+seasonal = type('SeasonalModule', (), {
+                'router': seasonal_router})() if seasonal_router else None
 
 __all__ = [
     'auth',

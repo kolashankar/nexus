@@ -8,7 +8,7 @@ class PrestigeLevel(BaseModel):
     reached_at: Optional[datetime] = None
     traits_kept_percentage: float = 0.10  # 10% of traits kept
     bonus_multipliers: Dict[str, float] = Field(default_factory=dict)
-    
+
 class PrestigeReward(BaseModel):
     """Reward for prestiging"""
     prestige_level: int
@@ -27,7 +27,7 @@ class PlayerPrestige(BaseModel):
     next_prestige_requirements: Dict[str, Any] = Field(default_factory=dict)
     prestige_history: List[datetime] = Field(default_factory=list)
     permanent_bonuses: Dict[str, float] = Field(default_factory=dict)
-    
+
     def check_prestige_eligibility(self, player_level: int, karma: int) -> bool:
         """Check if player can prestige"""
         if self.current_prestige_level >= 10:
@@ -38,12 +38,12 @@ class PlayerPrestige(BaseModel):
             return False
         self.can_prestige = True
         return True
-    
+
     def perform_prestige(self) -> bool:
         """Perform prestige reset"""
         if not self.can_prestige:
             return False
-        
+
         self.current_prestige_level += 1
         self.total_prestiges += 1
         self.prestige_points += 100

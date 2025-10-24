@@ -14,18 +14,18 @@ request_logger = RequestLogger()
 
 class MetricsMiddleware(BaseHTTPMiddleware):
     """Middleware to collect request metrics."""
-    
+
     def __init__(self, app: ASGIApp):
         super().__init__(app)
-    
+
     async def dispatch(self, request: Request, call_next):
         # Generate request ID
         request_id = str(uuid.uuid4())
         request.state.request_id = request_id
-        
+
         # Record start time
         start_time = time.time()
-        
+
         # Process request
         try:
             response = await call_next(request)
@@ -36,7 +36,7 @@ class MetricsMiddleware(BaseHTTPMiddleware):
         finally:
             # Calculate duration
             duration = time.time() - start_time
-            
+
             # Record metrics
             metrics_collector.record_request(
                 endpoint=request.url.path,
@@ -44,7 +44,7 @@ class MetricsMiddleware(BaseHTTPMiddleware):
                 status=status_code,
                 duration=duration
             )
-            
+
             # Log request
             request_logger.log_request(
                 method=request.method,
@@ -53,9 +53,9 @@ class MetricsMiddleware(BaseHTTPMiddleware):
                 duration=duration,
                 request_id=request_id
             )
-        
+
         # Add metrics headers
         response.headers['X-Request-ID'] = request_id
         response.headers['X-Response-Time'] = f"{duration:.3f}"
-        
+
         return response

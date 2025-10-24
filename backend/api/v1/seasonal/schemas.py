@@ -12,7 +12,7 @@ class BattlePassTierResponse(BaseModel):
     free_rewards: List[Dict[str, Any]]
     premium_rewards: List[Dict[str, Any]]
     is_locked: bool
-    
+
     class Config:
         from_attributes = True
 
@@ -31,7 +31,7 @@ class BattlePassResponse(BaseModel):
     premium_tiers: int
     premium_price: int
     tiers: List[Dict[str, Any]]
-    
+
     class Config:
         from_attributes = True
 
@@ -47,7 +47,7 @@ class PlayerBattlePassProgressResponse(BaseModel):
     claimed_free_rewards: List[int]
     claimed_premium_rewards: List[int]
     total_xp_earned: int
-    
+
     class Config:
         from_attributes = True
 
@@ -77,7 +77,7 @@ class SeasonResponse(BaseModel):
     battle_pass_id: Optional[str]
     total_players: int
     active_players: int
-    
+
     class Config:
         from_attributes = True
 
@@ -97,6 +97,6 @@ class PlayerSeasonProgressResponse(BaseModel):
     season_achievements: int
     season_quests_completed: int
     days_active: int
-    
+
     class Config:
         from_attributes = True

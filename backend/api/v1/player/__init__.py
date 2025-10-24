@@ -10,6 +10,9 @@ player_router = APIRouter()
 # Include all player sub-routers
 player_router.include_router(main_router, tags=["player"])
 player_router.include_router(traits_router, prefix="/traits", tags=["traits"])
-player_router.include_router(superpowers_router, prefix="/superpowers", tags=["superpowers"])
-player_router.include_router(skill_trees_router, prefix="/skill-trees", tags=["skill-trees"])
-player_router.include_router(privacy_router, prefix="/privacy", tags=["privacy"])
+player_router.include_router(
+    superpowers_router, prefix="/superpowers", tags=["superpowers"])
+player_router.include_router(
+    skill_trees_router, prefix="/skill-trees", tags=["skill-trees"])
+player_router.include_router(
+    privacy_router, prefix="/privacy", tags=["privacy"])

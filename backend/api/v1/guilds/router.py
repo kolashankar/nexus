@@ -34,7 +34,7 @@ async def create_guild(
 ):
     """Create a new guild"""
     service = GuildManagementService(db)
-    
+
     try:
         guild = await service.create_guild(
             name=request.name,
@@ -67,10 +67,10 @@ async def get_guild(
     """Get guild by ID"""
     service = GuildManagementService(db)
     guild = await service.get_guild(guild_id)
-    
+
     if not guild:
         raise HTTPException(status_code=404, detail="Guild not found")
-    
+
     return guild
 
 
@@ -82,7 +82,7 @@ async def join_guild(
 ):
     """Join a guild"""
     service = GuildManagementService(db)
-    
+
     try:
         success = await service.join_guild(guild_id, current_user["_id"])
         return {"success": success, "message": "Successfully joined guild"}
@@ -99,9 +99,9 @@ async def leave_guild(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     service = GuildManagementService(db)
-    
+
     try:
         success = await service.leave_guild(guild_id, current_user["_id"])
         return {"success": success, "message": "Successfully left guild"}

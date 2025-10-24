@@ -8,10 +8,10 @@ from fastapi import HTTPException
 
 class PlayerProfileService:
     """Service for managing player profiles."""
-    
+
     def __init__(self):
         self.collection = db.players
-    
+
     async def get_player_by_id(self, player_id: str) -> Optional[Dict[str, Any]]:
         """Get player by ID."""
         try:
@@ -22,7 +22,7 @@ class PlayerProfileService:
         except Exception as e:
             print(f"Error getting player: {e}")
             return None
-    
+
     async def get_player_by_username(self, username: str) -> Optional[Dict[str, Any]]:
         """Get player by username."""
         try:
@@ -33,7 +33,7 @@ class PlayerProfileService:
         except Exception as e:
             print(f"Error getting player: {e}")
             return None
-    
+
     async def update_player(self, player_id: str, update_data: Dict[str, Any]) -> bool:
         """Update player data."""
         try:
@@ -46,14 +46,14 @@ class PlayerProfileService:
         except Exception as e:
             print(f"Error updating player: {e}")
             return False
-    
+
     async def update_visibility(self, player_id: str, visibility_settings: Dict[str, Any]) -> bool:
         """Update player visibility settings."""
         return await self.update_player(
             player_id,
             {"visibility": visibility_settings}
         )
-    
+
     async def get_online_players(self, limit: int = 50) -> list:
         """Get online players."""
         try:
@@ -65,7 +65,7 @@ class PlayerProfileService:
         except Exception as e:
             print(f"Error getting online players: {e}")
             return []
-    
+
     async def set_online_status(self, player_id: str, online: bool) -> bool:
         """Set player online status."""
         try:
@@ -82,16 +82,16 @@ class PlayerProfileService:
         except Exception as e:
             print(f"Error setting online status: {e}")
             return False
-    
+
     async def get_full_profile(self, player_id: str) -> Dict:
         """Get player's complete profile."""
         player_dict = await self.collection.find_one({"_id": ObjectId(player_id)})
         if not player_dict:
             raise HTTPException(status_code=404, detail="Player not found")
-        
+
         # Convert ObjectId to string
         player_dict["_id"] = str(player_dict["_id"])
-        
+
         return {
             "id": player_dict["_id"],
             "username": player_dict["username"],
@@ -110,35 +110,36 @@ class PlayerProfileService:
             "online": player_dict["online"],
             "last_login": player_dict.get("last_login")
         }
-    
+
     async def update_profile(self, player_id: str, update_data: any) -> Dict:
         """Update player profile."""
         update_dict = {}
-        
+
         if hasattr(update_data, 'economic_class') and update_data.economic_class:
             update_dict["economic_class"] = update_data.economic_class
         if hasattr(update_data, 'moral_class') and update_data.moral_class:
             update_dict["moral_class"] = update_data.moral_class
-        
+
         if not update_dict:
-            raise HTTPException(status_code=400, detail="No valid updates provided")
-        
+            raise HTTPException(
+                status_code=400, detail="No valid updates provided")
+
         await self.collection.update_one(
             {"_id": ObjectId(player_id)},
             {"$set": update_dict}
         )
-        
+
         return await self.get_full_profile(player_id)
-    
+
     async def get_player_stats(self, player_id: str) -> Dict:
         """Get player statistics."""
         player_dict = await self.collection.find_one({"_id": ObjectId(player_id)})
         if not player_dict:
             raise HTTPException(status_code=404, detail="Player not found")
-        
+
         # Convert ObjectId to string
         player_dict["_id"] = str(player_dict["_id"])
-        
+
         return {
             "id": player_dict["_id"],
             "username": player_dict["username"],

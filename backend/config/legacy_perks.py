@@ -90,19 +90,20 @@ def get_legacy_perk_by_id(perk_id: str) -> Dict[str, Any]:
 def calculate_legacy_bonus(perks_owned: Dict[str, int]) -> Dict[str, float]:
     """Calculate total legacy bonuses from owned perks."""
     total_bonuses = {}
-    
+
     for perk_id, level in perks_owned.items():
         perk = get_legacy_perk_by_id(perk_id)
         if not perk:
             continue
-        
+
         bonus_per_level = perk["bonus_per_level"]
         for bonus_key, bonus_value in bonus_per_level.items():
             if perk["cumulative"]:
-                total_bonuses[bonus_key] = total_bonuses.get(bonus_key, 0) + (bonus_value * level)
+                total_bonuses[bonus_key] = total_bonuses.get(
+                    bonus_key, 0) + (bonus_value * level)
             else:
                 total_bonuses[bonus_key] = bonus_value
-    
+
     return total_bonuses
 
 def can_purchase_legacy_perk(player_data: Dict[str, Any], perk_id: str, current_level: int) -> tuple[bool, str]:
@@ -110,13 +111,13 @@ def can_purchase_legacy_perk(player_data: Dict[str, Any], perk_id: str, current_
     perk = get_legacy_perk_by_id(perk_id)
     if not perk:
         return False, "Perk not found"
-    
+
     if current_level >= perk["max_level"]:
         return False, "Perk already at max level"
-    
+
     cost = perk["cost"]
     for currency, amount in cost.items():
         if player_data.get(currency, 0) < amount:
             return False, f"Not enough {currency} (need {amount})"
-    
+
     return True, "Can purchase"

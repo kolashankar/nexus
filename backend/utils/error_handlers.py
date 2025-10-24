@@ -42,5 +42,6 @@ def handle_action_errors(func: Callable) -> Callable:
         except ValueError as e:
             raise HTTPException(status_code=400, detail=str(e))
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Action failed: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Action failed: {str(e)}")
     return wrapper

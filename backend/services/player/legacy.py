@@ -77,12 +77,12 @@ LEGACY_PERKS = [
 
 class LegacyService:
     """Service for managing cross-season legacy system"""
-    
+
     @staticmethod
     def initialize_legacy(account_id: str) -> PlayerLegacy:
         """Initialize legacy for a new account"""
         return PlayerLegacy(account_id=account_id)
-    
+
     @staticmethod
     def earn_legacy_points(
         player_legacy: PlayerLegacy,
@@ -91,18 +91,18 @@ class LegacyService:
     ) -> Tuple[bool, str]:
         """Award legacy points"""
         player_legacy.earn_legacy_points(amount, source)
-        
+
         level_up = False
         points_for_next = player_legacy.legacy_level * 1000
         if player_legacy.lifetime_legacy_points >= points_for_next:
             level_up = True
-        
+
         message = f"Earned {amount} legacy points from {source}"
         if level_up:
             message += f" | Legacy Level Up: {player_legacy.legacy_level}"
-        
+
         return True, message
-    
+
     @staticmethod
     def unlock_perk(
         player_legacy: PlayerLegacy,
@@ -113,24 +113,24 @@ class LegacyService:
         perk = next((p for p in LEGACY_PERKS if p.perk_id == perk_id), None)
         if not perk:
             return False, "Perk not found"
-        
+
         # Check if already unlocked
         if any(p.perk_id == perk_id for p in player_legacy.unlocked_perks):
             return False, "Perk already unlocked"
-        
+
         # Check if player has enough points
         if player_legacy.legacy_points < perk.cost:
             return False, f"Not enough legacy points (need {perk.cost}, have {player_legacy.legacy_points})"
-        
+
         # Spend points and unlock
         if not player_legacy.spend_legacy_points(perk.cost):
             return False, "Failed to spend legacy points"
-        
+
         perk.unlocked = True
         player_legacy.unlocked_perks.append(perk)
-        
+
         return True, f"Unlocked {perk.name}!"
-    
+
     @staticmethod
     def activate_perk(
         player_legacy: PlayerLegacy,
@@ -140,15 +140,15 @@ class LegacyService:
         # Check if perk is unlocked
         if not any(p.perk_id == perk_id for p in player_legacy.unlocked_perks):
             return False, "Perk not unlocked"
-        
+
         # Check if already active
         if perk_id in player_legacy.active_perks:
             return False, "Perk already active"
-        
+
         # Activate
         player_legacy.active_perks.append(perk_id)
         return True, "Perk activated"
-    
+
     @staticmethod
     def add_legacy_title(
         player_legacy: PlayerLegacy,
@@ -165,10 +165,10 @@ class LegacyService:
             earned_at=datetime.utcnow(),
             season_earned=season
         )
-        
+
         player_legacy.add_title(title)
         return True, f"Earned legacy title: {title_name}"
-    
+
     @staticmethod
     def add_heirloom(
         player_legacy: PlayerLegacy,
@@ -186,10 +186,10 @@ class LegacyService:
             power_level=power_level,
             season_acquired=season
         )
-        
+
         player_legacy.heirloom_items.append(heirloom)
         return True, f"Acquired heirloom: {name}"
-    
+
     @staticmethod
     def update_mentorship(
         player_legacy: PlayerLegacy,
@@ -199,11 +199,11 @@ class LegacyService:
         if apprentice_graduated:
             player_legacy.apprentices_taught += 1
             player_legacy.mentorship_rewards_earned += 50
-            
+
             # Level up mentorship
             if player_legacy.apprentices_taught % 5 == 0:
                 player_legacy.mentorship_level += 1
-    
+
     @staticmethod
     def get_legacy_summary(player_legacy: PlayerLegacy) -> Dict:
         """Get legacy system summary"""
@@ -221,7 +221,7 @@ class LegacyService:
             "apprentices_taught": player_legacy.apprentices_taught,
             "achievements": player_legacy.total_achievements
         }
-    
+
     @staticmethod
     def apply_new_character_bonuses(
         player_legacy: PlayerLegacy
@@ -234,11 +234,11 @@ class LegacyService:
             "starting_credits": 1000,
             "starting_skill_points": 0
         }
-        
+
         for perk in player_legacy.unlocked_perks:
             if not perk.unlocked or perk.perk_id not in player_legacy.active_perks:
                 continue
-            
+
             if perk.bonus_type == "xp_boost":
                 bonuses["xp_multiplier"] += perk.bonus_value
             elif perk.bonus_type == "karma_multiplier":
@@ -249,5 +249,5 @@ class LegacyService:
                 bonuses["starting_credits"] += int(perk.bonus_value)
             elif perk.bonus_type == "skill_points":
                 bonuses["starting_skill_points"] += int(perk.bonus_value)
-        
+
         return bonuses

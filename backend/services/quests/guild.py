@@ -7,7 +7,7 @@ from ...models.player.player import Player
 
 class GuildQuestService:
     """Service for managing guild quests."""
-    
+
     async def get_guild_quests(self, guild_id: str) -> List[Dict]:
         """Get quests for a guild."""
         quests = await Quest.find({
@@ -15,9 +15,9 @@ class GuildQuestService:
             "quest_type": "guild",
             "status": {"$in": ["available", "active"]}
         }).to_list()
-        
+
         return quests
-    
+
     async def create_guild_quest(
         self,
         player_id: str,
@@ -29,14 +29,14 @@ class GuildQuestService:
         player = await Player.find_one({"_id": player_id})
         if not player or player.get("guild_id") != guild_id:
             return {"success": False, "error": "Not a member of this guild"}
-        
+
         guild_rank = player.get("guild_rank")
         if guild_rank not in ["leader", "officer"]:
             return {"success": False, "error": "Insufficient permissions"}
-        
+
         # Create quest
         quest_id = str(uuid.uuid4())
-        
+
         quest = {
             "_id": quest_id,
             "guild_id": guild_id,
@@ -53,11 +53,11 @@ class GuildQuestService:
             "generated_at": datetime.utcnow(),
             "expires_at": datetime.utcnow() + timedelta(days=7)
         }
-        
+
         await Quest.insert_one(quest)
-        
+
         return {"success": True, "quest_id": quest_id, "quest": quest}
-    
+
     async def contribute(
         self,
         player_id: str,
@@ -66,21 +66,21 @@ class GuildQuestService:
     ) -> Dict:
         """Record player contribution to guild quest."""
         quest = await Quest.find_one({"_id": quest_id})
-        
+
         if not quest:
             return {"success": False, "error": "Quest not found"}
-        
+
         # Add player to participants if not already
         participants = quest.get("participants", [])
         if player_id not in participants:
             participants.append(player_id)
-        
+
         # Record contribution
         contributions = quest.get("contributions", {})
         if player_id not in contributions:
             contributions[player_id] = []
         contributions[player_id].append(contribution)
-        
+
         # Update quest
         await Quest.update_one(
             {"_id": quest_id},
@@ -91,5 +91,5 @@ class GuildQuestService:
                 }
             }
         )
-        
+
         return {"success": True, "contribution_recorded": contribution}

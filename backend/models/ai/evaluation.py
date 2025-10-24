@@ -7,8 +7,9 @@ from pydantic import BaseModel, Field
 
 class ActionEvaluation(BaseModel):
     """Stored action evaluation"""
-    
-    evaluation_id: str = Field(default_factory=lambda: str(datetime.utcnow().timestamp()))
+
+    evaluation_id: str = Field(
+        default_factory=lambda: str(datetime.utcnow().timestamp()))
     action_type: str
     actor_id: str
     target_id: Optional[str] = None
@@ -20,7 +21,7 @@ class ActionEvaluation(BaseModel):
     severity: str
     cached: bool = False
     timestamp: datetime = Field(default_factory=datetime.utcnow)
-    
+
     class Config:
         json_schema_extra = {
             "example": {

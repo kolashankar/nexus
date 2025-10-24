@@ -30,17 +30,17 @@ async def get_currencies(
     """Get all currency types and player's balances."""
     from bson import ObjectId
     db = await get_database()
-    
+
     player = await db.players.find_one({"_id": ObjectId(current_user["_id"])})
-    
+
     if not player:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Player not found"
         )
-    
+
     currencies = player.get("currencies", {})
-    
+
     return {
         "currencies": {
             "credits": {
@@ -94,10 +94,10 @@ def _calculate_wealth_score(currencies: Dict[str, int]) -> int:
         "guild_coins": 5,
         "legacy_shards": 100
     }
-    
+
     score = 0
     for currency, balance in currencies.items():
         weight = weights.get(currency, 1)
         score += balance * weight
-    
+
     return score

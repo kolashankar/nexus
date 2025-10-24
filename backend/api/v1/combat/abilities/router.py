@@ -32,7 +32,7 @@ async def get_available_abilities(
 async def get_all_abilities():
     """Get all possible combat abilities with unlock requirements."""
     from backend.services.combat.abilities import CombatAbilitiesService
-    
+
     abilities_list = []
     for trait_name, ability_data in CombatAbilitiesService.TRAIT_ABILITIES.items():
         abilities_list.append({
@@ -41,7 +41,7 @@ async def get_all_abilities():
             "trait_level_required": 80,
             **ability_data
         })
-    
+
     return {
         "abilities": abilities_list,
         "total": len(abilities_list)
@@ -54,13 +54,13 @@ async def get_ability_cooldowns(
 ):
     """Get current ability cooldowns."""
     from backend.core.database import get_database
-    
+
     db = await get_database()
     cooldowns = await db.ability_cooldowns.find_one({"player_id": current_user["_id"]})
-    
+
     if not cooldowns:
         return {"cooldowns": {}}
-    
+
     return {"cooldowns": cooldowns.get("abilities", {})}
 
 
@@ -71,31 +71,31 @@ async def get_ability_details(
 ):
     """Get detailed information about a specific ability."""
     from backend.services.combat.abilities import CombatAbilitiesService
-    
+
     if ability_id not in CombatAbilitiesService.TRAIT_ABILITIES:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Ability not found"
         )
-    
+
     ability_data = CombatAbilitiesService.TRAIT_ABILITIES[ability_id]
-    
+
     # Check if player has unlocked it
     from backend.core.database import get_database
     from bson import ObjectId
-    
+
     db = await get_database()
     player = await db.players.find_one({"_id": ObjectId(current_user["_id"])})
-    
+
     trait_value = player.get("traits", {}).get(ability_id, 0)
     unlocked = trait_value >= 80
-    
+
     # Check cooldown
     on_cooldown = not await abilities_service.check_ability_cooldown(
         current_user["_id"],
         ability_id
     )
-    
+
     return {
         "id": ability_id,
         "trait_required": ability_id,

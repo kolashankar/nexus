@@ -18,7 +18,7 @@ async def trade_with_player(
 ):
     """Initiate a trade with another player"""
     handler = ActionHandler()
-    
+
     try:
         result = await handler.execute_action(
             action_type="trade",

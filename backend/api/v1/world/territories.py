@@ -25,7 +25,7 @@ async def get_all_territories(
     """
     territory_manager = TerritoryManager(db)
     territories = await territory_manager.get_all_territories()
-    
+
     return TerritoryListResponse(
         territories=[TerritoryResponse.from_model(t) for t in territories],
         total=len(territories)
@@ -43,7 +43,7 @@ async def get_contested_territories(
     """
     territory_manager = TerritoryManager(db)
     territories = await territory_manager.get_contested_territories()
-    
+
     return TerritoryListResponse(
         territories=[TerritoryResponse.from_model(t) for t in territories],
         total=len(territories)
@@ -62,7 +62,7 @@ async def get_guild_territories(
     """
     territory_manager = TerritoryManager(db)
     territories = await territory_manager.get_guild_territories(guild_id)
-    
+
     return TerritoryListResponse(
         territories=[TerritoryResponse.from_model(t) for t in territories],
         total=len(territories)
@@ -82,16 +82,16 @@ async def get_territory(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Territory ID must be between 1 and 20"
         )
-    
+
     territory_manager = TerritoryManager(db)
     territory = await territory_manager.get_territory(territory_id)
-    
+
     if not territory:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Territory {territory_id} not found"
         )
-    
+
     return TerritoryResponse.from_model(territory)
 
 
@@ -106,10 +106,10 @@ async def initialize_territories(
     created yet. Usually called once during initial setup.
     """
     territory_manager = TerritoryManager(db)
-    
+
     try:
         created = await territory_manager.initialize_territories()
-        
+
         return {
             "success": True,
             "message": f"Initialized {created} new territories",
@@ -138,13 +138,13 @@ async def sync_territory_population(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Territory ID must be between 1 and 20"
         )
-    
+
     territory_manager = TerritoryManager(db)
-    
+
     try:
         population = await territory_manager.sync_territory_population(territory_id)
         karma = await territory_manager.calculate_local_karma(territory_id)
-        
+
         return {
             "success": True,
             "territory_id": territory_id,

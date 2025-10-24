@@ -9,14 +9,14 @@ import uuid
 
 class ActionHandler:
     """Main handler for all game actions"""
-    
+
     def __init__(self):
         self.validator = ActionValidator()
         self.processor = ActionProcessor()
         self.traits_service = TraitsService()
         self.karma_calculator = KarmaCalculator()
         self.db = get_database()
-    
+
     async def execute_action(
         self,
         action_type: str,
@@ -25,33 +25,33 @@ class ActionHandler:
         params: Dict[str, Any] = None
     ) -> Dict[str, Any]:
         """Execute any game action"""
-        
+
         # Get actor and target
         actor = await self.db.players.find_one({"_id": actor_id})
         target = None
         if target_id:
             target = await self.db.players.find_one({"_id": target_id})
-        
+
         if not actor:
             raise ValueError("Actor not found")
-        
+
         # Validate action
         validation = await self.validator.validate_action(
             action_type, actor, target, params
         )
         if not validation["valid"]:
             raise ValueError(validation["reason"])
-        
+
         # Process action
         result = await self.processor.process_action(
             action_type, actor, target, params
         )
-        
+
         # Calculate karma changes
         karma_changes = await self.karma_calculator.calculate_simple(
             action_type, actor, target, result
         )
-        
+
         # Update actor karma and traits
         await self.db.players.update_one(
             {"_id": actor_id},
@@ -63,7 +63,7 @@ class ActionHandler:
                 "$set": {"last_action": datetime.utcnow()}
             }
         )
-        
+
         # Update target if exists
         if target_id and karma_changes.get("target_karma"):
             await self.db.players.update_one(
@@ -75,7 +75,7 @@ class ActionHandler:
                     }
                 }
             )
-        
+
         # Log action history
         action_log = {
             "_id": str(uuid.uuid4()),
@@ -88,7 +88,7 @@ class ActionHandler:
             "timestamp": datetime.utcnow()
         }
         await self.db.action_history.insert_one(action_log)
-        
+
         return {
             "success": True,
             "result": result,

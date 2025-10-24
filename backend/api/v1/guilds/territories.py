@@ -26,10 +26,10 @@ async def get_territory(
     """Get territory by ID"""
     service = TerritoryService(db)
     territory = await service.get_territory(territory_id)
-    
+
     if not territory:
         raise HTTPException(status_code=404, detail="Territory not found")
-    
+
     return territory
 
 
@@ -42,7 +42,7 @@ async def get_my_guild_territories(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     service = TerritoryService(db)
     territories = await service.get_guild_territories(guild_id)
     return territories
@@ -58,14 +58,14 @@ async def attack_territory(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     # Check if user has permission (officer or leader)
     guild_rank = current_user.get("guild_rank")
     if guild_rank not in ["leader", "officer"]:
         raise HTTPException(status_code=403, detail="Insufficient permissions")
-    
+
     service = TerritoryService(db)
-    
+
     try:
         result = await service.attack_territory(territory_id, guild_id)
         return result
@@ -83,13 +83,13 @@ async def defend_territory(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     guild_rank = current_user.get("guild_rank")
     if guild_rank not in ["leader", "officer"]:
         raise HTTPException(status_code=403, detail="Insufficient permissions")
-    
+
     service = TerritoryService(db)
-    
+
     try:
         success = await service.defend_territory(territory_id, guild_id)
         return {"success": success, "message": "Defense level upgraded"}

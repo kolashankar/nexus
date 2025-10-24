@@ -24,22 +24,22 @@ class Economist:
             # Random event
             events = ["boom", "crash", "inflation", "stability"]
             event_type = random.choice(events)
-        
+
         db = await get_database()
-        
+
         event_data = {
             "event_type": event_type,
             "triggered_at": datetime.utcnow(),
             "description": self._get_event_description(event_type),
             "effects": self._get_event_effects(event_type)
         }
-        
+
         # Store event
         await db.market_events.insert_one(event_data)
-        
+
         # Apply effects
         await self._apply_event_effects(event_type)
-        
+
         return event_data
 
     def _get_event_description(self, event_type: str) -> str:
@@ -66,16 +66,16 @@ class Economist:
         """Apply market event effects to stocks."""
         effects = self._get_event_effects(event_type)
         multiplier = effects.get("price_multiplier", 1.0)
-        
+
         db = await get_database()
-        
+
         # Apply to all stocks
         stocks = await self.stock_service.get_all_stocks()
-        
+
         for stock in stocks:
             new_price = stock["price"] * multiplier
             new_price = max(1.0, new_price)  # Minimum price
-            
+
             await db.stocks.update_one(
                 {"ticker": stock["ticker"]},
                 {"$set": {"price": round(new_price, 2)}}
@@ -84,17 +84,17 @@ class Economist:
     async def analyze_market_trends(self) -> Dict[str, Any]:
         """Analyze current market trends."""
         stocks = await self.stock_service.get_all_stocks()
-        
+
         total_change = sum(stock.get("change_percent", 0) for stock in stocks)
         avg_change = total_change / len(stocks) if stocks else 0
-        
+
         if avg_change > 5:
             trend = "bullish"
         elif avg_change < -5:
             trend = "bearish"
         else:
             trend = "neutral"
-        
+
         return {
             "trend": trend,
             "avg_change_percent": round(avg_change, 2),

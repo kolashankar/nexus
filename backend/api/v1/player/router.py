@@ -38,7 +38,7 @@ async def get_player_profile(
     player_dict = await db.players.find_one({"_id": player_id})
     if not player_dict:
         raise HTTPException(status_code=404, detail="Player not found")
-    
+
     player = Player(**player_dict)
     return PlayerResponse.from_player(player, requester_id=current_user.id)
 
@@ -71,10 +71,11 @@ async def get_nearby_players(
     players = await db.players.find(
         {"online": True, "_id": {"$ne": current_user.id}}
     ).limit(limit).to_list(limit)
-    
+
     return {
         "players": [
-            PlayerResponse.from_player(Player(**p), requester_id=current_user.id).model_dump()
+            PlayerResponse.from_player(
+                Player(**p), requester_id=current_user.id).model_dump()
             for p in players
         ],
         "count": len(players)

@@ -30,7 +30,7 @@ class AICostTracker:
             }
         )
         self.start_time = datetime.utcnow()
-    
+
     def track_call(
         self,
         service: str,
@@ -41,9 +41,9 @@ class AICostTracker:
     ) -> None:
         """Track an AI API call"""
         stats = self.usage_stats[service]
-        
+
         stats["calls"] += 1
-        
+
         if cached:
             stats["cache_hits"] += 1
         else:
@@ -51,20 +51,22 @@ class AICostTracker:
             stats["input_tokens"] += input_tokens
             stats["output_tokens"] += output_tokens
             stats["total_tokens"] += input_tokens + output_tokens
-            
+
             # Calculate cost
             if model in self.PRICING:
-                input_cost = (input_tokens / 1_000_000) * self.PRICING[model]["input"]
-                output_cost = (output_tokens / 1_000_000) * self.PRICING[model]["output"]
+                input_cost = (input_tokens / 1_000_000) * \
+                              self.PRICING[model]["input"]
+                output_cost = (output_tokens / 1_000_000) * \
+                               self.PRICING[model]["output"]
                 stats["estimated_cost"] += input_cost + output_cost
-    
+
     def get_stats(self, service: Optional[str] = None) -> Dict[str, Any]:
         """Get usage statistics"""
         if service:
             stats = dict(self.usage_stats.get(service, {}))
             stats["cache_hit_rate"] = self._calculate_cache_hit_rate(stats)
             return stats
-        
+
         # Return all stats
         total_stats = {
             "services": {},
@@ -79,27 +81,29 @@ class AICostTracker:
             },
             "uptime_hours": (datetime.utcnow() - self.start_time).total_seconds() / 3600
         }
-        
+
         for service, stats in self.usage_stats.items():
             service_stats = dict(stats)
-            service_stats["cache_hit_rate"] = self._calculate_cache_hit_rate(stats)
+            service_stats["cache_hit_rate"] = self._calculate_cache_hit_rate(
+                stats)
             total_stats["services"][service] = service_stats
-            
+
             # Aggregate totals
             for key in ["calls", "input_tokens", "output_tokens", "total_tokens", "estimated_cost", "cache_hits", "cache_misses"]:
                 total_stats["total"][key] += stats[key]
-        
-        total_stats["total"]["cache_hit_rate"] = self._calculate_cache_hit_rate(total_stats["total"])
-        
+
+        total_stats["total"]["cache_hit_rate"] = self._calculate_cache_hit_rate(
+            total_stats["total"])
+
         return total_stats
-    
+
     def _calculate_cache_hit_rate(self, stats: Dict[str, Any]) -> float:
         """Calculate cache hit rate percentage"""
         total_requests = stats["cache_hits"] + stats["cache_misses"]
         if total_requests == 0:
             return 0.0
         return (stats["cache_hits"] / total_requests) * 100
-    
+
     def reset_stats(self) -> None:
         """Reset all statistics"""
         self.usage_stats.clear()

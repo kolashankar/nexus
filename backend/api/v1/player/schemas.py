@@ -38,7 +38,8 @@ class PlayerStatsResponse(BaseModel):
 
 class VisibilityUpdateRequest(BaseModel):
     """Update visibility/privacy settings."""
-    privacy_tier: Optional[str] = Field(None, pattern="^(public|selective|private|ghost|phantom)$")
+    privacy_tier: Optional[str] = Field(
+        None, pattern="^(public|selective|private|ghost|phantom)$")
     cash: Optional[bool] = None
     economic_class: Optional[bool] = None
     moral_class: Optional[bool] = None

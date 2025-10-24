@@ -25,11 +25,13 @@ class TournamentManager:
     ) -> Dict[str, Any]:
         """Create a new tournament."""
         tournament_id = str(uuid.uuid4())
-        
+
         # Calculate registration times
-        registration_start = kwargs.get('registration_start', datetime.utcnow())
-        registration_end = kwargs.get('registration_end', start_time - timedelta(hours=1))
-        
+        registration_start = kwargs.get(
+            'registration_start', datetime.utcnow())
+        registration_end = kwargs.get(
+            'registration_end', start_time - timedelta(hours=1))
+
         tournament = {
             "tournament_id": tournament_id,
             "name": name,
@@ -58,7 +60,7 @@ class TournamentManager:
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow()
         }
-        
+
         await self.db.tournaments.insert_one(tournament)
         return tournament
 
@@ -66,7 +68,7 @@ class TournamentManager:
         """Generate default reward distribution."""
         if prize_pool == 0:
             return {}
-        
+
         return {
             1: {  # 1st place - 50%
                 "credits": int(prize_pool * 0.5),
@@ -90,51 +92,53 @@ class TournamentManager:
     ) -> Dict[str, Any]:
         """Register a player for a tournament."""
         tournament = await self.db.tournaments.find_one({"tournament_id": tournament_id})
-        
+
         if not tournament:
             raise ValueError("Tournament not found")
-        
+
         # Check if registration is open
         now = datetime.utcnow()
         if now < tournament["registration_start"] or now > tournament["registration_end"]:
             raise ValueError("Registration is not open")
-        
+
         # Check if tournament is full
         if tournament["total_registered"] >= tournament["max_participants"]:
             raise ValueError("Tournament is full")
-        
+
         # Check if already registered
         if player_id in tournament["registered_players"]:
             raise ValueError("Already registered")
-        
+
         # Check player requirements
         player = await self.db.players.find_one({"_id": player_id})
         if not player:
             raise ValueError("Player not found")
-        
+
         if tournament["min_level"] and player.get("level", 0) < tournament["min_level"]:
-            raise ValueError(f"Minimum level {tournament['min_level']} required")
-        
+            raise ValueError(
+                f"Minimum level {tournament['min_level']} required")
+
         if tournament["min_karma"] and player.get("karma_points", 0) < tournament["min_karma"]:
-            raise ValueError(f"Minimum karma {tournament['min_karma']} required")
-        
+            raise ValueError(
+                f"Minimum karma {tournament['min_karma']} required")
+
         # Check entry fee
         if tournament["entry_fee"] > 0:
             if player["currencies"]["credits"] < tournament["entry_fee"]:
                 raise ValueError("Insufficient credits for entry fee")
-            
+
             # Deduct entry fee
             await self.db.players.update_one(
                 {"_id": player_id},
                 {"$inc": {"currencies.credits": -tournament["entry_fee"]}}
             )
-            
+
             # Add to prize pool
             await self.db.tournaments.update_one(
                 {"tournament_id": tournament_id},
                 {"$inc": {"prize_pool": tournament["entry_fee"]}}
             )
-        
+
         # Register player
         await self.db.tournaments.update_one(
             {"tournament_id": tournament_id},
@@ -144,7 +148,7 @@ class TournamentManager:
                 "$set": {"updated_at": datetime.utcnow()}
             }
         )
-        
+
         # Create participant record
         participant = {
             "tournament_id": tournament_id,
@@ -158,29 +162,31 @@ class TournamentManager:
             "eliminated": False
         }
         await self.db.tournament_participants.insert_one(participant)
-        
+
         return {"success": True, "message": "Registered successfully"}
 
     async def start_tournament(self, tournament_id: str):
         """Start a tournament and generate brackets."""
         tournament = await self.db.tournaments.find_one({"tournament_id": tournament_id})
-        
+
         if not tournament:
             raise ValueError("Tournament not found")
-        
+
         if tournament["total_registered"] < tournament["min_participants"]:
-            raise ValueError(f"Minimum {tournament['min_participants']} participants required")
-        
+            raise ValueError(
+                f"Minimum {tournament['min_participants']} participants required")
+
         # Generate bracket
         matches = await self._generate_bracket(
             tournament_id=tournament_id,
             players=tournament["registered_players"],
             bracket_type=tournament["bracket_type"]
         )
-        
+
         # Calculate total rounds
-        total_rounds = math.ceil(math.log2(len(tournament["registered_players"])))
-        
+        total_rounds = math.ceil(
+            math.log2(len(tournament["registered_players"])))
+
         # Update tournament
         await self.db.tournaments.update_one(
             {"tournament_id": tournament_id},
@@ -194,7 +200,7 @@ class TournamentManager:
                 }
             }
         )
-        
+
         return {"success": True, "total_matches": len(matches)}
 
     async def _generate_bracket(
@@ -217,18 +223,18 @@ class TournamentManager:
         """Generate single elimination bracket."""
         import random
         random.shuffle(players)  # Shuffle for fairness
-        
+
         # Round to next power of 2
         2 ** math.ceil(math.log2(len(players)))
-        
+
         matches = []
         match_position = 0
-        
+
         # First round
         for i in range(0, len(players), 2):
             player1 = players[i] if i < len(players) else None
             player2 = players[i + 1] if i + 1 < len(players) else None
-            
+
             match = {
                 "match_id": str(uuid.uuid4()),
                 "round_number": 1,
@@ -243,7 +249,7 @@ class TournamentManager:
             }
             matches.append(match)
             match_position += 1
-        
+
         return matches
 
     async def get_active_tournaments(self) -> List[Dict[str, Any]]:
@@ -267,6 +273,6 @@ class TournamentManager:
         query = {"registered_players": player_id}
         if status:
             query["status"] = status
-        
+
         tournaments = await self.db.tournaments.find(query).to_list(length=100)
         return tournaments

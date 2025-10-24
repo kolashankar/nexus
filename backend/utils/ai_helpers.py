@@ -35,11 +35,11 @@ def calculate_ai_cost(input_tokens: int, output_tokens: int, model: str = "gpt-4
         "gpt-4o": {"input": 2.50, "output": 10.00},
         "gpt-4o-mini": {"input": 0.15, "output": 0.60}
     }
-    
+
     if model not in pricing:
         return 0.0
-    
+
     input_cost = (input_tokens / 1_000_000) * pricing[model]["input"]
     output_cost = (output_tokens / 1_000_000) * pricing[model]["output"]
-    
+
     return input_cost + output_cost

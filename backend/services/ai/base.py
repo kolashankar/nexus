@@ -15,19 +15,19 @@ class BaseAIService(ABC):
         self.name = name
         self.model = model
         self.api_key = os.getenv("EMERGENT_LLM_KEY")
-        
+
         if not self.api_key:
             logger.warning(f"{name}: No EMERGENT_LLM_KEY found in environment")
-    
+
     @abstractmethod
     async def process(self, *args, **kwargs) -> Dict[str, Any]:
         """Process the AI request - must be implemented by subclasses"""
         pass
-    
+
     def is_available(self) -> bool:
         """Check if AI service is available"""
         return self.api_key is not None
-    
+
     async def fallback_response(self, *args, **kwargs) -> Dict[str, Any]:
         """Fallback response when AI is not available"""
         return {

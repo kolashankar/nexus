@@ -67,35 +67,36 @@ class RobotTrainingService:
         # Validate training type
         if training_type not in self.TRAINING_TYPES:
             raise ValueError(f"Invalid training type: {training_type}")
-        
+
         # Get robot
         robot = await self.robot_manager.get_robot(robot_id)
-        
+
         if not robot:
             raise ValueError("Robot not found")
-        
+
         if robot["owner_id"] != owner_id:
             raise ValueError("Not your robot")
-        
+
         # Check if already training
         db = await get_database()
         existing = await db.robot_training.find_one({
             "robot_id": robot_id,
             "status": "active"
         })
-        
+
         if existing:
             raise ValueError("Robot is already training")
-        
+
         # Calculate cost
         training_data = self.TRAINING_TYPES[training_type]
         total_cost = training_data["cost_per_hour"] * duration_hours
-        
+
         # Check balance
         balance = await self.currency_service.get_balance(owner_id, "credits")
         if balance < total_cost:
-            raise ValueError(f"Insufficient credits. Need {total_cost}, have {balance}")
-        
+            raise ValueError(
+                f"Insufficient credits. Need {total_cost}, have {balance}")
+
         # Deduct cost
         await self.currency_service.deduct_currency(
             owner_id,
@@ -103,11 +104,11 @@ class RobotTrainingService:
             total_cost,
             reason=f"robot_training_{robot_id}"
         )
-        
+
         # Create training session
         now = datetime.utcnow()
         completes_at = now + timedelta(hours=duration_hours)
-        
+
         training_session = {
             "robot_id": robot_id,
             "owner_id": owner_id,
@@ -125,12 +126,12 @@ class RobotTrainingService:
                 "xp": training_data["xp_per_hour"] * duration_hours
             }
         }
-        
+
         await db.robot_training.insert_one(training_session)
-        
+
         # Update robot status
         await self.robot_manager.update_robot_status(robot_id, "training")
-        
+
         return {
             "success": True,
             "robot_id": robot_id,
@@ -144,24 +145,24 @@ class RobotTrainingService:
     async def get_training_status(self, robot_id: str) -> Dict[str, Any]:
         """Get current training status for a robot."""
         db = await get_database()
-        
+
         training = await db.robot_training.find_one({
             "robot_id": robot_id,
             "status": "active"
         })
-        
+
         if not training:
             return {
                 "robot_id": robot_id,
                 "is_training": False
             }
-        
+
         now = datetime.utcnow()
         completes_at = training["completes_at"]
-        
+
         time_remaining = (completes_at - now).total_seconds()
         time_remaining = max(0, int(time_remaining))
-        
+
         return {
             "robot_id": robot_id,
             "is_training": True,
@@ -179,50 +180,51 @@ class RobotTrainingService:
     ) -> Dict[str, Any]:
         """Complete training and apply rewards."""
         db = await get_database()
-        
+
         training = await db.robot_training.find_one({
             "robot_id": robot_id,
             "status": "active"
         })
-        
+
         if not training:
             raise ValueError("No active training session")
-        
+
         if training["owner_id"] != owner_id:
             raise ValueError("Not your robot")
-        
+
         # Check if training is complete
         now = datetime.utcnow()
         if now < training["completes_at"]:
             time_remaining = (training["completes_at"] - now).total_seconds()
-            raise ValueError(f"Training not complete yet. {int(time_remaining)} seconds remaining")
-        
+            raise ValueError(
+                f"Training not complete yet. {int(time_remaining)} seconds remaining")
+
         # Get robot
         robot = await self.robot_manager.get_robot(robot_id)
-        
+
         if not robot:
             raise ValueError("Robot not found")
-        
+
         # Apply stat bonuses
         stats = robot.get("stats", {})
         rewards = training["rewards"]
-        
+
         for stat_name, bonus in rewards["stat_bonuses"].items():
             if stat_name in stats:
                 stats[stat_name] = min(100, stats[stat_name] + bonus)
-        
+
         await db.robots.update_one(
             {"id": robot_id},
             {"$set": {"stats": stats}}
         )
-        
+
         # Add experience
         xp_gained = rewards["xp"]
         await self.robot_manager.add_experience(robot_id, xp_gained)
-        
+
         # Update robot status
         await self.robot_manager.update_robot_status(robot_id, "idle")
-        
+
         # Mark training as complete
         await db.robot_training.update_one(
             {"robot_id": robot_id, "status": "active"},
@@ -233,7 +235,7 @@ class RobotTrainingService:
                 }
             }
         )
-        
+
         return {
             "success": True,
             "robot_id": robot_id,
@@ -245,15 +247,15 @@ class RobotTrainingService:
     async def auto_complete_training(self):
         """Auto-complete all finished training sessions (called by scheduler)."""
         db = await get_database()
-        
+
         now = datetime.utcnow()
-        
+
         # Find all completed training sessions
         completed = await db.robot_training.find({
             "status": "active",
             "completes_at": {"$lte": now}
         }).to_list(length=1000)
-        
+
         for training in completed:
             try:
                 await self.complete_training(
@@ -261,4 +263,5 @@ class RobotTrainingService:
                     owner_id=training["owner_id"]
                 )
             except Exception as e:
-                print(f"Error auto-completing training for robot {training['robot_id']}: {e}")
+                print(
+                    f"Error auto-completing training for robot {training['robot_id']}: {e}")

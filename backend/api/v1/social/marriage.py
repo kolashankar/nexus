@@ -20,7 +20,7 @@ async def propose_marriage(
 ):
     """Propose marriage to another player"""
     service = MarriageService(db)
-    
+
     try:
         proposal = await service.propose_marriage(
             proposer_id=current_user["_id"],
@@ -50,7 +50,7 @@ async def accept_proposal(
 ):
     """Accept marriage proposal"""
     service = MarriageService(db)
-    
+
     try:
         marriage = await service.accept_proposal(proposal_id)
         return {"success": True, "marriage": marriage.model_dump()}
@@ -66,7 +66,7 @@ async def reject_proposal(
 ):
     """Reject marriage proposal"""
     service = MarriageService(db)
-    
+
     try:
         success = await service.reject_proposal(proposal_id)
         return {"success": success, "message": "Proposal rejected"}
@@ -82,10 +82,10 @@ async def get_my_marriage(
     """Get my current marriage"""
     service = MarriageService(db)
     marriage = await service.get_player_marriage(current_user["_id"])
-    
+
     if not marriage:
         raise HTTPException(status_code=404, detail="Not married")
-    
+
     return marriage
 
 
@@ -96,11 +96,11 @@ async def divorce(
 ):
     """Divorce (end marriage)"""
     service = MarriageService(db)
-    
+
     marriage = await service.get_player_marriage(current_user["_id"])
     if not marriage:
         raise HTTPException(status_code=400, detail="Not married")
-    
+
     try:
         success = await service.divorce(marriage.get("id"), current_user["_id"])
         return {"success": success, "message": "Divorced (karma penalty applied)"}

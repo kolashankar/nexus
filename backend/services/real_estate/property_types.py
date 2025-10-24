@@ -3,10 +3,10 @@ from typing import List, Dict, Optional
 
 class PropertyTypes:
     """Defines available property types and their characteristics."""
-    
+
     def __init__(self):
         self.properties = self._initialize_properties()
-    
+
     def _initialize_properties(self) -> Dict[str, Dict]:
         """Initialize property database."""
         return {
@@ -123,22 +123,22 @@ class PropertyTypes:
                 "upgrades": []
             }
         }
-    
+
     def get_all_properties(self) -> List[Dict]:
         """Get all properties."""
         return list(self.properties.values())
-    
+
     def get_property_by_id(self, property_id: str) -> Optional[Dict]:
         """Get a property by ID."""
         return self.properties.get(property_id)
-    
+
     def get_properties_by_type(self, property_type: str) -> List[Dict]:
         """Get properties by type."""
         return [
             prop for prop in self.properties.values()
             if prop.get("property_type") == property_type
         ]
-    
+
     def get_properties_by_territory(self, territory_id: int) -> List[Dict]:
         """Get properties in a specific territory."""
         return [

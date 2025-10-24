@@ -13,16 +13,16 @@ class AICacheMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         """Process request through cache layer"""
-        
+
         # Check if this is an AI endpoint
         if "/api/v1/ai/" in str(request.url):
             logger.debug(f"AI request: {request.method} {request.url.path}")
-        
+
         # Process request
         response = await call_next(request)
-        
+
         # Add cache headers for AI responses
         if "/api/v1/ai/" in str(request.url):
             response.headers["X-AI-Service"] = "karma-nexus"
-        
+
         return response

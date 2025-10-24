@@ -9,12 +9,14 @@ class LeaderboardEntryResponse(BaseModel):
     rank: int
     player_id: str
     username: str
-    value: float = Field(..., description="The value being ranked (karma, wealth, etc.)")
+    value: float = Field(...,
+                         description="The value being ranked (karma, wealth, etc.)")
     level: Optional[int] = None
     guild_name: Optional[str] = None
     title: Optional[str] = None
-    change_24h: Optional[int] = Field(None, description="Change in rank over last 24h")
-    
+    change_24h: Optional[int] = Field(
+        None, description="Change in rank over last 24h")
+
     class Config:
         from_attributes = True
 
@@ -26,7 +28,7 @@ class LeaderboardResponse(BaseModel):
     total_entries: int
     last_updated: Optional[str] = None
     season_id: Optional[str] = None
-    
+
     class Config:
         from_attributes = True
 
@@ -41,6 +43,6 @@ class PlayerRankResponse(BaseModel):
     percentile: float = Field(..., description="Percentile ranking (0-100)")
     total_players: int
     change_24h: Optional[int] = None
-    
+
     class Config:
         from_attributes = True

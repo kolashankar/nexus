@@ -20,12 +20,12 @@ async def get_available_guild_quests(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="You must be in a guild to view guild quests",
         )
-    
+
     service = GuildQuestService(db)
     quests = await service.get_guild_quests(
         guild_id=current_player["guild_id"],
     )
-    
+
     return {"quests": quests, "total": len(quests)}
 
 
@@ -40,9 +40,9 @@ async def generate_guild_quest(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="You must be in a guild",
         )
-    
+
     service = GuildQuestService(db)
-    
+
     try:
         quest = await service.generate_guild_quest(
             guild_id=current_player["guild_id"],
@@ -64,5 +64,5 @@ async def get_guild_quest_progress(
     """Get guild quest progress"""
     service = GuildQuestService(db)
     progress = await service.get_quest_progress(quest_id)
-    
+
     return {"progress": progress}

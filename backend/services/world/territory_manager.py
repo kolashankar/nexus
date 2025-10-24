@@ -15,14 +15,14 @@ class TerritoryManager:
     Manages territories and regional state
     Used for regional events and guild control
     """
-    
+
     TOTAL_TERRITORIES = 20
-    
+
     def __init__(self, db: AsyncIOMotorDatabase):
         self.db = db
         self.collection = db.territories
         logger.info("TerritoryManager initialized")
-    
+
     async def get_territory(self, territory_id: int) -> Optional[TerritoryModel]:
         """
         Get territory by ID
@@ -34,13 +34,13 @@ class TerritoryManager:
             TerritoryModel or None
         """
         territory_doc = await self.collection.find_one({"territory_id": territory_id})
-        
+
         if not territory_doc:
             return None
-        
+
         territory_doc.pop("_id", None)
         return TerritoryModel(**territory_doc)
-    
+
     async def get_all_territories(self) -> List[TerritoryModel]:
         """
         Get all territories
@@ -49,14 +49,14 @@ class TerritoryManager:
             List of all territories
         """
         cursor = self.collection.find().sort("territory_id", 1)
-        
+
         territories = []
         async for doc in cursor:
             doc.pop("_id", None)
             territories.append(TerritoryModel(**doc))
-        
+
         return territories
-    
+
     async def get_contested_territories(self) -> List[TerritoryModel]:
         """
         Get all contested territories
@@ -65,14 +65,14 @@ class TerritoryManager:
             List of contested territories
         """
         cursor = self.collection.find({"contested": True})
-        
+
         territories = []
         async for doc in cursor:
             doc.pop("_id", None)
             territories.append(TerritoryModel(**doc))
-        
+
         return territories
-    
+
     async def get_guild_territories(self, guild_id: str) -> List[TerritoryModel]:
         """
         Get territories controlled by a guild
@@ -84,14 +84,14 @@ class TerritoryManager:
             List of controlled territories
         """
         cursor = self.collection.find({"controlling_guild_id": guild_id})
-        
+
         territories = []
         async for doc in cursor:
             doc.pop("_id", None)
             territories.append(TerritoryModel(**doc))
-        
+
         return territories
-    
+
     async def update_territory(
         self,
         territory_id: int,
@@ -108,14 +108,14 @@ class TerritoryManager:
             Updated territory
         """
         updates["last_updated"] = datetime.utcnow()
-        
+
         await self.collection.update_one(
             {"territory_id": territory_id},
             {"$set": updates}
         )
-        
+
         return await self.get_territory(territory_id)
-    
+
     async def add_regional_event(
         self,
         territory_id: int,
@@ -142,7 +142,7 @@ class TerritoryManager:
             ends_at=datetime.utcnow() + timedelta(hours=duration_hours),
             is_active=True
         )
-        
+
         await self.collection.update_one(
             {"territory_id": territory_id},
             {
@@ -153,9 +153,9 @@ class TerritoryManager:
                 }
             }
         )
-        
+
         logger.info(f"Regional event {name} added to territory {territory_id}")
-    
+
     async def get_territory_state(self, territory_id: int) -> Dict[str, Any]:
         """
         Get territory state for event generation
@@ -167,10 +167,10 @@ class TerritoryManager:
             Dictionary with territory state data
         """
         territory = await self.get_territory(territory_id)
-        
+
         if not territory:
             return {}
-        
+
         return {
             "territory_id": territory.territory_id,
             "name": territory.name,
@@ -183,7 +183,7 @@ class TerritoryManager:
             "conflict_level": territory.conflict_level,
             "resources": territory.resources
         }
-    
+
     async def sync_territory_population(self, territory_id: int) -> int:
         """
         Sync territory population from player data
@@ -198,20 +198,20 @@ class TerritoryManager:
         population = await self.db.players.count_documents({
             "location.territory_id": territory_id
         })
-        
+
         # Count online players in territory
         online = await self.db.players.count_documents({
             "location.territory_id": territory_id,
             "online": True
         })
-        
+
         await self.update_territory(territory_id, {
             "total_residents": population,
             "online_players": online
         })
-        
+
         return population
-    
+
     async def calculate_local_karma(self, territory_id: int) -> float:
         """
         Calculate combined karma of territory residents
@@ -230,22 +230,22 @@ class TerritoryManager:
                 "avg_karma": {"$avg": "$karma_points"}
             }}
         ]
-        
+
         result = await self.db.players.aggregate(pipeline).to_list(1)
-        
+
         if result:
             local_karma = result[0].get("total_karma", 0.0)
             avg_karma = result[0].get("avg_karma", 0.0)
-            
+
             await self.update_territory(territory_id, {
                 "local_karma": local_karma,
                 "average_karma": avg_karma
             })
-            
+
             return local_karma
-        
+
         return 0.0
-    
+
     async def initialize_territories(self) -> int:
         """
         Initialize all 20 territories if they don't exist
@@ -254,11 +254,12 @@ class TerritoryManager:
             Number of territories created
         """
         existing_count = await self.collection.count_documents({})
-        
+
         if existing_count >= self.TOTAL_TERRITORIES:
-            logger.info(f"Territories already initialized ({existing_count} exist)")
+            logger.info(
+                f"Territories already initialized ({existing_count} exist)")
             return 0
-        
+
         territories_data = [
             {"id": 1, "name": "Silicon Valley", "region": "west"},
             {"id": 2, "name": "Cyber Tokyo", "region": "east"},
@@ -281,23 +282,23 @@ class TerritoryManager:
             {"id": 19, "name": "Network New York", "region": "north"},
             {"id": 20, "name": "Virtual Sau Paulo", "region": "south"}
         ]
-        
+
         created = 0
         for data in territories_data:
             # Check if exists
             existing = await self.collection.find_one({"territory_id": data["id"]})
             if existing:
                 continue
-            
+
             territory = TerritoryModel(
                 territory_id=data["id"],
                 name=data["name"],
                 description=f"A major technological hub in the {data['region']}ern region.",
                 region=data["region"]
             )
-            
+
             await self.collection.insert_one(territory.dict())
             created += 1
-        
+
         logger.info(f"Initialized {created} new territories")
         return created

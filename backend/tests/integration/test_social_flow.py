@@ -6,7 +6,7 @@ from backend.server import app
 
 class TestAlliances:
     """Test alliance system flow."""
-    
+
     @pytest.mark.asyncio
     async def test_create_alliance(self, auth_headers, clean_db):
         """Test creating an alliance with another player."""
@@ -16,7 +16,7 @@ class TestAlliances:
             "email": "ally@example.com"
         }
         await clean_db.players.insert_one(target)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/social/alliance",
@@ -25,11 +25,11 @@ class TestAlliances:
                     "target_username": "ally_player"
                 }
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert "alliance_id" in data
-    
+
     @pytest.mark.asyncio
     async def test_max_alliance_limit(self, auth_headers, clean_db):
         """Test that alliance limit is enforced (max 3)."""
@@ -40,14 +40,14 @@ class TestAlliances:
                 "allies": ["ally1", "ally2", "ally3"]
             }}
         )
-        
+
         # Try to create 4th alliance
         target = {
             "username": "ally4",
             "email": "ally4@example.com"
         }
         await clean_db.players.insert_one(target)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/social/alliance",
@@ -56,9 +56,9 @@ class TestAlliances:
                     "target_username": "ally4"
                 }
             )
-            
+
             assert response.status_code == 400
-    
+
     @pytest.mark.asyncio
     async def test_break_alliance(self, auth_headers, clean_db):
         """Test breaking an alliance."""
@@ -67,19 +67,19 @@ class TestAlliances:
             {"username": "test_user"},
             {"$push": {"allies": "ally_player"}}
         )
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.delete(
                 "/api/social/alliance/ally_player",
                 headers=auth_headers
             )
-            
+
             assert response.status_code == 200
 
 
 class TestMarriage:
     """Test marriage system flow."""
-    
+
     @pytest.mark.asyncio
     async def test_propose_marriage(self, auth_headers, clean_db):
         """Test proposing marriage to another player."""
@@ -89,7 +89,7 @@ class TestMarriage:
             "email": "soulmate@example.com"
         }
         await clean_db.players.insert_one(target)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/social/marry",
@@ -98,11 +98,11 @@ class TestMarriage:
                     "target_username": "soulmate"
                 }
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert "proposal_id" in data
-    
+
     @pytest.mark.asyncio
     async def test_divorce(self, auth_headers, clean_db):
         """Test divorcing a spouse."""
@@ -111,13 +111,13 @@ class TestMarriage:
             {"username": "test_user"},
             {"$set": {"spouse_id": "spouse_user"}}
         )
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/social/divorce",
                 headers=auth_headers
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert "karma_cost" in data  # Divorce has karma cost
@@ -125,7 +125,7 @@ class TestMarriage:
 
 class TestMentorship:
     """Test mentorship system flow."""
-    
+
     @pytest.mark.asyncio
     async def test_request_mentorship(self, auth_headers, clean_db):
         """Test requesting mentorship from veteran player."""
@@ -137,7 +137,7 @@ class TestMentorship:
             "can_mentor": True
         }
         await clean_db.players.insert_one(veteran)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/social/mentor/request",
@@ -146,11 +146,11 @@ class TestMentorship:
                     "mentor_username": "veteran_player"
                 }
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert "request_id" in data
-    
+
     @pytest.mark.asyncio
     async def test_graduate_apprentice(self, auth_headers, clean_db):
         """Test graduating an apprentice."""
@@ -162,12 +162,12 @@ class TestMentorship:
             "level": 50  # Reached graduation level
         }
         await clean_db.players.insert_one(apprentice)
-        
+
         await clean_db.players.update_one(
             {"username": "test_user"},
             {"$push": {"apprentices": "apprentice"}}
         )
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/social/mentor/graduate",
@@ -176,7 +176,7 @@ class TestMentorship:
                     "apprentice_username": "apprentice"
                 }
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert "legacy_points" in data  # Mentor gets legacy points

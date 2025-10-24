@@ -21,7 +21,8 @@ class EquipPowerRequest(BaseModel):
 
 class UsePowerRequest(BaseModel):
     power_id: str = Field(..., description="ID of the power to use")
-    target_id: Optional[str] = Field(None, description="Target player ID (if applicable)")
+    target_id: Optional[str] = Field(
+        None, description="Target player ID (if applicable)")
 
 class PowerDefinitionResponse(BaseModel):
     power_id: str

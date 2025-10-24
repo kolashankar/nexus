@@ -15,7 +15,7 @@ async def steal_from_player(
 ):
     """Steal from another player"""
     handler = ActionHandler()
-    
+
     try:
         result = await handler.execute_action(
             action_type="steal",

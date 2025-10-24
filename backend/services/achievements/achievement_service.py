@@ -50,7 +50,7 @@ ACHIEVEMENT_DEFINITIONS = {
         points=200,
         requirements={"mastered_traits": 5}
     ),
-    
+
     # Power Collector (10 achievements)
     "first_power": AchievementDefinition(
         achievement_id="first_power",
@@ -79,7 +79,7 @@ ACHIEVEMENT_DEFINITIONS = {
         icon="godlike_icon",
         points=500
     ),
-    
+
     # Karma Achievements (15 achievements)
     "karma_saint": AchievementDefinition(
         achievement_id="karma_saint",
@@ -117,7 +117,7 @@ ACHIEVEMENT_DEFINITIONS = {
         icon="redemption_icon",
         points=200
     ),
-    
+
     # Social Achievements (15 achievements)
     "first_friend": AchievementDefinition(
         achievement_id="first_friend",
@@ -155,7 +155,7 @@ ACHIEVEMENT_DEFINITIONS = {
         icon="mentor_icon",
         points=200
     ),
-    
+
     # Economic Achievements (15 achievements)
     "first_million": AchievementDefinition(
         achievement_id="first_million",
@@ -193,7 +193,7 @@ ACHIEVEMENT_DEFINITIONS = {
         icon="robots_icon",
         points=150
     ),
-    
+
     # Combat Achievements (15 achievements)
     "first_victory": AchievementDefinition(
         achievement_id="first_victory",
@@ -231,7 +231,7 @@ ACHIEVEMENT_DEFINITIONS = {
         icon="war_icon",
         points=75
     ),
-    
+
     # Story Achievements (10 achievements)
     "quest_beginner": AchievementDefinition(
         achievement_id="quest_beginner",
@@ -260,7 +260,7 @@ ACHIEVEMENT_DEFINITIONS = {
         icon="dedication_icon",
         points=150
     ),
-    
+
     # Hidden Achievements (10 achievements)
     "secret_explorer": AchievementDefinition(
         achievement_id="secret_explorer",
@@ -286,12 +286,12 @@ ACHIEVEMENT_DEFINITIONS = {
 
 class AchievementService:
     """Service for managing player achievements"""
-    
+
     @staticmethod
     def initialize_achievements(player_id: str) -> PlayerAchievements:
         """Initialize achievements for a new player"""
         return PlayerAchievements(player_id=player_id)
-    
+
     @staticmethod
     def check_achievement(
         player_achievements: PlayerAchievements,
@@ -301,51 +301,52 @@ class AchievementService:
         """Check if achievement should be unlocked"""
         if achievement_id not in ACHIEVEMENT_DEFINITIONS:
             return False, None
-        
+
         definition = ACHIEVEMENT_DEFINITIONS[achievement_id]
-        
+
         # Check if already unlocked (and not repeatable)
         if any(a.achievement_id == achievement_id for a in player_achievements.unlocked_achievements):
             if not definition.repeatable:
                 return False, None
-        
+
         # Check requirements based on category
         requirements_met = AchievementService._check_requirements(
             definition, player_data
         )
-        
+
         if requirements_met:
             return True, definition
-        
+
         return False, None
-    
+
     @staticmethod
     def _check_requirements(definition: AchievementDefinition, player_data: Dict) -> bool:
         """Check if requirements are met"""
         requirements = definition.requirements
-        
+
         if "trait" in requirements:
             trait_name = requirements["trait"]
             trait_value = requirements["value"]
             if player_data.get("traits", {}).get(trait_name, 0) >= trait_value:
                 return True
-        
+
         if "mastered_traits" in requirements:
             count = requirements["mastered_traits"]
-            mastered = sum(1 for v in player_data.get("traits", {}).values() if v >= 100)
+            mastered = sum(1 for v in player_data.get(
+                "traits", {}).values() if v >= 100)
             if mastered >= count:
                 return True
-        
+
         if "karma" in requirements:
             if player_data.get("karma_points", 0) >= requirements["karma"]:
                 return True
-        
+
         if "level" in requirements:
             if player_data.get("level", 0) >= requirements["level"]:
                 return True
-        
+
         return False
-    
+
     @staticmethod
     def unlock_achievement(
         player_achievements: PlayerAchievements,
@@ -354,14 +355,15 @@ class AchievementService:
         """Unlock an achievement"""
         if achievement_id not in ACHIEVEMENT_DEFINITIONS:
             return False, "Achievement not found"
-        
+
         definition = ACHIEVEMENT_DEFINITIONS[achievement_id]
-        success = player_achievements.unlock_achievement(achievement_id, definition)
-        
+        success = player_achievements.unlock_achievement(
+            achievement_id, definition)
+
         if success:
             return True, f"Achievement unlocked: {definition.name}!"
         return False, "Achievement already unlocked"
-    
+
     @staticmethod
     def update_progress(
         player_achievements: PlayerAchievements,
@@ -376,27 +378,28 @@ class AchievementService:
                     achievement_id=achievement_id,
                     required_progress=definition.requirements.get("count", 1)
                 )
-        
+
         if achievement_id in player_achievements.achievement_progress:
-            player_achievements.achievement_progress[achievement_id].update_progress(progress_amount)
-    
+            player_achievements.achievement_progress[achievement_id].update_progress(
+                progress_amount)
+
     @staticmethod
     def get_category_achievements(category: AchievementCategory) -> List[AchievementDefinition]:
         """Get all achievements in a category"""
         return [a for a in ACHIEVEMENT_DEFINITIONS.values() if a.category == category]
-    
+
     @staticmethod
     def get_achievement_summary(player_achievements: PlayerAchievements) -> Dict:
         """Get achievement summary"""
         total_achievements = len(ACHIEVEMENT_DEFINITIONS)
         unlocked_count = len(player_achievements.unlocked_achievements)
-        
+
         # Count by rarity
         rarity_counts = {}
         for achievement in player_achievements.unlocked_achievements:
             rarity = achievement.rarity
             rarity_counts[rarity] = rarity_counts.get(rarity, 0) + 1
-        
+
         return {
             "total_achievements": total_achievements,
             "unlocked": unlocked_count,

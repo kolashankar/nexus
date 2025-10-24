@@ -37,11 +37,11 @@ class TerritoryService:
         territory = await self.territories.find_one({"territory_id": territory_id})
         if not territory:
             raise ValueError("Territory not found")
-        
+
         # Check if already controlled
         if territory.get("controlling_guild_id") == guild_id:
             raise ValueError("Already controlling this territory")
-        
+
         # Remove from previous controller
         old_controller = territory.get("controlling_guild_id")
         if old_controller:
@@ -49,7 +49,7 @@ class TerritoryService:
                 {"id": old_controller},
                 {"$pull": {"controlled_territories": territory_id}}
             )
-        
+
         # Update territory
         await self.territories.update_one(
             {"territory_id": territory_id},
@@ -62,13 +62,13 @@ class TerritoryService:
                 }
             }
         )
-        
+
         # Add to new controller
         await self.guilds.update_one(
             {"id": guild_id},
             {"$addToSet": {"controlled_territories": territory_id}}
         )
-        
+
         return True
 
     async def attack_territory(self, territory_id: int, attacker_guild_id: str) -> dict:
@@ -76,16 +76,16 @@ class TerritoryService:
         territory = await self.territories.find_one({"territory_id": territory_id})
         if not territory:
             raise ValueError("Territory not found")
-        
+
         defender_guild_id = territory.get("controlling_guild_id")
         if not defender_guild_id:
             # Unclaimed territory, capture directly
             await self.capture_territory(territory_id, attacker_guild_id)
             return {"success": True, "message": "Territory captured without resistance"}
-        
+
         if defender_guild_id == attacker_guild_id:
             raise ValueError("Cannot attack your own territory")
-        
+
         # Mark as contested
         await self.territories.update_one(
             {"territory_id": territory_id},
@@ -96,15 +96,16 @@ class TerritoryService:
                 }
             }
         )
-        
+
         # Determine outcome (simplified - can be enhanced with more complex logic)
         attacker_guild = await self.guilds.find_one({"id": attacker_guild_id})
         defender_guild = await self.guilds.find_one({"id": defender_guild_id})
-        
-        attacker_power = attacker_guild.get("level", 1) * attacker_guild.get("total_members", 1)
-        defender_power = (defender_guild.get("level", 1) * defender_guild.get("total_members", 1) * 
+
+        attacker_power = attacker_guild.get(
+            "level", 1) * attacker_guild.get("total_members", 1)
+        defender_power = (defender_guild.get("level", 1) * defender_guild.get("total_members", 1) *
                          territory.get("defense_level", 1))
-        
+
         if attacker_power > defender_power:
             await self.capture_territory(territory_id, attacker_guild_id)
             return {
@@ -130,14 +131,14 @@ class TerritoryService:
         territory = await self.territories.find_one({"territory_id": territory_id})
         if not territory:
             raise ValueError("Territory not found")
-        
+
         if territory.get("controlling_guild_id") != guild_id:
             raise ValueError("Not your territory")
-        
+
         # Upgrade defense
         await self.territories.update_one(
             {"territory_id": territory_id},
             {"$inc": {"defense_level": 1}}
         )
-        
+
         return True

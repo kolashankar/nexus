@@ -15,7 +15,7 @@ class TutorialStatus(str, Enum):
 
 class TutorialStep:
     """Individual tutorial step."""
-    
+
     def __init__(
         self,
         step_id: str,
@@ -39,12 +39,12 @@ class TutorialStep:
 
 class TutorialManager:
     """Manage player tutorial progress."""
-    
+
     def __init__(self, player_id: str, db_client):
         self.player_id = player_id
         self.db = db_client
         self.tutorial_collection = db_client['tutorial_progress']
-        
+
     async def start_tutorial(self) -> Dict[str, Any]:
         """Start the tutorial for a new player."""
         tutorial_data = {
@@ -56,51 +56,51 @@ class TutorialManager:
             'started_at': datetime.utcnow(),
             'completed_at': None
         }
-        
+
         await self.tutorial_collection.insert_one(tutorial_data)
         return await self.get_current_step()
-        
+
     async def get_progress(self) -> Dict[str, Any]:
         """Get player's tutorial progress."""
         progress = await self.tutorial_collection.find_one(
             {'player_id': self.player_id}
         )
-        
+
         if not progress:
             return {
                 'status': TutorialStatus.NOT_STARTED,
                 'current_step': None,
                 'progress_percent': 0
             }
-        
+
         total_steps = len(tutorial_steps)
         completed_steps = len(progress.get('completed_steps', []))
-        
+
         return {
             'status': progress['status'],
             'current_step': progress.get('current_step'),
             'completed_steps': progress.get('completed_steps', []),
             'progress_percent': round((completed_steps / total_steps) * 100, 2)
         }
-        
+
     async def get_current_step(self) -> Optional[Dict[str, Any]]:
         """Get the current tutorial step."""
         progress = await self.tutorial_collection.find_one(
             {'player_id': self.player_id}
         )
-        
+
         if not progress or progress['status'] == TutorialStatus.NOT_STARTED:
             return None
-            
+
         if progress['status'] in [TutorialStatus.COMPLETED, TutorialStatus.SKIPPED]:
             return None
-            
+
         current_step_id = progress['current_step']
         step = tutorial_steps.get(current_step_id)
-        
+
         if not step:
             return None
-            
+
         return {
             'step_id': step.step_id,
             'title': step.title,
@@ -109,53 +109,53 @@ class TutorialManager:
             'reward': step.reward,
             'skippable': step.skippable
         }
-        
+
     async def complete_step(self, step_id: str) -> Dict[str, Any]:
         """Mark a tutorial step as completed."""
         progress = await self.tutorial_collection.find_one(
             {'player_id': self.player_id}
         )
-        
+
         if not progress:
             raise ValueError("Tutorial not started")
-            
+
         step = tutorial_steps.get(step_id)
         if not step:
             raise ValueError(f"Invalid step: {step_id}")
-            
+
         # Update progress
         update_data = {
             '$addToSet': {'completed_steps': step_id},
             '$set': {'current_step': step.next_step}
         }
-        
+
         # If no next step, mark tutorial as completed
         if not step.next_step:
             update_data['$set']['status'] = TutorialStatus.COMPLETED
             update_data['$set']['completed_at'] = datetime.utcnow()
-            
+
         await self.tutorial_collection.update_one(
             {'player_id': self.player_id},
             update_data
         )
-        
+
         # Award reward
         await self._award_reward(step.reward)
-        
+
         return {
             'step_completed': step_id,
             'reward': step.reward,
             'next_step': step.next_step,
             'tutorial_complete': not step.next_step
         }
-        
+
     async def skip_step(self, step_id: str) -> Dict[str, Any]:
         """Skip a tutorial step."""
         step = tutorial_steps.get(step_id)
-        
+
         if not step or not step.skippable:
             raise ValueError("Step cannot be skipped")
-            
+
         await self.tutorial_collection.update_one(
             {'player_id': self.player_id},
             {
@@ -163,12 +163,12 @@ class TutorialManager:
                 '$set': {'current_step': step.next_step}
             }
         )
-        
+
         return {
             'step_skipped': step_id,
             'next_step': step.next_step
         }
-        
+
     async def skip_tutorial(self) -> Dict[str, Any]:
         """Skip the entire tutorial."""
         await self.tutorial_collection.update_one(
@@ -180,34 +180,34 @@ class TutorialManager:
                 }
             }
         )
-        
+
         return {'tutorial_skipped': True}
-        
+
     async def reset_tutorial(self) -> Dict[str, Any]:
         """Reset tutorial progress."""
         await self.tutorial_collection.delete_one(
             {'player_id': self.player_id}
         )
-        
+
         return await self.start_tutorial()
-        
+
     async def _award_reward(self, reward: Dict[str, Any]):
         """Award tutorial step reward to player."""
         players_collection = self.db['players']
-        
+
         update_data = {}
-        
+
         if 'credits' in reward:
             update_data['$inc'] = {'currencies.credits': reward['credits']}
-            
+
         if 'xp' in reward:
             if '$inc' not in update_data:
                 update_data['$inc'] = {}
             update_data['$inc']['xp'] = reward['xp']
-            
+
         if 'items' in reward:
             update_data['$push'] = {'items': {'$each': reward['items']}}
-            
+
         if update_data:
             await players_collection.update_one(
                 {'_id': self.player_id},

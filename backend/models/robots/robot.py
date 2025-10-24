@@ -12,27 +12,27 @@ class Robot(BaseModel):
     robot_type: str  # harvester, trader, guardian, etc.
     name: str
     owner_id: str
-    
+
     # Progression
     level: int = 1
     experience: int = 0
-    
+
     # Stats (vary by type)
     stats: Dict[str, int] = Field(default_factory=dict)
     abilities: List[str] = Field(default_factory=list)
-    
+
     # Status
     status: str = "idle"  # idle, working, training, combat, maintenance
     loyalty: int = 100  # 0-100, can decrease if mistreated
-    
+
     # Usage tracking
     created_at: datetime = Field(default_factory=datetime.utcnow)
     last_used: Optional[datetime] = None
     total_tasks: int = 0
-    
+
     # Personality (develops over time)
     personality_traits: Dict[str, int] = Field(default_factory=dict)
-    
+
     # Equipment/Upgrades
     installed_chips: List[str] = Field(default_factory=list)
     upgrades: List[str] = Field(default_factory=list)
@@ -66,13 +66,13 @@ class RobotChip(BaseModel):
     description: str
     chip_type: str  # combat, utility, economic
     rarity: str  # common, rare, epic, legendary
-    
+
     # Effects
     stat_bonuses: Dict[str, int] = Field(default_factory=dict)
     ability_unlocks: List[str] = Field(default_factory=list)
-    
+
     price: int
-    
+
     class Config:
         json_schema_extra = {
             "example": {

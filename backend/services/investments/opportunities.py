@@ -3,10 +3,10 @@ from typing import List, Dict, Optional
 
 class InvestmentOpportunities:
     """Manages investment opportunities."""
-    
+
     def __init__(self):
         self.opportunities = self._initialize_opportunities()
-    
+
     def _initialize_opportunities(self) -> Dict[str, Dict]:
         """Initialize investment opportunities."""
         return {
@@ -115,22 +115,22 @@ class InvestmentOpportunities:
                 "target_amount": 10000000
             }
         }
-    
+
     def get_all_opportunities(self) -> List[Dict]:
         """Get all investment opportunities."""
         return list(self.opportunities.values())
-    
+
     def get_opportunity_by_id(self, opportunity_id: str) -> Optional[Dict]:
         """Get a specific opportunity by ID."""
         return self.opportunities.get(opportunity_id)
-    
+
     def get_opportunities_by_type(self, investment_type: str) -> List[Dict]:
         """Get opportunities by type."""
         return [
             opp for opp in self.opportunities.values()
             if opp.get("investment_type") == investment_type
         ]
-    
+
     def get_opportunities_by_risk(self, risk_level: str) -> List[Dict]:
         """Get opportunities by risk level."""
         return [

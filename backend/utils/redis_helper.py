@@ -19,7 +19,7 @@ class RedisHelper:
         except Exception as e:
             logger.error(f"Redis get error for key {key}: {e}")
         return None
-    
+
     @staticmethod
     async def safe_set(
         redis_client: Any,
@@ -38,7 +38,7 @@ class RedisHelper:
         except Exception as e:
             logger.error(f"Redis set error for key {key}: {e}")
         return False
-    
+
     @staticmethod
     async def safe_delete(redis_client: Any, key: str) -> bool:
         """Safely delete key from Redis"""
@@ -49,12 +49,12 @@ class RedisHelper:
         except Exception as e:
             logger.error(f"Redis delete error for key {key}: {e}")
         return False
-    
+
     @staticmethod
     def serialize(data: Any) -> str:
         """Serialize data for Redis storage"""
         return json.dumps(data)
-    
+
     @staticmethod
     def deserialize(data: str) -> Any:
         """Deserialize data from Redis"""

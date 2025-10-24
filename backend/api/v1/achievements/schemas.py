@@ -15,11 +15,13 @@ class AchievementResponse(BaseModel):
     progress: Optional[float] = None
 
 class UnlockAchievementRequest(BaseModel):
-    achievement_id: str = Field(..., description="ID of the achievement to unlock")
+    achievement_id: str = Field(...,
+                                description="ID of the achievement to unlock")
 
 class UpdateProgressRequest(BaseModel):
     achievement_id: str = Field(..., description="ID of the achievement")
-    progress_amount: int = Field(..., ge=1, description="Amount of progress to add")
+    progress_amount: int = Field(..., ge=1,
+                                 description="Amount of progress to add")
 
 class AchievementSummaryResponse(BaseModel):
     total_achievements: int

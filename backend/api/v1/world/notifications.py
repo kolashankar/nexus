@@ -16,28 +16,30 @@ active_connections: Set[WebSocket] = set()
 
 class WorldEventNotifier:
     """Manages real-time notifications for world events"""
-    
+
     def __init__(self):
         self.connections: Set[WebSocket] = set()
-    
+
     async def connect(self, websocket: WebSocket):
         """Add new WebSocket connection"""
         await websocket.accept()
         self.connections.add(websocket)
-        logger.info(f"New world events subscriber. Total: {len(self.connections)}")
-    
+        logger.info(
+            f"New world events subscriber. Total: {len(self.connections)}")
+
     def disconnect(self, websocket: WebSocket):
         """Remove WebSocket connection"""
         self.connections.discard(websocket)
-        logger.info(f"World events subscriber disconnected. Total: {len(self.connections)}")
-    
+        logger.info(
+            f"World events subscriber disconnected. Total: {len(self.connections)}")
+
     async def broadcast_event(self, event_data: Dict):
         """Broadcast event to all connected clients"""
         message = json.dumps({
             "type": "world_event",
             "data": event_data
         })
-        
+
         disconnected = set()
         for connection in self.connections:
             try:
@@ -45,11 +47,11 @@ class WorldEventNotifier:
             except Exception as e:
                 logger.error(f"Error broadcasting to connection: {e}")
                 disconnected.add(connection)
-        
+
         # Clean up disconnected clients
         for conn in disconnected:
             self.connections.discard(conn)
-    
+
     async def notify_event_started(self, event):
         """Notify all clients that an event has started"""
         await self.broadcast_event({
@@ -61,14 +63,14 @@ class WorldEventNotifier:
             "status": "started",
             "ends_at": event.ends_at.isoformat() if event.ends_at else None
         })
-    
+
     async def notify_event_ended(self, event_id: str):
         """Notify all clients that an event has ended"""
         await self.broadcast_event({
             "event_id": event_id,
             "status": "ended"
         })
-    
+
     async def notify_world_state_update(self, world_state):
         """Notify clients of world state changes"""
         await self.broadcast_event({
@@ -89,12 +91,12 @@ async def world_events_websocket(websocket: WebSocket):
     WebSocket endpoint for real-time world event notifications
     """
     await notifier.connect(websocket)
-    
+
     try:
         while True:
             # Keep connection alive and listen for client messages
             data = await websocket.receive_text()
-            
+
             # Handle client messages (ping, subscribe, etc.)
             try:
                 message = json.loads(data)
@@ -102,7 +104,7 @@ async def world_events_websocket(websocket: WebSocket):
                     await websocket.send_text(json.dumps({"type": "pong"}))
             except json.JSONDecodeError:
                 pass
-                
+
     except WebSocketDisconnect:
         notifier.disconnect(websocket)
     except Exception as e:

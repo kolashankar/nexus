@@ -36,22 +36,22 @@ class Battle(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     battle_type: str  # duel, ambush, arena, guild_war
     status: str = "active"  # active, completed, fled
-    
+
     combatants: List[Combatant]
     current_turn: int = 1
     current_actor_index: int = 0
-    
+
     combat_log: List[CombatLogEntry] = Field(default_factory=list)
-    
+
     winner: Optional[str] = None
     loser: Optional[str] = None
-    
+
     rewards: Dict[str, Any] = Field(default_factory=dict)
     penalties: Dict[str, Any] = Field(default_factory=dict)
-    
+
     started_at: datetime = Field(default_factory=datetime.utcnow)
     ended_at: Optional[datetime] = None
-    
+
     # Additional metadata
     guild_war_id: Optional[str] = None
     territory_id: Optional[int] = None

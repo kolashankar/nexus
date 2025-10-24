@@ -10,7 +10,7 @@ security = HTTPBearer()
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     """Get current authenticated user"""
     token = credentials.credentials
-    
+
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         user_id = payload.get("sub")
@@ -24,7 +24,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication credentials"
         )
-    
+
     db = get_database()
     user = await db.players.find_one({"_id": user_id})
     if not user:
@@ -32,7 +32,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not found"
         )
-    
+
     return user
 
 async def get_current_active_user(current_user: dict = Depends(get_current_user)):

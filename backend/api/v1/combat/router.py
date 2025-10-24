@@ -98,7 +98,7 @@ async def get_active_combat(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="No active combat"
             )
-        
+
         return await combat_engine.get_combat_state(str(battle["_id"]))
     except HTTPException:
         raise

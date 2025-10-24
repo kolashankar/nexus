@@ -27,7 +27,7 @@ async def test_db_client() -> AsyncGenerator:
     mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
     client = AsyncIOMotorClient(mongo_url)
     yield client
-    
+
     # Cleanup: drop test database
     await client.drop_database(TEST_DB_NAME)
     client.close()
@@ -37,11 +37,11 @@ async def test_db_client() -> AsyncGenerator:
 async def test_db(test_db_client):
     """Get test database"""
     db = test_db_client[TEST_DB_NAME]
-    
+
     # Clear all collections before each test
     for collection_name in await db.list_collection_names():
         await db[collection_name].delete_many({})
-    
+
     yield db
 
 
@@ -50,10 +50,10 @@ async def client(test_db) -> AsyncGenerator:
     """Create test client"""
     # Override database dependency
     app.dependency_overrides[get_database] = lambda: test_db
-    
+
     async with AsyncClient(app=app, base_url="http://test") as ac:
         yield ac
-    
+
     app.dependency_overrides.clear()
 
 
@@ -61,7 +61,7 @@ async def client(test_db) -> AsyncGenerator:
 async def test_user(test_db):
     """Create a test user"""
     from core.security import get_password_hash
-    
+
     user_data = {
         "username": "testuser",
         "email": "test@example.com",
@@ -92,10 +92,10 @@ async def test_user(test_db):
             "karma_score": True,
         },
     }
-    
+
     result = await test_db["players"].insert_one(user_data)
     user_data["_id"] = result.inserted_id
-    
+
     return user_data
 
 
@@ -109,7 +109,7 @@ async def auth_token(client, test_user):
             "password": "testpass123",
         },
     )
-    
+
     data = response.json()
     return data["access_token"]
 
@@ -136,10 +136,10 @@ async def test_robot(test_db, test_user):
         },
         "price": 1000,
     }
-    
+
     result = await test_db["robots"].insert_one(robot_data)
     robot_data["_id"] = result.inserted_id
-    
+
     return robot_data
 
 
@@ -168,10 +168,10 @@ async def test_guild(test_db, test_user):
         "controlled_territories": [],
         "guild_karma": 0,
     }
-    
+
     result = await test_db["guilds"].insert_one(guild_data)
     guild_data["_id"] = result.inserted_id
-    
+
     return guild_data
 
 
@@ -201,17 +201,18 @@ async def test_quest(test_db, test_user):
             "karma": 10,
         },
     }
-    
+
     result = await test_db["quests"].insert_one(quest_data)
     quest_data["_id"] = result.inserted_id
-    
+
     return quest_data
 
 
 # Helper functions
 def assert_success_response(response):
     """Assert that response is successful"""
-    assert response.status_code in [200, 201], f"Expected success, got {response.status_code}: {response.text}"
+    assert response.status_code in [
+        200, 201], f"Expected success, got {response.status_code}: {response.text}"
 
 
 def assert_error_response(response, expected_status=400):

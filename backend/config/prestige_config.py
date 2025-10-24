@@ -328,18 +328,18 @@ def can_prestige(player_data: Dict[str, Any], next_level: int) -> tuple[bool, st
     config = get_prestige_level(next_level)
     if not config:
         return False, "Invalid prestige level"
-    
+
     requirements = config["requirements"]
-    
+
     if player_data.get("level", 0) < requirements["min_player_level"]:
         return False, f"Need level {requirements['min_player_level']}"
-    
+
     if abs(player_data.get("karma_points", 0)) < requirements["karma_threshold"]:
         return False, f"Need {requirements['karma_threshold']} karma"
-    
+
     if player_data.get("achievements_unlocked", 0) < requirements["achievements_required"]:
         return False, f"Need {requirements['achievements_required']} achievements"
-    
+
     return True, "Ready to prestige"
 
 def calculate_kept_traits(traits: Dict[str, float], prestige_level: int) -> Dict[str, float]:
@@ -347,6 +347,6 @@ def calculate_kept_traits(traits: Dict[str, float], prestige_level: int) -> Dict
     config = get_prestige_level(prestige_level)
     if not config:
         return {}
-    
+
     keep_percentage = config["reset_effects"]["keep_percentage"]
     return {trait: value * keep_percentage for trait, value in traits.items()}

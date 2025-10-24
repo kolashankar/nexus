@@ -16,28 +16,32 @@ class Property(BaseModel):
     id: str = Field(..., description="Unique property ID")
     name: str = Field(..., description="Property name")
     description: str = Field(..., description="Property description")
-    
+
     property_type: str = Field(
         ...,
         description="Property type (apartment, house, mansion, commercial, industrial)"
     )
     size: int = Field(..., ge=1, description="Size in square meters")
-    
+
     location: Dict[str, Any] = Field(..., description="Property location")
     territory_id: int = Field(..., description="Territory ID")
-    
+
     price: int = Field(..., ge=0, description="Purchase price")
-    passive_income: int = Field(default=0, ge=0, description="Daily passive income")
-    maintenance_cost: int = Field(default=0, ge=0, description="Daily maintenance cost")
-    
-    owner_id: Optional[str] = Field(default=None, description="Owner player ID")
-    tenant_id: Optional[str] = Field(default=None, description="Tenant player ID")
-    
+    passive_income: int = Field(
+        default=0, ge=0, description="Daily passive income")
+    maintenance_cost: int = Field(
+        default=0, ge=0, description="Daily maintenance cost")
+
+    owner_id: Optional[str] = Field(
+        default=None, description="Owner player ID")
+    tenant_id: Optional[str] = Field(
+        default=None, description="Tenant player ID")
+
     status: str = Field(default="available", description="Property status")
     purchase_date: Optional[datetime] = Field(default=None)
-    
+
     upgrades: List[PropertyUpgrade] = Field(default_factory=list)
-    
+
     class Config:
         json_schema_extra = {
             "example": {

@@ -6,7 +6,8 @@ from typing import Optional, Dict, Any
 
 class JoinQueueRequest(BaseModel):
     """Request to join arena queue."""
-    rating: Optional[int] = Field(None, description="Player's current rating (auto-fetched if not provided)")
+    rating: Optional[int] = Field(
+        None, description="Player's current rating (auto-fetched if not provided)")
 
 
 class ArenaMatchResponse(BaseModel):

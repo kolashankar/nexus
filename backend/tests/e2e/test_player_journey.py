@@ -6,7 +6,7 @@ from backend.server import app
 
 class TestNewPlayerJourney:
     """Test a new player's complete journey through the game."""
-    
+
     @pytest.mark.asyncio
     async def test_complete_new_player_flow(self, clean_db):
         """Test complete flow: register -> explore -> quest -> combat -> guild."""
@@ -20,12 +20,12 @@ class TestNewPlayerJourney:
             assert register_response.status_code == 200
             token = register_response.json()["access_token"]
             headers = {"Authorization": f"Bearer {token}"}
-            
+
             # 2. View profile
             profile_response = await client.get("/api/player/profile", headers=headers)
             assert profile_response.status_code == 200
             assert profile_response.json()["username"] == "newplayer"
-            
+
             # 3. Create target player for interactions
             target = {
                 "username": "target",
@@ -34,7 +34,7 @@ class TestNewPlayerJourney:
                 "moral_class": "poor"
             }
             await clean_db.players.insert_one(target)
-            
+
             # 4. Perform help action (positive karma)
             help_response = await client.post(
                 "/api/actions/help",
@@ -43,14 +43,14 @@ class TestNewPlayerJourney:
             )
             assert help_response.status_code == 200
             assert help_response.json()["karma_change"] > 0
-            
+
             # 5. Generate daily quests
             quest_response = await client.post(
                 "/api/quests/daily/generate",
                 headers=headers
             )
             assert quest_response.status_code == 200
-            
+
             # 6. Purchase a robot
             robot_response = await client.post(
                 "/api/robots/purchase",
@@ -58,7 +58,7 @@ class TestNewPlayerJourney:
                 json={"robot_type": "harvester"}
             )
             assert robot_response.status_code == 200
-            
+
             # 7. Create a guild
             guild_response = await client.post(
                 "/api/guilds/create",
@@ -70,11 +70,11 @@ class TestNewPlayerJourney:
                 }
             )
             assert guild_response.status_code == 200
-            
+
             # 8. Check final profile state
             final_profile = await client.get("/api/player/profile", headers=headers)
             profile_data = final_profile.json()
-            
+
             # Verify state changes
             assert profile_data["karma_points"] > 0
             assert len(profile_data["robots"]) > 0

@@ -11,7 +11,8 @@ router = APIRouter(prefix="/leaderboard", tags=["quest-leaderboard"])
 
 @router.get("/completions")
 async def get_completion_leaderboard(
-    timeframe: str = Query("all_time", regex="^(daily|weekly|monthly|all_time)$"),
+    timeframe: str = Query(
+        "all_time", regex="^(daily|weekly|monthly|all_time)$"),
     limit: int = Query(100, ge=1, le=1000),
     db = Depends(get_database),
 ):
@@ -41,7 +42,8 @@ async def get_speedrun_leaderboard(
 
 @router.get("/my-rank")
 async def get_my_rank(
-    timeframe: str = Query("all_time", regex="^(daily|weekly|monthly|all_time)$"),
+    timeframe: str = Query(
+        "all_time", regex="^(daily|weekly|monthly|all_time)$"),
     current_player: dict = Depends(get_current_player),
     db = Depends(get_database),
 ):

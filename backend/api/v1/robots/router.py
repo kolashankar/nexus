@@ -67,20 +67,20 @@ async def get_robot(
     """Get detailed information about a specific robot."""
     try:
         robot = await robot_manager.get_robot(robot_id)
-        
+
         if not robot:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Robot not found"
             )
-        
+
         # Verify ownership
         if robot["owner_id"] != current_user["_id"]:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Not your robot"
             )
-        
+
         return robot
     except HTTPException:
         raise

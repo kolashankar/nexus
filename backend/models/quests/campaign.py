@@ -21,38 +21,38 @@ class CampaignChapter(BaseModel):
     objectives: List[str] = Field(default_factory=list)
     choices: List[CampaignChoice] = Field(default_factory=list)
     rewards: Optional[Dict] = None
-    
+
 class Campaign(BaseModel):
     """Campaign database model."""
     title: str
     description: str
     lore: str
-    
+
     # Chapters
     chapters: List[CampaignChapter] = Field(default_factory=list)
     total_chapters: int
-    
+
     # Requirements
     min_level: int = 1
     min_karma: Optional[int] = None
     required_moral_class: Optional[str] = None
-    
+
     # Metadata
     difficulty: str = "medium"
     estimated_time: int = 0  # minutes
     category: str = "main"
-    
+
     # Branching paths
     branching_paths: List[str] = Field(default_factory=lambda: ["main"])
-    
+
     # Stats
     started_count: int = 0
     completed_count: int = 0
     average_completion_time: Optional[int] = None
-    
+
     # Rewards
     completion_rewards: Dict = Field(default_factory=dict)
-    
+
     class Config:
         json_schema_extra = {
             "example": {
@@ -70,17 +70,17 @@ class CampaignProgress(BaseModel):
     player_id: str
     campaign_id: str
     status: str = "active"  # active, completed, abandoned
-    
+
     started_at: datetime = Field(default_factory=datetime.utcnow)
     completed_at: Optional[datetime] = None
-    
+
     current_chapter: int = 0
     chapters_completed: int = 0
     total_chapters: int
-    
+
     choices_made: List[Dict] = Field(default_factory=list)
     branching_path: str = "main"
-    
+
     class Config:
         json_schema_extra = {
             "example": {

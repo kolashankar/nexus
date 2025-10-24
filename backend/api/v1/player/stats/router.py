@@ -21,13 +21,13 @@ async def get_my_stats(
 ):
     """Get current player's calculated stats."""
     player = await db.players.find_one({'_id': ObjectId(current_user['_id'])})
-    
+
     if not player:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Player not found'
         )
-    
+
     # Calculate all stats
     combat_stats = StatsCalculator.calculate_combat_stats(player)
     derived_traits = StatsCalculator.calculate_derived_traits(player)
@@ -35,7 +35,7 @@ async def get_my_stats(
         player.get('xp', 0),
         player.get('level', 1)
     )
-    
+
     return {
         'player_id': str(player['_id']),
         'username': player['username'],
@@ -53,23 +53,24 @@ async def get_trait_analysis(
 ):
     """Get detailed trait analysis."""
     player = await db.players.find_one({'_id': ObjectId(current_user['_id'])})
-    
+
     if not player:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Player not found'
         )
-    
+
     traits = player.get('traits', {})
-    
+
     # Calculate analysis
-    moral_alignment, alignment_score = TraitCalculator.calculate_moral_alignment(traits)
+    moral_alignment, alignment_score = TraitCalculator.calculate_moral_alignment(
+        traits)
     trait_balance = TraitCalculator.calculate_trait_balance(traits)
     dominant_traits = TraitCalculator.get_dominant_traits(traits, 5)
     weakest_traits = TraitCalculator.get_weakest_traits(traits, 5)
     suggestions = TraitCalculator.suggest_trait_improvements(traits)
     synergies = TraitCalculator.calculate_synergies(traits)
-    
+
     return {
         'moral_alignment': {
             'class': moral_alignment,
@@ -99,15 +100,15 @@ async def get_traits_by_category(
         category: Category name ('virtues', 'vices', 'skills')
     """
     player = await db.players.find_one({'_id': ObjectId(current_user['_id'])})
-    
+
     if not player:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='Player not found'
         )
-    
+
     traits = player.get('traits', {})
-    
+
     # Get traits by category
     if category == 'virtues':
         trait_list = TraitCalculator.VIRTUES
@@ -120,14 +121,14 @@ async def get_traits_by_category(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Invalid category. Use: virtues, vices, or skills'
         )
-    
+
     category_traits = {
         trait: traits.get(trait, 50)
         for trait in trait_list
     }
-    
+
     avg_value = sum(category_traits.values()) / len(category_traits)
-    
+
     return {
         'category': category,
         'traits': category_traits,

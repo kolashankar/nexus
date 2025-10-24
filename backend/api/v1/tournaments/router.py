@@ -31,10 +31,10 @@ async def get_tournament(
     """Get tournament details."""
     manager = TournamentManager()
     tournament = await manager.get_tournament(tournament_id)
-    
+
     if not tournament:
         raise HTTPException(status_code=404, detail="Tournament not found")
-    
+
     return tournament
 
 
@@ -45,7 +45,7 @@ async def register_for_tournament(
 ):
     """Register for a tournament."""
     manager = TournamentManager()
-    
+
     try:
         result = await manager.register_player(
             tournament_id=request.tournament_id,
@@ -64,10 +64,10 @@ async def get_tournament_bracket(
     """Get tournament bracket."""
     manager = TournamentManager()
     tournament = await manager.get_tournament(tournament_id)
-    
+
     if not tournament:
         raise HTTPException(status_code=404, detail="Tournament not found")
-    
+
     return {
         "tournament_id": tournament_id,
         "matches": tournament.get("matches", []),

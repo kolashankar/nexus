@@ -237,17 +237,18 @@ class RobotFactory:
     ) -> Dict[str, Any]:
         """Create a new robot for a player."""
         robot_type = robot_type.lower()
-        
+
         if robot_type not in self.ROBOT_TYPES:
             raise ValueError(f"Invalid robot type: {robot_type}")
-        
+
         robot_data = self.ROBOT_TYPES[robot_type]
-        
+
         # Check if player can afford
         balance = await self.currency_service.get_balance(player_id, "credits")
         if balance < robot_data["price"]:
-            raise ValueError(f"Insufficient credits. Need {robot_data['price']}, have {balance}")
-        
+            raise ValueError(
+                f"Insufficient credits. Need {robot_data['price']}, have {balance}")
+
         # Deduct cost
         await self.currency_service.deduct_currency(
             player_id,
@@ -255,7 +256,7 @@ class RobotFactory:
             robot_data["price"],
             reason=f"purchase_robot_{robot_type}"
         )
-        
+
         # Create robot
         robot_id = str(uuid.uuid4())
         robot = {
@@ -273,17 +274,17 @@ class RobotFactory:
             "last_used": None,
             "total_tasks": 0
         }
-        
+
         # Save to database
         db = await get_database()
         await db.robots.insert_one(robot)
-        
+
         # Add to player's robot inventory
         await db.players.update_one(
             {"_id": ObjectId(player_id)},
             {"$push": {"robots": robot_id}}
         )
-        
+
         return {
             "success": True,
             "robot": robot,

@@ -105,5 +105,6 @@ class TriggerEventRequest(BaseModel):
 
 class EventResponseRequest(BaseModel):
     """Player response to an event."""
-    response_type: str = Field(..., description="How the player responds to the event")
+    response_type: str = Field(...,
+                               description="How the player responds to the event")
     action_data: Optional[Dict[str, Any]] = Field(default_factory=dict)

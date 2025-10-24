@@ -47,9 +47,9 @@ class LeaderboardManager:
         """Get leaderboard rankings."""
         if leaderboard_type not in self.leaderboard_configs:
             raise ValueError(f"Unknown leaderboard type: {leaderboard_type}")
-        
+
         config = self.leaderboard_configs[leaderboard_type]
-        
+
         if season_id and config["season_field"]:
             # Get seasonal leaderboard
             return await self._get_seasonal_leaderboard(
@@ -73,11 +73,11 @@ class LeaderboardManager:
         config = self.leaderboard_configs[leaderboard_type]
         collection = getattr(self.db, config["collection"])
         field = config["field"]
-        
+
         # Get sorted entries
         cursor = collection.find().sort(field, -1).limit(limit)
         entries = await cursor.to_list(length=limit)
-        
+
         # Format entries
         formatted_entries = []
         for rank, entry in enumerate(entries, 1):
@@ -88,10 +88,10 @@ class LeaderboardManager:
                 leaderboard_type=leaderboard_type
             )
             formatted_entries.append(formatted_entry)
-        
+
         # Get total count
         total_entries = await collection.count_documents({})
-        
+
         return {
             "leaderboard_type": leaderboard_type,
             "entries": formatted_entries,
@@ -109,14 +109,14 @@ class LeaderboardManager:
         """Get seasonal leaderboard."""
         config = self.leaderboard_configs[leaderboard_type]
         season_field = config["season_field"]
-        
+
         # Get seasonal progress
         cursor = self.db.player_season_progress.find({
             "season_id": season_id
         }).sort(season_field, -1).limit(limit)
-        
+
         entries = await cursor.to_list(length=limit)
-        
+
         # Format entries
         formatted_entries = []
         for rank, entry in enumerate(entries, 1):
@@ -124,7 +124,7 @@ class LeaderboardManager:
             player = await self.db.players.find_one({"_id": entry["player_id"]})
             if not player:
                 continue
-            
+
             formatted_entry = {
                 "rank": rank,
                 "player_id": entry["player_id"],
@@ -136,12 +136,12 @@ class LeaderboardManager:
                 "change_24h": None  # Would need historical data
             }
             formatted_entries.append(formatted_entry)
-        
+
         # Get total count
         total_entries = await self.db.player_season_progress.count_documents({
             "season_id": season_id
         })
-        
+
         return {
             "leaderboard_type": leaderboard_type,
             "entries": formatted_entries,
@@ -162,14 +162,14 @@ class LeaderboardManager:
         value = entry
         for part in field.split('.'):
             value = value.get(part, 0)
-        
+
         formatted = {
             "rank": rank,
             "player_id": str(entry.get("_id", "")),
             "value": value,
             "change_24h": None
         }
-        
+
         # Add type-specific fields
         if leaderboard_type == "guild":
             formatted["username"] = entry.get("name", "Unknown Guild")
@@ -180,14 +180,14 @@ class LeaderboardManager:
             formatted["level"] = entry.get("level")
             formatted["guild_name"] = await self._get_guild_name(entry.get("guild_id"))
             formatted["title"] = entry.get("active_title")
-        
+
         return formatted
 
     async def _get_guild_name(self, guild_id: Optional[str]) -> Optional[str]:
         """Get guild name from ID."""
         if not guild_id:
             return None
-        
+
         guild = await self.db.guilds.find_one({"_id": guild_id})
         return guild.get("name") if guild else None
 
@@ -200,9 +200,9 @@ class LeaderboardManager:
         """Get player's rank in a leaderboard."""
         if leaderboard_type not in self.leaderboard_configs:
             raise ValueError(f"Unknown leaderboard type: {leaderboard_type}")
-        
+
         config = self.leaderboard_configs[leaderboard_type]
-        
+
         if season_id and config["season_field"]:
             return await self._get_seasonal_player_rank(
                 player_id=player_id,
@@ -224,28 +224,29 @@ class LeaderboardManager:
         config = self.leaderboard_configs[leaderboard_type]
         collection = getattr(self.db, config["collection"])
         field = config["field"]
-        
+
         # Get player data
         player = await collection.find_one({"_id": player_id})
         if not player:
             raise ValueError("Player not found")
-        
+
         # Get player's value
         value = player
         for part in field.split('.'):
             value = value.get(part, 0)
-        
+
         # Count players with higher value
         rank = await collection.count_documents({
             field: {"$gt": value}
         }) + 1
-        
+
         # Get total players
         total_players = await collection.count_documents({})
-        
+
         # Calculate percentile
-        percentile = ((total_players - rank) / total_players * 100) if total_players > 0 else 0
-        
+        percentile = ((total_players - rank) / total_players * \
+                      100) if total_players > 0 else 0
+
         return {
             "player_id": player_id,
             "username": player.get("username", player.get("name", "Unknown")),
@@ -266,36 +267,37 @@ class LeaderboardManager:
         """Get player's seasonal rank."""
         config = self.leaderboard_configs[leaderboard_type]
         season_field = config["season_field"]
-        
+
         # Get player's season progress
         progress = await self.db.player_season_progress.find_one({
             "player_id": player_id,
             "season_id": season_id
         })
-        
+
         if not progress:
             raise ValueError("Player season progress not found")
-        
+
         value = progress.get(season_field, 0)
-        
+
         # Count players with higher value
         rank = await self.db.player_season_progress.count_documents({
             "season_id": season_id,
             season_field: {"$gt": value}
         }) + 1
-        
+
         # Get total players
         total_players = await self.db.player_season_progress.count_documents({
             "season_id": season_id
         })
-        
+
         # Calculate percentile
-        percentile = ((total_players - rank) / total_players * 100) if total_players > 0 else 0
-        
+        percentile = ((total_players - rank) / total_players * \
+                      100) if total_players > 0 else 0
+
         # Get player data
         player = await self.db.players.find_one({"_id": player_id})
         username = player.get("username", "Unknown") if player else "Unknown"
-        
+
         return {
             "player_id": player_id,
             "username": username,

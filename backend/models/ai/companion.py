@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 class AICompanionModel(BaseModel):
     """AI Companion data for a player"""
-    
+
     player_id: str
     name: str = "Aria"
     personality_type: str = "neutral_guide"
@@ -16,7 +16,7 @@ class AICompanionModel(BaseModel):
     last_advice: Optional[datetime] = None
     mood: str = "neutral"
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    
+
     class Config:
         json_schema_extra = {
             "example": {

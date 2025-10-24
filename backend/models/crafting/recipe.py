@@ -24,23 +24,27 @@ class Recipe(BaseModel):
     name: str = Field(..., description="Recipe name")
     description: str = Field(..., description="Recipe description")
     category: str = Field(..., description="Recipe category")
-    
-    level_required: int = Field(default=1, ge=1, description="Level required to craft")
-    crafting_time: int = Field(default=60, ge=1, description="Crafting time in seconds")
-    xp_reward: int = Field(default=10, ge=0, description="XP reward for crafting")
-    success_rate: float = Field(default=0.95, ge=0.0, le=1.0, description="Base success rate")
-    
+
+    level_required: int = Field(
+        default=1, ge=1, description="Level required to craft")
+    crafting_time: int = Field(
+        default=60, ge=1, description="Crafting time in seconds")
+    xp_reward: int = Field(
+        default=10, ge=0, description="XP reward for crafting")
+    success_rate: float = Field(
+        default=0.95, ge=0.0, le=1.0, description="Base success rate")
+
     materials_required: List[MaterialRequirement] = Field(
         default_factory=list,
         description="Materials required for crafting"
     )
     result_item: ResultItem = Field(..., description="Item produced")
-    
+
     bonus_effects: Optional[List[str]] = Field(
         default=None,
         description="Possible bonus effects on successful craft"
     )
-    
+
     class Config:
         json_schema_extra = {
             "example": {

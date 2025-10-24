@@ -10,7 +10,8 @@ try:
     EMERGENT_AVAILABLE = True
 except ImportError:
     EMERGENT_AVAILABLE = False
-    logging.warning("emergentintegrations not available. AI features will be limited.")
+    logging.warning(
+        "emergentintegrations not available. AI features will be limited.")
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ class AIClient:
     def __init__(self):
         self.api_key = os.getenv("EMERGENT_LLM_KEY")
         self.client = None
-        
+
         if EMERGENT_AVAILABLE and self.api_key:
             try:
                 self.client = UniversalLLMClient(
@@ -31,7 +32,7 @@ class AIClient:
                 logger.info("AI Client initialized successfully")
             except Exception as e:
                 logger.error(f"Failed to initialize AI client: {e}")
-    
+
     async def chat_completion(
         self,
         messages: List[Dict[str, str]],
@@ -41,25 +42,25 @@ class AIClient:
         max_tokens: Optional[int] = None
     ) -> Dict[str, Any]:
         """Get chat completion from LLM"""
-        
+
         if not self.client:
             logger.warning("AI client not available, returning mock response")
             return self._mock_response(messages)
-        
+
         try:
             kwargs = {
                 "model": model,
                 "messages": messages,
                 "temperature": temperature
             }
-            
+
             if response_format:
                 kwargs["response_format"] = response_format
             if max_tokens:
                 kwargs["max_tokens"] = max_tokens
-            
+
             response = await self.client.chat.completions.create(**kwargs)
-            
+
             return {
                 "content": response.choices[0].message.content,
                 "model": response.model,
@@ -72,7 +73,7 @@ class AIClient:
         except Exception as e:
             logger.error(f"AI chat completion error: {e}")
             return self._mock_response(messages)
-    
+
     def _mock_response(self, messages: List[Dict[str, str]]) -> Dict[str, Any]:
         """Mock response when AI is not available"""
         return {
@@ -86,7 +87,7 @@ class AIClient:
             "model": "fallback",
             "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
         }
-    
+
     def is_available(self) -> bool:
         """Check if AI client is available"""
         return self.client is not None

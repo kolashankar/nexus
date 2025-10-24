@@ -3,10 +3,10 @@ from typing import List, Dict, Optional
 
 class RecipeManager:
     """Manages crafting recipes."""
-    
+
     def __init__(self):
         self.recipes = self._load_recipes()
-    
+
     def _load_recipes(self) -> Dict[str, Dict]:
         """Load recipes from configuration."""
         # In production, this would load from database or config file
@@ -22,7 +22,8 @@ class RecipeManager:
                 "xp_reward": 25,
                 "success_rate": 0.95,
                 "materials_required": [
-                    {"material_id": "scrap_metal", "name": "Scrap Metal", "quantity": 5},
+                    {"material_id": "scrap_metal",
+                        "name": "Scrap Metal", "quantity": 5},
                     {"material_id": "circuits", "name": "Circuits", "quantity": 2}
                 ],
                 "result_item": {
@@ -42,7 +43,8 @@ class RecipeManager:
                 "success_rate": 0.85,
                 "materials_required": [
                     {"material_id": "circuits", "name": "Circuits", "quantity": 3},
-                    {"material_id": "rare_metals", "name": "Rare Metals", "quantity": 2},
+                    {"material_id": "rare_metals",
+                        "name": "Rare Metals", "quantity": 2},
                     {"material_id": "silicon", "name": "Silicon", "quantity": 1}
                 ],
                 "result_item": {
@@ -61,8 +63,10 @@ class RecipeManager:
                 "xp_reward": 75,
                 "success_rate": 0.80,
                 "materials_required": [
-                    {"material_id": "power_core", "name": "Power Core", "quantity": 1},
-                    {"material_id": "rare_metals", "name": "Rare Metals", "quantity": 3},
+                    {"material_id": "power_core",
+                        "name": "Power Core", "quantity": 1},
+                    {"material_id": "rare_metals",
+                        "name": "Rare Metals", "quantity": 3},
                     {"material_id": "coolant", "name": "Coolant", "quantity": 2}
                 ],
                 "result_item": {
@@ -82,8 +86,10 @@ class RecipeManager:
                 "success_rate": 0.70,
                 "materials_required": [
                     {"material_id": "bio_gel", "name": "Bio-Gel", "quantity": 2},
-                    {"material_id": "advanced_circuit", "name": "Advanced Circuit", "quantity": 2},
-                    {"material_id": "nano_fibers", "name": "Nano Fibers", "quantity": 3}
+                    {"material_id": "advanced_circuit",
+                        "name": "Advanced Circuit", "quantity": 2},
+                    {"material_id": "nano_fibers",
+                        "name": "Nano Fibers", "quantity": 3}
                 ],
                 "result_item": {
                     "name": "Cybernetic Implant",
@@ -101,9 +107,12 @@ class RecipeManager:
                 "xp_reward": 300,
                 "success_rate": 0.60,
                 "materials_required": [
-                    {"material_id": "quantum_crystal", "name": "Quantum Crystal", "quantity": 1},
-                    {"material_id": "advanced_circuit", "name": "Advanced Circuit", "quantity": 5},
-                    {"material_id": "exotic_matter", "name": "Exotic Matter", "quantity": 2}
+                    {"material_id": "quantum_crystal",
+                        "name": "Quantum Crystal", "quantity": 1},
+                    {"material_id": "advanced_circuit",
+                        "name": "Advanced Circuit", "quantity": 5},
+                    {"material_id": "exotic_matter",
+                        "name": "Exotic Matter", "quantity": 2}
                 ],
                 "result_item": {
                     "name": "Quantum Processor",
@@ -112,22 +121,22 @@ class RecipeManager:
                 }
             }
         }
-    
+
     async def get_all_recipes(self) -> List[Dict]:
         """Get all available recipes."""
         return list(self.recipes.values())
-    
+
     async def get_recipe(self, recipe_id: str) -> Optional[Dict]:
         """Get a specific recipe by ID."""
         return self.recipes.get(recipe_id)
-    
+
     async def get_recipes_by_category(self, category: str) -> List[Dict]:
         """Get recipes by category."""
         return [
             recipe for recipe in self.recipes.values()
             if recipe.get("category") == category
         ]
-    
+
     async def get_recipes_by_level(self, min_level: int, max_level: int = 100) -> List[Dict]:
         """Get recipes by level range."""
         return [

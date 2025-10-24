@@ -25,9 +25,9 @@ class TransactionService:
     ) -> str:
         """Create a transaction record."""
         db = await get_database()
-        
+
         transaction_id = str(uuid.uuid4())
-        
+
         transaction = {
             "transaction_id": transaction_id,
             "type": transaction_type,
@@ -40,9 +40,9 @@ class TransactionService:
             "created_at": datetime.utcnow(),
             "completed_at": None
         }
-        
+
         await db.transactions.insert_one(transaction)
-        
+
         return transaction_id
 
     async def execute_transaction(
@@ -51,15 +51,15 @@ class TransactionService:
     ) -> Dict[str, Any]:
         """Execute a pending transaction."""
         db = await get_database()
-        
+
         transaction = await db.transactions.find_one({"transaction_id": transaction_id})
-        
+
         if not transaction:
             raise ValueError("Transaction not found")
-        
+
         if transaction["status"] != "pending":
             raise ValueError(f"Transaction already {transaction['status']}")
-        
+
         try:
             # Execute based on type
             if transaction["type"] == "transfer":
@@ -83,7 +83,7 @@ class TransactionService:
                     amount=transaction["amount"],
                     reason="reward"
                 )
-            
+
             # Mark as completed
             await db.transactions.update_one(
                 {"transaction_id": transaction_id},
@@ -94,9 +94,9 @@ class TransactionService:
                     }
                 }
             )
-            
+
             return {"success": True, "transaction_id": transaction_id}
-        
+
         except Exception as e:
             # Mark as failed
             await db.transactions.update_one(
@@ -109,7 +109,7 @@ class TransactionService:
                     }
                 }
             )
-            
+
             raise
 
     async def cancel_transaction(
@@ -118,7 +118,7 @@ class TransactionService:
     ) -> Dict[str, Any]:
         """Cancel a pending transaction."""
         db = await get_database()
-        
+
         result = await db.transactions.update_one(
             {"transaction_id": transaction_id, "status": "pending"},
             {
@@ -128,10 +128,10 @@ class TransactionService:
                 }
             }
         )
-        
+
         if result.modified_count == 0:
             raise ValueError("Cannot cancel transaction")
-        
+
         return {"success": True, "transaction_id": transaction_id}
 
     async def get_transaction_status(
@@ -140,10 +140,10 @@ class TransactionService:
     ) -> Dict[str, Any]:
         """Get transaction status."""
         db = await get_database()
-        
+
         transaction = await db.transactions.find_one({"transaction_id": transaction_id})
-        
+
         if not transaction:
             raise ValueError("Transaction not found")
-        
+
         return transaction

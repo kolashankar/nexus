@@ -42,23 +42,23 @@ async def get_pending_duels(
 ):
     """Get all pending duel challenges."""
     from backend.core.database import get_database
-    
+
     db = await get_database()
-    
+
     # Challenges sent by user
     sent = await db.combat_challenges.find({
         "challenger_id": current_user["_id"],
         "combat_type": "duel",
         "status": "pending"
     }).to_list(length=50)
-    
+
     # Challenges received by user
     received = await db.combat_challenges.find({
         "target_id": current_user["_id"],
         "combat_type": "duel",
         "status": "pending"
     }).to_list(length=50)
-    
+
     return {
         "sent": sent,
         "received": received

@@ -35,7 +35,7 @@ class AchievementDefinition(BaseModel):
     rewards: Dict[str, int] = Field(default_factory=dict)
     hidden: bool = False
     repeatable: bool = False
-    
+
 class AchievementProgress(BaseModel):
     """Progress tracking for an achievement"""
     achievement_id: str
@@ -44,11 +44,13 @@ class AchievementProgress(BaseModel):
     percentage: float = 0.0
     started_at: datetime = Field(default_factory=datetime.utcnow)
     milestones_reached: List[int] = Field(default_factory=list)
-    
+
     def update_progress(self, amount: int):
         """Update progress towards achievement"""
-        self.current_progress = min(self.required_progress, self.current_progress + amount)
-        self.percentage = (self.current_progress / self.required_progress) * 100.0
+        self.current_progress = min(
+            self.required_progress, self.current_progress + amount)
+        self.percentage = (self.current_progress / \
+                           self.required_progress) * 100.0
 
 class UnlockedAchievement(BaseModel):
     """Unlocked achievement"""
@@ -62,18 +64,20 @@ class UnlockedAchievement(BaseModel):
 class PlayerAchievements(BaseModel):
     """All achievements for a player"""
     player_id: str
-    unlocked_achievements: List[UnlockedAchievement] = Field(default_factory=list)
-    achievement_progress: Dict[str, AchievementProgress] = Field(default_factory=dict)
+    unlocked_achievements: List[UnlockedAchievement] = Field(
+        default_factory=list)
+    achievement_progress: Dict[str, AchievementProgress] = Field(
+        default_factory=dict)
     total_points: int = 0
     completion_percentage: float = 0.0
     recent_unlocks: List[str] = Field(default_factory=list)
-    
+
     def unlock_achievement(self, achievement_id: str, definition: AchievementDefinition) -> bool:
         """Unlock an achievement"""
         if any(a.achievement_id == achievement_id for a in self.unlocked_achievements):
             if not definition.repeatable:
                 return False
-        
+
         new_achievement = UnlockedAchievement(
             achievement_id=achievement_id,
             unlocked_at=datetime.utcnow(),

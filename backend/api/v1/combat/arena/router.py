@@ -21,13 +21,13 @@ async def join_arena_queue(
 ):
     """Join the arena matchmaking queue."""
     db = await get_database()
-    
+
     try:
         # Check if already in queue
         existing = await db.arena_queue.find_one({"player_id": current_user["_id"]})
         if existing:
             return {"status": "already_in_queue", "message": "You are already in the queue"}
-        
+
         # Add to queue
         queue_entry = {
             "player_id": current_user["_id"],
@@ -35,12 +35,12 @@ async def join_arena_queue(
             "rating": request.rating or 1000,
             "joined_at": datetime.utcnow()
         }
-        
+
         await db.arena_queue.insert_one(queue_entry)
-        
+
         # Try to find a match
         match = await _find_arena_match(current_user["_id"])
-        
+
         if match:
             return {
                 "status": "match_found",
@@ -67,9 +67,9 @@ async def leave_arena_queue(
 ):
     """Leave the arena queue."""
     db = await get_database()
-    
+
     result = await db.arena_queue.delete_one({"player_id": current_user["_id"]})
-    
+
     if result.deleted_count > 0:
         return {"status": "left_queue", "message": "Left the arena queue"}
     else:
@@ -82,16 +82,16 @@ async def get_queue_status(
 ):
     """Get current arena queue status."""
     db = await get_database()
-    
+
     # Total players in queue
     total = await db.arena_queue.count_documents({})
-    
+
     # User's position
     user_entry = await db.arena_queue.find_one({"player_id": current_user["_id"]})
-    
+
     in_queue = user_entry is not None
     position = await _get_queue_position(current_user["_id"]) if in_queue else None
-    
+
     return {
         "in_queue": in_queue,
         "queue_position": position,
@@ -107,19 +107,19 @@ async def get_arena_rankings(
 ):
     """Get arena rankings."""
     db = await get_database()
-    
+
     # Get top players by arena rating
     rankings = await db.combat_stats.find().sort(
         "pvp_rating", -1
     ).skip(skip).limit(limit).to_list(length=limit)
-    
+
     # Get player names
     for i, rank in enumerate(rankings):
         player = await db.players.find_one({"_id": rank["player_id"]})
         if player:
             rank["username"] = player.get("username")
             rank["rank"] = skip + i + 1
-    
+
     return {"rankings": rankings}
 
 
@@ -162,14 +162,14 @@ async def get_arena_rules():
 async def _find_arena_match(player_id: str) -> Dict[str, Any] | None:
     """Try to find an arena match for a player."""
     db = await get_database()
-    
+
     # Get player's queue entry
     player_entry = await db.arena_queue.find_one({"player_id": player_id})
     if not player_entry:
         return None
-    
+
     player_rating = player_entry.get("rating", 1000)
-    
+
     # Find suitable opponents (within 200 rating points)
     opponents = await db.arena_queue.find({
         "player_id": {"$ne": player_id},
@@ -178,25 +178,25 @@ async def _find_arena_match(player_id: str) -> Dict[str, Any] | None:
             "$lte": player_rating + 200
         }
     }).to_list(length=10)
-    
+
     if not opponents:
         return None
-    
+
     # Pick a random opponent
     opponent = random.choice(opponents)
-    
+
     # Create arena match
     battle = await combat_engine._create_battle(
         player1_id=player_id,
         player2_id=opponent["player_id"],
         battle_type="arena"
     )
-    
+
     # Remove both from queue
     await db.arena_queue.delete_many({
         "player_id": {"$in": [player_id, opponent["player_id"]]}
     })
-    
+
     return {
         "battle_id": battle["id"],
         "opponent": {
@@ -210,14 +210,14 @@ async def _find_arena_match(player_id: str) -> Dict[str, Any] | None:
 async def _get_queue_position(player_id: str) -> int:
     """Get player's position in queue."""
     db = await get_database()
-    
+
     player_entry = await db.arena_queue.find_one({"player_id": player_id})
     if not player_entry:
         return 0
-    
+
     # Count how many joined before this player
     position = await db.arena_queue.count_documents({
         "joined_at": {"$lt": player_entry["joined_at"]}
     })
-    
+
     return position + 1

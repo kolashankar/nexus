@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 class WebSocketHandler:
     """Handles WebSocket events and routes them to appropriate handlers."""
-    
+
     def __init__(self):
         self.event_handlers = {
             "player": handle_player_event,
@@ -16,14 +16,14 @@ class WebSocketHandler:
             # "chat": handle_chat_event,
             # "world": handle_world_event,
         }
-        
+
     async def handle_event(self, event_data: dict, player_id: str):
         """Route an event to the appropriate handler."""
         try:
             event_type = event_data.get("type")
             event_name = event_data.get("event")
             data = event_data.get("data", {})
-            
+
             if event_type in self.event_handlers:
                 handler = self.event_handlers[event_type]
                 response = await handler(event_name, data, player_id)
@@ -46,7 +46,7 @@ handler = WebSocketHandler()
 async def websocket_endpoint(websocket: WebSocket, player_id: str, username: str):
     """Main WebSocket endpoint for handling connections."""
     await manager.connect(websocket, player_id, username)
-    
+
     try:
         # Send initial connection success message
         await manager.send_personal_message({
@@ -57,18 +57,18 @@ async def websocket_endpoint(websocket: WebSocket, player_id: str, username: str
                 "online_players": manager.get_online_players()
             }
         }, player_id)
-        
+
         # Listen for messages
         while True:
             data = await websocket.receive_json()
-            
+
             # Handle the event
             response = await handler.handle_event(data, player_id)
-            
+
             # Send response back to client
             if response:
                 await manager.send_personal_message(response, player_id)
-                
+
     except WebSocketDisconnect:
         manager.disconnect(player_id)
         # Broadcast player left

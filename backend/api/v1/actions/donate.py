@@ -16,7 +16,7 @@ async def donate_to_player(
 ):
     """Donate credits to another player"""
     handler = ActionHandler()
-    
+
     try:
         result = await handler.execute_action(
             action_type="donate",

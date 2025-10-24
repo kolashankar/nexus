@@ -48,13 +48,13 @@ async def get_property_details(
     """Get detailed information about a property."""
     real_estate_service = RealEstateService()
     property_details = await real_estate_service.get_property_details(property_id)
-    
+
     if not property_details:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Property not found"
         )
-    
+
     return property_details
 
 
@@ -65,18 +65,18 @@ async def purchase_property(
 ):
     """Purchase a property."""
     real_estate_service = RealEstateService()
-    
+
     result = await real_estate_service.purchase_property(
         current_user["_id"],
         request.property_id
     )
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=result.get("error", "Unable to purchase property")
         )
-    
+
     return result
 
 
@@ -88,19 +88,19 @@ async def sell_property(
 ):
     """Sell a property."""
     real_estate_service = RealEstateService()
-    
+
     result = await real_estate_service.sell_property(
         current_user["_id"],
         property_id,
         price
     )
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=result.get("error", "Unable to sell property")
         )
-    
+
     return result
 
 
@@ -111,19 +111,19 @@ async def upgrade_property(
 ):
     """Upgrade a property."""
     real_estate_service = RealEstateService()
-    
+
     result = await real_estate_service.upgrade_property(
         current_user["_id"],
         request.property_id,
         request.upgrade_type
     )
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=result.get("error", "Unable to upgrade property")
         )
-    
+
     return result
 
 
@@ -134,7 +134,7 @@ async def rent_property(
 ):
     """Rent out a property to another player."""
     real_estate_service = RealEstateService()
-    
+
     result = await real_estate_service.rent_property(
         current_user["_id"],
         request.property_id,
@@ -142,13 +142,13 @@ async def rent_property(
         request.rent_amount,
         request.duration_days
     )
-    
+
     if not result["success"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=result.get("error", "Unable to rent property")
         )
-    
+
     return result
 
 

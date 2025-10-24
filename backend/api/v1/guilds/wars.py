@@ -29,14 +29,15 @@ async def declare_war(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     # Only leaders can declare war
     guild_rank = current_user.get("guild_rank")
     if guild_rank != "leader":
-        raise HTTPException(status_code=403, detail="Only guild leaders can declare war")
-    
+        raise HTTPException(
+            status_code=403, detail="Only guild leaders can declare war")
+
     service = GuildWarService(db)
-    
+
     try:
         war = await service.declare_war(
             attacker_guild_id=guild_id,
@@ -57,7 +58,7 @@ async def get_my_guild_wars(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     service = GuildWarService(db)
     wars = await service.get_guild_wars(guild_id)
     return wars
@@ -71,10 +72,10 @@ async def get_war(
     """Get war details"""
     service = GuildWarService(db)
     war = await service.get_war(war_id)
-    
+
     if not war:
         raise HTTPException(status_code=404, detail="War not found")
-    
+
     return war
 
 
@@ -88,13 +89,14 @@ async def offer_peace(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     guild_rank = current_user.get("guild_rank")
     if guild_rank != "leader":
-        raise HTTPException(status_code=403, detail="Only guild leaders can offer peace")
-    
+        raise HTTPException(
+            status_code=403, detail="Only guild leaders can offer peace")
+
     service = GuildWarService(db)
-    
+
     try:
         success = await service.offer_peace(request.war_id, guild_id, request.terms)
         return {"success": success, "message": "Peace offer sent"}
@@ -112,13 +114,14 @@ async def accept_peace(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     guild_rank = current_user.get("guild_rank")
     if guild_rank != "leader":
-        raise HTTPException(status_code=403, detail="Only guild leaders can accept peace")
-    
+        raise HTTPException(
+            status_code=403, detail="Only guild leaders can accept peace")
+
     service = GuildWarService(db)
-    
+
     try:
         success = await service.accept_peace(war_id, guild_id)
         return {"success": success, "message": "Peace treaty accepted"}
@@ -136,13 +139,14 @@ async def reject_peace(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     guild_rank = current_user.get("guild_rank")
     if guild_rank != "leader":
-        raise HTTPException(status_code=403, detail="Only guild leaders can reject peace")
-    
+        raise HTTPException(
+            status_code=403, detail="Only guild leaders can reject peace")
+
     service = GuildWarService(db)
-    
+
     try:
         success = await service.reject_peace(war_id)
         return {"success": success, "message": "Peace offer rejected"}

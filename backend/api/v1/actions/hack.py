@@ -15,7 +15,7 @@ async def hack_player(
 ):
     """Hack another player"""
     handler = ActionHandler()
-    
+
     try:
         result = await handler.execute_action(
             action_type="hack",

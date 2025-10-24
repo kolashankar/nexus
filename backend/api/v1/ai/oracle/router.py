@@ -20,19 +20,19 @@ async def generate_quest(
     current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Generate a personalized quest using Oracle AI"""
-    
+
     try:
         # Use current user's data if not provided
         player_data = request.player or current_user
-        
+
         quest = await oracle.generate_quest_for_player(
             player=player_data,
             quest_type=request.quest_type,
             difficulty=request.difficulty
         )
-        
+
         return quest
-    
+
     except Exception as e:
         logger.error(f"Quest generation error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -43,11 +43,11 @@ async def generate_daily_quests(
     current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Generate 3 daily quests for current player"""
-    
+
     try:
         quests = await oracle.generate_daily_quests(current_user, count=3)
         return {"quests": [q.dict() for q in quests]}
-    
+
     except Exception as e:
         logger.error(f"Daily quest generation error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -59,15 +59,15 @@ async def generate_campaign(
     current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Generate a story campaign for current player"""
-    
+
     try:
         campaign = await oracle.generate_campaign(
             player=current_user,
             campaign_type=campaign_type
         )
-        
+
         return campaign
-    
+
     except Exception as e:
         logger.error(f"Campaign generation error: {e}")
         raise HTTPException(status_code=500, detail=str(e))

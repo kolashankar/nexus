@@ -37,13 +37,13 @@ async def get_recipe_details(
     """Get detailed information about a specific recipe."""
     crafting_service = CraftingService()
     recipe = await crafting_service.get_recipe_by_id(recipe_id)
-    
+
     if not recipe:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Recipe not found"
         )
-    
+
     return recipe
 
 
@@ -64,27 +64,27 @@ async def craft_item(
 ):
     """Craft an item using a recipe."""
     crafting_service = CraftingService()
-    
+
     # Check if player has required materials
     can_craft = await crafting_service.can_craft(
         current_user["_id"],
         request.recipe_id,
         request.quantity
     )
-    
+
     if not can_craft:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Insufficient materials or level requirement not met"
         )
-    
+
     # Craft the item
     result = await crafting_service.craft_item(
         current_user["_id"],
         request.recipe_id,
         request.quantity
     )
-    
+
     return result
 
 
@@ -95,18 +95,18 @@ async def dismantle_item(
 ):
     """Dismantle an item to get materials back."""
     crafting_service = CraftingService()
-    
+
     result = await crafting_service.dismantle_item(
         current_user["_id"],
         item_id
     )
-    
+
     if not result:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Item not found or cannot be dismantled"
         )
-    
+
     return result
 
 

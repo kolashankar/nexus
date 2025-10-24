@@ -25,38 +25,38 @@ class Guild(BaseModel):
     name: str
     tag: str  # 3-5 character guild tag
     description: str = ""
-    
+
     # Leadership
     leader_id: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    
+
     # Members
     members: List[GuildMember] = Field(default_factory=list)
     total_members: int = 1
     max_members: int = 50  # Can be upgraded
-    
+
     # Progression
     level: int = 1
     xp: int = 0
-    
+
     # Resources
     guild_bank: dict = Field(default_factory=lambda: {
         "credits": 0,
         "resources": {}
     })
-    
+
     # Territory
     controlled_territories: List[int] = Field(default_factory=list)
-    
+
     # Karma
     guild_karma: int = 0
-    
+
     # Skills
     unlocked_skills: List[str] = Field(default_factory=list)
-    
+
     # Wars
     active_wars: List[dict] = Field(default_factory=list)
-    
+
     # Settings
     recruitment_open: bool = True
     emblem: str = ""

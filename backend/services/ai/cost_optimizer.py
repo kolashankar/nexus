@@ -15,16 +15,16 @@ class CostOptimizer:
         self.current_spend = 0.0
         self.last_reset = datetime.utcnow()
         self.alert_threshold = 0.8  # Alert at 80% of budget
-    
+
     def can_make_call(self, estimated_cost: float) -> bool:
         """Check if we can make an AI call within budget"""
-        
+
         # Reset daily budget if needed
         if (datetime.utcnow() - self.last_reset) > timedelta(days=1):
             self.current_spend = 0.0
             self.last_reset = datetime.utcnow()
             logger.info("Daily AI budget reset")
-        
+
         # Check if call would exceed budget
         if (self.current_spend + estimated_cost) > self.daily_budget:
             logger.warning(
@@ -34,7 +34,7 @@ class CostOptimizer:
                 f"Budget: ${self.daily_budget:.2f}"
             )
             return False
-        
+
         # Alert if approaching threshold
         if (self.current_spend + estimated_cost) > (self.daily_budget * self.alert_threshold):
             logger.warning(
@@ -42,9 +42,9 @@ class CostOptimizer:
                 f"Current: ${self.current_spend:.2f}, "
                 f"Budget: ${self.daily_budget:.2f}"
             )
-        
+
         return True
-    
+
     def record_spend(self, cost: float) -> None:
         """Record AI API spending"""
         self.current_spend += cost
@@ -52,7 +52,7 @@ class CostOptimizer:
             f"AI spend recorded: ${cost:.4f}. "
             f"Total today: ${self.current_spend:.2f}/${self.daily_budget:.2f}"
         )
-    
+
     def get_spending_summary(self) -> Dict[str, Any]:
         """Get current spending summary"""
         return {
@@ -62,19 +62,19 @@ class CostOptimizer:
             "percentage_used": round((self.current_spend / self.daily_budget) * 100, 1),
             "last_reset": self.last_reset.isoformat()
         }
-    
+
     def set_daily_budget(self, budget: float) -> None:
         """Set daily AI budget"""
         self.daily_budget = budget
         logger.info(f"Daily AI budget set to ${budget:.2f}")
-    
+
     def suggest_model(self, complexity: str = "medium") -> str:
         """Suggest appropriate model based on budget and complexity"""
-        
+
         # If over 90% of budget used, suggest mini for all
         if self.current_spend > (self.daily_budget * 0.9):
             return "gpt-4o-mini"
-        
+
         # Otherwise, use complexity-based selection
         if complexity == "high":
             return "gpt-4o"
@@ -94,26 +94,26 @@ def estimate_call_cost(
     model: str = "gpt-4o"
 ) -> float:
     """Estimate cost of an AI call"""
-    
+
     pricing = {
         "gpt-4o": {"input": 2.50, "output": 10.00},
         "gpt-4o-mini": {"input": 0.15, "output": 0.60}
     }
-    
+
     if model not in pricing:
         return 0.0
-    
+
     input_cost = (input_tokens / 1_000_000) * pricing[model]["input"]
     output_cost = (output_tokens / 1_000_000) * pricing[model]["output"]
-    
+
     return input_cost + output_cost
 
 
 def optimize_prompt(prompt: str, max_length: int = 2000) -> str:
     """Optimize prompt length to reduce costs"""
-    
+
     if len(prompt) <= max_length:
         return prompt
-    
+
     # Truncate with ellipsis
     return prompt[:max_length-3] + "..."

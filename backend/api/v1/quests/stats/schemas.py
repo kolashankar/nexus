@@ -10,7 +10,7 @@ class QuestStatsResponse(BaseModel):
     failed: int
     abandoned: int
     completion_rate: float
-    
+
     class Config:
         json_schema_extra = {
             "example": {

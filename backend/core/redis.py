@@ -21,16 +21,17 @@ class RedisManager:
     def __init__(self):
         self.redis: Optional[Redis] = None
         self.connected = False
-    
+
     async def connect(self) -> bool:
         """Connect to Redis"""
-        
+
         if not REDIS_AVAILABLE:
-            logger.warning("Redis library not available. Caching will use memory fallback.")
+            logger.warning(
+                "Redis library not available. Caching will use memory fallback.")
             return False
-        
+
         redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
-        
+
         try:
             self.redis = await aioredis.from_url(
                 redis_url,
@@ -39,31 +40,32 @@ class RedisManager:
                 socket_timeout=5,
                 socket_connect_timeout=5
             )
-            
+
             # Test connection
             await self.redis.ping()
-            
+
             self.connected = True
             logger.info(f"Connected to Redis at {redis_url}")
             return True
-        
+
         except Exception as e:
-            logger.warning(f"Failed to connect to Redis: {e}. Using memory cache fallback.")
+            logger.warning(
+                f"Failed to connect to Redis: {e}. Using memory cache fallback.")
             self.redis = None
             self.connected = False
             return False
-    
+
     async def disconnect(self) -> None:
         """Disconnect from Redis"""
         if self.redis:
             await self.redis.close()
             self.connected = False
             logger.info("Disconnected from Redis")
-    
+
     def is_connected(self) -> bool:
         """Check if connected to Redis"""
         return self.connected
-    
+
     def get_client(self) -> Optional[Redis]:
         """Get Redis client"""
         return self.redis if self.connected else None

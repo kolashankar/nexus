@@ -25,7 +25,7 @@ def calculate_quest_difficulty(
         obj.get("required", 1)
         for obj in objectives
     )
-    
+
     if total_required <= 5:
         return "easy"
     elif total_required <= 15:
@@ -44,9 +44,9 @@ def calculate_quest_xp(difficulty: str, player_level: int) -> int:
         "hard": 400,
         "very_hard": 1000,
     }
-    
+
     xp = base_xp.get(difficulty, 150)
-    
+
     # Scale with player level
     multiplier = 1 + (player_level * 0.1)
     return int(xp * multiplier)
@@ -60,9 +60,9 @@ def calculate_quest_credits(difficulty: str, player_level: int) -> int:
         "hard": 600,
         "very_hard": 1500,
     }
-    
+
     credits = base_credits.get(difficulty, 300)
-    
+
     # Scale with player level
     multiplier = 1 + (player_level * 0.1)
     return int(credits * multiplier)
@@ -84,7 +84,7 @@ def format_quest_time(seconds: int) -> str:
 def get_quest_expiry(quest_type: str) -> datetime:
     """Get expiry time for quest type"""
     now = datetime.utcnow()
-    
+
     if quest_type == "daily":
         # Expires at end of day
         tomorrow = (now + timedelta(days=1)).replace(
@@ -122,11 +122,11 @@ def get_quest_progress_percentage(quest: Dict[str, Any]) -> float:
     objectives = quest.get("objectives", [])
     if not objectives:
         return 0.0
-    
+
     total_progress = 0
     for obj in objectives:
         current = obj.get("current", 0)
         required = obj.get("required", 1)
         total_progress += (current / required)
-    
+
     return (total_progress / len(objectives)) * 100

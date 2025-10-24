@@ -38,7 +38,7 @@ class PersonalityEngine:
 
     def get_personality(self, karma: float) -> str:
         """Determine personality type based on karma"""
-        
+
         if karma > 500:
             return "wise_mentor"
         elif karma < -500:
@@ -47,16 +47,16 @@ class PersonalityEngine:
             return "rebellious_friend"
         else:
             return "neutral_guide"
-    
+
     def get_personality_traits(self, personality_type: str) -> Dict[str, Any]:
         """Get traits for a personality type"""
         return self.PERSONALITY_TYPES.get(personality_type, self.PERSONALITY_TYPES["neutral_guide"])
-    
+
     def get_system_prompt(self, personality_type: str, companion_name: str) -> str:
         """Generate system prompt for companion based on personality"""
-        
+
         traits = self.get_personality_traits(personality_type)
-        
+
         base_prompt = f"""
 You are {companion_name}, an AI companion in Karma Nexus.
 
@@ -75,7 +75,7 @@ Your role:
 
 Guidelines:
 """
-        
+
         if personality_type == "wise_mentor":
             base_prompt += """
 - Encourage positive actions and personal growth
@@ -108,21 +108,21 @@ Guidelines:
 - Support their journey without bias
 - Help them think critically
 """
-        
+
         base_prompt += "\n\nKeep responses concise (2-4 sentences) and personal."
-        
+
         return base_prompt
-    
+
     def get_mood(self, karma: float) -> str:
         """Get companion mood based on player karma"""
-        
+
         personality = self.get_personality(karma)
-        
+
         moods = {
             "wise_mentor": "content and proud",
             "neutral_guide": "calm and focused",
             "dark_tempter": "excited and eager",
             "rebellious_friend": "energetic and playful"
         }
-        
+
         return moods.get(personality, "neutral")

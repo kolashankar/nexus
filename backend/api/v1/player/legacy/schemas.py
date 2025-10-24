@@ -28,7 +28,8 @@ class ActivatePerkRequest(BaseModel):
     perk_id: str = Field(..., description="ID of the perk to activate")
 
 class EarnPointsRequest(BaseModel):
-    amount: int = Field(..., ge=1, description="Amount of legacy points to earn")
+    amount: int = Field(..., ge=1,
+                        description="Amount of legacy points to earn")
     source: str = Field(..., description="Source of the legacy points")
 
 class LegacyTitleResponse(BaseModel):

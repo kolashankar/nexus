@@ -27,12 +27,12 @@ async def check_action_cooldown(
         Cooldown status information
     """
     cooldown_manager = CooldownManager(db)
-    
+
     cooldown_info = await cooldown_manager.check_cooldown(
         current_user['_id'],
         action_type
     )
-    
+
     return cooldown_info
 
 
@@ -47,9 +47,9 @@ async def get_all_cooldowns(
         Dictionary of action types to cooldown information
     """
     cooldown_manager = CooldownManager(db)
-    
+
     cooldowns = await cooldown_manager.get_all_cooldowns(current_user['_id'])
-    
+
     return cooldowns
 
 
@@ -69,18 +69,18 @@ async def clear_cooldown(
     """
     # Note: In production, add admin check or item consumption check
     cooldown_manager = CooldownManager(db)
-    
+
     cleared = await cooldown_manager.clear_cooldown(
         current_user['_id'],
         action_type
     )
-    
+
     if not cleared:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f'No active cooldown found for action: {action_type}'
         )
-    
+
     return {'success': True, 'message': f'Cooldown cleared for {action_type}'}
 
 
@@ -105,14 +105,14 @@ async def reduce_cooldown(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail='Reduction must be positive'
         )
-    
+
     # Note: In production, verify item/power usage
     cooldown_manager = CooldownManager(db)
-    
+
     result = await cooldown_manager.reduce_cooldown(
         current_user['_id'],
         action_type,
         reduction_seconds
     )
-    
+
     return result

@@ -6,11 +6,11 @@ from datetime import datetime, timedelta
 
 class SimpleCache:
     """Simple in-memory cache"""
-    
+
     def __init__(self):
         self._cache: dict = {}
         self._expiry: dict = {}
-    
+
     def get(self, key: str) -> Optional[Any]:
         """Get value from cache"""
         if key in self._cache:
@@ -21,19 +21,19 @@ class SimpleCache:
                 return None
             return self._cache[key]
         return None
-    
+
     def set(self, key: str, value: Any, ttl_seconds: int = 300):
         """Set value in cache with TTL"""
         self._cache[key] = value
         self._expiry[key] = datetime.utcnow() + timedelta(seconds=ttl_seconds)
-    
+
     def delete(self, key: str):
         """Delete value from cache"""
         if key in self._cache:
             del self._cache[key]
         if key in self._expiry:
             del self._expiry[key]
-    
+
     def clear(self):
         """Clear all cache"""
         self._cache.clear()

@@ -32,16 +32,16 @@ class Objective(BaseModel):
     objective_id: str
     description: str
     type: ObjectiveType
-    
+
     # Target details
     target: str  # What needs to be done
     target_details: Optional[Dict[str, Any]] = None  # Additional details
-    
+
     # Progress
     current: int = 0
     required: int = 1
     completed: bool = False
-    
+
     # Display
     display_order: int = 0
     hidden: bool = False  # Hidden objectives
@@ -53,13 +53,13 @@ class Objective(BaseModel):
         """Update objective progress"""
         if self.completed:
             return False
-        
+
         self.current = min(self.current + amount, self.required)
-        
+
         if self.current >= self.required:
             self.completed = True
             return True
-        
+
         return False
 
     def get_progress_percentage(self) -> float:
@@ -89,7 +89,7 @@ class ObjectiveTemplate(BaseModel):
     target_type: str  # Type of target
     min_required: int = 1
     max_required: int = 10
-    
+
     class Config:
         use_enum_values = True
 

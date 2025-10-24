@@ -6,7 +6,7 @@ from backend.server import app
 
 class TestCombatChallenge:
     """Test combat challenge flow."""
-    
+
     @pytest.mark.asyncio
     async def test_challenge_player_to_duel(self, auth_headers, clean_db):
         """Test challenging another player to a duel."""
@@ -22,7 +22,7 @@ class TestCombatChallenge:
             }
         }
         await clean_db.players.insert_one(target_player)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/combat/challenge",
@@ -32,12 +32,12 @@ class TestCombatChallenge:
                     "challenge_type": "duel"
                 }
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert "challenge_id" in data
             assert data["status"] == "pending"
-    
+
     @pytest.mark.asyncio
     async def test_accept_combat_challenge(self, clean_db):
         """Test accepting a combat challenge."""
@@ -50,18 +50,18 @@ class TestCombatChallenge:
         }
         result = await clean_db.combat_challenges.insert_one(challenge)
         challenge_id = str(result.inserted_id)
-        
+
         # Create token for opponent
         from backend.utils.auth import create_access_token
         token = create_access_token(data={"sub": "opponent"})
         headers = {"Authorization": f"Bearer {token}"}
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 f"/api/combat/accept/{challenge_id}",
                 headers=headers
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert data["status"] == "active"
@@ -69,7 +69,7 @@ class TestCombatChallenge:
 
 class TestCombatExecution:
     """Test combat execution."""
-    
+
     @pytest.mark.asyncio
     async def test_execute_combat_turn(self, auth_headers, clean_db):
         """Test executing a combat turn."""
@@ -84,7 +84,7 @@ class TestCombatExecution:
         }
         result = await clean_db.combats.insert_one(combat)
         combat_id = str(result.inserted_id)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 f"/api/combat/{combat_id}/action",
@@ -94,12 +94,12 @@ class TestCombatExecution:
                     "ability": None
                 }
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert "damage" in data
             assert data["player2_hp"] < 500
-    
+
     @pytest.mark.asyncio
     async def test_combat_ends_when_hp_zero(self, auth_headers, clean_db):
         """Test that combat ends when HP reaches zero."""
@@ -114,7 +114,7 @@ class TestCombatExecution:
         }
         result = await clean_db.combats.insert_one(combat)
         combat_id = str(result.inserted_id)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 f"/api/combat/{combat_id}/action",
@@ -124,7 +124,7 @@ class TestCombatExecution:
                     "ability": None
                 }
             )
-            
+
             data = response.json()
             if data.get("player2_hp", 0) <= 0:
                 assert data["status"] == "completed"

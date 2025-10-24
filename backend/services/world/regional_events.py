@@ -71,7 +71,8 @@ class RegionalEventsService:
         # Get territory info
         world_state = await self.db.world_state.find_one()
         territory = next(
-            (t for t in world_state.get("territories", []) if t.get("territory_id") == territory_id),
+            (t for t in world_state.get("territories", [])
+             if t.get("territory_id") == territory_id),
             None
         )
 
@@ -213,7 +214,8 @@ class RegionalEventsService:
 
         # In a real implementation, this would send WebSocket notifications
         # For now, just log
-        print(f"Notifying {len(players_in_territory)} players about event: {event['name']}")
+        print(
+            f"Notifying {len(players_in_territory)} players about event: {event['name']}")
 
     async def end_expired_events(self) -> int:
         """End regional events that have expired."""
@@ -249,6 +251,7 @@ class RegionalEventsService:
                 )
                 events.append(event)
             except Exception as e:
-                print(f"Error triggering event for territory {territory['territory_id']}: {e}")
+                print(
+                    f"Error triggering event for territory {territory['territory_id']}: {e}")
 
         return events

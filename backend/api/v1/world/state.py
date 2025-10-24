@@ -30,7 +30,7 @@ async def get_world_state(
     """
     world_manager = WorldStateManager(db)
     state = await world_manager.get_world_state()
-    
+
     return WorldStateResponse.from_model(state)
 
 
@@ -45,11 +45,11 @@ async def sync_world_state(
     Use sparingly - typically called by background tasks.
     """
     world_manager = WorldStateManager(db)
-    
+
     try:
         state = await world_manager.sync_world_state()
         logger.info("World state synchronized successfully")
-        
+
         return {
             "success": True,
             "message": "World state synchronized",
@@ -73,14 +73,14 @@ async def get_karma_statistics(
     Returns detailed karma statistics including distribution, trends, and top players.
     """
     karma_tracker = CollectiveKarmaTracker(db)
-    
+
     try:
         collective = await karma_tracker.get_collective_karma()
         average = await karma_tracker.get_average_karma()
         trend = await karma_tracker.get_karma_trend(hours=24)
         distribution = await karma_tracker.get_karma_distribution()
         action_ratio = await karma_tracker.get_action_ratio_24h()
-        
+
         return KarmaStatsResponse(
             collective_karma=collective,
             average_karma=average,
@@ -109,10 +109,10 @@ async def get_top_karma_players(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Limit must be between 1 and 100"
         )
-    
+
     karma_tracker = CollectiveKarmaTracker(db)
     players = await karma_tracker.get_top_karma_players(limit=limit)
-    
+
     return TopPlayersResponse(
         players=players,
         total=len(players)
@@ -132,10 +132,10 @@ async def get_bottom_karma_players(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Limit must be between 1 and 100"
         )
-    
+
     karma_tracker = CollectiveKarmaTracker(db)
     players = await karma_tracker.get_bottom_karma_players(limit=limit)
-    
+
     return TopPlayersResponse(
         players=players,
         total=len(players)

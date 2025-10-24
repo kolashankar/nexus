@@ -6,7 +6,7 @@ from backend.server import app
 
 class TestCombatTournament:
     """Test complete tournament flow."""
-    
+
     @pytest.mark.asyncio
     async def test_tournament_participation(self, clean_db):
         """Test registering for and participating in a tournament."""
@@ -21,7 +21,7 @@ class TestCombatTournament:
             }
             result = await clean_db.tournaments.insert_one(tournament)
             tournament_id = str(result.inserted_id)
-            
+
             # Register 4 players
             players = []
             for i in range(4):
@@ -33,7 +33,7 @@ class TestCombatTournament:
                 })
                 token = register_response.json()["access_token"]
                 players.append({"username": username, "token": token})
-                
+
                 # Register for tournament
                 headers = {"Authorization": f"Bearer {token}"}
                 tournament_register = await client.post(
@@ -41,20 +41,20 @@ class TestCombatTournament:
                     headers=headers
                 )
                 assert tournament_register.status_code == 200
-            
+
             # Check tournament participants
             tournament_status = await client.get(
                 f"/api/tournaments/{tournament_id}",
                 headers={"Authorization": f"Bearer {players[0]['token']}"}
             )
             assert len(tournament_status.json()["participants"]) == 4
-            
+
             # Start tournament (change status to active)
             await clean_db.tournaments.update_one(
                 {"_id": result.inserted_id},
                 {"$set": {"status": "active"}}
             )
-            
+
             # Check bracket
             bracket_response = await client.get(
                 f"/api/tournaments/{tournament_id}/bracket",

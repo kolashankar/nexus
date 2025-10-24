@@ -90,7 +90,8 @@ async def get_achievement_leaderboard(
 
 @router.get("/seasonal", response_model=LeaderboardResponse)
 async def get_seasonal_leaderboard(
-    leaderboard_type: str = Query(..., description="karma, wealth, combat, achievement"),
+    leaderboard_type: str = Query(...,
+                                  description="karma, wealth, combat, achievement"),
     limit: int = Query(default=50, ge=1, le=100),
     current_player: Player = Depends(get_current_player)
 ):
@@ -98,10 +99,10 @@ async def get_seasonal_leaderboard(
     from backend.services.seasonal.seasons import SeasonService
     season_service = SeasonService()
     current_season = await season_service.get_current_season()
-    
+
     if not current_season:
         return {"entries": [], "total_entries": 0, "leaderboard_type": leaderboard_type}
-    
+
     manager = LeaderboardManager()
     return await manager.get_leaderboard(
         leaderboard_type=leaderboard_type,
@@ -132,12 +133,12 @@ async def get_all_leaderboards(
 ):
     """Get top entries from all leaderboards."""
     manager = LeaderboardManager()
-    
+
     leaderboards = {}
     for lb_type in ["karma", "wealth", "combat", "guild", "achievement"]:
         leaderboards[lb_type] = await manager.get_leaderboard(
             leaderboard_type=lb_type,
             limit=limit
         )
-    
+
     return leaderboards

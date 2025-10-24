@@ -6,7 +6,8 @@ from pydantic import BaseModel
 
 class QuestGenerationRequestAPI(BaseModel):
     """API request for quest generation"""
-    player: Optional[Dict[str, Any]] = None  # Will use current user if not provided
+    player: Optional[Dict[str, Any]
+        ] = None  # Will use current user if not provided
     quest_type: str = "personal"
     difficulty: str = "medium"
 

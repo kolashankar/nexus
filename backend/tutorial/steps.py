@@ -15,7 +15,7 @@ def get_tutorial_step(step_id: str):
 def get_all_steps() -> List:
     """Get all tutorial steps in order."""
     from .tutorial import tutorial_steps
-    
+
     steps_order = [
         'welcome',
         'learn_traits',
@@ -27,7 +27,7 @@ def get_all_steps() -> List:
         'marketplace_intro',
         'tutorial_complete'
     ]
-    
+
     return [tutorial_steps[step_id] for step_id in steps_order]
 
 
@@ -43,9 +43,9 @@ def validate_completion(step_id: str, player_data: Dict) -> bool:
     step = tutorial_steps.get(step_id)
     if not step:
         return False
-        
+
     condition = step.completion_condition
-    
+
     # Define completion conditions
     conditions = {
         'talk_to_companion': lambda: player_data.get('talked_to_companion', False),
@@ -58,11 +58,11 @@ def validate_completion(step_id: str, player_data: Dict) -> bool:
         'visit_marketplace': lambda: player_data.get('visited_marketplace', False),
         'auto_complete': lambda: True
     }
-    
+
     validation_func = conditions.get(condition)
     if not validation_func:
         return False
-        
+
     return validation_func()
 
 

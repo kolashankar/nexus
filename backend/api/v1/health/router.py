@@ -38,7 +38,7 @@ async def database_health():
     """Check database connectivity."""
     mongo_status = await health_checker.check_mongodb()
     redis_status = await health_checker.check_redis()
-    
+
     return {
         "mongodb": mongo_status,
         "redis": redis_status
@@ -51,7 +51,7 @@ async def system_health():
     disk_status = await health_checker.check_disk_space()
     memory_status = await health_checker.check_memory()
     cpu_status = await health_checker.check_cpu()
-    
+
     return {
         "disk": disk_status,
         "memory": memory_status,

@@ -22,7 +22,7 @@ class Relationship(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     ended_at: Optional[datetime] = None
     active: bool = True
-    
+
     # Relationship-specific data
     metadata: dict = Field(default_factory=dict)
 
@@ -32,11 +32,11 @@ class Alliance(BaseModel):
     members: list[str] = Field(default_factory=list)  # Max 3 players
     created_at: datetime = Field(default_factory=datetime.utcnow)
     alliance_name: Optional[str] = None
-    
+
     # Benefits
     shared_xp: bool = True
     shared_karma: bool = False
-    
+
     class Config:
         json_schema_extra = {
             "example": {
@@ -53,12 +53,12 @@ class Marriage(BaseModel):
     married_at: datetime = Field(default_factory=datetime.utcnow)
     divorced_at: Optional[datetime] = None
     active: bool = True
-    
+
     # Marriage benefits
     shared_resources: bool = True
     shared_xp_bonus: float = 1.1  # 10% bonus
     joint_karma: int = 0
-    
+
     class Config:
         json_schema_extra = {
             "example": {
@@ -76,15 +76,15 @@ class Mentorship(BaseModel):
     started_at: datetime = Field(default_factory=datetime.utcnow)
     graduated_at: Optional[datetime] = None
     active: bool = True
-    
+
     # Progress
     apprentice_level: int = 1
     lessons_completed: int = 0
-    
+
     # Rewards
     mentor_legacy_points: int = 0
     apprentice_xp_bonus: float = 1.25  # 25% faster learning
-    
+
     class Config:
         json_schema_extra = {
             "example": {

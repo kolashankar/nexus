@@ -47,30 +47,30 @@ class Player(BaseDBModel):
     username: str = Field(..., min_length=3, max_length=30)
     email: EmailStr
     password_hash: str
-    
+
     # Profile
     level: int = Field(default=1, ge=1, le=100)
     xp: int = Field(default=0, ge=0)
     prestige_level: int = Field(default=0, ge=0, le=10)
-    
+
     # Classes
     economic_class: str = Field(default="middle")
     moral_class: str = Field(default="average")
-    
+
     # Currencies
     currencies: Currencies = Field(default_factory=Currencies)
     karma_points: int = Field(default=0)
-    
+
     # Traits
     traits: Traits = Field(default_factory=Traits)
     meta_traits: MetaTraits = Field(default_factory=MetaTraits)
-    
+
     # Visibility
     visibility: Visibility = Field(default_factory=Visibility)
-    
+
     # Stats
     stats: PlayerStats = Field(default_factory=PlayerStats)
-    
+
     # Active State
     online: bool = Field(default=False)
     last_action: Optional[datetime] = None
@@ -101,7 +101,7 @@ class PlayerResponse(BaseModel):
     traits: Optional[Dict[str, float]] = None
     meta_traits: Optional[Dict[str, float]] = None
     online: bool
-    
+
     @classmethod
     def from_player(cls, player: Player, requester_id: Optional[str] = None):
         """Create response based on visibility settings"""
@@ -118,7 +118,7 @@ class PlayerResponse(BaseModel):
                 meta_traits=player.meta_traits.model_dump(),
                 online=player.online
             )
-        
+
         # Otherwise respect visibility
         response_data = {
             "id": player.id,
@@ -126,20 +126,20 @@ class PlayerResponse(BaseModel):
             "level": player.level,
             "online": player.online
         }
-        
+
         if player.visibility.economic_class:
             response_data["economic_class"] = player.economic_class
-        
+
         if player.visibility.moral_class:
             response_data["moral_class"] = player.moral_class
-        
+
         if player.visibility.karma_score:
             response_data["karma_points"] = player.karma_points
-        
+
         # Show only public traits
         if player.visibility.traits_public:
-            visible_traits = {k: v for k, v in player.traits.model_dump().items() 
+            visible_traits = {k: v for k, v in player.traits.model_dump().items()
                             if k in player.visibility.traits_public}
             response_data["traits"] = visible_traits
-        
+
         return cls(**response_data)

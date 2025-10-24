@@ -5,10 +5,10 @@ import uuid
 
 class KarmaEventManager:
     """Manages karma-related events"""
-    
+
     def __init__(self):
         self.db = get_database()
-    
+
     async def create_karma_event(
         self,
         event_type: str,
@@ -27,10 +27,10 @@ class KarmaEventManager:
             "metadata": metadata or {},
             "timestamp": datetime.utcnow()
         }
-        
+
         await self.db.karma_events.insert_one(event)
         return event
-    
+
     async def get_player_karma_history(
         self,
         player_id: str,
@@ -40,9 +40,9 @@ class KarmaEventManager:
         events = await self.db.karma_events.find(
             {"player_id": player_id}
         ).sort("timestamp", -1).limit(limit).to_list(length=limit)
-        
+
         return events
-    
+
     async def get_recent_karma_events(
         self,
         limit: int = 100
@@ -50,5 +50,5 @@ class KarmaEventManager:
         """Get recent karma events across all players"""
         events = await self.db.karma_events.find(
         ).sort("timestamp", -1).limit(limit).to_list(length=limit)
-        
+
         return events

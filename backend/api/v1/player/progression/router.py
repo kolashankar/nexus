@@ -19,20 +19,22 @@ async def get_progression_data(
     """Get complete progression data for player."""
     try:
         # Calculate level info
-        level, xp_progress, xp_for_next = calculate_level_from_xp(current_user.xp)
-        
+        level, xp_progress, xp_for_next = calculate_level_from_xp(
+            current_user.xp)
+
         # Get skill tree progress
         skill_tree_progress = {}
         for trait_name, tree_data in current_user.skill_trees.items():
             unlocked_count = len(tree_data.get("nodes_unlocked", []))
             skill_tree_progress[trait_name] = (unlocked_count / 20) * 100
-        
+
         # Count superpowers
-        superpowers_unlocked = len([p for p in current_user.superpowers if p.get("unlocked", False)])
-        
+        superpowers_unlocked = len(
+            [p for p in current_user.superpowers if p.get("unlocked", False)])
+
         # Get achievements
         achievements_unlocked = len(current_user.achievements)
-        
+
         return {
             "level": level,
             "xp": current_user.xp,
@@ -56,17 +58,17 @@ async def gain_xp(
     try:
         old_xp = current_user.xp
         old_level = calculate_level_from_xp(old_xp)[0]
-        
+
         new_xp = old_xp + amount
         new_level = calculate_level_from_xp(new_xp)[0]
-        
+
         # Update player
         current_user.xp = new_xp
         current_user.level = new_level
         await current_user.save()
-        
+
         level_up = new_level > old_level
-        
+
         return {
             "success": True,
             "new_xp": new_xp,
@@ -84,7 +86,7 @@ async def get_progression_summary(
     """Get summarized progression statistics."""
     try:
         level, _, _ = calculate_level_from_xp(current_user.xp)
-        
+
         return {
             "level": level,
             "prestige_level": current_user.prestige_level,

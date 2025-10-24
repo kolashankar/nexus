@@ -6,7 +6,7 @@ from backend.server import app
 
 class TestRobotPurchase:
     """Test robot purchase flow."""
-    
+
     @pytest.mark.asyncio
     async def test_purchase_robot_from_marketplace(self, auth_headers, clean_db):
         """Test purchasing a robot from marketplace."""
@@ -15,7 +15,7 @@ class TestRobotPurchase:
             {"username": "test_user"},
             {"$set": {"currencies.credits": 10000}}
         )
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/robots/purchase",
@@ -24,12 +24,12 @@ class TestRobotPurchase:
                     "robot_type": "harvester"
                 }
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert "robot_id" in data
             assert data["robot"]["type"] == "harvester"
-    
+
     @pytest.mark.asyncio
     async def test_cannot_purchase_without_credits(self, auth_headers, clean_db):
         """Test that purchase fails without sufficient credits."""
@@ -38,7 +38,7 @@ class TestRobotPurchase:
             {"username": "test_user"},
             {"$set": {"currencies.credits": 100}}
         )
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/robots/purchase",
@@ -47,9 +47,9 @@ class TestRobotPurchase:
                     "robot_type": "sentinel_prime"  # Expensive robot
                 }
             )
-            
+
             assert response.status_code == 400
-    
+
     @pytest.mark.asyncio
     async def test_robot_added_to_inventory(self, auth_headers, clean_db):
         """Test that purchased robot is added to inventory."""
@@ -57,7 +57,7 @@ class TestRobotPurchase:
             {"username": "test_user"},
             {"$set": {"currencies.credits": 10000}}
         )
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             # Purchase robot
             await client.post(
@@ -65,13 +65,13 @@ class TestRobotPurchase:
                 headers=auth_headers,
                 json={"robot_type": "harvester"}
             )
-            
+
             # Check inventory
             inventory_response = await client.get(
                 "/api/robots/my-robots",
                 headers=auth_headers
             )
-            
+
             assert inventory_response.status_code == 200
             inventory = inventory_response.json()
             assert len(inventory["robots"]) > 0
@@ -79,7 +79,7 @@ class TestRobotPurchase:
 
 class TestRobotTraining:
     """Test robot training flow."""
-    
+
     @pytest.mark.asyncio
     async def test_train_robot(self, auth_headers, clean_db):
         """Test training a robot to increase XP."""
@@ -92,7 +92,7 @@ class TestRobotTraining:
         }
         result = await clean_db.robots.insert_one(robot)
         robot_id = str(result.inserted_id)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 f"/api/robots/{robot_id}/train",
@@ -101,11 +101,11 @@ class TestRobotTraining:
                     "training_type": "basic"
                 }
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert data["xp"] > 0
-    
+
     @pytest.mark.asyncio
     async def test_robot_levels_up(self, auth_headers, clean_db):
         """Test robot leveling up after training."""
@@ -117,7 +117,7 @@ class TestRobotTraining:
         }
         result = await clean_db.robots.insert_one(robot)
         robot_id = str(result.inserted_id)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 f"/api/robots/{robot_id}/train",
@@ -126,7 +126,7 @@ class TestRobotTraining:
                     "training_type": "intensive"
                 }
             )
-            
+
             data = response.json()
             # Should level up if enough XP gained
             if data["xp"] >= 1000:
@@ -135,7 +135,7 @@ class TestRobotTraining:
 
 class TestRobotFusion:
     """Test robot fusion flow."""
-    
+
     @pytest.mark.asyncio
     async def test_fuse_two_robots(self, auth_headers, clean_db):
         """Test fusing two robots to create stronger one."""
@@ -152,10 +152,10 @@ class TestRobotFusion:
             "level": 4,
             "xp": 300
         }
-        
+
         result1 = await clean_db.robots.insert_one(robot1)
         result2 = await clean_db.robots.insert_one(robot2)
-        
+
         async with AsyncClient(app=app, base_url="http://test") as client:
             response = await client.post(
                 "/api/robots/fuse",
@@ -165,7 +165,7 @@ class TestRobotFusion:
                     "robot2_id": str(result2.inserted_id)
                 }
             )
-            
+
             assert response.status_code == 200
             data = response.json()
             assert data["fused_robot"]["level"] >= 5

@@ -6,12 +6,12 @@ from datetime import datetime
 
 class QuestTrackingService:
     """Tracks player actions and updates quest progress automatically"""
-    
+
     def __init__(self, db):
         self.db = db
         self.quests = db.quests
         self.players = db.players
-    
+
     async def track_action(
         self,
         player_id: str,
@@ -24,29 +24,29 @@ class QuestTrackingService:
             "player_id": player_id,
             "status": "active",
         }).to_list(length=100)
-        
+
         updated_quest_ids = []
-        
+
         for quest in active_quests:
             updated = False
             objectives = quest.get("objectives", [])
-            
+
             for obj in objectives:
                 if obj.get("completed"):
                     continue
-                
+
                 # Check if action matches objective
                 if self._matches_objective(action_type, obj["type"], action_data, obj):
                     obj["current"] = min(
                         obj["current"] + 1,
                         obj["required"]
                     )
-                    
+
                     if obj["current"] >= obj["required"]:
                         obj["completed"] = True
-                    
+
                     updated = True
-            
+
             if updated:
                 await self.quests.update_one(
                     {"_id": quest["_id"]},
@@ -58,9 +58,9 @@ class QuestTrackingService:
                     }
                 )
                 updated_quest_ids.append(quest["_id"])
-        
+
         return updated_quest_ids
-    
+
     def _matches_objective(
         self,
         action_type: str,
@@ -78,9 +78,9 @@ class QuestTrackingService:
             "combat_win": "win_combat",
             "duel_win": "win_duel",
         }
-        
+
         return action_map.get(action_type) == objective_type
-    
+
     async def check_completable_quests(
         self,
         player_id: str,
@@ -90,7 +90,7 @@ class QuestTrackingService:
             "player_id": player_id,
             "status": "active",
         }).to_list(length=100)
-        
+
         completable = []
         for quest in active_quests:
             all_done = all(
@@ -99,5 +99,5 @@ class QuestTrackingService:
             )
             if all_done:
                 completable.append(quest)
-        
+
         return completable

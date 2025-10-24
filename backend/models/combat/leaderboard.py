@@ -22,7 +22,7 @@ class Leaderboard(BaseModel):
     season: int
     entries: List[LeaderboardEntry] = Field(default_factory=list)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
-    
+
     class Config:
         json_schema_extra = {
             "example": {

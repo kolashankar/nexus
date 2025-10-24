@@ -31,7 +31,7 @@ class Architect(BaseAIService):
         self.cache_manager = CacheManager()
         self.client = get_ai_client()
         logger.info("The Architect initialized - World events system online")
-    
+
     async def generate_global_event(
         self,
         world_state: WorldState,
@@ -55,18 +55,18 @@ class Architect(BaseAIService):
             f"avg_karma={world_state.average_karma}, "
             f"trend={world_state.karma_trend}"
         )
-        
+
         # Check cache for similar world states
         cache_key = self._generate_cache_key(world_state)
         cached_event = await self.cache_manager.get(cache_key)
-        
+
         if cached_event and not force_event_type:
             logger.info("Using cached event for similar world state")
             return WorldEventResponse(**cached_event, cached=True)
-        
+
         # Prepare world state summary
         world_state_summary = self._format_world_state(world_state)
-        
+
         # Build context
         full_context = f"""
 Triggered by: {context or 'Automatic karma threshold'}
@@ -91,14 +91,14 @@ World Conflicts:
 Market: {world_state.market_health}
 Last Event: {world_state.last_global_event or 'None'} ({world_state.time_since_last_event or 0:.1f}h ago)
         """
-        
+
         # Generate event using AI
         try:
             prompt = EVENT_GENERATION_PROMPT.format(
                 world_state=world_state_summary,
                 context=full_context
             )
-            
+
             response = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[
@@ -109,9 +109,9 @@ Last Event: {world_state.last_global_event or 'None'} ({world_state.time_since_l
                 temperature=0.8,  # High creativity for dramatic events
                 max_tokens=2000
             )
-            
+
             event_data = json.loads(response.choices[0].message.content)
-            
+
             # Build event response
             event = WorldEventResponse(
                 event_id=self._generate_event_id(),
@@ -125,17 +125,21 @@ Last Event: {world_state.last_global_event or 'None'} ({world_state.time_since_l
                 ],
                 duration_hours=event_data["duration_hours"],
                 is_global=event_data.get("is_global", True),
-                affected_territories=event_data.get("affected_territories", []),
-                requires_participation=event_data.get("requires_participation", False),
-                participation_mechanics=event_data.get("participation_mechanics"),
+                affected_territories=event_data.get(
+                    "affected_territories", []),
+                requires_participation=event_data.get(
+                    "requires_participation", False),
+                participation_mechanics=event_data.get(
+                    "participation_mechanics"),
                 participation_rewards=event_data.get("participation_rewards"),
                 trigger_reason=event_data["trigger_reason"],
                 collective_karma=world_state.collective_karma,
                 estimated_impact=event_data["estimated_impact"],
                 architect_reasoning=event_data["architect_reasoning"],
-                alternative_events_considered=event_data.get("alternative_events_considered", [])
+                alternative_events_considered=event_data.get(
+                    "alternative_events_considered", [])
             )
-            
+
             # Cache the event
             if not force_event_type:
                 await self.cache_manager.set(
@@ -143,33 +147,34 @@ Last Event: {world_state.last_global_event or 'None'} ({world_state.time_since_l
                     event.dict(),
                     ttl=3600  # Cache for 1 hour
                 )
-            
+
             logger.info(
                 f"Generated event: {event.name} ({event.event_type.value}) - "
                 f"Severity: {event.severity.value}, Impact: {event.estimated_impact}"
             )
-            
+
             return event
-            
+
         except Exception as e:
             logger.error(f"Error generating event: {e}")
             # Return fallback event
             return self._fallback_event(world_state, force_event_type)
-    
+
     async def generate_regional_event(
         self,
         territory_state: Dict[str, Any],
         context: Optional[str] = None
     ) -> WorldEventResponse:
         """Generate a territory-specific regional event"""
-        logger.info(f"Generating regional event for territory {territory_state['territory_id']}")
-        
+        logger.info(
+            f"Generating regional event for territory {territory_state['territory_id']}")
+
         try:
             prompt = REGIONAL_EVENT_PROMPT.format(
                 territory_state=json.dumps(territory_state, indent=2),
                 context=context or "Regional event triggered by local conditions"
             )
-            
+
             response = await self.client.chat.completions.create(
                 model=self.model,
                 messages=[
@@ -180,9 +185,9 @@ Last Event: {world_state.last_global_event or 'None'} ({world_state.time_since_l
                 temperature=0.8,
                 max_tokens=1500
             )
-            
+
             event_data = json.loads(response.choices[0].message.content)
-            
+
             event = WorldEventResponse(
                 event_id=self._generate_event_id(),
                 event_type=EventType(event_data["event_type"]),
@@ -196,23 +201,27 @@ Last Event: {world_state.last_global_event or 'None'} ({world_state.time_since_l
                 duration_hours=event_data["duration_hours"],
                 is_global=False,
                 affected_territories=[territory_state["territory_id"]],
-                requires_participation=event_data.get("requires_participation", False),
-                participation_mechanics=event_data.get("participation_mechanics"),
+                requires_participation=event_data.get(
+                    "requires_participation", False),
+                participation_mechanics=event_data.get(
+                    "participation_mechanics"),
                 participation_rewards=event_data.get("participation_rewards"),
                 trigger_reason=event_data["trigger_reason"],
                 collective_karma=territory_state.get("local_karma", 0),
                 estimated_impact="medium",
                 architect_reasoning=event_data["architect_reasoning"],
-                alternative_events_considered=event_data.get("alternative_events_considered", [])
+                alternative_events_considered=event_data.get(
+                    "alternative_events_considered", [])
             )
-            
-            logger.info(f"Generated regional event: {event.name} for territory {territory_state['territory_id']}")
+
+            logger.info(
+                f"Generated regional event: {event.name} for territory {territory_state['territory_id']}")
             return event
-            
+
         except Exception as e:
             logger.error(f"Error generating regional event: {e}")
             return self._fallback_regional_event(territory_state)
-    
+
     def _format_world_state(self, world_state: WorldState) -> str:
         """Format world state for AI consumption"""
         return f"""
@@ -223,28 +232,28 @@ Players: {world_state.total_players:,} (Online: {world_state.online_players:,})
 Actions (24h): {world_state.total_actions_24h:,}
 Market: {world_state.market_health}
         """
-    
+
     def _generate_cache_key(self, world_state: WorldState) -> str:
         """Generate cache key for similar world states"""
         # Round karma to nearest 1000 for caching similar states
         karma_bucket = int(world_state.collective_karma / 1000) * 1000
         return f"architect:event:{karma_bucket}:{world_state.karma_trend}"
-    
+
     def _generate_event_id(self) -> str:
         """Generate unique event ID"""
         from uuid import uuid4
         return f"evt_{uuid4().hex[:12]}"
-    
+
     def _percentage(self, part: int, total: int) -> float:
         """Calculate percentage"""
         if total == 0:
             return 0.0
         return round((part / total) * 100, 1)
-    
+
     def _fallback_event(self, world_state: WorldState, force_type: Optional[EventType]) -> WorldEventResponse:
         """Generate a fallback event if AI fails"""
         logger.warning("Using fallback event generation")
-        
+
         # Determine event type based on karma
         if force_type:
             event_type = force_type
@@ -254,7 +263,7 @@ Market: {world_state.market_health}
             event_type = EventType.JUDGMENT_DAY
         else:
             event_type = EventType.METEOR_SHOWER
-        
+
         return WorldEventResponse(
             event_id=self._generate_event_id(),
             event_type=event_type,
@@ -278,7 +287,7 @@ Market: {world_state.market_health}
             estimated_impact="medium",
             architect_reasoning="Fallback event triggered to maintain game experience"
         )
-    
+
     def _fallback_regional_event(self, territory_state: Dict[str, Any]) -> WorldEventResponse:
         """Fallback regional event"""
         return WorldEventResponse(
@@ -305,11 +314,11 @@ Market: {world_state.market_health}
             estimated_impact="low",
             architect_reasoning="Fallback regional event"
         )
-    
+
     async def process(self, request: Dict[str, Any]) -> Dict[str, Any]:
         """Process event generation (base class requirement)"""
         world_state = WorldState(**request.get("world_state", {}))
-        
+
         if request.get("event_scope") == "regional":
             event = await self.generate_regional_event(
                 territory_state=request.get("territory_state", {}),
@@ -321,5 +330,5 @@ Market: {world_state.market_health}
                 force_event_type=request.get("force_event_type"),
                 context=request.get("context")
             )
-        
+
         return event.dict()

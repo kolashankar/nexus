@@ -55,7 +55,7 @@ SUPERPOWER_DEFINITIONS = {
         cooldown_seconds=300,
         energy_cost=50
     ),
-    
+
     # Tier 2 - Intermediate Powers
     "telekinesis": SuperpowerDefinition(
         power_id="telekinesis",
@@ -102,7 +102,7 @@ SUPERPOWER_DEFINITIONS = {
         cooldown_seconds=240,
         energy_cost=45
     ),
-    
+
     # Tier 3 - Advanced Powers
     "time_slow": SuperpowerDefinition(
         power_id="time_slow",
@@ -149,14 +149,15 @@ SUPERPOWER_DEFINITIONS = {
         cooldown_seconds=540,
         energy_cost=90
     ),
-    
+
     # Tier 4 - Master Powers
     "charm_mastery": SuperpowerDefinition(
         power_id="charm_mastery",
         name="Charm Mastery",
         description="Control emotions",
         tier=PowerTier.TIER_4,
-        requirements={"charisma": 90.0, "negotiation": 85.0, "manipulation": 70.0},
+        requirements={"charisma": 90.0,
+            "negotiation": 85.0, "manipulation": 70.0},
         cooldown_seconds=600,
         energy_cost=110
     ),
@@ -165,7 +166,8 @@ SUPERPOWER_DEFINITIONS = {
         name="Combat Supremacy",
         description="Enhanced fighting",
         tier=PowerTier.TIER_4,
-        requirements={"physical_strength": 80.0, "dexterity": 80.0, "courage": 75.0},
+        requirements={"physical_strength": 80.0,
+            "dexterity": 80.0, "courage": 75.0},
         cooldown_seconds=480,
         energy_cost=95
     ),
@@ -196,7 +198,7 @@ SUPERPOWER_DEFINITIONS = {
         cooldown_seconds=2400,
         energy_cost=250
     ),
-    
+
     # Tier 5 - Legendary Powers
     "karmic_transfer": SuperpowerDefinition(
         power_id="karmic_transfer",
@@ -230,7 +232,8 @@ SUPERPOWER_DEFINITIONS = {
         name="Omniscience",
         description="Brief complete awareness",
         tier=PowerTier.TIER_5,
-        requirements={"intelligence": 90.0, "wisdom": 90.0, "perception": 90.0},
+        requirements={"intelligence": 90.0,
+            "wisdom": 90.0, "perception": 90.0},
         cooldown_seconds=10800,
         energy_cost=500
     ),
@@ -250,12 +253,12 @@ SUPERPOWER_DEFINITIONS = {
 
 class SuperpowerService:
     """Service for managing player superpowers"""
-    
+
     @staticmethod
     def initialize_superpowers(player_id: str) -> PlayerSuperpowers:
         """Initialize superpowers for a new player"""
         return PlayerSuperpowers(player_id=player_id)
-    
+
     @staticmethod
     def check_unlock_eligibility(
         player_traits: Dict[str, float],
@@ -264,15 +267,15 @@ class SuperpowerService:
         """Check if player meets requirements to unlock a power"""
         if power_id not in SUPERPOWER_DEFINITIONS:
             return False, "Invalid power ID"
-        
+
         power_def = SUPERPOWER_DEFINITIONS[power_id]
-        
+
         for trait, min_value in power_def.requirements.items():
             if trait not in player_traits or player_traits[trait] < min_value:
                 return False, f"Requires {trait} >= {min_value}"
-        
+
         return True, "Requirements met"
-    
+
     @staticmethod
     def unlock_power(
         player_superpowers: PlayerSuperpowers,
@@ -280,15 +283,16 @@ class SuperpowerService:
         power_id: str
     ) -> Tuple[bool, str]:
         """Unlock a superpower"""
-        eligible, message = SuperpowerService.check_unlock_eligibility(player_traits, power_id)
+        eligible, message = SuperpowerService.check_unlock_eligibility(
+            player_traits, power_id)
         if not eligible:
             return False, message
-        
+
         success = player_superpowers.unlock_power(power_id)
         if success:
             return True, "Superpower unlocked!"
         return False, "Power already unlocked"
-    
+
     @staticmethod
     def use_power(
         player_superpowers: PlayerSuperpowers,
@@ -296,30 +300,32 @@ class SuperpowerService:
     ) -> Tuple[bool, str, Dict]:
         """Use a superpower"""
         # Check if power is unlocked
-        power = next((p for p in player_superpowers.unlocked_powers if p.power_id == power_id), None)
+        power = next(
+            (p for p in player_superpowers.unlocked_powers if p.power_id == power_id), None)
         if not power:
             return False, "Power not unlocked", {}
-        
+
         # Check if power is equipped
         if power_id not in player_superpowers.equipped_powers:
             return False, "Power not equipped", {}
-        
+
         # Check cooldown
         if power.is_on_cooldown():
-            remaining = (power.cooldown_until - datetime.utcnow()).total_seconds()
+            remaining = (power.cooldown_until - \
+                         datetime.utcnow()).total_seconds()
             return False, f"Power on cooldown ({int(remaining)}s remaining)", {}
-        
+
         # Use the power
         power_def = SUPERPOWER_DEFINITIONS[power_id]
         power.use_power(power_def.cooldown_seconds)
-        
+
         return True, "Power activated!", power_def.effects
-    
+
     @staticmethod
     def get_available_powers(player_traits: Dict[str, float]) -> List[Dict]:
         """Get list of powers player can unlock"""
         available = []
-        
+
         for power_id, power_def in SUPERPOWER_DEFINITIONS.items():
             eligible, message = SuperpowerService.check_unlock_eligibility(
                 player_traits, power_id
@@ -333,5 +339,5 @@ class SuperpowerService:
                 "requirements": power_def.requirements,
                 "message": message
             })
-        
+
         return available

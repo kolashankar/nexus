@@ -12,7 +12,7 @@ class CacheStrategy:
     def should_cache(self, data: Dict[str, Any]) -> bool:
         """Determine if data should be cached"""
         return True
-    
+
     def get_ttl(self, data: Dict[str, Any]) -> int:
         """Get TTL for cached data"""
         return 3600  # 1 hour default
@@ -27,7 +27,7 @@ class KarmaEvaluationCacheStrategy(CacheStrategy):
         if karma_change > 100:
             return False
         return True
-    
+
     def get_ttl(self, data: Dict[str, Any]) -> int:
         """Variable TTL based on severity"""
         severity = data.get("severity", "moderate")
@@ -48,7 +48,7 @@ class QuestGenerationCacheStrategy(CacheStrategy):
         quest_type = data.get("quest_type", "personal")
         # Only cache templates for very common types
         return quest_type in ["daily"]
-    
+
     def get_ttl(self, data: Dict[str, Any]) -> int:
         """Short TTL for quest caching"""
         return 1800  # 30 minutes
@@ -62,7 +62,7 @@ class CompanionDialogueCacheStrategy(CacheStrategy):
         message = data.get("message", "").lower()
         common_greetings = ["hi", "hello", "hey", "status", "help"]
         return any(greeting in message for greeting in common_greetings)
-    
+
     def get_ttl(self, data: Dict[str, Any]) -> int:
         """Short TTL for dialogue"""
         return 600  # 10 minutes

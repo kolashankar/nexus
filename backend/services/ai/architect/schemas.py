@@ -13,19 +13,19 @@ class EventType(str, Enum):
     DIVINE_BLESSING = "divine_blessing"
     FESTIVAL_OF_LIGHT = "festival_of_light"
     THE_CONVERGENCE = "the_convergence"
-    
+
     # Negative karma events
     THE_PURGE = "the_purge"
     ECONOMIC_COLLAPSE = "economic_collapse"
     DARK_ECLIPSE = "dark_eclipse"
     JUDGMENT_DAY = "judgment_day"
-    
+
     # Neutral events
     METEOR_SHOWER = "meteor_shower"
     GLITCH_IN_MATRIX = "glitch_in_matrix"
     ROBOT_UPRISING = "robot_uprising"
     TIME_ANOMALY = "time_anomaly"
-    
+
     # Regional events
     REGIONAL_PROSPERITY = "regional_prosperity"
     REGIONAL_CONFLICT = "regional_conflict"
@@ -43,19 +43,29 @@ class EventSeverity(str, Enum):
 
 class WorldState(BaseModel):
     """Current state of the world"""
-    collective_karma: float = Field(default=0.0, description="Total karma of all players")
-    average_karma: float = Field(default=0.0, description="Average karma per player")
-    karma_trend: str = Field(default="stable", description="Trend: rising, falling, stable")
+    collective_karma: float = Field(
+        default=0.0, description="Total karma of all players")
+    average_karma: float = Field(
+        default=0.0, description="Average karma per player")
+    karma_trend: str = Field(
+        default="stable", description="Trend: rising, falling, stable")
     total_players: int = Field(default=0, description="Total active players")
-    online_players: int = Field(default=0, description="Currently online players")
-    total_actions_24h: int = Field(default=0, description="Actions in last 24h")
-    positive_actions_24h: int = Field(default=0, description="Positive actions")
-    negative_actions_24h: int = Field(default=0, description="Negative actions")
+    online_players: int = Field(
+        default=0, description="Currently online players")
+    total_actions_24h: int = Field(
+        default=0, description="Actions in last 24h")
+    positive_actions_24h: int = Field(
+        default=0, description="Positive actions")
+    negative_actions_24h: int = Field(
+        default=0, description="Negative actions")
     guild_wars_active: int = Field(default=0, description="Active guild wars")
-    territories_contested: int = Field(default=0, description="Contested territories")
+    territories_contested: int = Field(
+        default=0, description="Contested territories")
     market_health: str = Field(default="stable", description="Economy health")
-    last_global_event: Optional[str] = Field(default=None, description="Last global event type")
-    time_since_last_event: Optional[float] = Field(default=None, description="Hours since last event")
+    last_global_event: Optional[str] = Field(
+        default=None, description="Last global event type")
+    time_since_last_event: Optional[float] = Field(
+        default=None, description="Hours since last event")
 
 
 class TerritoryState(BaseModel):
@@ -101,26 +111,26 @@ class WorldEventResponse(BaseModel):
     lore: str  # Rich narrative description
     effects: List[EventEffect]
     duration_hours: float
-    
+
     # Targeting
     is_global: bool = True
     affected_territories: List[int] = Field(default_factory=list)
-    
+
     # Participation
     requires_participation: bool = False
     participation_mechanics: Optional[str] = None
     participation_rewards: Optional[Dict[str, Any]] = None
-    
+
     # Metadata
     trigger_reason: str
     karma_threshold: Optional[float] = None
     collective_karma: float
     estimated_impact: str  # "low", "medium", "high", "world_changing"
-    
+
     # AI reasoning
     architect_reasoning: str
     alternative_events_considered: List[str] = Field(default_factory=list)
-    
+
     # Generation metadata
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     cached: bool = False

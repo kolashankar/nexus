@@ -8,7 +8,8 @@ from datetime import datetime
 class ChallengeRequest(BaseModel):
     """Request to challenge a player."""
     target_id: str = Field(..., description="ID of player to challenge")
-    combat_type: str = Field(default="duel", description="Type of combat (duel, ambush, arena)")
+    combat_type: str = Field(
+        default="duel", description="Type of combat (duel, ambush, arena)")
 
 
 class ChallengeResponse(BaseModel):
@@ -20,13 +21,15 @@ class ChallengeResponse(BaseModel):
 
 class AcceptChallengeRequest(BaseModel):
     """Request to accept a challenge."""
-    challenge_id: str = Field(..., description="ID of challenge to accept/decline")
+    challenge_id: str = Field(...,
+                              description="ID of challenge to accept/decline")
 
 
 class CombatActionRequest(BaseModel):
     """Request to perform a combat action."""
     battle_id: str = Field(..., description="ID of the battle")
-    action_type: str = Field(..., description="Type of action (attack, defend, use_power, use_item, flee)")
+    action_type: str = Field(
+        ..., description="Type of action (attack, defend, use_power, use_item, flee)")
     target: Optional[str] = Field(None, description="Target of the action")
     ability_id: Optional[str] = Field(None, description="ID of ability to use")
 

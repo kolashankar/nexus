@@ -11,7 +11,7 @@ class BattlePassService:
 
     def __init__(self):
         self.db = db
-        
+
     async def create_battle_pass(
         self,
         season: int,
@@ -21,10 +21,10 @@ class BattlePassService:
     ) -> Dict[str, Any]:
         """Create a new battle pass for a season."""
         pass_id = str(uuid.uuid4())
-        
+
         # Generate tiers
         tiers = self._generate_tiers()
-        
+
         battle_pass = {
             "pass_id": pass_id,
             "season": season,
@@ -43,26 +43,26 @@ class BattlePassService:
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow()
         }
-        
+
         await self.db.battle_passes.insert_one(battle_pass)
         return battle_pass
-    
+
     def _generate_tiers(self) -> List[Dict[str, Any]]:
         """Generate 100 tiers with rewards."""
         tiers = []
         cumulative_xp = 0
-        
+
         for tier in range(1, 101):
             # XP required increases with each tier
             tier_xp = 1000 + (tier * 100)
             cumulative_xp += tier_xp
-            
+
             # Generate free rewards (every tier)
             free_rewards = self._generate_free_rewards(tier)
-            
+
             # Generate premium rewards (more valuable)
             premium_rewards = self._generate_premium_rewards(tier)
-            
+
             tiers.append({
                 "tier": tier,
                 "xp_required": cumulative_xp,
@@ -70,13 +70,13 @@ class BattlePassService:
                 "premium_rewards": premium_rewards,
                 "is_locked": True
             })
-        
+
         return tiers
-    
+
     def _generate_free_rewards(self, tier: int) -> List[Dict[str, Any]]:
         """Generate free rewards for a tier."""
         rewards = []
-        
+
         # Every tier gets some credits
         rewards.append({
             "reward_type": "credits",
@@ -86,7 +86,7 @@ class BattlePassService:
             "description": "In-game currency",
             "rarity": "common"
         })
-        
+
         # Every 5 tiers gets XP boost
         if tier % 5 == 0:
             rewards.append({
@@ -97,7 +97,7 @@ class BattlePassService:
                 "description": "Experience points",
                 "rarity": "common"
             })
-        
+
         # Every 10 tiers gets a cosmetic
         if tier % 10 == 0:
             rewards.append({
@@ -108,13 +108,13 @@ class BattlePassService:
                 "description": "Exclusive outfit",
                 "rarity": "rare"
             })
-        
+
         return rewards
-    
+
     def _generate_premium_rewards(self, tier: int) -> List[Dict[str, Any]]:
         """Generate premium rewards for a tier."""
         rewards = []
-        
+
         # Premium gets more credits
         rewards.append({
             "reward_type": "credits",
@@ -125,7 +125,7 @@ class BattlePassService:
             "rarity": "common",
             "is_premium_only": True
         })
-        
+
         # Every tier gets karma tokens
         rewards.append({
             "reward_type": "karma_tokens",
@@ -136,7 +136,7 @@ class BattlePassService:
             "rarity": "rare",
             "is_premium_only": True
         })
-        
+
         # Every 10 tiers gets exclusive item
         if tier % 10 == 0:
             rewards.append({
@@ -148,7 +148,7 @@ class BattlePassService:
                 "rarity": "epic",
                 "is_premium_only": True
             })
-        
+
         # Every 25 tiers gets emote
         if tier % 25 == 0:
             rewards.append({
@@ -160,7 +160,7 @@ class BattlePassService:
                 "rarity": "legendary",
                 "is_premium_only": True
             })
-        
+
         # Tier 50 and 100 get special rewards
         if tier == 50:
             rewards.append({
@@ -172,7 +172,7 @@ class BattlePassService:
                 "rarity": "legendary",
                 "is_premium_only": True
             })
-        
+
         if tier == 100:
             rewards.append({
                 "reward_type": "superpower_charge",
@@ -183,9 +183,9 @@ class BattlePassService:
                 "rarity": "legendary",
                 "is_premium_only": True
             })
-        
+
         return rewards
-    
+
     async def get_active_battle_pass(self) -> Optional[Dict[str, Any]]:
         """Get currently active battle pass."""
         now = datetime.utcnow()
@@ -195,7 +195,7 @@ class BattlePassService:
             "end_date": {"$gte": now}
         })
         return battle_pass
-    
+
     async def get_player_progress(
         self,
         player_id: str,
@@ -206,13 +206,13 @@ class BattlePassService:
             "player_id": player_id,
             "pass_id": pass_id
         })
-        
+
         if not progress:
             # Initialize progress
             progress = await self._initialize_player_progress(player_id, pass_id)
-        
+
         return progress
-    
+
     async def _initialize_player_progress(
         self,
         player_id: str,
@@ -220,7 +220,7 @@ class BattlePassService:
     ) -> Dict[str, Any]:
         """Initialize player's battle pass progress."""
         battle_pass = await self.db.battle_passes.find_one({"pass_id": pass_id})
-        
+
         progress = {
             "player_id": player_id,
             "pass_id": pass_id,
@@ -237,10 +237,10 @@ class BattlePassService:
             "created_at": datetime.utcnow(),
             "updated_at": datetime.utcnow()
         }
-        
+
         await self.db.player_battle_pass.insert_one(progress)
         return progress
-    
+
     async def add_xp(
         self,
         player_id: str,
@@ -250,11 +250,11 @@ class BattlePassService:
         """Add XP to player's battle pass progress."""
         progress = await self.get_player_progress(player_id, pass_id)
         battle_pass = await self.db.battle_passes.find_one({"pass_id": pass_id})
-        
+
         # Add XP
         new_xp = progress["current_xp"] + xp_amount
         new_total_xp = progress["total_xp_earned"] + xp_amount
-        
+
         # Calculate new tier
         new_tier = progress["current_tier"]
         for tier_data in battle_pass["tiers"]:
@@ -262,7 +262,7 @@ class BattlePassService:
                 new_tier = tier_data["tier"]
             else:
                 break
-        
+
         # Update progress
         await self.db.player_battle_pass.update_one(
             {"player_id": player_id, "pass_id": pass_id},
@@ -276,10 +276,10 @@ class BattlePassService:
                 }
             }
         )
-        
+
         # Check if tier increased
         tiers_gained = new_tier - progress["current_tier"]
-        
+
         return {
             "xp_added": xp_amount,
             "new_xp": new_xp,
@@ -287,7 +287,7 @@ class BattlePassService:
             "tiers_gained": tiers_gained,
             "rewards_available": tiers_gained > 0
         }
-    
+
     async def claim_rewards(
         self,
         player_id: str,
@@ -297,49 +297,49 @@ class BattlePassService:
         """Claim rewards for a specific tier."""
         progress = await self.get_player_progress(player_id, pass_id)
         battle_pass = await self.db.battle_passes.find_one({"pass_id": pass_id})
-        
+
         # Validate tier is unlocked
         if tier > progress["current_tier"]:
             raise ValueError("Tier not yet unlocked")
-        
+
         # Get tier data
         tier_data = next(
             (t for t in battle_pass["tiers"] if t["tier"] == tier),
             None
         )
-        
+
         if not tier_data:
             raise ValueError("Invalid tier")
-        
+
         claimed_rewards = []
-        
+
         # Claim free rewards
         if tier not in progress["claimed_free_rewards"]:
             for reward in tier_data["free_rewards"]:
                 await self._grant_reward(player_id, reward)
                 claimed_rewards.append(reward)
-            
+
             await self.db.player_battle_pass.update_one(
                 {"player_id": player_id, "pass_id": pass_id},
                 {"$push": {"claimed_free_rewards": tier}}
             )
-        
+
         # Claim premium rewards if has premium
         if progress["has_premium"] and tier not in progress["claimed_premium_rewards"]:
             for reward in tier_data["premium_rewards"]:
                 await self._grant_reward(player_id, reward)
                 claimed_rewards.append(reward)
-            
+
             await self.db.player_battle_pass.update_one(
                 {"player_id": player_id, "pass_id": pass_id},
                 {"$push": {"claimed_premium_rewards": tier}}
             )
-        
+
         return {
             "tier": tier,
             "rewards_claimed": claimed_rewards
         }
-    
+
     async def _grant_reward(
         self,
         player_id: str,
@@ -348,7 +348,7 @@ class BattlePassService:
         """Grant a reward to a player."""
         reward_type = reward["reward_type"]
         amount = reward["amount"]
-        
+
         if reward_type == "credits":
             await self.db.players.update_one(
                 {"_id": player_id},
@@ -371,7 +371,7 @@ class BattlePassService:
                 {"$push": {"cosmetics.owned_items": reward["reward_id"]}}
             )
         # Add more reward type handlers as needed
-    
+
     async def purchase_premium(
         self,
         player_id: str,
@@ -380,17 +380,17 @@ class BattlePassService:
         """Purchase premium battle pass."""
         battle_pass = await self.db.battle_passes.find_one({"pass_id": pass_id})
         player = await self.db.players.find_one({"_id": player_id})
-        
+
         # Check if player has enough credits
         if player["currencies"]["credits"] < battle_pass["premium_price"]:
             raise ValueError("Insufficient credits")
-        
+
         # Deduct credits
         await self.db.players.update_one(
             {"_id": player_id},
             {"$inc": {"currencies.credits": -battle_pass["premium_price"]}}
         )
-        
+
         # Unlock premium
         await self.db.player_battle_pass.update_one(
             {"player_id": player_id, "pass_id": pass_id},
@@ -402,13 +402,13 @@ class BattlePassService:
                 }
             }
         )
-        
+
         # Update battle pass stats
         await self.db.battle_passes.update_one(
             {"pass_id": pass_id},
             {"$inc": {"premium_players": 1}}
         )
-        
+
         return {
             "success": True,
             "message": "Premium battle pass purchased",

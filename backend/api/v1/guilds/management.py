@@ -32,9 +32,9 @@ async def kick_member(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     service = GuildManagementService(db)
-    
+
     try:
         success = await service.kick_member(guild_id, request.player_id, current_user["_id"])
         return {"success": success, "message": "Member kicked successfully"}
@@ -52,9 +52,9 @@ async def promote_member(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     service = GuildManagementService(db)
-    
+
     try:
         success = await service.promote_member(guild_id, request.player_id, request.new_rank, current_user["_id"])
         return {"success": success, "message": "Member rank updated"}
@@ -72,12 +72,12 @@ async def contribute_to_bank(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     if request.credits <= 0:
         raise HTTPException(status_code=400, detail="Amount must be positive")
-    
+
     service = GuildManagementService(db)
-    
+
     try:
         success = await service.contribute_to_bank(guild_id, current_user["_id"], request.credits)
         return {"success": success, "message": f"Contributed {request.credits} credits to guild bank"}
@@ -94,11 +94,11 @@ async def get_guild_bank(
     guild_id = current_user.get("guild_id")
     if not guild_id:
         raise HTTPException(status_code=400, detail="Not in a guild")
-    
+
     service = GuildManagementService(db)
     guild = await service.get_guild(guild_id)
-    
+
     if not guild:
         raise HTTPException(status_code=404, detail="Guild not found")
-    
+
     return guild.get("guild_bank", {"credits": 0, "resources": {}})

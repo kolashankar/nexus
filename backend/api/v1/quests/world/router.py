@@ -17,9 +17,9 @@ async def get_available_world_quests(
 ):
     """Get available world quests (open to all players)"""
     service = WorldQuestService(db)
-    
+
     quests = await service.get_active_world_quests()
-    
+
     return {
         "quests": quests,
         "total": len(quests),
@@ -35,9 +35,9 @@ async def get_world_quest_leaderboard(
 ):
     """Get leaderboard for a world quest"""
     service = WorldQuestService(db)
-    
+
     leaderboard = await service.get_quest_leaderboard(quest_id)
-    
+
     return {
         "leaderboard": leaderboard,
         "total_participants": len(leaderboard),
@@ -53,13 +53,13 @@ async def participate_in_world_quest(
     """Participate in a world quest"""
     WorldQuestService(db)
     manager = QuestManager(db)
-    
+
     # Accept the quest
     quest = await manager.accept_quest(
         quest_id=quest_id,
         player_id=current_player["_id"],
     )
-    
+
     return {
         "quest": quest,
         "message": "You are now participating in this world quest!",

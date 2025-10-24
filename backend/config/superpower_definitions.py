@@ -105,7 +105,7 @@ ALL_SUPERPOWERS: List[Dict[str, Any]] = [
         },
         "cost": {"karma_tokens": 50}
     },
-    
+
     # TIER 2 - Intermediate Powers
     {
         "id": "telekinesis",
@@ -198,7 +198,7 @@ ALL_SUPERPOWERS: List[Dict[str, Any]] = [
         },
         "cost": {"karma_tokens": 100}
     },
-    
+
     # TIER 3 - Advanced Powers
     {
         "id": "time_slow",
@@ -290,7 +290,7 @@ ALL_SUPERPOWERS: List[Dict[str, Any]] = [
         },
         "cost": {"karma_tokens": 200}
     },
-    
+
     # TIER 4 - Master Powers
     {
         "id": "charm_mastery",
@@ -385,7 +385,7 @@ ALL_SUPERPOWERS: List[Dict[str, Any]] = [
         },
         "cost": {"karma_tokens": 300, "prestige_points": 100}
     },
-    
+
     # TIER 5 - Legendary Powers (Very Rare)
     {
         "id": "karmic_transfer",
@@ -499,9 +499,9 @@ def check_unlock_conditions(player_traits: Dict[str, float], power_id: str) -> b
     power = get_superpower_by_id(power_id)
     if not power:
         return False
-    
+
     conditions = power["unlock_conditions"]
-    
+
     # Check all_virtues special condition
     if "all_virtues" in conditions:
         virtues = [
@@ -513,12 +513,12 @@ def check_unlock_conditions(player_traits: Dict[str, float], power_id: str) -> b
         min_value = conditions["all_virtues"]
         if not all(player_traits.get(v, 0) >= min_value for v in virtues):
             return False
-    
+
     # Check individual trait conditions
     for trait, min_value in conditions.items():
         if trait == "all_virtues":
             continue
         if player_traits.get(trait, 0) < min_value:
             return False
-    
+
     return True

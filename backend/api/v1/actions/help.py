@@ -15,7 +15,7 @@ async def help_player(
 ):
     """Help another player"""
     handler = ActionHandler()
-    
+
     try:
         result = await handler.execute_action(
             action_type="help",

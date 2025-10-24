@@ -24,7 +24,7 @@ class PlayerProfileResponse(BaseModel):
     stats: Dict[str, int] = {}
     created_at: datetime
     last_login: Optional[datetime] = None
-    
+
     class Config:
         populate_by_name = True
         json_schema_extra = {
@@ -57,11 +57,15 @@ class PlayerProfileResponse(BaseModel):
 
 class ProfileUpdateRequest(BaseModel):
     """Request to update player profile."""
-    bio: Optional[str] = Field(None, max_length=500, description='Player biography')
-    active_title: Optional[str] = Field(None, description='Active display title')
-    appearance: Optional[Dict[str, Any]] = Field(None, description='Appearance customization')
-    cosmetics: Optional[Dict[str, Any]] = Field(None, description='Equipped cosmetics')
-    
+    bio: Optional[str] = Field(
+        None, max_length=500, description='Player biography')
+    active_title: Optional[str] = Field(
+        None, description='Active display title')
+    appearance: Optional[Dict[str, Any]] = Field(
+        None, description='Appearance customization')
+    cosmetics: Optional[Dict[str, Any]] = Field(
+        None, description='Equipped cosmetics')
+
     class Config:
         json_schema_extra = {
             'example': {
@@ -83,7 +87,7 @@ class StatsResponse(BaseModel):
     combat_stats: Dict[str, Any]
     derived_traits: Dict[str, Any]
     level_progress: Dict[str, Any]
-    
+
     class Config:
         json_schema_extra = {
             'example': {
@@ -117,7 +121,7 @@ class OnlinePlayersResponse(BaseModel):
     """Online players response schema."""
     total_online: int
     players: List[Dict[str, Any]]
-    
+
     class Config:
         json_schema_extra = {
             'example': {
