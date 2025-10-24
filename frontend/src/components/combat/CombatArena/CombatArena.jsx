@@ -42,7 +42,7 @@ const CombatArena = ({  battleId, playerId  }) => {
     }
   };
 
-  const handleAction = async (actionType, targetId?: string, abilityName?: string) => {
+  const handleAction = async (actionType, targetId, abilityName) => {
     try {
       const result = await combatService.executeAction(
         battleId,
