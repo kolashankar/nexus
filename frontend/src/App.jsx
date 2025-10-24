@@ -10,6 +10,19 @@ import Landing from './pages/Landing/Landing';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
+import Combat from './pages/Combat/Combat';
+import Actions from './pages/Actions/Actions';
+import Guild from './pages/Guild/Guild';
+import Karma from './pages/Karma/Karma';
+import Prestige from './pages/Prestige/Prestige';
+import Profile from './pages/Profile/Profile';
+import Progression from './pages/Progression/Progression';
+import Quests from './pages/Quests/QuestsDashboard';
+import Seasonal from './pages/Seasonal/SeasonalDashboard';
+import Skills from './pages/Skills/Skills';
+import SocialHub from './pages/SocialHub/SocialHub';
+import Territories from './pages/Territories/Territories';
+import World from './pages/World/World';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useStore();
