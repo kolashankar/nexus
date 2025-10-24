@@ -51,7 +51,7 @@ const PRIVACY_TIERS = [
 ];
 
 export const PrivacySettings= () => {
-  const { player, updatePlayer, isLoading= usePlayer();
+  const { player, updatePlayer, isLoading } = usePlayer();
   const [settings, setSettings] = useState({
     privacy_tier,
     cash,

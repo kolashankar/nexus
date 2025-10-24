@@ -40,7 +40,7 @@ import './StatsOverview.css';
 }
 
 export const StatsOverview= () => {
-  const { player, isLoading= usePlayer();
+  const { player, isLoading } = usePlayer();
   const [stats, setStats] = useState(null);
   const [activeTab, setActiveTab] = useState('combat');
 
