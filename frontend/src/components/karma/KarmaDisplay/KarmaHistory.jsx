@@ -5,7 +5,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import apiClient from '@/services/api/client';
 import { formatDistance } from 'date-fns';
 
-const KarmaHistory= () => {
+const KarmaHistory = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 

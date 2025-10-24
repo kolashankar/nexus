@@ -38,7 +38,7 @@ const RegionalEventsPanel = ({  territoryId  }) => {
   };
 
   const getEventIcon = (eventType) => {
-    const icons= {
+    const icons = {
       resource_surge,
       hostile_takeover,
       market_boom,
@@ -49,7 +49,7 @@ const RegionalEventsPanel = ({  territoryId  }) => {
   };
 
   const getEventColor = (eventType)=> {
-    const colors= {
+    const colors = {
       resource_surge,
       hostile_takeover,
       market_boom,

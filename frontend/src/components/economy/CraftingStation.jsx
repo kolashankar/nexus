@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Hammer, Package, Clock, TrendingUp } from 'lucide-react';
 import { toast } from '../ui/sonner';
 
->;
   result_item
     name;
     type;
@@ -16,7 +15,7 @@ import { toast } from '../ui/sonner';
   unlocked;
 }
 
-export const CraftingStation= () => {
+export const CraftingStation = () => {
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [crafting, setCrafting] = useState(false);
@@ -89,7 +88,7 @@ export const CraftingStation= () => {
   };
 
   const getRarityColor = (rarity) => {
-    const colors= {
+    const colors = {
       common,
       uncommon,
       rare,

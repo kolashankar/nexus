@@ -44,7 +44,7 @@ const TournamentList = () => {
   };
 
   const getTournamentTypeIcon = (type) => {
-    const icons= {
+    const icons = {
       pvp_combat,
       robot_battle,
       trading_competition,

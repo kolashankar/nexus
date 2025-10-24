@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs';
 import { TrendingUp, TrendingDown, AlertCircle, Award, Target } from 'lucide-react';
 import './TraitsAnalysis.css';
 
-;
   balance
     balance_score;
     spread;
@@ -22,7 +21,7 @@ import './TraitsAnalysis.css';
   active_synergies;
 }
 
-export const TraitsAnalysis= () => {
+export const TraitsAnalysis = () => {
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
 

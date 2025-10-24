@@ -5,7 +5,7 @@ import { actionsService } from '../../../services/actions/actionsService';
 
 
 
-export const ActionHistory= () => {
+export const ActionHistory = () => {
   const [actions, setActions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +25,7 @@ export const ActionHistory= () => {
   };
 
   const getActionIcon = (type) => {
-    const icons= {
+    const icons = {
       hack,
       help,
       steal,
@@ -36,7 +36,7 @@ export const ActionHistory= () => {
   };
 
   const getActionColor = (type) => {
-    const colors= {
+    const colors = {
       hack,
       help,
       steal,

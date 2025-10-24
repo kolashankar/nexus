@@ -4,7 +4,7 @@ import { Bell, CheckCircle2, XCircle, Info } from 'lucide-react';
 
 
 
-export const QuestNotifications= () => {
+export const QuestNotifications = () => {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {

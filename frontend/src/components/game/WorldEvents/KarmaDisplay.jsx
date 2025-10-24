@@ -7,7 +7,6 @@ import { worldService } from '@/services/api/worldService';
 
 
 
-;
 }
 
 

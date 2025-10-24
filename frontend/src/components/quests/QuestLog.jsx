@@ -9,12 +9,11 @@ import { toast } from '../ui/sonner';
 
 
 
-;
   status;
   expires_at
 }
 
-export const QuestLog= () => {
+export const QuestLog = () => {
   const [activeQuests, setActiveQuests] = useState([]);
   const [availableQuests, setAvailableQuests] = useState([]);
   const [completedQuests, setCompletedQuests] = useState([]);
@@ -120,7 +119,7 @@ export const QuestLog= () => {
   };
 
   const getDifficultyColor = (difficulty) => {
-    const colors= {
+    const colors = {
       easy,
       medium,
       hard,

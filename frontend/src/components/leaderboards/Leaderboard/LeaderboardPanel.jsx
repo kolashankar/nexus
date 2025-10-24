@@ -8,7 +8,7 @@ import { useLeaderboards } from '../../../hooks/useLeaderboards';
 
 
 
-const LeaderboardPanel= () => {
+const LeaderboardPanel = () => {
   const { leaderboards, myRanks, loading, fetchLeaderboard, fetchMyRank } = useLeaderboards();
   const [activeTab, setActiveTab] = useState('karma');
 
@@ -25,7 +25,7 @@ const LeaderboardPanel= () => {
   }, []);
 
   const getLeaderboardIcon = (type) => {
-    const icons= {
+    const icons = {
       karma,
       wealth,
       combat,

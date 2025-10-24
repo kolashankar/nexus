@@ -6,7 +6,6 @@ import { Progress } from '../ui/progress';
 import { Users, Trophy, Clock, CheckCircle } from 'lucide-react';
 import { useToast } from '../../hooks/useToast';
 
->;
   rewards
     credits;
     guild_reputation;
@@ -18,7 +17,7 @@ import { useToast } from '../../hooks/useToast';
   expires_at
 }
 
-export const GuildQuests= () => {
+export const GuildQuests = () => {
   const [quests, setQuests] = useState([]);
   const [activeQuests, setActiveQuests] = useState([]);
   const [loading, setLoading] = useState(true);

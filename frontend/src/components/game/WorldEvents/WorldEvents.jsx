@@ -12,7 +12,6 @@ import { KarmaDisplay } from './KarmaDisplay';
 import { worldService } from '@/services/api/worldService';
 import './WorldEvents.css';
 
->;
   duration_hours;
   is_global;
   status;
@@ -25,7 +24,7 @@ import './WorldEvents.css';
 
 
 
-export const WorldEvents= () => {
+export const WorldEvents = () => {
   const [activeEvent, setActiveEvent] = useState(null);
   const [recentEvents, setRecentEvents] = useState([]);
   const [worldState, setWorldState] = useState(null);

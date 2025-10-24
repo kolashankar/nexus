@@ -10,7 +10,7 @@ import { Progress } from '../ui/progress';
 
 
 
-const WorldEventsPanel= () => {
+const WorldEventsPanel = () => {
   const { worldState, activeEvents, loading } = useWorldEvents();
   const [selectedEvent, setSelectedEvent] = useState(null);
 

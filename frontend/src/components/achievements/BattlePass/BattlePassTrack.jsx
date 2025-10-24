@@ -25,7 +25,7 @@ const BattlePassTrack = ({
   const [selectedTier, setSelectedTier] = useState(null);
 
   const getRarityColor = (rarity)=> {
-    const colors= {
+    const colors = {
       common,
       rare,
       epic,

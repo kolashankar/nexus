@@ -19,7 +19,6 @@ import {
 import { usePlayer } from '../../../hooks/usePlayer';
 import './StatsOverview.css';
 
-;
   derived_traits
     reputation;
     influence;
@@ -39,7 +38,7 @@ import './StatsOverview.css';
   };
 }
 
-export const StatsOverview= () => {
+export const StatsOverview = () => {
   const { player, isLoading } = usePlayer();
   const [stats, setStats] = useState(null);
   const [activeTab, setActiveTab] = useState('combat');
@@ -49,7 +48,7 @@ export const StatsOverview= () => {
     // For now, calculate from player data
     if (player) {
       // Mock stats calculation
-      const calculatedStats= {
+      const calculatedStats = {
         player_id,
         username,
         level,

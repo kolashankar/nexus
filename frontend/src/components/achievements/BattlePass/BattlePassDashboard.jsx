@@ -6,7 +6,7 @@ import { useBattlePass } from '../../../hooks/useBattlePass';
 import BattlePassTrack from './BattlePassTrack';
 import { toast } from 'sonner';
 
-const BattlePassDashboard= () => {
+const BattlePassDashboard = () => {
   const {
     battlePass,
     progress,

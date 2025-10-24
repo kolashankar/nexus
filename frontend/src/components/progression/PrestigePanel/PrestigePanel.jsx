@@ -6,7 +6,6 @@ import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Sparkles, Trophy, Star, AlertTriangle } from 'lucide-react';
 
-;
   permanent_bonuses;
   prestige_points_awarded;
   unlocks;

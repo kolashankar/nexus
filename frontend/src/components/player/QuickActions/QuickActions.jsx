@@ -61,7 +61,7 @@ const QUICK_ACTIONS= [
   }
 ];
 
-export const QuickActions= () => {
+export const QuickActions = () => {
   const { checkCooldown } = useActions();
   const [cooldowns, setCooldowns] = useState>({});
 

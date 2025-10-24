@@ -5,7 +5,6 @@ import { Button } from '../ui/button';
 import { Progress } from '../ui/progress';
 import { CheckCircle, Circle, Trophy, Star, Coins } from 'lucide-react';
 
->;
   rewards
     credits;
     xp;

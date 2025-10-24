@@ -12,7 +12,7 @@ import './ActionCooldowns.css';
 
 
 
-export const ActionCooldowns= () => {
+export const ActionCooldowns = () => {
   const [cooldowns, setCooldowns] = useState>({});
   const [loading, setLoading] = useState(true);
 
