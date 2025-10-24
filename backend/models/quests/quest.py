@@ -3,6 +3,25 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 from pydantic import BaseModel, Field
+from enum import Enum
+
+class QuestType(str, Enum):
+    """Quest type enumeration."""
+    PERSONAL = "personal"
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    GUILD = "guild"
+    WORLD = "world"
+    HIDDEN = "hidden"
+    CAMPAIGN = "campaign"
+
+class QuestStatus(str, Enum):
+    """Quest status enumeration."""
+    AVAILABLE = "available"
+    ACTIVE = "active"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    EXPIRED = "expired"
 
 class QuestObjective(BaseModel):
     """Quest objective model."""
