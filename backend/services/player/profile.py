@@ -3,7 +3,6 @@
 from typing import Optional, Dict, Any
 from datetime import datetime
 from backend.core.database import db
-from bson import ObjectId
 from fastapi import HTTPException
 
 class PlayerProfileService:
