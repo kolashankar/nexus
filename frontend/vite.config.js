@@ -14,6 +14,11 @@ export default defineConfig({
     port: 3000,
     host: '0.0.0.0',
     strictPort: false,
+    allowedHosts: [
+      'screengrab-readme.preview.emergentagent.com',
+      '.preview.emergentagent.com',
+      'localhost',
+    ],
     hmr: {
       clientPort: 443,
     },
