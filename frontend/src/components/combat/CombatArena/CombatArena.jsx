@@ -87,14 +87,14 @@ const CombatArena = ({  battleId, playerId  }) => {
   }
 
   if (!battle) {
-    return Battle not found;
+    return <div>Battle not found</div>;
   }
 
   const player = battle.participants.find(p => p.player_id === playerId);
   const opponent = battle.participants.find(p => p.player_id !== playerId);
 
   if (!player || !opponent) {
-    return Invalid battle state;
+    return <div>Invalid battle state</div>;
   }
 
   const isBattleOver = battle.status === 'completed';

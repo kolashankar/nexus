@@ -42,7 +42,7 @@ export const ActionHistory = () => {
       steal,
       donate,
       trade) {
-    return Loading history...;
+    return <div>Loading history...</div>;
   }
 
   return (

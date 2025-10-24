@@ -69,7 +69,7 @@ const SuperpowersList = () => {
   };
 
   if (loading) {
-    return Loading superpowers...;
+    return <div>Loading superpowers...</div>;
   }
 
   return (
