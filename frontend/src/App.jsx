@@ -51,6 +51,97 @@ function App() {
                   <Dashboard />
                 </ProtectedRoute>
               } />
+            <Route 
+              path="/combat" 
+              element={
+                <ProtectedRoute>
+                  <Combat />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/actions" 
+              element={
+                <ProtectedRoute>
+                  <Actions />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/guild" 
+              element={
+                <ProtectedRoute>
+                  <Guild />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/karma" 
+              element={
+                <ProtectedRoute>
+                  <Karma />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/prestige" 
+              element={
+                <ProtectedRoute>
+                  <Prestige />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/profile" 
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/progression" 
+              element={
+                <ProtectedRoute>
+                  <Progression />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/quests" 
+              element={
+                <ProtectedRoute>
+                  <Quests />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/seasonal" 
+              element={
+                <ProtectedRoute>
+                  <Seasonal />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/skills" 
+              element={
+                <ProtectedRoute>
+                  <Skills />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/social" 
+              element={
+                <ProtectedRoute>
+                  <SocialHub />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/territories" 
+              element={
+                <ProtectedRoute>
+                  <Territories />
+                </ProtectedRoute>
+              } />
+            <Route 
+              path="/world" 
+              element={
+                <ProtectedRoute>
+                  <World />
+                </ProtectedRoute>
+              } />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
