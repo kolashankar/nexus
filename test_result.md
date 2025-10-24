@@ -309,7 +309,7 @@
 ### Test Execution Summary
 **Date:** Current Testing Session  
 **Tester:** deep_testing_backend_v2  
-**Backend URL:** https://screengrab-readme.preview.emergentagent.com  
+**Backend URL:** https://code-rescue-36.preview.emergentagent.com  
 
 ### ✅ WORKING ENDPOINTS (6/8 tests passed - 75%)
 
