@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import * from 'three';
+import * as THREE from 'three';
 import { use3DModel } from '../../hooks/use3DModel';
-
-
 
 /**
  * 3D Model component
@@ -18,7 +16,7 @@ export const Model3D = ({
   sceneManager,
   autoPlay = true,
   initialAnimation
- }) => {
+}) => {
   const { asset, loading, error, animationController } = use3DModel(modelUrl);
 
   // Add model to scene when loaded

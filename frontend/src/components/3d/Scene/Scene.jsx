@@ -3,14 +3,12 @@
  */
 import React, { useEffect } from 'react';
 import { use3DScene } from '../../../hooks/use3DScene';
-import * from 'three';
+import * as THREE from 'three';
 
-
-
-const Scene = ({  className = ''  }) => {
+const Scene = ({ className = '' }) => {
   const { containerRef, scene, camera, isReady } = use3DScene({
-    antialias,
-    alpha,
+    antialias: true,
+    alpha: true
   });
 
   useEffect(() => {
@@ -19,9 +17,9 @@ const Scene = ({  className = ''  }) => {
     // Add a simple cube
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshStandardMaterial({
-      color,
-      metalness,
-      roughness,
+      color: 0x00ff00,
+      metalness: 0.5,
+      roughness: 0.5
     });
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
@@ -43,7 +41,7 @@ const Scene = ({  className = ''  }) => {
   }, [scene, isReady]);
 
   return (
-    
+    <div ref={containerRef} className={`w-full h-full ${className}`} />
   );
 };
 
