@@ -41,10 +41,10 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.post(
         `${API_URL}/api/combat/challenge`,
         {
-          target_player_id,
+          target_player_id: player2Id
         },
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken1}` }
         }
       );
 
@@ -58,10 +58,10 @@ describe('Combat Flow Integration Tests', () => {
       const response = await axios.post(
         `${API_URL}/api/combat/accept`,
         {
-          combat_id,
+          combat_id: combatId
         },
         {
-          headers,
+          headers: { Authorization: `Bearer ${authToken2}` }
         }
       );
 
