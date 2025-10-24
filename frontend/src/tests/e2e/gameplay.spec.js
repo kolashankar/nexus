@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
+const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http://localhost:3000';
+
+test.describe('Gameplay E2E Tests', () => {
   test.beforeEach(async ({ page }) => {
     // Login before each test
     await page.goto(`${BASE_URL}/login`);
@@ -23,7 +25,7 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
     await page.goto(`${BASE_URL}/profile`);
 
     // Navigate to traits section
-    await page.click('button)');
+    await page.click('button:text("Traits")');
 
     // Wait for traits to load
     await page.waitForSelector('[data-testid="trait-item"]');
@@ -47,7 +49,7 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
     await page.click('[data-testid="actions-menu"]');
 
     // Select help action
-    await page.click('button)');
+    await page.click('button:text("Help")');
 
     // Wait for target selection dialog
     await page.waitForSelector('[data-testid="target-selector"]');
@@ -56,7 +58,7 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
     await page.click('[data-testid="player-target"]:first-child');
 
     // Confirm action
-    await page.click('button)');
+    await page.click('button:text("Confirm")');
 
     // Wait for success notification
     const notification = await page.locator('[role="alert"]');
@@ -69,7 +71,7 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
 
     // Select a trait
     await page.click('[data-testid="trait-selector"]');
-    await page.click('button)');
+    await page.click('button:text("Empathy")');
 
     // Verify skill tree is displayed
     await expect(page.locator('[data-testid="skill-tree-canvas"]')).toBeVisible();
@@ -110,12 +112,12 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
     await page.goto(`${BASE_URL}/marketplace`);
 
     // Verify marketplace tabs
-    await expect(page.locator('button)')).toBeVisible();
-    await expect(page.locator('button)')).toBeVisible();
-    await expect(page.locator('button)')).toBeVisible();
+    await expect(page.locator('button:text("Robots")')).toBeVisible();
+    await expect(page.locator('button:text("Stocks")')).toBeVisible();
+    await expect(page.locator('button:text("Properties")')).toBeVisible();
 
     // Switch to robots tab
-    await page.click('button)');
+    await page.click('button:text("Robots")');
     await expect(page.locator('[data-testid="robot-card"]').first()).toBeVisible();
   });
 
@@ -123,12 +125,12 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
     await page.goto(`${BASE_URL}/leaderboards`);
 
     // Verify leaderboard categories
-    await expect(page.locator('button)')).toBeVisible();
-    await expect(page.locator('button)')).toBeVisible();
-    await expect(page.locator('button)')).toBeVisible();
+    await expect(page.locator('button:text("Karma")')).toBeVisible();
+    await expect(page.locator('button:text("Wealth")')).toBeVisible();
+    await expect(page.locator('button:text("Power")')).toBeVisible();
 
     // Check karma leaderboard
-    await page.click('button)');
+    await page.click('button:text("Karma")');
     const leaderboardEntries = await page.locator('[data-testid="leaderboard-entry"]').all();
     expect(leaderboardEntries.length).toBeGreaterThan(0);
   });
@@ -141,14 +143,14 @@ const BASE_URL = process.env.REACT_APP_FRONTEND_URL || 'http, () => {
 
     // Check for active events
     const activeEvents = await page.locator('[data-testid="active-event"]').all();
-    console.log(`Active events);
+    console.log(`Active events: ${activeEvents.length}`);
   });
 
   test('should access inventory', async ({ page }) => {
     await page.goto(`${BASE_URL}/profile`);
 
     // Navigate to inventory
-    await page.click('button)');
+    await page.click('button:text("Inventory")');
 
     // Verify inventory grid
     await expect(page.locator('[data-testid="inventory-grid"]')).toBeVisible();
