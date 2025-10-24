@@ -10,7 +10,7 @@ const API_URL = process.env.REACT_APP_BACKEND_URL || 'http;
 
 
 
-const SeasonalLeaderboard: React.FC = () => {
+const SeasonalLeaderboard= () => {
   const [season, setSeason] = useState(null);
   const [loading, setLoading] = useState(true);
 

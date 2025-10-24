@@ -5,7 +5,7 @@ import { actionsService } from '../../../services/actions/actionsService';
 
 
 
-export const ActionHistory: React.FC = () => {
+export const ActionHistory= () => {
   const [actions, setActions] = useState([]);
   const [loading, setLoading] = useState(true);
 

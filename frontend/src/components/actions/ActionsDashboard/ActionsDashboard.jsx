@@ -8,7 +8,7 @@ import StealActionModal from '../modals/StealActionModal';
 import DonateActionModal from '../modals/DonateActionModal';
 import TradeActionModal from '../modals/TradeActionModal';
 
-const ActionsDashboard: React.FC = () => {
+const ActionsDashboard= () => {
   const [selectedAction, setSelectedAction] = useState(null);
 
   const actions = [

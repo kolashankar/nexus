@@ -18,7 +18,7 @@ import { useToast } from '../../hooks/useToast';
   expires_at?;
 }
 
-export const GuildQuests: React.FC = () => {
+export const GuildQuests= () => {
   const [quests, setQuests] = useState([]);
   const [activeQuests, setActiveQuests] = useState([]);
   const [loading, setLoading] = useState(true);

@@ -50,7 +50,7 @@ const PRIVACY_TIERS = [
   }
 ];
 
-export const PrivacySettings: React.FC = () => {
+export const PrivacySettings= () => {
   const { player, updatePlayer, isLoading: loading } = usePlayer();
   const [settings, setSettings] = useState({
     privacy_tier,

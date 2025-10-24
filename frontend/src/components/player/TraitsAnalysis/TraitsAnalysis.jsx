@@ -22,7 +22,7 @@ import './TraitsAnalysis.css';
   active_synergies;
 }
 
-export const TraitsAnalysis: React.FC = () => {
+export const TraitsAnalysis= () => {
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
 

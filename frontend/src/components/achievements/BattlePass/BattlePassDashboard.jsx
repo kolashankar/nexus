@@ -6,7 +6,7 @@ import { useBattlePass } from '../../../hooks/useBattlePass';
 import BattlePassTrack from './BattlePassTrack';
 import { toast } from 'sonner';
 
-const BattlePassDashboard: React.FC = () => {
+const BattlePassDashboard= () => {
   const {
     battlePass,
     progress,

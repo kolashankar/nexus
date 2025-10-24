@@ -25,7 +25,7 @@ import './WorldEvents.css';
 
 
 
-export const WorldEvents: React.FC = () => {
+export const WorldEvents= () => {
   const [activeEvent, setActiveEvent] = useState(null);
   const [recentEvents, setRecentEvents] = useState([]);
   const [worldState, setWorldState] = useState(null);

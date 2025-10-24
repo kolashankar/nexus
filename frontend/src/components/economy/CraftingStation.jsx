@@ -16,7 +16,7 @@ import { toast } from '../ui/sonner';
   unlocked;
 }
 
-export const CraftingStation: React.FC = () => {
+export const CraftingStation= () => {
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [crafting, setCrafting] = useState(false);

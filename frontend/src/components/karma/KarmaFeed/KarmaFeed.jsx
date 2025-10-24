@@ -20,7 +20,7 @@ import './KarmaFeed.css';
 
 
 
-export const KarmaFeed: React.FC = () => {
+export const KarmaFeed= () => {
   const { karmaHistory, loading, loadKarmaHistory } = useKarma();
   const [events, setEvents] = useState([]);
 

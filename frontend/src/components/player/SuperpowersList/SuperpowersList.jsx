@@ -7,7 +7,7 @@ import superpowersService from '../../../services/superpowers/superpowersService
 import SuperpowerCard from './SuperpowerCard';
 import { toast } from '../../ui/sonner';
 
-const SuperpowersList: React.FC = () => {
+const SuperpowersList= () => {
   const [superpowers, setSuperpowers] = useState(null);
   const [availablePowers, setAvailablePowers] = useState([]);
   const [loading, setLoading] = useState(true);

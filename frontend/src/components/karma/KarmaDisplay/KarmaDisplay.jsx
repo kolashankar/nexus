@@ -4,7 +4,7 @@ import KarmaScore from './KarmaScore';
 import KarmaHistory from './KarmaHistory';
 import apiClient from '@/services/api/client';
 
-const KarmaDisplay: React.FC = () => {
+const KarmaDisplay= () => {
   const [karmaData, setKarmaData] = useState(null);
   const [loading, setLoading] = useState(true);
 

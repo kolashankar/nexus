@@ -8,7 +8,7 @@ import './WorldMap.css';
 
 
 
-export const WorldMap: React.FC = () => {
+export const WorldMap= () => {
   const [territories, setTerritories] = useState([]);
   const [selectedTerritory, setSelectedTerritory] = useState(null);
   const [loading, setLoading] = useState(true);

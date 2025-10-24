@@ -8,7 +8,7 @@ import { useLeaderboards } from '../../../hooks/useLeaderboards';
 
 
 
-const LeaderboardPanel: React.FC = () => {
+const LeaderboardPanel= () => {
   const { leaderboards, myRanks, loading, fetchLeaderboard, fetchMyRank } = useLeaderboards();
   const [activeTab, setActiveTab] = useState('karma');
 

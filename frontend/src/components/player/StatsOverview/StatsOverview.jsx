@@ -39,7 +39,7 @@ import './StatsOverview.css';
   };
 }
 
-export const StatsOverview: React.FC = () => {
+export const StatsOverview= () => {
   const { player, isLoading: loading } = usePlayer();
   const [stats, setStats] = useState(null);
   const [activeTab, setActiveTab] = useState('combat');

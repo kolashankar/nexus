@@ -10,7 +10,7 @@ import { toast } from '../ui/sonner';
 
 
 
-export const InvestmentPortfolio: React.FC = () => {
+export const InvestmentPortfolio= () => {
   const [portfolio, setPortfolio] = useState(null);
   const [opportunities, setOpportunities] = useState([]);
   const [activeTab, setActiveTab] = useState('portfolio');

@@ -8,7 +8,7 @@ import { toast } from '../ui/sonner';
 
 
 
-export const RealEstateMarket: React.FC = () => {
+export const RealEstateMarket= () => {
   const [properties, setProperties] = useState([]);
   const [myProperties, setMyProperties] = useState([]);
   const [activeTab, setActiveTab] = useState('market');

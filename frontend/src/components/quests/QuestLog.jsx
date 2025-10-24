@@ -14,7 +14,7 @@ import { toast } from '../ui/sonner';
   expires_at?;
 }
 
-export const QuestLog: React.FC = () => {
+export const QuestLog= () => {
   const [activeQuests, setActiveQuests] = useState([]);
   const [availableQuests, setAvailableQuests] = useState([]);
   const [completedQuests, setCompletedQuests] = useState([]);
