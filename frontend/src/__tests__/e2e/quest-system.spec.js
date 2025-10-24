@@ -19,7 +19,7 @@ test.describe('Quest System E2E', () => {
     await page.goto('/quests');
     
     // Wait for quests to load
-    await page.waitForSelector('[data-testid="quest-card"]', { timeout);
+    await page.waitForSelector('[data-testid="quest-card"]', { timeout: 5000 });
     
     // Check that quests are displayed
     const quests = await page.locator('[data-testid="quest-card"]').count();
@@ -37,7 +37,7 @@ test.describe('Quest System E2E', () => {
     await page.waitForSelector('[data-testid="quest-details"]');
     
     // Accept quest
-    await page.click('button)');
+    await page.click('button:text("Accept")');
     
     // Check for success message
     await expect(page.locator('text=Quest Accepted')).toBeVisible();
@@ -54,7 +54,7 @@ test.describe('Quest System E2E', () => {
     await page.click('[data-testid="daily-quests-tab"]');
     
     // Wait for daily quests
-    await page.waitForSelector('[data-testid="daily-quest-card"]', { timeout);
+    await page.waitForSelector('[data-testid="daily-quest-card"]', { timeout: 5000 });
     
     // Check that daily quests are displayed
     const dailyQuests = await page.locator('[data-testid="daily-quest-card"]').count();
@@ -67,7 +67,7 @@ test.describe('Quest System E2E', () => {
     
     // Wait for active quest
     const activeQuest = page.locator('[data-testid="active-quest-card"]').first();
-    await activeQuest.waitFor({ timeout);
+    await activeQuest.waitFor({ timeout: 5000 });
     
     // Check for progress bar
     await expect(activeQuest.locator('[role="progressbar"]')).toBeVisible();
@@ -87,11 +87,11 @@ test.describe('Quest System E2E', () => {
     await page.waitForSelector('[data-testid="quest-details"]');
     
     // Abandon quest
-    await page.click('button)');
+    await page.click('button:text("Abandon")');
     
     // Confirm abandonment (if dialog appears)
-    if (await page.locator('button)').isVisible()) {
-      await page.click('button)');
+    if (await page.locator('button:text("Confirm")').isVisible()) {
+      await page.click('button:text("Confirm")');
     }
     
     // Check for success message
@@ -115,13 +115,13 @@ test.describe('Quest System E2E', () => {
     await page.click('[data-testid="campaigns-tab"]');
     
     // Wait for campaigns
-    await page.waitForSelector('[data-testid="campaign-card"]', { timeout);
+    await page.waitForSelector('[data-testid="campaign-card"]', { timeout: 5000 });
     
     // Click on first campaign
     await page.click('[data-testid="campaign-card"]:first-child');
     
     // Start campaign
-    await page.click('button)');
+    await page.click('button:text("Start Campaign")');
     
     // Check that campaign started
     await expect(page.locator('text=Campaign Started')).toBeVisible();

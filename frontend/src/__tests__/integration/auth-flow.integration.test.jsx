@@ -13,26 +13,29 @@ const server = setupServer(
   rest.post('/api/auth/register', (req, res, ctx) => {
     return res(
       ctx.json({
-        access_token: "mock-token",
-        user, username: "testuser", email)
+        access_token: 'mock-token',
+        user: { username: 'testuser', email: 'test@test.com' }
+      })
     );
   }),
   
   rest.post('/api/auth/login', (req, res, ctx) => {
     return res(
       ctx.json({
-        access_token: "mock-token",
-        user: { username: "testuser" }
+        access_token: 'mock-token',
+        user: { username: 'testuser' }
+      })
     );
   }),
   
   rest.get('/api/player/profile', (req, res, ctx) => {
     return res(
       ctx.json({
-        _id: "test-id",
-        username: "testuser",
+        _id: 'test-id',
+        username: 'testuser',
         level: 1,
         karma_points: 0
+      })
     );
   })
 );
@@ -47,9 +50,9 @@ afterAll(() => server.close());
 describe('Authentication Flow Integration Tests', () => {
   test('complete registration flow', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     );
     
     // Navigate to register
@@ -61,9 +64,9 @@ describe('Authentication Flow Integration Tests', () => {
     const emailInput = screen.getByPlaceholderText(/email/i);
     const passwordInput = screen.getByPlaceholderText(/password/i);
     
-    fireEvent.change(usernameInput, { target);
-    fireEvent.change(emailInput, { target);
-    fireEvent.change(passwordInput, { target);
+    fireEvent.change(usernameInput, { target: { value: 'newuser' } });
+    fireEvent.change(emailInput, { target: { value: 'new@test.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
     
     // Submit
     const submitButton = screen.getByText(/create account/i);
@@ -80,17 +83,17 @@ describe('Authentication Flow Integration Tests', () => {
   
   test('complete login flow', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     );
     
     // Fill login form
     const usernameInput = screen.getByPlaceholderText(/username/i);
     const passwordInput = screen.getByPlaceholderText(/password/i);
     
-    fireEvent.change(usernameInput, { target);
-    fireEvent.change(passwordInput, { target);
+    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
     
     // Submit
     const loginButton = screen.getByText(/log in/i);
@@ -106,9 +109,9 @@ describe('Authentication Flow Integration Tests', () => {
     localStorage.setItem('token', 'user-token');
     
     render(
-      
-        
-      
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     );
     
     // Click logout
@@ -129,22 +132,22 @@ describe('Authentication Flow Integration Tests', () => {
       rest.post('/api/auth/login', (req, res, ctx) => {
         return res(
           ctx.status(401),
-          ctx.json({ error)
+          ctx.json({ error: 'Invalid credentials' })
         );
       })
     );
     
     render(
-      
-        
-      
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     );
     
     const usernameInput = screen.getByPlaceholderText(/username/i);
     const passwordInput = screen.getByPlaceholderText(/password/i);
     
-    fireEvent.change(usernameInput, { target);
-    fireEvent.change(passwordInput, { target);
+    fireEvent.change(usernameInput, { target: { value: 'wronguser' } });
+    fireEvent.change(passwordInput, { target: { value: 'wrongpass' } });
     
     const loginButton = screen.getByText(/log in/i);
     fireEvent.click(loginButton);
@@ -157,9 +160,9 @@ describe('Authentication Flow Integration Tests', () => {
   
   test('redirects to login when accessing protected route', async () => {
     render(
-      
-        
-      
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     );
     
     // Try to access dashboard without auth

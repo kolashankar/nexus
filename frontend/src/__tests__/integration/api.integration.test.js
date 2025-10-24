@@ -30,7 +30,6 @@ const server = setupServer(
         karma_points: 0
       })
     );
-    );
   })
 );
 
@@ -42,8 +41,9 @@ describe('API Integration Tests', () => {
   describe('Authentication', () => {
     test('login returns token and user data', async () => {
       const result = await apiClient.post('/auth/login', {
-        username: "testuser",
-        password);
+        username: 'testuser',
+        password: 'testpass123'
+      });
       
       expect(result.data.access_token).toBe('mock-token');
       expect(result.data.user.username).toBe('testuser');
@@ -51,8 +51,9 @@ describe('API Integration Tests', () => {
     
     test('stores token in localStorage', async () => {
       await apiClient.post('/auth/login', {
-        username: "testuser",
-        password);
+        username: 'testuser',
+        password: 'testpass123'
+      });
       
       expect(localStorage.getItem('token')).toBe('mock-token');
     });
@@ -98,7 +99,7 @@ describe('API Integration Tests', () => {
     test('handles server errors', async () => {
       server.use(
         rest.get('/api/player/profile', (req, res, ctx) => {
-          return res(ctx.status(500), ctx.json({ error: "Error" });
+          return res(ctx.status(500), ctx.json({ error: 'Server Error' }));
         })
       );
       
