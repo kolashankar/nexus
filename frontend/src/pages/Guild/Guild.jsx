@@ -17,7 +17,7 @@ const Guild = () => {
   const loadGuildData = async () => {
     try {
       // FIX: Changed 'user' to 'player' based on destructuring above
-      const guildId = player?.guild_id; 
+      const guildId = player?.guild_id;
       if (guildId) {
         const guildData = await guildsService.getGuild(guildId);
         setGuild(guildData);
@@ -60,19 +60,23 @@ const Guild = () => {
           <div className="space-y-2">
             <p>
               Level: <span className="font-semibold">{guild.level}</span>
-            </p> {/* FIX: Added content and closing tag */}
+            </p>{' '}
+            {/* FIX: Added content and closing tag */}
             <p>
               Members: <span className="font-semibold">{members.length}</span>
             </p>
             <p>
               Karma: <span className="font-semibold">{guild.karma}</span>
-            </p> {/* FIX: Added content and closing tag */}
+            </p>{' '}
+            {/* FIX: Added content and closing tag */}
             <p>
               Reputation: <span className="font-semibold">{guild.reputation}</span>
-            </p> {/* FIX: Added content and closing tag */}
+            </p>{' '}
+            {/* FIX: Added content and closing tag */}
             <p>
               Territories: <span className="font-semibold">{guild.territories}</span>
-            </p> {/* FIX: Added content and closing tag */}
+            </p>{' '}
+            {/* FIX: Added content and closing tag */}
           </div>
           <p className="mt-4">{guild.description}</p>
         </Card>
@@ -82,7 +86,8 @@ const Guild = () => {
           <div className="space-y-4">
             <p>
               Credits: <span className="font-semibold">{guild.bank_credits}</span>
-            </p> {/* FIX: Added content and closing tag */}
+            </p>{' '}
+            {/* FIX: Added content and closing tag */}
           </div>
           <Button
             onClick={() => {

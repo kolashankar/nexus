@@ -138,7 +138,9 @@ const SocialHub = () => {
             {marriage ? (
               <div>
                 <h2 className="text-xl font-bold mb-4">Marriage</h2>
-                <p className="mb-2">Married Since: {new Date(marriage.married_at).toLocaleDateString()}</p>
+                <p className="mb-2">
+                  Married Since: {new Date(marriage.married_at).toLocaleDateString()}
+                </p>
                 <p className="mb-4">Joint Karma: {marriage.joint_karma}</p>
                 <Button
                   onClick={async () => {

@@ -34,9 +34,7 @@ const Header = () => {
                   Play
                 </Link>
                 <div className="flex items-center space-x-2">
-                  {player && (
-                    <span className="text-sm text-gray-400">{player.username}</span>
-                  )}
+                  {player && <span className="text-sm text-gray-400">{player.username}</span>}
                   <Button onClick={handleLogout} variant="outline" size="sm">
                     Logout
                   </Button>

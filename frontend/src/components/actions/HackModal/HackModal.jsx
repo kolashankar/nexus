@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../../ui/dialog';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { useToast } from '../../../hooks/useToast';
@@ -49,12 +55,16 @@ export const HackModal = ({ open, onClose, onSuccess }) => {
         <DialogHeader>
           <DialogTitle>🔐 Hack Player</DialogTitle>
           <DialogDescription>
-            Attempt to hack another player's systems. Success depends on your hacking skill vs their technical
-            knowledge.
+            Attempt to hack another player's systems. Success depends on your hacking skill vs their
+            technical knowledge.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <Input placeholder="Target Player ID" value={targetId} onChange={(e) => setTargetId(e.target.value)} />
+          <Input
+            placeholder="Target Player ID"
+            value={targetId}
+            onChange={(e) => setTargetId(e.target.value)}
+          />
           <div className="flex gap-2">
             <Button onClick={handleHack} disabled={loading}>
               {loading ? 'Hacking...' : 'Hack'}

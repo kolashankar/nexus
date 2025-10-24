@@ -45,7 +45,9 @@ const Territories = () => {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading territories...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">Loading territories...</div>
+    );
   }
 
   return (
@@ -61,12 +63,15 @@ const Territories = () => {
               <div>
                 {territory.controlling_guild_id ? (
                   <span>
-                    Controlled by Guild {territory.controlling_guild_id} | Income: {territory.income_per_hour}
+                    Controlled by Guild {territory.controlling_guild_id} | Income:{' '}
+                    {territory.income_per_hour}
                   </span>
                 ) : (
                   <span>Unclaimed</span>
                 )}
-                {territory.contested && <span className="ml-2 text-red-600 font-bold">CONTESTED!</span>}
+                {territory.contested && (
+                  <span className="ml-2 text-red-600 font-bold">CONTESTED!</span>
+                )}
               </div>
 
               {territory.controlling_guild_id !== player?.guild_id && (

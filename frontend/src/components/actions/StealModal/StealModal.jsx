@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../../ui/dialog';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { useToast } from '../../../hooks/useToast';
@@ -47,12 +53,16 @@ export const StealModal = ({ open, onClose, onSuccess }) => {
         <DialogHeader>
           <DialogTitle>💰 Steal from Player</DialogTitle>
           <DialogDescription>
-            Attempt to steal credits from another player. Risky! Success depends on your stealth vs their
-            perception.
+            Attempt to steal credits from another player. Risky! Success depends on your stealth vs
+            their perception.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <Input placeholder="Target Player ID" value={targetId} onChange={(e) => setTargetId(e.target.value)} />
+          <Input
+            placeholder="Target Player ID"
+            value={targetId}
+            onChange={(e) => setTargetId(e.target.value)}
+          />
           <div className="flex gap-2">
             <Button onClick={handleSteal} disabled={loading} variant="destructive">
               {loading ? 'Stealing...' : 'Steal'}

@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../../ui/dialog';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { useToast } from '../../../hooks/useToast';
@@ -47,11 +53,16 @@ export const HelpModal = ({ open, onClose, onSuccess }) => {
         <DialogHeader>
           <DialogTitle>🤝 Help Player</DialogTitle>
           <DialogDescription>
-            Provide assistance to another player. This will increase your karma and strengthen positive traits.
+            Provide assistance to another player. This will increase your karma and strengthen
+            positive traits.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <Input placeholder="Target Player ID" value={targetId} onChange={(e) => setTargetId(e.target.value)} />
+          <Input
+            placeholder="Target Player ID"
+            value={targetId}
+            onChange={(e) => setTargetId(e.target.value)}
+          />
           <div className="flex gap-2">
             <Button onClick={handleHelp} disabled={loading}>
               {loading ? 'Helping...' : 'Help'}

@@ -19,16 +19,19 @@ export const Actions = () => {
         <CardHeader>
           <CardTitle>Choose Your Action</CardTitle>
         </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <ActionButton label="Hack" onClick={() => setActiveModal('hack')} />
-              <ActionButton label="Help" onClick={() => setActiveModal('help')} />
-              <ActionButton label="Steal" onClick={() => setActiveModal('steal')} variant="destructive" />
-              <ActionButton label="Donate" onClick={() => setActiveModal('donate')} />
-              <ActionButton label="Trade" onClick={() => setActiveModal('trade')} variant="outline" />
-            </div>
-          </CardContent>
-
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <ActionButton label="Hack" onClick={() => setActiveModal('hack')} />
+            <ActionButton label="Help" onClick={() => setActiveModal('help')} />
+            <ActionButton
+              label="Steal"
+              onClick={() => setActiveModal('steal')}
+              variant="destructive"
+            />
+            <ActionButton label="Donate" onClick={() => setActiveModal('donate')} />
+            <ActionButton label="Trade" onClick={() => setActiveModal('trade')} variant="outline" />
+          </div>
+        </CardContent>
       </Card>
 
       <ActionHistory />

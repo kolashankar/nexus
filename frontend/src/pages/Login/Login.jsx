@@ -49,12 +49,7 @@ const Login = () => {
             {error && <div className="p-3 text-sm text-red-600 bg-red-50 rounded">{error}</div>}
             <div>
               <label className="text-sm font-medium">Username</label>
-              <Input
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-              />
+              <Input name="username" value={formData.username} onChange={handleChange} required />
             </div>
             <div>
               <label className="text-sm font-medium">Password</label>

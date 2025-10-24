@@ -139,7 +139,9 @@ export const Progression = () => {
             {/* Skill Tree Display */}
             <Card className="p-6">
               <p>Skill Tree Visualizer for {selectedTrait}</p>
-              <p className="text-sm text-muted-foreground">Connect to API to load skill tree data</p>
+              <p className="text-sm text-muted-foreground">
+                Connect to API to load skill tree data
+              </p>
             </Card>
           </div>
         </TabsContent>

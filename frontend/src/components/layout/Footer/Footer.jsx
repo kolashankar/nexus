@@ -17,13 +17,19 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-gray-400 hover:text-white">Home</Link>
+                <Link to="/" className="text-gray-400 hover:text-white">
+                  Home
+                </Link>
               </li>
               <li>
-                <Link to="/about" className="text-gray-400 hover:text-white">About</Link>
+                <Link to="/about" className="text-gray-400 hover:text-white">
+                  About
+                </Link>
               </li>
               <li>
-                <Link to="/features" className="text-gray-400 hover:text-white">Features</Link>
+                <Link to="/features" className="text-gray-400 hover:text-white">
+                  Features
+                </Link>
               </li>
             </ul>
           </div>
@@ -32,13 +38,19 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Support</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/help" className="text-gray-400 hover:text-white">Help Center</Link>
+                <Link to="/help" className="text-gray-400 hover:text-white">
+                  Help Center
+                </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-gray-400 hover:text-white">FAQ</Link>
+                <Link to="/faq" className="text-gray-400 hover:text-white">
+                  FAQ
+                </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-400 hover:text-white">Contact Us</Link>
+                <Link to="/contact" className="text-gray-400 hover:text-white">
+                  Contact Us
+                </Link>
               </li>
             </ul>
           </div>
@@ -47,10 +59,14 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Legal</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/terms" className="text-gray-400 hover:text-white">Terms of Service</Link>
+                <Link to="/terms" className="text-gray-400 hover:text-white">
+                  Terms of Service
+                </Link>
               </li>
               <li>
-                <Link to="/privacy" className="text-gray-400 hover:text-white">Privacy Policy</Link>
+                <Link to="/privacy" className="text-gray-400 hover:text-white">
+                  Privacy Policy
+                </Link>
               </li>
             </ul>
           </div>

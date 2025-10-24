@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../../ui/dialog';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { useToast } from '../../../hooks/useToast';
@@ -62,7 +68,11 @@ export const DonateModal = ({ open, onClose, onSuccess }) => {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <Input placeholder="Target Player ID" value={targetId} onChange={(e) => setTargetId(e.target.value)} />
+          <Input
+            placeholder="Target Player ID"
+            value={targetId}
+            onChange={(e) => setTargetId(e.target.value)}
+          />
           <Input
             type="number"
             placeholder="Amount"

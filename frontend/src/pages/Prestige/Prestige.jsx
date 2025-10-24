@@ -82,7 +82,7 @@ const Prestige = () => {
         {/* Current Status */}
         {prestige && (
           // FIX: Complete className string
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4"> 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
               <CardContent className="pt-6">
                 <div className="text-center">
@@ -122,7 +122,7 @@ const Prestige = () => {
                   <div className="flex justify-between items-center">
                     <span>Level 100</span>
                     {/* FIX: Complete ternary operator */}
-                    <Badge variant={eligibility.current_level >= 100 ? 'default' : 'destructive'}> 
+                    <Badge variant={eligibility.current_level >= 100 ? 'default' : 'destructive'}>
                       {eligibility.current_level}/100
                     </Badge>
                   </div>
@@ -133,7 +133,7 @@ const Prestige = () => {
                   <div className="flex justify-between items-center">
                     <span>Karma</span>
                     {/* FIX: Complete ternary operator */}
-                    <Badge variant={eligibility.current_karma >= 1000 ? 'default' : 'destructive'}> 
+                    <Badge variant={eligibility.current_karma >= 1000 ? 'default' : 'destructive'}>
                       {eligibility.current_karma}/1000
                     </Badge>
                   </div>
@@ -165,7 +165,7 @@ const Prestige = () => {
 
                 <div className="mt-6">
                   {/* FIX: Complete ternary operator, assumed 'else' case is a disabled button */}
-                  {eligibility.eligible ? ( 
+                  {eligibility.eligible ? (
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button className="w-full" size="lg">
@@ -206,7 +206,7 @@ const Prestige = () => {
             </CardHeader>
             <CardContent>
               {/* FIX: Complete className string */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Object.entries(prestige.permanent_bonuses).map(([bonus, value]) => (
                   <div key={bonus} className="flex justify-between p-3 border rounded">
                     <span className="capitalize">{bonus.replace('_', ' ')}</span>

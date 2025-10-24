@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../../ui/dialog';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { useToast } from '../../../hooks/useToast';
@@ -53,9 +59,21 @@ export const TradeModal = ({ open, onClose, onSuccess }) => {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
-          <Input placeholder="Target Player ID" value={targetId} onChange={(e) => setTargetId(e.target.value)} />
-          <Input placeholder="What you offer" value={offer} onChange={(e) => setOffer(e.target.value)} />
-          <Input placeholder="What you request" value={request} onChange={(e) => setRequest(e.target.value)} />
+          <Input
+            placeholder="Target Player ID"
+            value={targetId}
+            onChange={(e) => setTargetId(e.target.value)}
+          />
+          <Input
+            placeholder="What you offer"
+            value={offer}
+            onChange={(e) => setOffer(e.target.value)}
+          />
+          <Input
+            placeholder="What you request"
+            value={request}
+            onChange={(e) => setRequest(e.target.value)}
+          />
           <div className="flex gap-2">
             <Button onClick={handleTrade} disabled={loading}>
               {loading ? 'Sending...' : 'Send Trade'}
