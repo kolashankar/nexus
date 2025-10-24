@@ -3,7 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Dict, Any
 
-from backend.core.security import get_current_user
+from backend.api.deps import get_current_user
 from backend.services.combat.abilities import CombatAbilitiesService
 
 router = APIRouter(prefix="/abilities", tags=["combat", "abilities"])

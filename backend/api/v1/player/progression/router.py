@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 from typing import Dict, Any
-from backend.core.security import get_current_user
+from backend.api.deps import get_current_user
 from backend.models.player.player import Player
 from backend.services.player.progression import ProgressionService
 from backend.utils.progression_calculator import (

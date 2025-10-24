@@ -5,7 +5,7 @@ from typing import Dict, Any
 from datetime import datetime
 import random
 
-from backend.core.security import get_current_user
+from backend.api.deps import get_current_user
 from backend.core.database import get_database
 from backend.services.combat.engine import CombatEngine
 from .schemas import JoinQueueRequest

@@ -3,7 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Dict, Any, List
 
-from backend.core.security import get_current_user
+from backend.api.deps import get_current_user
 from backend.services.robots.factory import RobotFactory
 from backend.services.robots.manager import RobotManager
 from .schemas import PurchaseRobotRequest, RobotResponse

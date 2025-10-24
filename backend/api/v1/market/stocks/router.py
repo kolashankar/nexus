@@ -3,7 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Dict, Any, List
 
-from backend.core.security import get_current_user
+from backend.api.deps import get_current_user
 from backend.services.economy.currency import CurrencyService
 from backend.services.market.stocks import StockMarketService
 from .schemas import BuyStockRequest, SellStockRequest, StockPriceResponse

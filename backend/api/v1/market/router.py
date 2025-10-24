@@ -3,7 +3,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import Dict, Any
 
-from backend.core.security import get_current_user
+from backend.api.deps import get_current_user
 from backend.core.database import get_database
 
 router = APIRouter(prefix="/market", tags=["market"])
