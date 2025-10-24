@@ -28,7 +28,7 @@ class Architect(BaseAIService):
 
     def __init__(self):
         super().__init__("Architect", model="gpt-4o")
-        self.cache_manager = CacheManager()
+        self.cache_manager = AICacheManager()
         self.client = get_ai_client()
         logger.info("The Architect initialized - World events system online")
 
